@@ -15,11 +15,7 @@
     
     <!-- SweetAlert2 CSS & JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <!-- DataTables CSS & jQuery -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
     <style>
         /* === GLOBAL RESET === */
@@ -33,14 +29,29 @@
         .col-50 { width: 48%; }
         .col-100 { width: 100%; text-align: center; }
 
-        /* Nút Bấm Khắp Web */
+        /* Nút Bấm Khắp Web & Typewriter */
         .btn-main {
             background: linear-gradient(90deg, #ff4b4b, #fa2828);
             color: #fff; border: none; padding: 12px 35px; font-size: 1.1rem; font-weight: 700;
             border-radius: 30px; cursor: pointer; box-shadow: 0 6px 15px rgba(250, 40, 40, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s; display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s; 
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 280px; /* Chống giật nút khi đổi chữ */
         }
         .btn-main:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(250, 40, 40, 0.4); color: #fff; }
+        
+        /* Con trỏ nhấp nháy cho nút */
+        .btn-main .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2rem;
+            background-color: #fff;
+            margin-left: 4px;
+            animation: blinkCursor 0.7s infinite;
+        }
+        @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         .section-title { font-size: 2.2rem; font-weight: 800; color: #0b1220; margin-bottom: 20px; }
         .section-subtitle { font-size: 1.1rem; color: #555; margin-bottom: 40px; }
@@ -78,12 +89,29 @@
         .btn-login { width: 100%; background: #2f54eb; color: #fff; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
         .btn-login:hover { background: #1d39c4; }
 
-        /* === 3. PRICING TABLE === */
-        .pricing-section { padding: 80px 0; background: #fff; }
-        .dataTables_wrapper { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        table.dataTable thead th { background: #2f54eb; color: #fff; border: none; padding: 15px; }
-        table.dataTable tbody td { padding: 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
-        table.dataTable tbody tr:hover { background-color: #f8faff; }
+        /* === 3. DANH SÁCH DỊCH VỤ (Dạng thẻ rút gọn) === */
+        .services-overview { padding: 80px 0; background: #fff; text-align: center; }
+        .services-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 40px; }
+        .srv-card { 
+            width: calc(33.333% - 20px); 
+            background: #f8fafc; 
+            padding: 30px 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); 
+            transition: all 0.3s ease;
+            text-align: left;
+            border-top: 4px solid #e2e8f0;
+        }
+        .srv-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(47,84,235,0.1); 
+            border-top-color: #2f54eb;
+        }
+        .srv-icon { font-size: 3rem; margin-bottom: 20px; }
+        .srv-card h3 { font-size: 1.4rem; color: #1e293b; margin-bottom: 15px; font-weight: 800; }
+        .srv-card ul { list-style: none; padding: 0; }
+        .srv-card ul li { margin-bottom: 12px; color: #475569; font-weight: 500; display: flex; align-items: flex-start; line-height: 1.4;}
+        .srv-card ul li i { font-size: 1rem; color: #10b981; margin-right: 10px; margin-top: 2px; }
 
         /* === 4. FEATURES (3 Cột) === */
         .features-section { padding: 80px 0; text-align: center; }
@@ -136,6 +164,10 @@
             .login-card { margin-top: 30px; }
             .hero-line { margin: 15px auto; }
             .footer .row { flex-direction: column; }
+            .srv-card { width: calc(50% - 15px); }
+        }
+        @media (max-width: 600px) {
+            .srv-card { width: 100%; }
         }
     </style>
 </head>
@@ -149,7 +181,9 @@
                 <div class="hero-line"></div>
                 <h1 class="section-title">Nền Tảng Được Tin Cậy Và Phổ Biến Nhất Cho Các Dịch Vụ Truyền Thông Xã Hội</h1>
                 <p class="section-subtitle">Công cụ Tiếp thị Truyền thông Xã hội Tất cả Trong Một mà bạn sẽ cần!</p>
-                <a href="#login-area" class="btn-main">Đăng nhập / Đăng Ký</a>
+                <a href="#login-area" class="btn-main">
+                    <span id="type-text"></span><span class="cursor"></span>
+                </a>
             </div>
             <div class="col-50">
                 <div class="mock-img mock-globe floating">
@@ -227,39 +261,7 @@
         </div>
     </section>
 
-   <!-- 3. DANH SÁCH DỊCH VỤ (Rút gọn) -->
-    <style>
-        .services-overview { padding: 80px 0; background: #fff; text-align: center; }
-        .services-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 40px; }
-        .srv-card { 
-            width: calc(33.333% - 20px); 
-            background: #f8fafc; 
-            padding: 30px 20px; 
-            border-radius: 15px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03); 
-            transition: all 0.3s ease;
-            text-align: left;
-            border-top: 4px solid #e2e8f0;
-        }
-        .srv-card:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 15px 30px rgba(47,84,235,0.1); 
-            border-top-color: #2f54eb;
-        }
-        .srv-icon { font-size: 3rem; margin-bottom: 20px; }
-        .srv-card h3 { font-size: 1.4rem; color: #1e293b; margin-bottom: 15px; font-weight: 800; }
-        .srv-card ul { list-style: none; padding: 0; }
-        .srv-card ul li { margin-bottom: 12px; color: #475569; font-weight: 500; display: flex; align-items: flex-start; line-height: 1.4;}
-        .srv-card ul li i { font-size: 1rem; color: #10b981; margin-right: 10px; margin-top: 2px; }
-        
-        @media (max-width: 900px) {
-            .srv-card { width: calc(50% - 15px); }
-        }
-        @media (max-width: 600px) {
-            .srv-card { width: 100%; }
-        }
-    </style>
-
+    <!-- 3. DANH SÁCH DỊCH VỤ (Rút gọn) -->
     <section class="services-overview">
         <div class="container">
             <h4 style="color: #f03e3e; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">HỆ THỐNG ĐA NỀN TẢNG</h4>
@@ -336,7 +338,7 @@
             </div>
             
             <div style="margin-top: 40px;">
-                <a href="#login-area" class="btn-main">ĐĂNG NHẬP ĐỂ XEM CHI TIẾT GIÁ</a>
+                <a href="#login-area" class="btn-main" style="min-width: unset;">ĐĂNG NHẬP ĐỂ XEM CHI TIẾT GIÁ</a>
             </div>
         </div>
     </section>
@@ -366,7 +368,7 @@
             </div>
             
             <div style="margin-top: 40px;">
-                <a href="#login-area" class="btn-main">ĐĂNG NHẬP NGAY</a>
+                <a href="#login-area" class="btn-main" style="min-width: unset;">ĐĂNG NHẬP NGAY</a>
             </div>
         </div>
     </section>
@@ -418,7 +420,7 @@
                 </div>
             </div>
             
-            <a href="#login-area" class="btn-main">THAM GIA NGAY</a>
+            <a href="#login-area" class="btn-main" style="min-width: unset;">THAM GIA NGAY</a>
         </div>
     </section>
 
@@ -519,30 +521,7 @@
             }
         }
 
-        // 2. Khởi tạo DataTables cho Bảng Giá
-        $(document).ready(function() {
-            var table = $('#priceTable').DataTable({
-                "language": {
-                    "sProcessing":   "Đang xử lý...",
-                    "sLengthMenu":   "Xem _MENU_ mục",
-                    "sZeroRecords":  "Không tìm thấy dịch vụ nào",
-                    "sInfo":         "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ dịch vụ",
-                    "sInfoEmpty":    "Đang xem 0 đến 0 trong tổng số 0 mục",
-                    "sSearch":       "Tìm nhanh:",
-                    "oPaginate": { "sFirst": "Đầu", "sPrevious": "Trước", "sNext": "Tiếp", "sLast": "Cuối" }
-                },
-                "pageLength": 10,
-                "lengthChange": false
-            });
-
-            // Logic Bộ Lọc Dropdown
-            $('#serviceFilter').on('change', function () {
-                var searchVal = $(this).val();
-                table.search(searchVal).draw();
-            });
-        });
-
-        // 3. Fake Hiệu Ứng Submit Form bằng SweetAlert2
+        // 2. Fake Hiệu Ứng Submit Form bằng SweetAlert2
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             Swal.fire({
@@ -564,6 +543,49 @@
             }).then(() => {
                 toggleForm();
             });
+        });
+
+        // 3. Hiệu ứng Typewriter (Lướt qua lại 2 nhịp) cho nút Đăng nhập
+        const textArray = ["Đăng nhập", "Đăng nhập / Đăng Ký"];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeWriter() {
+            const currentText = textArray[textIndex];
+            const typeTextElement = document.getElementById("type-text");
+            
+            if (!typeTextElement) return;
+
+            if (isDeleting) {
+                typeTextElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typeTextElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            // Tốc độ lướt: gõ ra 50ms, thu về 25ms
+            let typeSpeed = isDeleting ? 25 : 50; 
+
+            if (!isDeleting && charIndex === currentText.length) {
+                typeSpeed = 1500; // Dừng lại 1.5s
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex++;
+                if (textIndex >= textArray.length) {
+                    textIndex = 0; // Lặp lại từ đầu
+                }
+                typeSpeed = 400; // Nghỉ 0.4s
+            }
+
+            setTimeout(typeWriter, typeSpeed);
+        }
+
+        // Khởi động hiệu ứng gõ chữ
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(typeWriter, 500);
         });
     </script>
 </body>
