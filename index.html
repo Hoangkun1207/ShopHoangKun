@@ -56,14 +56,17 @@
         }
         .btn-main:hover { transform: translateY(-3px) !important; box-shadow: 0 8px 20px rgba(250, 40, 40, 0.4); color: #fff; }
         
-        .btn-main .cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.2rem;
-            background-color: #fff;
-            margin-left: 4px;
-            animation: blinkCursor 0.7s infinite;
-        }
+     .btn-main .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    min-width: 2px;
+    background: #fff;
+    margin-left: 5px;
+    vertical-align: middle;
+    animation: blinkCursor 0.7s infinite;
+    flex-shrink: 0;
+}
         @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         .section-title { font-size: 2.2rem; font-weight: 800; color: #0b1220; margin-bottom: 20px; }
@@ -1120,11 +1123,14 @@ document.querySelectorAll(".reveal").forEach(el => {
 });
 
 
-/* ================= TYPEWRITER ĐĂNG NHẬP / ĐĂNG KÝ ================= */
+/* ================= TYPEWRITER ================= */
 
-const typeText = document.getElementById("type-text");
+document.addEventListener("DOMContentLoaded", function () {
 
-if (typeText) {
+    const typeText = document.getElementById("type-text");
+
+    if (!typeText) return;
+
     const texts = [
         "ĐĂNG NHẬP",
         "ĐĂNG KÝ"
@@ -1135,40 +1141,54 @@ if (typeText) {
     let deleting = false;
 
     function typeLoop() {
+
         const currentText = texts[textIndex];
 
         if (!deleting) {
-            typeText.textContent = currentText.substring(0, charIndex + 1);
+
+            typeText.textContent = currentText.slice(0, charIndex + 1);
             charIndex++;
 
-            if (charIndex === currentText.length) {
-                setTimeout(() => {
-                    deleting = true;
-                    typeLoop();
-                }, 1800);
+            if (charIndex >= currentText.length) {
+
+                deleting = true;
+
+                setTimeout(typeLoop, 1800);
                 return;
             }
 
-            setTimeout(typeLoop, 90);
+            setTimeout(typeLoop, 100);
 
         } else {
-            typeText.textContent = currentText.substring(0, charIndex - 1);
+
+            typeText.textContent = currentText.slice(0, charIndex - 1);
             charIndex--;
 
-            if (charIndex === 0) {
-                deleting = false;
-                textIndex = (textIndex + 1) % texts.length;
+            if (charIndex <= 0) {
 
-                setTimeout(typeLoop, 400);
+                charIndex = 0;
+                deleting = false;
+
+                textIndex++;
+
+                if (textIndex >= texts.length) {
+                    textIndex = 0;
+                }
+
+                setTimeout(typeLoop, 500);
                 return;
             }
 
-            setTimeout(typeLoop, 55);
+            setTimeout(typeLoop, 60);
         }
     }
 
+    /* Cho chữ hiện ngay khi tải trang */
+    typeText.textContent = "";
+
     typeLoop();
-}
+
+});
 </script>
     
 </body>
