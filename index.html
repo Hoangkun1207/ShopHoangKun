@@ -1,1747 +1,524 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Hoangkunstore Dịch Vụ Mạng Xã Hội Đa Nền Tảng Uy Tín Tại Việt Nam</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoangkun Store - Hệ Thống Dịch Vụ Mạng Xã Hội Đa Nền Tảng Uy Tín</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SweetAlert2 CSS & JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- DataTables CSS & jQuery -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
-  
-<meta charset="utf-8">
+    <style>
+        /* === GLOBAL RESET === */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+        body { background-color: #ffffff; color: #333; overflow-x: hidden; line-height: 1.6; scroll-behavior: smooth; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+        .col-50 { width: 48%; }
+        .col-100 { width: 100%; text-align: center; }
 
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=no, viewport-fit=cover" />
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
-<meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="format-detection" content="telephone=no" />
-
-<!-- Preconnect to Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<!-- Favicon -->
-<link rel="shortcut icon" href="https://s3.ap-northeast-1.amazonaws.com/h.files/images/1722663532648_c3XJPQizyP.png" />
-<link rel="apple-touch-icon" href="https://s3.ap-northeast-1.amazonaws.com/h.files/images/1722663532648_c3XJPQizyP.png" />
-
-<meta name="description" content="Hoangkunstore là nền tảng hỗ trợ dịch vụ MXH Tiktok, Facebook, Instagram, Youtube, Thread. Nhanh chóng hiệu quả. hoangkunstore.id.vn hoangkunstore" />
-<meta itemprop="description" content="Hoangkunstore là nền tảng hỗ trợ dịch vụ MXH Tiktok, Facebook, Instagram, Youtube, Thread. Nhanh chóng hiệu quả. hoangkunstore.id.vn hoangkunstore"/>
-<meta name=keyword content="Hệ thống tăng like, sub, comment, view, tăng tương tác, chia sẻ livestream... Hệ thống mua like uy tín, Tăng like giá rẻ, Dịch vụ tăng like tăng sub giá rẻ, tăng view video FB, Tăng người xem Livestream, tăng theo dõi, tăng like Facebook, tuongtaccheo, traodoisub, tăng like, tăng follow facebook, tiktok, instagram, miễn phí, tương tác chéo, trao đổi sub, giá rẻ đảm bảo uy tín, chất lượng...,hoangkunstore.id.vn,hoangkunstore" />
-
-<meta property="og:title" content="Hoangkunstore Dịch Vụ Mạng Xã Hội Đa Nền Tảng Uy Tín Tại Việt Nam" />
-<meta property="og:site_name" content="HOANGKUNSTORE HỆ THỐNG DỊCH VỤ MẠNG XÃ HỘI ĐA NỀN TẢNG UY TÍN" />
-<meta property="og:description" content="Hoangkunstore là nền tảng hỗ trợ dịch vụ MXH Tiktok, Facebook, Instagram, Youtube, Thread. Nhanh chóng hiệu quả." />
-<meta property="og:type" content="services" />
-<meta property="og:url" content="https://hoangkunstore.id.vn" />
-<meta property="og:keywords" content="Hệ thống tăng like, sub, comment, view, tăng tương tác, chia sẻ livestream... Hệ thống mua like uy tín, Tăng like giá rẻ, Dịch vụ tăng like tăng sub giá rẻ, tăng view video FB, Tăng người xem Livestream, tăng theo dõi, tăng like Facebook, tuongtaccheo, traodoisub, tăng like, tăng follow facebook, tiktok, instagram, miễn phí, tương tác chéo, trao đổi sub, giá rẻ đảm bảo uy tín, chất lượng..." />
-<meta property="og:image"
-      content="https://s3.ap-northeast-1.amazonaws.com/h.files/images/1641916441312_72B9rctC3t.png" />
-
-
-    <link rel="canonical" href="https://hoangkunstore.id.vn" />
-
-
-
-
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TW8VZF9359"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
+        /* Nút Bấm Khắp Web */
+        .btn-main {
+            background: linear-gradient(90deg, #ff4b4b, #fa2828);
+            color: #fff; border: none; padding: 12px 35px; font-size: 1.1rem; font-weight: 700;
+            border-radius: 30px; cursor: pointer; box-shadow: 0 6px 15px rgba(250, 40, 40, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s; display: inline-block;
         }
+        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(250, 40, 40, 0.4); color: #fff; }
 
-        gtag('js', new Date());
+        .section-title { font-size: 2.2rem; font-weight: 800; color: #0b1220; margin-bottom: 20px; }
+        .section-subtitle { font-size: 1.1rem; color: #555; margin-bottom: 40px; }
 
-        gtag('config', 'G-TW8VZF9359');
-    </script>
+        /* MOCK IMAGES (Thay thế ảnh thật cho đẹp) */
+        .mock-img { width: 100%; height: 400px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 6rem; position: relative; overflow: hidden; }
+        .mock-globe { background: #e0f2f1; color: #00897b; border-radius: 50%; animation: spin 20s linear infinite; }
+        .mock-mega { background: #ede7f6; color: #5e35b1; }
+        .mock-map { background: #fff3e0; color: #e65100; }
+        .mock-bank { background: #e3f2fd; color: #1565c0; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes floatUpDown { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .floating { animation: floatUpDown 4s ease-in-out infinite; }
 
+        /* === 1. HERO SECTION === */
+        .hero { padding: 60px 0; background: linear-gradient(to bottom, #ffffff 60%, #f6eff4 100%); }
+        .hero-logo { font-size: 2.8rem; font-weight: 800; color: #2b4162; text-transform: uppercase; }
+        .hero-line { width: 120px; height: 4px; background-color: #f03e3e; margin: 15px auto 30px auto; border-radius: 2px;}
+        .hero .col-50 { text-align: center; }
 
+        /* === 2. LOGIN SECTION === */
+        .login-section { padding: 60px 0; background-color: #f6eff4; }
+        .login-card { background: #fff; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; }
+        .login-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .brand-hk { font-size: 2.2rem; font-weight: 800; color: #9c27b0; }
+        .brand-hk span { color: #4caf50; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; }
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #888; }
+        .input-wrapper input { width: 100%; padding: 12px 15px 12px 40px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.3s; background: #fafafa; }
+        .input-wrapper input:focus { border-color: #3b5cf0; background: #fff; box-shadow: 0 0 0 3px rgba(59,92,240,0.1); }
+        .login-options { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 20px; }
+        .login-options a { color: #3b5cf0; font-weight: 600; }
+        .btn-login { width: 100%; background: #2f54eb; color: #fff; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .btn-login:hover { background: #1d39c4; }
 
+        /* === 3. PRICING TABLE === */
+        .pricing-section { padding: 80px 0; background: #fff; }
+        .dataTables_wrapper { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        table.dataTable thead th { background: #2f54eb; color: #fff; border: none; padding: 15px; }
+        table.dataTable tbody td { padding: 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
+        table.dataTable tbody tr:hover { background-color: #f8faff; }
 
+        /* === 4. FEATURES (3 Cột) === */
+        .features-section { padding: 80px 0; text-align: center; }
+        .feat-grid { display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 40px; }
+        .feat-box { width: 30%; padding: 20px; }
+        .feat-icon { font-size: 4rem; margin-bottom: 20px; }
+        .feat-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 15px; color: #0b1220; }
+        .feat-desc { color: #666; }
+        .icon-rocket { color: #00b4d8; } .icon-money { color: #f03e3e; } .icon-support { color: #2f54eb; }
 
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-WN3NJMQP');</script>
-    <!-- End Google Tag Manager -->
+        /* === 5. WHY CHOOSE US === */
+        .why-choose { padding: 80px 0; background: linear-gradient(180deg, #e0f2f1 0%, #b2dfdb 100%); text-align: center; }
+        .why-grid { display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 40px; }
+        .why-box { width: 30%; }
+        .why-box i { font-size: 3.5rem; color: #004d40; margin-bottom: 20px; }
+        .why-box p { color: #004d40; font-weight: 500; }
 
+        /* === 6. STATS === */
+        .stats-section { padding: 80px 0; text-align: center; background: #fff; }
+        .stats-grid { display: flex; justify-content: space-between; flex-wrap: wrap; margin: 40px 0; }
+        .stat-box { width: 22%; }
+        .stat-num { font-size: 3rem; font-weight: 800; color: #f03e3e; margin-bottom: 10px; }
+        .stat-text { font-size: 1.1rem; font-weight: 600; color: #2b4162; }
 
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Hoangkunstore",
-        "url": "https://hoangkunstore.id.vn/"
-    }
-</script>
+        /* === 7. ZIGZAG SECTIONS === */
+        .zigzag { padding: 80px 0; }
+        .bg-light-blue { background-color: #f8fcff; }
+        .zigzag h3 { font-size: 2rem; color: #2b4162; margin-bottom: 20px; }
+        .zigzag p { font-size: 1.1rem; color: #666; }
 
+        /* === 8. FOOTER === */
+        .footer { background: #0b1220; color: #fff; padding: 60px 0 20px; }
+        .footer .row { align-items: flex-start; }
+        .footer-brand h4 { font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; color: #fff; }
+        .footer-brand p { color: #a0aec0; max-width: 400px; }
+        .footer-links h4 { font-size: 1.2rem; margin-bottom: 20px; color: #fff; }
+        .footer-links ul { display: flex; flex-wrap: wrap; max-width: 400px; }
+        .footer-links li { width: 50%; margin-bottom: 15px; color: #a0aec0; transition: 0.3s; cursor: pointer; }
+        .footer-links li:hover { color: #00b4d8; padding-left: 5px; }
+        .footer-links i { width: 20px; margin-right: 5px; }
+        .footer-bottom { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; padding-top: 20px; color: #718096; }
 
-  <script type='text/javascript'>
-    window.ladi_fbq_data = [];
-    window.ladi_fbq = function (track_name, conversion_name, data, event_data) {
-      window.ladi_fbq_data.push([track_name, conversion_name, data, event_data]);
-    };</script>
-  <link rel="dns-prefetch">
-  <link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin>
-  <link rel="preconnect" href="https://w.ladicdn.com/" crossorigin>
-  <link rel="preconnect" href="https://s.ladicdn.com/" crossorigin>
-  <link rel="preconnect" href="https://api.form.ladipage.com/" crossorigin>
-  <link rel="preconnect" href="https://a.ladipage.com/" crossorigin>
-  <link rel="preconnect" href="https://api.ladisales.com/" crossorigin>
-  <link rel="preconnect" href="https://g.ladicdn.com/" crossorigin>
-  <link rel="preload" href="https://fonts.googleapis.com/css?family=Quicksand:wght@500;600;700|Montserrat:bold,regular|Oswald:bold,regular&display=swap" as="style" onload="this.onload = null;this.rel = 'stylesheet';">
-  <link rel="preload" href="/assets/landing_pages/page2/ladipage.vi.min.js" as="script">
+        /* FAB NÚT LIÊN HỆ */
+        .fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #2f54eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.8rem; box-shadow: 0 5px 20px rgba(47,84,235,0.5); cursor: pointer; transition: 0.3s; z-index: 1000; }
+        .fab:hover { transform: scale(1.1); background: #1d39c4; }
 
-  <link href="/assets/landing_pages/page2/ladi_page2.css" rel="stylesheet" type="text/css">
-
-  <style id="style_lazyload" type="text/css">.ladi-section-background, .ladi-image-background, .ladi-button-background, .ladi-headline, .ladi-video-background, .ladi-countdown-background, .ladi-box, .ladi-frame-background, .ladi-banner, .ladi-form-item-background, .ladi-gallery-view-item, .ladi-gallery-control-item, .ladi-spin-lucky-screen, .ladi-spin-lucky-start, .ladi-form-label-container .ladi-form-label-item.image, .ladi-list-paragraph ul li:before {background-image: none !important;}</style>
-  <link href="/assets/landing_pages/ladi_css/ladipage.css" rel="stylesheet" type="text/css">
-  <link href="/assets/landing_pages/ladi_css/price_table_for_stupid_ladi.css" rel="stylesheet" type="text/css">
-
-  <!-- Thêm Hiệu Ứng Chuyển Động Cho Hoangkunstore -->
-  <style>
-      @keyframes fadeInDown {
-          0% { opacity: 0; transform: translateY(-40px); }
-          100% { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes fadeInUp {
-          0% { opacity: 0; transform: translateY(40px); }
-          100% { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes floatLoginCard {
-          0%, 100% { transform: translateY(0px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-          50% { transform: translateY(-12px); box-shadow: 0 20px 35px rgba(0,0,0,0.15); }
-      }
-      @keyframes pulseBtnLadi {
-          0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(47, 84, 235, 0.4); }
-          70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(47, 84, 235, 0); }
-          100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(47, 84, 235, 0); }
-      }
-
-      #GROUP1748, #HEADLINE1137, #HEADLINE1681 { animation: fadeInDown 1.2s ease-out forwards; }
-      .box-cover { animation: fadeInUp 1.2s ease-out forwards; }
-      .box-cover .card { animation: floatLoginCard 4s ease-in-out infinite; border-radius: 15px; }
-      .ladi-button { animation: pulseBtnLadi 2s infinite !important; }
-      .table-price-container { animation: fadeInUp 1.5s ease-out forwards; }
-  </style>
-
-  <!-- Bê Nguyên Bộ CSS SweetAlert2 Fake Cực Chất Lượng -->
-  <style>
-    .swal2-popup.swal2-toast{box-sizing:border-box;grid-column:1/4!important;grid-row:1/4!important;grid-template-columns:1fr 99fr 1fr;padding:1em;overflow-y:hidden;background:#fff;box-shadow:0 0 1px rgba(0,0,0,.075),0 1px 2px rgba(0,0,0,.075),1px 2px 4px rgba(0,0,0,.075),1px 3px 8px rgba(0,0,0,.075),2px 4px 16px rgba(0,0,0,.075);pointer-events:all}.swal2-popup.swal2-toast>*{grid-column:2}.swal2-popup.swal2-toast .swal2-title{margin:.5em 1em;padding:0;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-loading{justify-content:center}.swal2-popup.swal2-toast .swal2-input{height:2em;margin:.5em;font-size:1em}.swal2-popup.swal2-toast .swal2-validation-message{font-size:1em}.swal2-popup.swal2-toast .swal2-footer{margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-popup.swal2-toast .swal2-close{grid-column:3/3;grid-row:1/99;align-self:center;width:.8em;height:.8em;margin:0;font-size:2em}.swal2-popup.swal2-toast .swal2-html-container{margin:.5em 1em;padding:0;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-html-container:empty{padding:0}.swal2-popup.swal2-toast .swal2-loader{grid-column:1;grid-row:1/99;align-self:center;width:2em;height:2em;margin:.25em}.swal2-popup.swal2-toast .swal2-icon{grid-column:1;grid-row:1/99;align-self:center;width:2em;min-width:2em;height:2em;margin:0 .5em 0 0}.swal2-popup.swal2-toast .swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:1.8em;font-weight:700}.swal2-popup.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-popup.swal2-toast .swal2-actions{justify-content:flex-start;height:auto;margin:0;margin-top:.5em;padding:0 .5em}.swal2-popup.swal2-toast .swal2-styled{margin:.25em .5em;padding:.4em .6em;font-size:1em}.swal2-popup.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:1.6em;height:3em;transform:rotate(45deg);border-radius:50%}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-.8em;left:-.5em;transform:rotate(-45deg);transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-.25em;left:.9375em;transform-origin:0 1.5em;border-radius:0 4em 4em 0}.swal2-popup.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-tip{-webkit-animation:swal2-toast-animate-success-line-tip .75s;animation:swal2-toast-animate-success-line-tip .75s}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-long{-webkit-animation:swal2-toast-animate-success-line-long .75s;animation:swal2-toast-animate-success-line-long .75s}.swal2-popup.swal2-toast.swal2-show{-webkit-animation:swal2-toast-show .5s;animation:swal2-toast-show .5s}.swal2-popup.swal2-toast.swal2-hide{-webkit-animation:swal2-toast-hide .1s forwards;animation:swal2-toast-hide .1s forwards}.swal2-container{display:grid;position:fixed;z-index:1060;top:0;right:0;bottom:0;left:0;box-sizing:border-box;grid-template-areas:"top-start     top            top-end" "center-start  center         center-end" "bottom-start  bottom-center  bottom-end";grid-template-rows:minmax(-webkit-min-content,auto) minmax(-webkit-min-content,auto) minmax(-webkit-min-content,auto);grid-template-rows:minmax(min-content,auto) minmax(min-content,auto) minmax(min-content,auto);height:100%;padding:.625em;overflow-x:hidden;transition:background-color .1s;-webkit-overflow-scrolling:touch}.swal2-container.swal2-backdrop-show,.swal2-container.swal2-noanimation{background:rgba(0,0,0,.4)}.swal2-container.swal2-backdrop-hide{background:0 0!important}.swal2-container.swal2-bottom-start,.swal2-container.swal2-center-start,.swal2-container.swal2-top-start{grid-template-columns:minmax(0,1fr) auto auto}.swal2-container.swal2-bottom,.swal2-container.swal2-center,.swal2-container.swal2-top{grid-template-columns:auto minmax(0,1fr) auto}.swal2-container.swal2-bottom-end,.swal2-container.swal2-center-end,.swal2-container.swal2-top-end{grid-template-columns:auto auto minmax(0,1fr)}.swal2-container.swal2-top-start>.swal2-popup{align-self:start}.swal2-container.swal2-top>.swal2-popup{grid-column:2;align-self:start;justify-self:center}.swal2-container.swal2-top-end>.swal2-popup,.swal2-container.swal2-top-right>.swal2-popup{grid-column:3;align-self:start;justify-self:end}.swal2-container.swal2-center-left>.swal2-popup,.swal2-container.swal2-center-start>.swal2-popup{grid-row:2;align-self:center}.swal2-container.swal2-center>.swal2-popup{grid-column:2;grid-row:2;align-self:center;justify-self:center}.swal2-container.swal2-center-end>.swal2-popup,.swal2-container.swal2-center-right>.swal2-popup{grid-column:3;grid-row:2;align-self:center;justify-self:end}.swal2-container.swal2-bottom-left>.swal2-popup,.swal2-container.swal2-bottom-start>.swal2-popup{grid-column:1;grid-row:3;align-self:end}.swal2-container.swal2-bottom>.swal2-popup{grid-column:2;grid-row:3;justify-self:center;align-self:end}.swal2-container.swal2-bottom-end>.swal2-popup,.swal2-container.swal2-bottom-right>.swal2-popup{grid-column:3;grid-row:3;align-self:end;justify-self:end}.swal2-container.swal2-grow-fullscreen>.swal2-popup,.swal2-container.swal2-grow-row>.swal2-popup{grid-column:1/4;width:100%}.swal2-container.swal2-grow-column>.swal2-popup,.swal2-container.swal2-grow-fullscreen>.swal2-popup{grid-row:1/4;align-self:stretch}.swal2-container.swal2-no-transition{transition:none!important}.swal2-popup{display:none;position:relative;box-sizing:border-box;grid-template-columns:minmax(0,100%);width:32em;max-width:100%;padding:0 0 1.25em;border:none;border-radius:5px;background:#fff;color:#545454;font-family:inherit;font-size:1rem}.swal2-popup:focus{outline:0}.swal2-popup.swal2-loading{overflow-y:hidden}.swal2-title{position:relative;max-width:100%;margin:0;padding:.8em 1em 0;color:#595959;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;word-wrap:break-word}.swal2-actions{display:flex;z-index:1;box-sizing:border-box;flex-wrap:wrap;align-items:center;justify-content:center;width:auto;margin:1.25em auto 0;padding:0}.swal2-actions:not(.swal2-loading) .swal2-styled[disabled]{opacity:.4}.swal2-actions:not(.swal2-loading) .swal2-styled:hover{background-image:linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.1))}.swal2-actions:not(.swal2-loading) .swal2-styled:active{background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2))}.swal2-loader{display:none;align-items:center;justify-content:center;width:2.2em;height:2.2em;margin:0 1.875em;-webkit-animation:swal2-rotate-loading 1.5s linear 0s infinite normal;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;border-width:.25em;border-style:solid;border-radius:100%;border-color:#2778c4 transparent #2778c4 transparent}.swal2-styled{margin:.3125em;padding:.625em 1.1em;transition:box-shadow .1s;box-shadow:0 0 0 3px transparent;font-weight:500}.swal2-styled:not([disabled]){cursor:pointer}.swal2-styled.swal2-confirm{border:0;border-radius:.25em;background:initial;background-color:#7066e0;color:#fff;font-size:1em}.swal2-styled.swal2-confirm:focus{box-shadow:0 0 0 3px rgba(112,102,224,.5)}.swal2-styled.swal2-deny{border:0;border-radius:.25em;background:initial;background-color:#dc3741;color:#fff;font-size:1em}.swal2-styled.swal2-deny:focus{box-shadow:0 0 0 3px rgba(220,55,65,.5)}.swal2-styled.swal2-cancel{border:0;border-radius:.25em;background:initial;background-color:#6e7881;color:#fff;font-size:1em}.swal2-styled.swal2-cancel:focus{box-shadow:0 0 0 3px rgba(110,120,129,.5)}.swal2-styled.swal2-default-outline:focus{box-shadow:0 0 0 3px rgba(100,150,200,.5)}.swal2-styled:focus{outline:0}.swal2-styled::-moz-focus-inner{border:0}.swal2-footer{justify-content:center;margin:1em 0 0;padding:1em 1em 0;border-top:1px solid #eee;color:#545454;font-size:1em}.swal2-timer-progress-bar-container{position:absolute;right:0;bottom:0;left:0;grid-column:auto!important;height:.25em;overflow:hidden;border-bottom-right-radius:5px;border-bottom-left-radius:5px}.swal2-timer-progress-bar{width:100%;height:.25em;background:rgba(0,0,0,.2)}.swal2-image{max-width:100%;margin:2em auto 1em}.swal2-close{z-index:2;align-items:center;justify-content:center;width:1.2em;height:1.2em;margin-top:0;margin-right:0;margin-bottom:-1.2em;padding:0;overflow:hidden;transition:color .1s,box-shadow .1s;border:none;border-radius:5px;background:0 0;color:#ccc;font-family:serif;font-family:monospace;font-size:2.5em;cursor:pointer;justify-self:end}.swal2-close:hover{transform:none;background:0 0;color:#f27474}.swal2-close:focus{outline:0;box-shadow:inset 0 0 0 3px rgba(100,150,200,.5)}.swal2-close::-moz-focus-inner{border:0}.swal2-html-container{z-index:1;justify-content:center;margin:1em 1.6em .3em;padding:0;overflow:auto;color:#545454;font-size:1.125em;font-weight:400;line-height:normal;text-align:center;word-wrap:break-word;word-break:break-word}.swal2-checkbox,.swal2-file,.swal2-input,.swal2-radio,.swal2-select,.swal2-textarea{margin:1em 2em 0}.swal2-file,.swal2-input,.swal2-textarea{box-sizing:border-box;width:auto;transition:border-color .1s,box-shadow .1s;border:1px solid #d9d9d9;border-radius:.1875em;background:inherit;box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px transparent;color:inherit;font-size:1.125em}.swal2-file.swal2-inputerror,.swal2-input.swal2-inputerror,.swal2-textarea.swal2-inputerror{border-color:#f27474!important;box-shadow:0 0 2px #f27474!important}.swal2-file:focus,.swal2-input:focus,.swal2-textarea:focus{border:1px solid #b4dbed;outline:0;box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px rgba(100,150,200,.5)}.swal2-file::-moz-placeholder,.swal2-input::-moz-placeholder,.swal2-textarea::-moz-placeholder{color:#ccc}.swal2-file:-ms-input-placeholder,.swal2-input:-ms-input-placeholder,.swal2-textarea:-ms-input-placeholder{color:#ccc}.swal2-file::placeholder,.swal2-input::placeholder,.swal2-textarea::placeholder{color:#ccc}.swal2-range{margin:1em 2em 0;background:#fff}.swal2-range input{width:80%}.swal2-range output{width:20%;color:inherit;font-weight:600;text-align:center}.swal2-range input,.swal2-range output{height:2.625em;padding:0;font-size:1.125em;line-height:2.625em}.swal2-input{height:2.625em;padding:0 .75em}.swal2-file{width:75%;margin-right:auto;margin-left:auto;background:inherit;font-size:1.125em}.swal2-textarea{height:6.75em;padding:.75em}.swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;background:inherit;color:inherit;font-size:1.125em}.swal2-checkbox,.swal2-radio{align-items:center;justify-content:center;background:#fff;color:inherit}.swal2-checkbox label,.swal2-radio label{margin:0 .6em;font-size:1.125em}.swal2-checkbox input,.swal2-radio input{flex-shrink:0;margin:0 .4em}.swal2-input-label{display:flex;justify-content:center;margin:1em auto 0}.swal2-validation-message{align-items:center;justify-content:center;margin:1em 0 0;padding:.625em;overflow:hidden;background:#f0f0f0;color:#666;font-size:1em;font-weight:300}.swal2-validation-message::before{content:"!";display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center}.swal2-icon{position:relative;box-sizing:content-box;justify-content:center;width:5em;height:5em;margin:2.5em auto .6em;border:.25em solid transparent;border-radius:50%;border-color:#000;font-family:inherit;line-height:5em;cursor:default;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:3.75em}.swal2-icon.swal2-error{border-color:#f27474;color:#f27474}.swal2-icon.swal2-error .swal2-x-mark{position:relative;flex-grow:1}.swal2-icon.swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;transform:rotate(45deg)}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;transform:rotate(-45deg)}.swal2-icon.swal2-error.swal2-icon-show{-webkit-animation:swal2-animate-error-icon .5s;animation:swal2-animate-error-icon .5s}.swal2-icon.swal2-error.swal2-icon-show .swal2-x-mark{-webkit-animation:swal2-animate-error-x-mark .5s;animation:swal2-animate-error-x-mark .5s}.swal2-icon.swal2-warning{border-color:#facea8;color:#f8bb86}.swal2-icon.swal2-warning.swal2-icon-show{-webkit-animation:swal2-animate-error-icon .5s;animation:swal2-animate-error-icon .5s}.swal2-icon.swal2-warning.swal2-icon-show .swal2-icon-content{-webkit-animation:swal2-animate-i-mark .5s;animation:swal2-animate-i-mark .5s}.swal2-icon.swal2-info{border-color:#9de0f6;color:#3fc3ee}.swal2-icon.swal2-info.swal2-icon-show{-webkit-animation:swal2-animate-error-icon .5s;animation:swal2-animate-error-icon .5s}.swal2-icon.swal2-info.swal2-icon-show .swal2-icon-content{-webkit-animation:swal2-animate-i-mark .8s;animation:swal2-animate-i-mark .8s}.swal2-icon.swal2-question{border-color:#c9dae1;color:#87adbd}.swal2-icon.swal2-question.swal2-icon-show{-webkit-animation:swal2-animate-error-icon .5s;animation:swal2-animate-error-icon .5s}.swal2-icon.swal2-question.swal2-icon-show .swal2-icon-content{-webkit-animation:swal2-animate-question-mark .8s;animation:swal2-animate-question-mark .8s}.swal2-icon.swal2-success{border-color:#a5dc86;color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;transform:rotate(45deg);border-radius:50%}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=left]{top:-.4375em;left:-2.0635em;transform:rotate(-45deg);transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=right]{top:-.6875em;left:1.875em;transform:rotate(-45deg);transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}.swal2-icon.swal2-success .swal2-success-ring{position:absolute;z-index:2;top:-.25em;left:-.25em;box-sizing:content-box;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%}.swal2-icon.swal2-success .swal2-success-fix{position:absolute;z-index:1;top:.5em;left:1.625em;width:.4375em;height:5.625em;transform:rotate(-45deg)}.swal2-icon.swal2-success [class^=swal2-success-line]{display:block;position:absolute;z-index:2;height:.3125em;border-radius:.125em;background-color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.8125em;width:1.5625em;transform:rotate(45deg)}.swal2-icon.swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;transform:rotate(-45deg)}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-line-tip{-webkit-animation:swal2-animate-success-line-tip .75s;animation:swal2-animate-success-line-tip .75s}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-line-long{-webkit-animation:swal2-animate-success-line-long .75s;animation:swal2-animate-success-line-long .75s}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-circular-line-right{-webkit-animation:swal2-rotate-success-circular-line 4.25s ease-in;animation:swal2-rotate-success-circular-line 4.25s ease-in}.swal2-progress-steps{flex-wrap:wrap;align-items:center;max-width:100%;margin:1.25em auto;padding:0;background:inherit;font-weight:600}.swal2-progress-steps li{display:inline-block;position:relative}.swal2-progress-steps .swal2-progress-step{z-index:20;flex-shrink:0;width:2em;height:2em;border-radius:2em;background:#2778c4;color:#fff;line-height:2em;text-align:center}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step{background:#2778c4}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step{background:#add8e6;color:#fff}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{background:#add8e6}.swal2-progress-steps .swal2-progress-step-line{z-index:10;flex-shrink:0;width:2.5em;height:.4em;margin:0 -1px;background:#2778c4}[class^=swal2]{-webkit-tap-highlight-color:transparent}.swal2-show{-webkit-animation:swal2-show .3s;animation:swal2-show .3s}.swal2-hide{-webkit-animation:swal2-hide .15s forwards;animation:swal2-hide .15s forwards}.swal2-noanimation{transition:none}.swal2-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.swal2-rtl .swal2-close{margin-right:initial;margin-left:0}.swal2-rtl .swal2-timer-progress-bar{right:0;left:auto}@-webkit-keyframes swal2-toast-show{0%{transform:translateY(-.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0)}}@keyframes swal2-toast-show{0%{transform:translateY(-.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0)}}@-webkit-keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@-webkit-keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@-webkit-keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}@keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}@-webkit-keyframes swal2-show{0%{transform:scale(.7)}45%{transform:scale(1.05)}80%{transform:scale(.95)}100%{transform:scale(1)}}@keyframes swal2-show{0%{transform:scale(.7)}45%{transform:scale(1.05)}80%{transform:scale(.95)}100%{transform:scale(1)}}@-webkit-keyframes swal2-hide{0%{transform:scale(1);opacity:1}100%{transform:scale(.5);opacity:0}}@keyframes swal2-hide{0%{transform:scale(1);opacity:1}100%{transform:scale(.5);opacity:0}}@-webkit-keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@-webkit-keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@-webkit-keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@-webkit-keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(.4);opacity:0}50%{margin-top:1.625em;transform:scale(.4);opacity:0}80%{margin-top:-.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(.4);opacity:0}50%{margin-top:1.625em;transform:scale(.4);opacity:0}80%{margin-top:-.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@-webkit-keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0);opacity:1}}@keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0);opacity:1}}@-webkit-keyframes swal2-rotate-loading{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@keyframes swal2-rotate-loading{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@-webkit-keyframes swal2-animate-question-mark{0%{transform:rotateY(-360deg)}100%{transform:rotateY(0)}}@keyframes swal2-animate-question-mark{0%{transform:rotateY(-360deg)}100%{transform:rotateY(0)}}@-webkit-keyframes swal2-animate-i-mark{0%{transform:rotateZ(45deg);opacity:0}25%{transform:rotateZ(-25deg);opacity:.4}50%{transform:rotateZ(15deg);opacity:.8}75%{transform:rotateZ(-5deg);opacity:1}100%{transform:rotateX(0);opacity:1}}@keyframes swal2-animate-i-mark{0%{transform:rotateZ(45deg);opacity:0}25%{transform:rotateZ(-25deg);opacity:.4}50%{transform:rotateZ(15deg);opacity:.8}75%{transform:rotateZ(-5deg);opacity:1}100%{transform:rotateX(0);opacity:1}}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow:hidden}body.swal2-height-auto{height:auto!important}body.swal2-no-backdrop .swal2-container{background-color:transparent!important;pointer-events:none}body.swal2-no-backdrop .swal2-container .swal2-popup{pointer-events:all}body.swal2-no-backdrop .swal2-container .swal2-modal{box-shadow:0 0 10px rgba(0,0,0,.4)}@media print{body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow-y:scroll!important}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) .swal2-container{position:static!important}}body.swal2-toast-shown .swal2-container{box-sizing:border-box;width:360px;max-width:100%;background-color:transparent;pointer-events:none}body.swal2-toast-shown .swal2-container.swal2-top{top:0;right:auto;bottom:auto;left:50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{top:0;right:0;bottom:auto;left:auto}body.swal2-toast-shown .swal2-container.swal2-top-left,body.swal2-toast-shown .swal2-container.swal2-top-start{top:0;right:auto;bottom:auto;left:0}body.swal2-toast-shown .swal2-container.swal2-center-left,body.swal2-toast-shown .swal2-container.swal2-center-start{top:50%;right:auto;bottom:auto;left:0;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{top:50%;right:auto;bottom:auto;left:50%;transform:translate(-50%,-50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{top:50%;right:0;bottom:auto;left:auto;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-left,body.swal2-toast-shown .swal2-container.swal2-bottom-start{top:auto;right:auto;bottom:0;left:0}body.swal2-toast-shown .swal2-container.swal2-bottom{top:auto;right:auto;bottom:0;left:50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{top:auto;right:0;bottom:0;left:auto}
-  </style>
-
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .col-50, .feat-box, .why-box, .stat-box { width: 100%; margin-bottom: 40px; text-align: center; }
+            .login-card { margin-top: 30px; }
+            .hero-line { margin: 15px auto; }
+            .footer .row { flex-direction: column; }
+        }
+    </style>
 </head>
-<body class="landing-page page-2">
+<body>
 
-
-
-<div class="ladi-wraper">
-  <div id="SECTION1134" class='ladi-section'>
-    <div class='ladi-section-background'></div>
-    <div class="ladi-container">
-      <div data-action="true" id="BUTTON1197" class='ladi-element'>
-        <div class='ladi-button'>
-          <div class="ladi-button-background"></div>
-          <div  id="BUTTON_TEXT1197" class='ladi-element'>
-            <p class='ladi-headline'>
-              <a href="javascript:changeTab('login_widget', true)" class="ladipage-animated-headline clip">
-                <span class="ladipage-animated-words-wrapper" data-word="[&quot;Đăng nhập&quot;]">Đăng nhập / Đăng Ký</span>
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div  id="IMAGE1143" class='ladi-element'>
-        <div class='ladi-image'>
-          <div class="ladi-image-background"></div>
-        </div>
-      </div>
-
-      <div id="GROUP1748" class="ladi-element">
-        <div id="HEADLINE1136" class='ladi-element'>
-          <h1 class='ladi-headline'>HOANGKUNSTORE</h1>
-        </div>
-        <div id="LINE1138" class='ladi-element'>
-          <div class='ladi-line'>
-            <div class="ladi-line-container"></div>
-          </div>
-        </div>
-      </div>
-
-      <div  id="HEADLINE1137" class='ladi-element'>
-        <h2 class='ladi-headline'>Nền Tảng Được Tin Cậy Và Phổ Biến Nhất Cho Các Dịch Vụ Truyền Thông Xã Hội<br></h2>
-      </div>
-
-      <div  id="HEADLINE1681" class='ladi-element'>
-        <h3 class='ladi-headline'>Công cụ Tiếp thị Truyền thông Xã hội Tất cả Trong Một mà bạn sẽ cần!<br></h3>
-      </div>
-    </div>
-  </div>
-
-  <div style="margin-top: 20px">
-    <link rel="stylesheet"
-      href="/assets/plugins/font-awesome-v4/css/font-awesome.min.css" />
-<link rel="stylesheet" href="/assets/css/login_box.css?v=1786682942090"/>
-<link rel="stylesheet" href="/assets/css/swal_modern.css?t=1786682942090"/>
-
-<div class="box-cover">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 col-12 block-left text-center">
-        <img src="/assets/landing_pages/page4/images/hero-18-img.png" alt=""/>
-      </div>
-      <div class="col-lg-6 col-12 block-right">
-        <div class="card shadow-lg">
-          <div class="card-body">
-            <div class="auth-widget" id="login_widget">
-              <div class="d-flex align-items-center justify-content-between m-b-30">
-                <img class="img-fluid" alt="" src="https://s3.ap-northeast-1.amazonaws.com/h.files/images/1722663532648_c3XJPQizyP.png">
-                <h2 class="m-b-0">Đăng nhập</h2>
-              </div>
-              <form action="/login/">
-
-                <div class="form-group">
-                  <label class="font-weight-semibold">Tên đăng nhập:</label>
-                  <div class="input-affix">
-                    <i class="prefix-icon fa fa-user-o"></i>
-                    <input type="text" class="form-control text-lower" name="username" placeholder="Tên đăng nhập"
-                           required >
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="font-weight-semibold">Mật khẩu:</label>
-                  <a class="float-right font-size-14 text-muted" href="/forgot_pass">Quên mật
-                    khẩu?</a>
-                  <div class="input-affix m-b-10">
-                    <i class="prefix-icon fa fa-key"></i>
-                    <input type="password" class="form-control" name="password" placeholder="Mật khẩu"
-                           required >
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <div class="d-flex align-items-center justify-content-between">
-                                    <span class="font-size-14 text-muted">
-                                        <span class="hidden-mb">Chưa có tài khoản?</span>
-                                        <a href="javascript:changeTab('register_widget')"> Đăng ký</a>
-                                    </span>
-
-                    <button class="btn btn-primary" type="submit" >Đăng nhập</button>
-                  </div>
-
-                 
-                    <div class="d-flex align-items-center justify-content-between try-feature">
-                                    <span class="font-size-14 text-muted">
-                                        Bạn muốn xem thử chức năng?
-                                        <a href="#" class="btn-try">Xem thử</a>
-                                    </span>
-                    </div>
-                 
-                </div>
-              </form>
+    <!-- 1. HERO SECTION -->
+    <section class="hero">
+        <div class="container row">
+            <div class="col-50">
+                <div class="hero-logo">HOANGKUNSTORE</div>
+                <div class="hero-line"></div>
+                <h1 class="section-title">Nền Tảng Được Tin Cậy Và Phổ Biến Nhất Cho Các Dịch Vụ Truyền Thông Xã Hội</h1>
+                <p class="section-subtitle">Công cụ Tiếp thị Truyền thông Xã hội Tất cả Trong Một mà bạn sẽ cần!</p>
+                <a href="#login-area" class="btn-main">Đăng nhập / Đăng Ký</a>
             </div>
-
-            <div class="auth-widget" id="register_widget" style="display: none">
-              <div class="d-flex align-items-center justify-content-between m-b-30">
-                <img class="img-fluid" alt="" src="https://s3.ap-northeast-1.amazonaws.com/h.files/images/1722663532648_c3XJPQizyP.png">
-                <h2 class="m-b-0">Đăng ký</h2>
-              </div>
-              <form action="/register/">
-
-                <div class="form-group">
-                  <label class="font-weight-semibold">Tên đăng nhập:</label>
-                  <div class="input-affix">
-                    <i class="prefix-icon fa fa-user-o"></i>
-                    <input type="text" class="form-control text-lower" name="username" placeholder="Tên đăng nhập"
-                           required  id="user_register">
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="font-weight-semibold">Email:</label>
-                  <div class="input-affix">
-                    <i class="prefix-icon fa fa-envelope-o"></i>
-                    <input type="text" class="form-control text-lower" name="email"
-                           placeholder="Email dùng để khôi phục mật khẩu"
-                           required >
-                  </div>
-
-                 
-                    <button id="generate_email" class="btn btn-primary btn-sm" type="button" style="margin-top: 5px">Tôi chưa có email</button>
-                 
-                </div>
-
-                <div class="form-group">
-                  <label class="font-weight-semibold">Họ và Tên của bạn:</label>
-                  <div class="input-affix">
-                    <i class="prefix-icon fa fa-phone"></i>
-                    <input type="text" class="form-control" name="full_name" placeholder="Họ và Tên của bạn"
-                            required>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="font-weight-semibold">SDT/Zalo:</label>
-                  <div class="input-affix">
-                    <i class="prefix-icon fa fa-phone"></i>
-                    <input type="text" class="form-control" name="phone" placeholder="SDT/Zalo"
-                           >
-                  </div>
-                </div>
-
-                <div class="form-group" style="position: relative">
-                  <label class="font-weight-semibold">Mật khẩu:</label>
-                  <div class="input-affix m-b-10">
-                    <i class="prefix-icon fa fa-key"></i>
-                    <input type="password" class="form-control" name="password" id="password_register" placeholder="Mật khẩu"
-                           required >
-                  </div>
-                  <div class="form-group check-password">
-                    <div>Yêu cầu về mật khẩu</div>
-                    <div id="length_password" class="invalid check-password-item">
-                      Dài tối thiểu 8 ký tự.
-                    </div>
-
-                    <div id="character_password" class="invalid check-password-item">
-                      Bao gồm chữ, số và ký tự đặc biệt.
-                    </div>
-                    <div id="likeUser_password" class="invalid check-password-item">
-                      Không chứa tên đăng nhập.
-                    </div>
-
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="font-weight-semibold">Xác nhận Mật khẩu:</label>
-                  <div class="input-affix m-b-10">
-                    <i class="prefix-icon fa fa-key"></i>
-                    <input type="password" class="form-control" name="re_password" placeholder="Mật khẩu"
-                           required
-                           id="re_password_register">
-                  </div>
-                </div>
-                <div class="form-group re-check-password">
-                  Xác nhận Mật khẩu chưa khớp!
-                </div>
-
-               
-                  <div class="form-group">
-                    <label class="font-weight-semibold">Mã giới thiệu:</label>
-                    <div class="input-affix m-b-10">
-                      <i class="prefix-icon fa fa-crosshairs"></i>
-                      <input class="form-control" name="referral_code"
-                             placeholder="Mã giới thiệu (nếu có)" >
-                    </div>
-                  </div>
-               
-
-               
-
-                <div class="form-group">
-                  <div class="d-flex align-items-center justify-content-between p-t-15">
-                                    <span class="font-size-14 text-muted">
-                                        Đã có tài khoản?
-                                        <a href="javascript:changeTab('login_widget')"> Đăng nhập</a>
-                                    </span>
-
-                    <button class="btn btn-primary" type="submit" >Đăng ký</button>
-                  </div>
-                </div>
-              </form>
-            </div>
-           
-   
-    <link rel="stylesheet" type="text/css" href="/assets/css/lang_picker.css?t=1786682942090">
-
-    <div class="lang-picker-row">
-       
-        <div class="lang-picker notranslate" translate="no">
-            <button type="button" class="lp-btn" title="Ngôn ngữ" aria-haspopup="listbox" aria-expanded="false">
-                <span class="lp-flag">🇻🇳</span>
-                <span class="lp-name">Tiếng Việt</span>
-                <svg class="lp-caret" viewBox="0 0 12 12" aria-hidden="true">
-                    <path d="M2.5 4.5 6 8 9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6"
-                          stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-
-            <div class="lp-menu notranslate" translate="no" role="listbox">
-                <div class="lp-search">
-                    <svg viewBox="0 0 16 16" aria-hidden="true">
-                        <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
-                        <path d="M10.5 10.5 14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    </svg>
-                    <input type="text" placeholder="Tìm ngôn ngữ..." autocomplete="off" spellcheck="false">
-                </div>
-                <div class="lp-list">
-                    <div class="lp-empty">Không tìm thấy ngôn ngữ</div>
-                    <button type="button" class="lp-opt" data-lang="vi" data-kw="tieng viet vietnam vietnamese viet nam"><span class="flag">🇻🇳</span> Tiếng Việt</button>
-                    <button type="button" class="lp-opt" data-lang="en" data-kw="english anh tieng anh uk us my singapore uc canada"><span class="flag">🇬🇧</span> English</button>
-                    <button type="button" class="lp-opt" data-lang="lo" data-kw="lao laos"><span class="flag">🇱🇦</span> ລາວ</button>
-                    <button type="button" class="lp-opt" data-lang="ms" data-kw="malaysia melayu malay bahasa"><span class="flag">🇲🇾</span> Bahasa Melayu</button>
-                    <button type="button" class="lp-opt" data-lang="ja" data-kw="japan japanese nhat ban tieng nhat"><span class="flag">🇯🇵</span> 日本語</button>
-                    <button type="button" class="lp-opt" data-lang="th" data-kw="thai thailand thai lan"><span class="flag">🇹🇭</span> ไทย</button>
-                    <button type="button" class="lp-opt" data-lang="ko" data-kw="korea korean han quoc tieng han"><span class="flag">🇰🇷</span> 한국어</button>
-                    <button type="button" class="lp-opt" data-lang="zh-CN" data-kw="china chinese trung quoc gian the mandarin"><span class="flag">🇨🇳</span> 中文 (简体)</button>
-                    <button type="button" class="lp-opt" data-lang="zh-TW" data-kw="taiwan hongkong hong kong dai loan phon the"><span class="flag">🇹🇼</span> 中文 (繁體)</button>
-                    <button type="button" class="lp-opt" data-lang="ru" data-kw="russia russian nga"><span class="flag">🇷🇺</span> Русский</button>
-                    <button type="button" class="lp-opt" data-lang="hi" data-kw="india hindi an do"><span class="flag">🇮🇳</span> हिन्दी</button>
-                    <button type="button" class="lp-opt" data-lang="ar" data-kw="arabic a rap xe ut saudi oman uae qatar arab"><span class="flag">🇸🇦</span> العربية</button>
-                    <button type="button" class="lp-opt" data-lang="tl" data-kw="philippines filipino philippin tagalog"><span class="flag">🇵🇭</span> Filipino</button>
-                    <button type="button" class="lp-opt" data-lang="de" data-kw="germany german duc deutsch"><span class="flag">🇩🇪</span> Deutsch</button>
-                    <button type="button" class="lp-opt" data-lang="my" data-kw="myanmar burma burmese"><span class="flag">🇲🇲</span> မြန်မာ</button>
-                    <button type="button" class="lp-opt" data-lang="ur" data-kw="pakistan urdu"><span class="flag">🇵🇰</span> اردو</button>
-                    <button type="button" class="lp-opt" data-lang="si" data-kw="srilanka sri lanka sinhala"><span class="flag">🇱🇰</span> සිංහල</button>
-                    <button type="button" class="lp-opt" data-lang="id" data-kw="indonesia bahasa indo"><span class="flag">🇮🇩</span> Bahasa Indonesia</button>
-                    <button type="button" class="lp-opt" data-lang="nl" data-kw="netherlands dutch ha lan holland"><span class="flag">🇳🇱</span> Nederlands</button>
-                    <button type="button" class="lp-opt" data-lang="sr" data-kw="serbia serbian"><span class="flag">🇷🇸</span> Српски</button>
-                    <button type="button" class="lp-opt" data-lang="hy" data-kw="armenia armenian"><span class="flag">🇦🇲</span> Հայերեն</button>
+            <div class="col-50">
+                <div class="mock-img mock-globe floating">
+                    <i class="fa-solid fa-earth-americas"></i>
                 </div>
             </div>
-
-           
-            <div id="button_translate" aria-hidden="true"></div>
         </div>
-    </div>
+    </section>
 
-    <script src="/assets/js/lang_picker.js?t=1786682942090"></script>
+    <!-- 2. LOGIN SECTION -->
+    <section class="login-section" id="login-area">
+        <div class="container row">
+            <div class="col-50">
+                <div class="mock-img mock-mega floating" style="animation-delay: 1s;">
+                    <i class="fa-solid fa-bullhorn"></i>
+                </div>
+            </div>
+            <div class="col-50">
+                <div class="login-card" id="login-box">
+                    <div class="login-header">
+                        <div class="brand-hk">H<span>K</span></div>
+                        <h3 style="font-size: 1.5rem; color:#333;">Đăng nhập</h3>
+                    </div>
+                    <form id="loginForm">
+                        <div class="input-group">
+                            <label>Tên đăng nhập:</label>
+                            <div class="input-wrapper">
+                                <i class="fa-regular fa-user"></i>
+                                <input type="text" placeholder="Nhập tài khoản" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Mật khẩu:</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-key"></i>
+                                <input type="password" placeholder="Nhập mật khẩu" required>
+                            </div>
+                        </div>
+                        <div class="login-options">
+                            <a href="#" onclick="toggleForm()">Chưa có tài khoản? Đăng ký</a>
+                            <a href="#" style="color:#888;">Quên mật khẩu?</a>
+                        </div>
+                        <button type="submit" class="btn-login">Đăng nhập ngay</button>
+                    </form>
+                </div>
 
+                <!-- Form Đăng Ký Ẩn -->
+                <div class="login-card" id="register-box" style="display: none;">
+                    <div class="login-header">
+                        <div class="brand-hk">H<span>K</span></div>
+                        <h3 style="font-size: 1.5rem; color:#333;">Đăng ký</h3>
+                    </div>
+                    <form id="registerForm">
+                        <div class="input-group">
+                            <label>Tên đăng nhập:</label>
+                            <div class="input-wrapper">
+                                <i class="fa-regular fa-user"></i>
+                                <input type="text" placeholder="Tạo tài khoản" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Mật khẩu:</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-key"></i>
+                                <input type="password" placeholder="Tạo mật khẩu" required>
+                            </div>
+                        </div>
+                        <div class="login-options">
+                            <a href="#" onclick="toggleForm()">Đã có tài khoản? Đăng nhập</a>
+                        </div>
+                        <button type="submit" class="btn-login">Tạo tài khoản</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. BẢNG GIÁ DỊCH VỤ -->
+    <section class="pricing-section">
+        <div class="container">
+            <h2 class="section-title" style="text-align: center;">Bảng giá dịch vụ</h2>
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="font-weight: bold; font-size: 1.1rem; color: #2b4162;">Chọn dịch vụ: </label>
+                <select id="serviceFilter" style="padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit; font-size: 1rem; min-width: 200px;">
+                    <option value="">Tất cả dịch vụ</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Tiktok">Tiktok</option>
+                    <option value="Youtube">Youtube</option>
+                    <option value="Twitter">Twitter</option>
+                    <option value="Shopee">Shopee</option>
+                    <option value="Lazada">Lazada</option>
+                    <option value="Threads">Threads</option>
+                </select>
+            </div>
+            
+            <table id="priceTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Tên dịch vụ</th>
+                        <th>Giá dịch vụ (Cộng tác viên)</th>
+                    </tr>
+                </thead>
+                <!-- Dữ liệu gốc 100% của bạn -->
+                <tbody>
+                    <tr><td style="font-weight: 500">Tăng member Group</td><td style="color: #2c7baf;font-weight: bold">19.7 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Yêu thích Tiktok</td><td style="color: #2c7baf;font-weight: bold">7.1 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Lọc bạn bè k tương tác</td><td style="color: #2c7baf;font-weight: bold">16,350 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Sub Trang cá nhân + Fanpage</td><td style="color: #2c7baf;font-weight: bold">22 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Follow Instagram</td><td style="color: #2c7baf;font-weight: bold">36 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Follow Shopee</td><td style="color: #2c7baf;font-weight: bold">90 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Follow TikTok</td><td style="color: #2c7baf;font-weight: bold">38.4 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Follow Twitter</td><td style="color: #2c7baf;font-weight: bold">539.6 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Google Map</td><td style="color: #2c7baf;font-weight: bold">1,046,400 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Like Instagram</td><td style="color: #2c7baf;font-weight: bold">4.1 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Tim Livestream TikTok</td><td style="color: #2c7baf;font-weight: bold">8.3 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Like Fanpage Facebook</td><td style="color: #2c7baf;font-weight: bold">46.8 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Like Threads</td><td style="color: #2c7baf;font-weight: bold">408.8 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Like TikTok</td><td style="color: #2c7baf;font-weight: bold">13.8 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Like Twitter</td><td style="color: #2c7baf;font-weight: bold">73.7 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Like Youtube</td><td style="color: #2c7baf;font-weight: bold">45.2 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Like Youtube Short</td><td style="color: #2c7baf;font-weight: bold">41 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Mắt Livestream Instagram</td><td style="color: #2c7baf;font-weight: bold">245.3 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Mắt Livestream Shopee</td><td style="color: #2c7baf;font-weight: bold">775.1 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Mắt LiveStream TikTok</td><td style="color: #2c7baf;font-weight: bold">13.4 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Livestream Twitter</td><td style="color: #2c7baf;font-weight: bold">858.5 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Livestream Youtube</td><td style="color: #2c7baf;font-weight: bold">98.1 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Điểm chiến đấu (PK) Tiktok</td><td style="color: #2c7baf;font-weight: bold">22.5 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Tăng Like bài viết chậm</td><td style="color: #2c7baf;font-weight: bold">130.8 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Retweet Twitter</td><td style="color: #2c7baf;font-weight: bold">441.5 ₫</td></tr>
+                    <tr><td style="font-weight: 500">RIP Google Map</td><td style="color: #2c7baf;font-weight: bold">1,471,500 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Chia Sẻ Bài Viết Facebook</td><td style="color: #2c7baf;font-weight: bold">32.7 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Share TikTok</td><td style="color: #2c7baf;font-weight: bold">4.2 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Sub Lazada</td><td style="color: #2c7baf;font-weight: bold">196.2 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Subscribe Youtube</td><td style="color: #2c7baf;font-weight: bold">637.7 ₫</td></tr>
+                    <tr><td style="font-weight: 500">View 60k Live Facebook</td><td style="color: #2c7baf;font-weight: bold">188,025 ₫</td></tr>
+                    <tr><td style="font-weight: 500">View Instagram</td><td style="color: #2c7baf;font-weight: bold">3 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Tăng View Video</td><td style="color: #2c7baf;font-weight: bold">4.7 ₫</td></tr>
+                    <tr><td style="font-weight: 500">View Youtube 4000H</td><td style="color: #2c7baf;font-weight: bold">1,422.4 ₫</td></tr>
+                    <tr><td style="font-weight: 500">Vip Love TikTok</td><td style="color: #2c7baf;font-weight: bold">686.7 ₫</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 4. FEATURES SECTION -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">Trải nghiệm dịch vụ hoàn hảo!</h2>
+            <div class="hero-line"></div>
+            
+            <div class="feat-grid">
+                <div class="feat-box">
+                    <i class="fa-solid fa-rocket feat-icon icon-rocket"></i>
+                    <h3 class="feat-title">Nhanh</h3>
+                    <p class="feat-desc">Chúng tôi sử dụng những công cụ tốt nhất để mang đến cho bạn trải nghiệm tuyệt vời nhất.</p>
+                </div>
+                <div class="feat-box">
+                    <i class="fa-solid fa-sack-dollar feat-icon icon-money"></i>
+                    <h3 class="feat-title">Giá Tốt</h3>
+                    <p class="feat-desc">Chúng tôi tự hào đưa ra mức giá thấp nhất, mang lại cho bạn sự tiết kiệm và giá trị tốt nhất.</p>
+                </div>
+                <div class="feat-box">
+                    <i class="fa-solid fa-headset feat-icon icon-support"></i>
+                    <h3 class="feat-title">Hỗ trợ 24/7</h3>
+                    <p class="feat-desc">Chúng tôi sẵn sàng hỗ trợ bạn mọi lúc, mọi nơi - 24/7, để đảm bảo bạn có trải nghiệm tuyệt vời nhất.</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <a href="#login-area" class="btn-main">ĐĂNG NHẬP NGAY</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. WHY CHOOSE US -->
+    <section class="why-choose">
+        <div class="container">
+            <h2 class="section-title" style="color: #004d40;">Tại sao bạn nên chọn Dịch vụ của chúng tôi</h2>
+            <div class="why-grid">
+                <div class="why-box">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <p>Với nền tảng kinh nghiệm dày dặn trong lĩnh vực Marketing trên Internet, chúng tôi tự tin mang đến dịch vụ chuyên nghiệp và hiệu quả.</p>
+                </div>
+                <div class="why-box">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <p>Luôn lấy KPI là chỉ tiêu cho sự hiệu quả công việc. Chúng tôi hiểu rằng giúp KH đạt hiệu quả cao cũng chính là giúp chúng tôi.</p>
+                </div>
+                <div class="why-box">
+                    <i class="fa-solid fa-users"></i>
+                    <p>Đội ngũ nhân sự trẻ trung và năng động của chúng tôi cam kết mang lại kết quả tuyệt vời cho từng dự án.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. STATS SECTION -->
+    <section class="stats-section">
+        <div class="container">
+            <h4 style="color: #f03e3e; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">THÀNH TỰU</h4>
+            <h2 class="section-title">Thành tựu đã đạt được của chúng tôi!</h2>
+            <p class="section-subtitle">Với kinh nghiệm hơn 3 năm trong lĩnh vực Marketing giúp hơn 3000+ doanh nghiệp hiện diện trên Internet.</p>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-num">3000+</div>
+                    <div class="stat-text">Đối tác doanh nghiệp</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num">200%</div>
+                    <div class="stat-text">Doanh thu tăng từ Marketing</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num">98%</div>
+                    <div class="stat-text">Khách hàng hài lòng</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num">300+</div>
+                    <div class="stat-text">Chiến dịch truyền thông</div>
+                </div>
+            </div>
+            
+            <a href="#login-area" class="btn-main">THAM GIA NGAY</a>
+        </div>
+    </section>
+
+    <!-- 7. ZIGZAG MAP & EASY -->
+    <section class="zigzag bg-light-blue">
+        <div class="container row">
+            <div class="col-50">
+                <h4 style="color: #f03e3e; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">ƯU ĐIỂM DỊCH VỤ</h4>
+                <h3 style="font-size: 2.2rem; font-weight: 800; color: #2b4162; margin-bottom: 20px;">Dễ dàng sử dụng dịch vụ</h3>
+                <div class="hero-line" style="margin: 0 0 20px 0; width: 60px;"></div>
+                <p>Chỉ với vài thao tác cơ bản, bạn sẽ sở hữu ngay một tài khoản cá nhân để trải nghiệm dịch vụ của chúng tôi.</p>
+            </div>
+            <div class="col-50">
+                <div class="mock-img mock-map floating">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. ZIGZAG BANK -->
+    <section class="zigzag">
+        <div class="container row">
+            <div class="col-50" style="order: 1;">
+                <div class="mock-img mock-bank floating" style="animation-delay: 1.5s;">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+            </div>
+            <div class="col-50" style="order: 2; padding-left: 40px;">
+                <h3 style="font-size: 2.2rem; font-weight: 800; color: #2b4162; margin-bottom: 20px;">Nạp tiền tự động hỗ trợ hầu hết các ngân hàng</h3>
+                <div class="hero-line" style="margin: 0 0 20px 0; width: 60px;"></div>
+                <p>Hệ thống sẽ ghi nhận yêu cầu nhận tiền của bạn rất nhanh, và số tiền sẽ được chuyển vào tài khoản của bạn gần như ngay lập tức.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. ZIGZAG ALL TOOLS -->
+    <section class="zigzag bg-light-blue" style="border-bottom-left-radius: 100px; border-bottom-right-radius: 100px;">
+        <div class="container row">
+            <div class="col-50">
+                <h3 style="font-size: 2.2rem; font-weight: 800; color: #2b4162; margin-bottom: 20px;">Dịch vụ đa dạng đầy đủ các công cụ bạn cần</h3>
+                <div class="hero-line" style="margin: 0 0 20px 0; width: 60px;"></div>
+                <p>Chúng tôi hỗ trợ các dịch vụ như Facebook, Instagram, TikTok, Youtube, Shopee... Nhằm đáp ứng mọi yêu cầu của bạn.</p>
+            </div>
+            <div class="col-50">
+                <div class="mock-img mock-globe floating">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. FOOTER -->
+    <footer class="footer">
+        <div class="container row">
+            <div class="col-50 footer-brand">
+                <h4>HOANGKUNSTORE</h4>
+                <p>Với nhiều năm kinh nghiệm trong lĩnh vực Social Media, chúng tôi có đội ngũ kỹ thuật viên giàu kinh nghiệm, thấu hiểu tâm lý khách hàng. Từ đó mang đến cho bạn trải nghiệm tốt nhất khi sử dụng dịch vụ.</p>
+            </div>
+            <div class="col-50 footer-links">
+                <h4>DỊCH VỤ</h4>
+                <ul>
+                    <li><i class="fa-brands fa-facebook"></i> Facebook</li>
+                    <li><i class="fa-brands fa-instagram"></i> Instagram</li>
+                    <li><i class="fa-brands fa-youtube"></i> Youtube</li>
+                    <li><i class="fa-solid fa-cart-shopping"></i> Shopee</li>
+                    <li><i class="fa-brands fa-twitter"></i> Twitter</li>
+                    <li><i class="fa-solid fa-bag-shopping"></i> Lazada</li>
+                    <li><i class="fa-solid fa-at"></i> Threads</li>
+                    <li><i class="fa-brands fa-tiktok"></i> TikTok</li>
+                    <li><i class="fa-brands fa-google"></i> Dịch Vụ Google</li>
+                    <li><i class="fa-solid fa-star"></i> Tiện ích miễn phí</li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            ©2026 All Rights Reserved - HOANGKUN STORE
+        </div>
+    </footer>
+
+    <!-- FAB LIÊN HỆ -->
+    <a href="https://zalo.me/0905093155" target="_blank" class="fab" title="Liên Hệ Hoangkun">
+        <i class="fa-solid fa-headset"></i>
+    </a>
+
+    <!-- SCRIPTS XỬ LÝ -->
     <script>
-        // Bootstrap Google Translate — widget gốc bị ẩn, chỉ lấy .goog-te-combo cho
-        // lang_picker.js điều khiển ngầm. includedLanguages khớp đúng danh sách trên;
-        // autoDisplay tắt để GT không tự bung banner.
-        function googleTranslate() {
-            new google.translate['TranslateElement']({
-                pageLanguage: 'vi',
-                includedLanguages: 'en,lo,ms,ja,th,ko,zh-CN,zh-TW,ru,hi,ar,tl,de,my,ur,si,id,nl,sr,hy',
-                autoDisplay: false
-            }, 'button_translate');
+        // 1. Chuyển đổi Form Đăng Nhập / Đăng Ký
+        function toggleForm() {
+            const loginBox = document.getElementById('login-box');
+            const registerBox = document.getElementById('register-box');
+            if (loginBox.style.display === 'none') {
+                loginBox.style.display = 'block';
+                registerBox.style.display = 'none';
+            } else {
+                loginBox.style.display = 'none';
+                registerBox.style.display = 'block';
+            }
         }
+
+        // 2. Khởi tạo DataTables cho Bảng Giá
+        $(document).ready(function() {
+            var table = $('#priceTable').DataTable({
+                "language": {
+                    "sProcessing":   "Đang xử lý...",
+                    "sLengthMenu":   "Xem _MENU_ mục",
+                    "sZeroRecords":  "Không tìm thấy dịch vụ nào",
+                    "sInfo":         "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ dịch vụ",
+                    "sInfoEmpty":    "Đang xem 0 đến 0 trong tổng số 0 mục",
+                    "sSearch":       "Tìm nhanh:",
+                    "oPaginate": { "sFirst": "Đầu", "sPrevious": "Trước", "sNext": "Tiếp", "sLast": "Cuối" }
+                },
+                "pageLength": 10,
+                "lengthChange": false
+            });
+
+            // Logic Bộ Lọc Dropdown
+            $('#serviceFilter').on('change', function () {
+                var searchVal = $(this).val();
+                table.search(searchVal).draw();
+            });
+        });
+
+        // 3. Fake Hiệu Ứng Submit Form bằng SweetAlert2
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Đăng nhập thành công!',
+                text: 'Chào mừng bạn trở lại hệ thống Hoangkun Store!',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Đăng ký thành công!',
+                text: 'Tài khoản của bạn đã được tạo.',
+                icon: 'success',
+                confirmButtonText: 'Đăng nhập ngay'
+            }).then(() => {
+                toggleForm();
+            });
+        });
     </script>
-
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslate"></script>
-
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-    /*OTP widget*/
-    .otp-auth-widget {
-
-    }
-    .otp-auth-widget .otp-label {
-        font-size: 17px;
-        margin-bottom: 15px;
-    }
-    .otp-auth-widget .input-container {
-        margin-bottom: 15px;
-    }
-    #otp {
-        border: none !important;
-        border-radius: 0 !important;
-        border-bottom: 1px solid #b2b2b2 !important;
-        transition: all .3s;
-        outline: none !important;
-        box-shadow: none !important;
-
-        display: block;
-        padding: .5rem .75rem;
-        font-size: 1rem;
-        line-height: 1.25;
-        color: #495057;
-        background-color: #fff;
-        background-image: none;
-        background-clip: padding-box;
-    }
-    #otp:focus {
-        border-color: #57b846 !important;
-    }
-    .otp-auth-widget .input-container #otp {
-        margin: 0 auto;
-        width: 150px;
-        max-width: 100%;
-        text-align: center;
-        font-size: 20px;
-        font-weight: 600;
-    }
-    .otp-auth-widget .btn-confirm-otp {
-        font-weight: bold;
-        font-size: 16px;
-    }
-</style>
-
-<!--begin::Modal-->
-<div class="modal fade" id="modalOTP" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Xác thực OTP</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <div class="otp-auth-widget">
-                    <div class="otp-label">Nhập mã OTP được gửi tới Telegram</div>
-
-                    <div class="input-container">
-                        <input class="form-control" id="otp" placeholder="XXXXXX" maxlength="6" type="tel">
-                    </div>
-
-                    <button class="btn btn-success btn-confirm-otp">Xác nhận</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-<!--end::Modal-->
-<div class="modal-backdrop modal-backdrop-otp fade"></div>
-
-
-<script src="/assets/landing_pages/page4/js/jquery-3.6.0.min.js"></script>
-<script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
-<script src="/assets/js/swal_modern.js?t=1786682942090"></script>
-<script src="/assets/js/login_box.js?v=1786682942090"></script>
-<script src="/assets/js/check_password_register.js?v=1786682942090"></script>
-<script src="/assets/js/generate_email.js?t=1786682942090"></script>
-<script src="/assets/js/try_web.js?t=1786682942090"></script>
-
-  </div>
-
-  
-  <div class="table-price-container">
-    <div class="price-table-header">
-      Bảng giá dịch vụ
-    </div>
-   
-   
-    <div style="margin-top: 15px;margin-bottom: 15px">
-        <div style="margin-top: 10px;margin-bottom: 10px;" id="label_table_prices">
-            <span style="margin-right: 10px;font-size: 16px">Chọn dịch vụ</span>
-            <select id="service-category-select" aria-label="Chọn dịch vụ">
-                <option value="">Tất cả</option>
-                <option value="facebook">Facebook</option>
-                <option value="instagram">Instagram</option>
-                <option value="threads">Threads</option>
-                <option value="tiktok">Tiktok</option>
-                <option value="telegram">Telegram</option>
-                <option value="youtube">Youtube</option>
-                <option value="shopee">Shopee</option>
-                <option value="twitter">Twitter</option>
-                <option value="lazada">Lazada</option>
-            </select>
-        </div>
-
-        <table class="table table-bordered" id="table_prices">
-            <thead>
-            <tr>
-                <th>Tên dịch vụ</th>
-                <th>Giá dịch vụ (Cộng tác viên)</th>
-            </tr>
-            </thead>
-            <tbody>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Tăng member Group</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        19.7 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Yêu thích Tiktok</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        7.1 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Lọc bạn bè k tương tác</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        16,350 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Sub Trang cá nhân + Fanpage</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        22 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Follow Instagram</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        36 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Follow Shopee</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        90 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Follow TikTok</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        38.4 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Follow Twitter</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        539.6 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Google Map</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        1,046,400 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Like Instagram</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        4.1 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Tim Livestream TikTok</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        8.3 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Like Fanpage</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        46.8 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Like Threads</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        408.8 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Like TikTok</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        13.8 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Like Twitter</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        73.7 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Like Youtube</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        45.2 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Like Youtube Short</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        41 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Mắt Livestream Instagram</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        245.3 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Mắt Livestream Shopee</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        775.1 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Mắt LiveStream TikTok</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        13.4 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Livestream Twitter</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        858.5 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Livestream Youtube</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        98.1 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Điểm chiến đấu (PK) Tiktok</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        22.5 ₫
-                    </td>
-                </tr>
-           
-               
-               
-                <tr>
-                    <td style="font-weight: 500">Tăng Like bài viết chậm</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        130.8 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Retweet Twitter</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        441.5 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">RIP Google Map</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        1,471,500 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Like bài viết speed</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        19.4 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Chia Sẻ Bài Viết</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        32.7 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Share TikTok</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        4.2 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Sub Lazada</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        196.2 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Subscribe Youtube</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        637.7 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">View 60k Live</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        188,025 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">View 60k Offline</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        119,355 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">View Instagram</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        3 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Buff Mắt Livestream</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        3.6 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">View 600k phút</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        408,750 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Tăng View Story</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        32.7 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">View TikTok</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        1.5 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">View Twitter</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        0.573 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Tăng View Video</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        4.7 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">View Youtube</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        29 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">View Youtube 4000H</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        1,422.4 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">VIP Like Theo Tháng</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        1,716.8 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Vip Like Instagram</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        981 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">VIP Mắt Theo Tháng</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        4.2 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Vip Love TikTok</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        686.7 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Vip Share Theo Tháng</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        17,985 ₫
-                    </td>
-                </tr>
-           
-               
-                <tr>
-                    <td style="font-weight: 500">Vip View Twitter</td>
-                    <td style="color: #2c7baf;font-weight: 500">
-                        23.7 ₫
-                    </td>
-                </tr>
-           
-            </tbody>
-        </table>
-
-        <div style="margin-top: 10px;text-align: right;color: #b16100">* Giá dành cho cấp bậc cộng tác viên</div>
-    </div>
-
-
-
-
-  </div>
-  
-
-  <div id="SECTION1682" class='ladi-section'>
-    <div class='ladi-section-background'></div>
-    <div class="ladi-container">
-      <div  id="GROUP1683" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="HEADLINE1678" class='ladi-element'>
-            <h3 class='ladi-headline'>Trải nghiệm dịch vụ hoàn hảo!
-              <br><br>
-            </h3>
-          </div>
-          <div id="LINE1680" class='ladi-element'>
-            <div class='ladi-line'>
-              <div class="ladi-line-container"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div  id="GROUP1688" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="SHAPE1684" class='ladi-element'>
-            <div class='ladi-shape'>
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve" preserveAspectRatio="none" width="100%" height="100%" class="" fill="rgba(4, 127, 114, 1.0)">
-                <g>
-                  <g>
-                    <path d="M71.15,55.636c8.644-9.455,13.473-18.541,16.13-26.462c0,0.024,0,0.024,0.008,0.04   c0,0,1.069-2.789,1.908-7.179c0.062-0.292,0.104-0.559,0.159-0.854c0.063-0.368,0.128-0.747,0.184-1.133   c1.029-6.393,0.687-11.445,0.239-14.422c0.143-0.135,0.295-0.303,0.438-0.495c0.527-0.663,0.752-1.349,0.52-1.532l-0.28-0.212   L91,1l-2.587,0.818L88.07,1.562c-0.239-0.175-0.846,0.224-1.364,0.886c-0.104,0.143-0.2,0.28-0.28,0.415   c0,0-9.473,0.295-20.432,7.255h0.017c-15.324,9.45-22.571,24.31-22.571,24.31c-27.639-3.71-33.8,22.021-33.8,22.021   c53.873-3.16,46.729,37.543,46.729,37.543C79.945,83.649,71.15,55.636,71.15,55.636z M69.371,41.524   c-2.443,2.69-6.561,3.396-9.889,1.477c-3.815-2.195-5.148-6.991-2.978-10.71c0.264-0.463,0.575-0.874,0.918-1.253   c2.434-2.69,6.552-3.393,9.888-1.477c3.808,2.187,5.149,6.987,2.979,10.711C70.017,40.734,69.705,41.149,69.371,41.524z"></path>
-                    <path d="M30.949,97.333c13.296-4.829,18.133-22.384,18.133-22.384C34.956,81.278,30.949,97.333,30.949,97.333z"></path>
-                    <path d="M16.806,98.828c17.623-6.504,23.952-30.4,23.952-30.4C22.051,76.96,16.806,98.828,16.806,98.828z"></path>
-                    <path d="M14.292,84.28c13.297-4.821,18.134-22.372,18.134-22.372C18.307,68.226,14.292,84.28,14.292,84.28z"></path>
-                  </g>
-                </g>
-              </svg>
-            </div>
-          </div>
-          <div  id="HEADLINE1685" class='ladi-element'>
-            <h3 class='ladi-headline'>Nhanh</h3>
-          </div>
-          <div  id="PARAGRAPH1686" class='ladi-element'>
-            <p class='ladi-paragraph'>Chúng tôi sử dụng những công cụ tốt nhất để mang đến cho bạn trải nghiệm tuyệt vời nhất.</p>
-          </div>
-        </div>
-      </div>
-      <div  id="GROUP1689" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="SHAPE1690" class='ladi-element'>
-            <div class='ladi-shape'>
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve" preserveAspectRatio="none" width="100%" height="100%" class="" fill="rgba(244, 64, 37, 1)">
-                <g>
-                  <path d="M37.039,20.894h26.345l2.408-3.436c1.967-2.965,4.134-5.805,6.009-8.83c0.89-1.437,2.558-3.789,1.901-5.609   c-0.469-1.3-1.669-1.743-2.955-1.969c-0.93-0.163-5.684-1.364-7.603-0.972c-1.703,0.349-3.276,1.157-4.91,1.725   c-2.301,0.8-4.848,1.471-7.372,1.333c-2.181-0.119-4.659-0.398-6.715-1.141c-1.704-0.617-3.35-1.525-5.153-1.834   c-1.557-0.267-7.228,0.519-8.369,0.715c-8.031,1.382-2.192,7.493,4.006,16.582L37.039,20.894z M95.081,69.075   c-6.754-15.562-18.983-32.532-31.794-40.719H36.707c-12.808,8.189-25.035,25.16-31.787,40.719   c-6.77,15.598,1.351,30.924,16.825,30.924h56.511C93.73,99.999,101.851,84.673,95.081,69.075z M52.47,83.203v6.316h-5.029v-5.948   c-3.863-0.122-7.726-1.226-9.935-2.698l1.657-5.765c2.392,1.411,5.826,2.698,9.567,2.698c3.863,0,6.5-1.901,6.5-4.844   c0-2.76-2.147-4.539-6.685-6.194c-6.44-2.331-10.61-5.274-10.61-10.978c0-5.274,3.679-9.321,9.873-10.425v-6.01h5.029v5.703   c3.863,0.123,6.5,1.042,8.463,2.024l-1.655,5.641c-1.473-0.675-4.171-2.085-8.341-2.085c-4.292,0-5.825,2.208-5.825,4.294   c0,2.514,2.208,3.923,7.419,6.009c6.869,2.576,9.936,5.888,9.936,11.345C62.834,77.501,59.216,82.1,52.47,83.203z"></path>
-                </g>
-              </svg>
-            </div>
-          </div>
-          <div  id="HEADLINE1691" class='ladi-element'>
-            <h3 class='ladi-headline'>Giá Tốt</h3>
-          </div>
-          <div  id="PARAGRAPH1692" class='ladi-element'>
-            <p class='ladi-paragraph'>Chúng tôi tự hào đưa ra mức giá thấp nhất, mang lại cho bạn sự tiết kiệm và giá trị tốt nhất.</p>
-          </div>
-        </div>
-      </div>
-      <div  id="GROUP1693" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="SHAPE1694" class='ladi-element'>
-            <div class='ladi-shape'>
-              <svg xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve" preserveAspectRatio="none" width="100%" height="100%" class="" fill="rgba(1, 36, 137, 1.0)">
-                <metadata>
-                  <sfw xmlns="http://ns.adobe.com/SaveForWeb/1.0/">
-                    <slices></slices>
-                    <slicesourcebounds width="1448.6" height="1442.5" x="0.7" y="-1444.9" bottomleftorigin="true"></slicesourcebounds>
-                  </sfw>
-                </metadata>
-                <path d="M98.7,35c0,7.2-2.9,13.8-7.7,19c0.9,2.4,2.5,5.1,5.5,7c0.7,0.5,0.5,1.6-0.4,1.7c-3.1,0.4-8.3,0.5-13.2-2.4  c-2.5,1.4-5.2,2.5-8.1,3.4C74,44.7,56.5,29.4,35.2,29.4c-1.7,0-3.4,0.1-5,0.3c2.9-14.2,17-25,34-25C83.2,4.7,98.7,18.3,98.7,35z   M7.7,82.8c-4.1-5.1-6.4-11.2-6.4-17.5c0-16.6,15.2-30,33.8-30c18.7,0,33.8,13.5,33.8,30c0,16.6-15.2,30-33.8,30  c-5.9,0-11.7-1.4-16.8-4c-2.7,1.3-5.7,1.9-8.9,1.9c-1.1,0-2.2-0.1-3.3-0.2c-1.6-0.2-2.8-1.4-3.2-2.9c-0.3-1.6,0.3-3.1,1.6-4  C5.9,85.3,6.9,84.2,7.7,82.8z M13.3,80.3l1.2,1.3l-0.6,1.7c-0.5,1.4-1.2,2.8-2.1,3.9c1.9-0.3,3.6-0.9,5.1-1.8l1.5-0.9l1.5,0.8  c4.6,2.6,9.9,4,15.3,4c15.4,0,28-10.8,28-24.2s-12.6-24.2-28-24.2s-28,10.8-28,24.2C7.2,70.8,9.3,76,13.3,80.3z M36.1,58.6  c2,0,3.7-1.7,3.7-3.8c0-2.1-1.6-3.8-3.7-3.8c-2.1,0-3.8,1.7-3.8,3.7C32.3,56.9,34,58.6,36.1,58.6z M29.5,62.1  c0.4,0.1,0.8,0.2,1.2,0.2c1,0.1,1.3,0.5,1.3,1.5c0,0.1,0,0.3,0,0.4c-0.4,2.3-0.8,4.7-1.2,7c-0.2,1.3-0.4,2.7-0.6,4.1  c-0.3,2,1.6,3.8,3.1,4.1c0.9,0.1,1.8,0.2,2.7,0.1c2,0,3.6-0.9,5-2.2c0.2-0.2,0.4-0.6,0.5-0.9c0.1-0.6-0.3-0.9-0.9-0.7  c-0.4,0.1-0.7,0.4-1.1,0.5c-0.5,0.2-0.9,0.3-1.4,0.4c-0.6,0.1-1-0.2-1.1-0.8c-0.1-0.4-0.2-0.9-0.1-1.3c0.1-0.9,0.3-1.8,0.4-2.7  c0.5-2.7,1-5.4,1.5-8c0.1-0.7,0.3-1.5,0.2-2.2c0-0.9-0.5-1.3-1.4-1.3c-1.2,0-2.4,0-3.7,0c-1.1,0-2.3,0-3.4,0c-0.3,0-0.6,0-0.9,0.1  c-0.5,0.1-0.8,0.4-0.8,0.8C28.8,61.5,29,61.9,29.5,62.1z"></path>
-              </svg>
-            </div>
-          </div>
-          <div  id="HEADLINE1695" class='ladi-element'>
-            <h3 class='ladi-headline'>Hỗ trợ 24/7</h3>
-          </div>
-          <div  id="PARAGRAPH1696" class='ladi-element'>
-            <p class='ladi-paragraph'>Chúng tôi sẵn sàng hỗ trợ bạn mọi lúc, mọi nơi - 24/7, để đảm bảo bạn có trải nghiệm tuyệt vời nhất.</p>
-          </div>
-        </div>
-      </div>
-      <div data-action="true" id="BUTTON1183" class='ladi-element'>
-        <div class='ladi-button'>
-          <div class="ladi-button-background"></div>
-          <a id="BUTTON_TEXT1183" class='ladi-element' href="javascript:changeTab('login_widget', true)">
-            <p class='ladi-headline'>ĐĂNG NHẬP NGAY</p>
-          </a>
-        </div>
-      </div>
-      <div  id="PARAGRAPH1182" class='ladi-element'>
-        <p class='ladi-paragraph'>Click tham gia ngay&nbsp;</p>
-      </div>
-      <div  id="SHAPE1194" class='ladi-element'>
-        <div class='ladi-shape'>
-          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1664 1896.0833" class="" fill="rgba(160, 160, 160, 1.0)">
-            <path d="M1611 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37L91 922q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294V256q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="SECTION1677" class='ladi-section'>
-    <div class='ladi-section-background'></div>
-    <div class="ladi-container">
-      <div  id="HEADLINE1697" class='ladi-element'>
-        <h3 class='ladi-headline'>Tại sao bạn nên chọn Dịch vụ của chúng tôi<br></h3>
-      </div>
-      <div  id="GROUP1702" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="SHAPE1700" class='ladi-element'>
-            <div class='ladi-shape'>
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve" preserveAspectRatio="none" width="100%" height="100%" class="" fill="#000">
-                              <path d="M54.925,49.97c0,2.756-2.231,4.989-4.987,4.989c-2.755,0-4.989-2.232-4.989-4.989s2.233-4.989,4.989-4.989  C52.693,44.981,54.925,47.214,54.925,49.97z M94.875,49.97c0,2.361-1.913,4.275-4.274,4.275h-4.802  c-1.957,16.512-15.076,29.63-31.588,31.588v4.8c0,2.361-1.913,4.275-4.273,4.275c-2.361,0-4.275-1.914-4.275-4.275v-4.798  c-16.512-1.96-29.63-15.078-31.588-31.59h-4.8C6.914,54.245,5,52.331,5,49.97c0-2.361,1.914-4.275,4.274-4.275h4.8  c1.958-16.512,15.077-29.631,31.588-31.588V9.306c0-2.361,1.914-4.275,4.275-4.275c2.36,0,4.273,1.915,4.273,4.275v4.801  c16.512,1.958,29.631,15.077,31.588,31.588h4.802C92.962,45.695,94.875,47.609,94.875,49.97z M77.163,54.245h-3.86  c-2.36,0-4.275-1.914-4.275-4.275c0-2.361,1.915-4.275,4.275-4.275h3.86c-1.848-11.788-11.164-21.103-22.952-22.948v3.858  c0,2.361-1.913,4.275-4.273,4.275c-2.361,0-4.275-1.915-4.275-4.275v-3.858c-11.788,1.846-21.103,11.161-22.95,22.949h3.859  c2.361,0,4.274,1.914,4.274,4.275c0,2.361-1.914,4.275-4.274,4.275h-3.859c1.847,11.788,11.162,21.103,22.95,22.949v-3.858  c0-2.361,1.914-4.275,4.275-4.275c2.36,0,4.273,1.914,4.273,4.275v3.858C65.999,75.348,75.315,66.033,77.163,54.245z"></path>
-                           </svg>
-            </div>
-          </div>
-          <div  id="HEADLINE1701" class='ladi-element'>
-            <h3 class='ladi-headline'>Với nền tảng kinh nghiệm dày dặn trong lĩnh vực Marketing trên Internet,
-              chúng tôi tự tin mang đến dịch vụ chuyên nghiệp và hiệu quả cho khách hàng.</h3>
-          </div>
-        </div>
-      </div>
-      <div  id="GROUP1703" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="SHAPE1704" class='ladi-element'>
-            <div class='ladi-shape'>
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 66 66" enable-background="new 0 0 66 66" xml:space="preserve" preserveAspectRatio="none" width="100%" height="100%" class="" fill="#000">
-                <g>
-                  <path d="M33.3,23.2c4.4,0,8-3.6,8-7.9c0-4.4-3.6-8-8-8c-4.4,0-8,3.6-8,8C25.3,19.6,28.9,23.2,33.3,23.2z"></path>
-                  <path d="M34.3,45.2c-0.2,0-0.4,0-0.6,0l-2.2,2.7h5.6l-2.2-2.7C34.7,45.2,34.5,45.2,34.3,45.2z"></path>
-                  <path d="M33.3,26.6c-4.5,0-8.7,1.7-11.9,4.8c-3.2,3.1-4.9,7.2-5.1,11.6l3.3,4.8h4.2l5.2-6.5c-0.2-0.5-0.3-1.1-0.3-1.6   c0-3,2.4-5.5,5.5-5.5c3,0,5.5,2.5,5.5,5.5c0,0.5-0.1,1.1-0.2,1.6l5.2,6.6h1.5l3.9-5.4C49.8,34,42.5,26.6,33.3,26.6z"></path>
-                  <path d="M50.4,29.7c-1.2,0-2.5,0.2-3.7,0.5c1.8,1.8,3.2,4,4.2,6.4c0.4-0.2,0.9-0.4,1.5-0.4h3.9c1.5,0,2.7,1.1,3,2.5l0.8,4   c0.3,1.6-0.8,3.2-2.4,3.5c-0.2,0-0.4,0-0.5,0c-0.6,0-1.3-0.2-1.8-0.6l-1.6,2.1h10.1c0.5,0,1-0.4,1-1V44   C64.7,36.2,58.3,29.7,50.4,29.7z"></path>
-                  <path d="M50.4,27.2c3.8,0,6.8-3.1,6.8-6.8c0-3.8-3.1-6.8-6.8-6.8c-3.8,0-6.8,3.1-6.8,6.8C43.6,24.1,46.6,27.2,50.4,27.2z"></path>
-                  <path d="M16.2,27.2c3.8,0,6.8-3.1,6.8-6.8c0-3.8-3.1-6.8-6.8-6.8s-6.8,3.1-6.8,6.8C9.3,24.1,12.4,27.2,16.2,27.2z"></path>
-                  <path d="M2.8,47.8h0.7c0.1,0,0.2,0,0.4-0.1L6.3,43c-0.6-0.9-1-2-1-3.1c0-3,2.5-5.5,5.5-5.5c2,0,3.8,1.1,4.7,2.7   c0.9-2.6,2.4-4.9,4.4-6.9c-1.2-0.3-2.4-0.5-3.7-0.5C8.3,29.7,1.8,36.2,1.8,44v2.8C1.8,47.4,2.3,47.8,2.8,47.8z"></path>
-                  <path d="M55.6,41.7l0.3,1.8c0.1,0.5,0.6,0.9,1.2,0.8c0.5-0.1,0.9-0.6,0.8-1.2L57.2,39c-0.1-0.5-0.6-0.8-1-0.8h-3.9   c-0.5,0-1,0.5-1,1c0,0.6,0.5,1,1,1h1.9l-7.3,10c-0.4-0.1-0.7-0.2-1.1-0.2c-0.6,0-1.1,0.2-1.6,0.4l-7-8.9c0.3-0.5,0.5-1.2,0.5-1.9   c0-1.9-1.6-3.5-3.5-3.5c-1.9,0-3.5,1.5-3.5,3.5c0,0.7,0.2,1.4,0.6,1.9L23,52.1c-0.5-0.2-1-0.4-1.6-0.4c-0.5,0-0.9,0.1-1.4,0.3   l-6.7-9.9c0.5-0.6,0.9-1.4,0.9-2.3c0-1.9-1.6-3.5-3.5-3.5c-1.9,0-3.5,1.6-3.5,3.5c0,1.1,0.5,2.1,1.4,2.8l-3.5,7.1   c-0.1,0-0.3,0-0.4,0c-4.6,0-4.6,7,0,7c3.2,0,4.7-4,2.3-6.1l3.6-7.2c0.1,0,0.1,0,0.2,0c0.3,0,0.6,0,0.9-0.1l6.9,10.1   c-1.5,2.2,0.1,5.4,2.9,5.4c2.6,0,4.3-2.9,3-5.2l8.4-10.6c0.4,0.2,0.9,0.3,1.4,0.3c0.5,0,1-0.1,1.4-0.3l7.2,9   c-0.3,0.5-0.4,1-0.4,1.6c0,1.9,1.6,3.5,3.5,3.5s3.5-1.5,3.5-3.5c0-0.8-0.3-1.5-0.7-2.1L55.6,41.7z"></path>
-                </g>
-              </svg>
-            </div>
-          </div>
-          <div  id="HEADLINE1705" class='ladi-element'>
-            <h3 class='ladi-headline'>Luôn lấy KPI là chỉ tiêu cho sự hiệu quả công việc. Chúng tôi hiểu rằng giúp KH đạt hiệu quả cao cũng chính là giúp chúng tôi ngày càng phát triển.</h3>
-          </div>
-        </div>
-      </div>
-      <div  id="GROUP1709" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="SHAPE1710" class='ladi-element'>
-            <div class='ladi-shape'>
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" version="1.1" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;" viewBox="0 0 332 291" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd" preserveAspectRatio="none" width="100%" height="100%" class="" fill="#000">
-                <defs>
-                  <style type="text/css">
-                    .cls-KBQNfF {fill:black}
-                  </style>
-                </defs>
-                <g>
-                  <path class="cls-KBQNfF cls-HUfTJF" d="M136 165l60 0c27,0 49,22 49,49l0 77 -158 0 0 -77c0,-27 22,-49 49,-49zm-57 -165c24,0 44,20 44,44 0,24 -20,43 -44,43 -24,0 -43,-19 -43,-43 0,-24 19,-44 43,-44zm144 107l60 0c27,0 49,22 49,49l0 77 -74 0 0 -21c0,-31 -26,-57 -57,-57l-18 0c21,-7 36,-25 39,-48l1 0zm30 -107c24,0 43,20 43,44 0,24 -19,43 -43,43 -24,0 -44,-19 -44,-43 0,-24 20,-44 44,-44zm-204 107l60 0 1 0c2,23 18,41 39,48l-18 0c-31,0 -57,26 -57,57l0 21 -74 0 0 -77c0,-27 22,-49 49,-49zm117 -49c24,0 44,20 44,44 0,24 -20,43 -44,43 -24,0 -44,-19 -44,-43 0,-24 20,-44 44,-44z"></path>
-                </g>
-                <defs>
-                  <style>.cls-HUfTJF {fill: inherit !important;}</style>
-                </defs>
-              </svg>
-            </div>
-          </div>
-          <div  id="HEADLINE1711" class='ladi-element'>
-            <h3 class='ladi-headline'>Đội ngũ nhân sự trẻ trung và năng động của chúng tôi cam kết mang lại
-              kết quả tuyệt vời cho từng dự án.</h3>
-          </div>
-        </div>
-      </div>
-      <div data-action="true" id="BUTTON1715" class='ladi-element'>
-        <div class='ladi-button'>
-          <div class="ladi-button-background"></div>
-          <a  id="BUTTON_TEXT1715" class='ladi-element' href="javascript:changeTab('login_widget', true)">
-            <p class='ladi-headline'>ĐĂNG NHẬP NGAY</p>
-          </a>
-        </div>
-      </div>
-      <div  id="SHAPE1747" class='ladi-element'>
-        <div class='ladi-shape'>
-          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1920 148" class="" fill="rgba(255, 255, 255, 1.0)">
-            <defs>
-              <style>.cls-hQWcgn{opacity:0.1;}.cls-QmypOd{opacity:0.3;}</style>
-            </defs>
-            <path class="cls-hQWcgn" d="M1920,148H0L71.8,29.4A90.2,90.2,0,0,1,203.7,28l8.3,8.7a90.2,90.2,0,0,0,133-2.7l.2-.2a90.2,90.2,0,0,1,134.4-1.3l2.5,2.7a90.2,90.2,0,0,0,133.2,0l3.8-4.2a90.2,90.2,0,0,1,133.2,0l3.9,4.3a90.2,90.2,0,0,0,133.1.1l4.2-4.6a90.2,90.2,0,0,1,133,0l4.1,4.5a90.2,90.2,0,0,0,133.2-.2l3.7-4a90.2,90.2,0,0,1,133.2-.2l4.1,4.5a90.2,90.2,0,0,0,133,0l2.8-3.1A90.2,90.2,0,0,1,1575,33.8h0a90.2,90.2,0,0,0,133.1,2.9l8.3-8.7a90.2,90.2,0,0,1,131.9,1.5Z" transform="translate(0 0)"></path>
-            <path class="cls-QmypOd" d="M1920,148H0L71.8,49.4A90.2,90.2,0,0,1,203.7,48l8.3,8.7a90.2,90.2,0,0,0,133-2.7l.2-.2a90.2,90.2,0,0,1,134.4-1.3l2.5,2.7a90.2,90.2,0,0,0,133.2,0l3.8-4.2a90.2,90.2,0,0,1,133.2,0l3.9,4.3a90.2,90.2,0,0,0,133.1.1l4.2-4.6a90.2,90.2,0,0,1,133,0l4.1,4.5a90.2,90.2,0,0,0,133.2-.2l3.7-4a90.2,90.2,0,0,1,133.2-.2l4.1,4.5a90.2,90.2,0,0,0,133,0l2.8-3.1A90.2,90.2,0,0,1,1575,53.8h0a90.2,90.2,0,0,0,133.1,2.9l8.3-8.7a90.2,90.2,0,0,1,131.9,1.5Z" transform="translate(0 0)"></path>
-            <path class="cls-kaNEnK" d="M1920,148H0L71.8,69.4A90.2,90.2,0,0,1,203.7,68l8.3,8.7a90.2,90.2,0,0,0,133-2.7l.2-.2a90.2,90.2,0,0,1,134.4-1.3l2.5,2.7a90.2,90.2,0,0,0,133.2,0l3.8-4.2a90.2,90.2,0,0,1,133.2,0l3.9,4.3a90.2,90.2,0,0,0,133.1.1l4.2-4.6a90.2,90.2,0,0,1,133,0l4.1,4.5a90.2,90.2,0,0,0,133.2-.2l3.7-4a90.2,90.2,0,0,1,133.2-.2l4.1,4.5a90.2,90.2,0,0,0,133,0l2.8-3.1A90.2,90.2,0,0,1,1575,73.8h0a90.2,90.2,0,0,0,133.1,2.9l8.3-8.7a90.2,90.2,0,0,1,131.9,1.5Z" transform="translate(0 0)"></path>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="SECTION1160" class='ladi-section'>
-    <div class='ladi-section-background'></div>
-    <div class="ladi-container">
-      <div  id="PARAGRAPH1208" class='ladi-element'>
-        <p class='ladi-paragraph'>Với kinh nghiệm hơn 3 năm trong lĩnh vực Marketing giúp hơn 3000+ doanh nghiệp, cũng như cá nhân hiện diện thường xuyên trong môi trường Internet ngày càng bùng nổ giai đoạn 4.0.<br></p>
-      </div>
-      <div  id="GROUP1572" class='ladi-element'>
-        <div class='ladi-group'>
-          <div id="LINE1203" class='ladi-element'>
-            <div class='ladi-line'>
-              <div class="ladi-line-container"></div>
-            </div>
-          </div>
-          <div  id="HEADLINE1202" class='ladi-element'>
-            <h3 class='ladi-headline'>Thành tựu đã đạt được của chúng tôi!<br></h3>
-          </div>
-          <div  id="HEADLINE1201" class='ladi-element'>
-            <h3 class='ladi-headline'>THÀNH TỰU</h3>
-          </div>
-        </div>
-      </div>
-      <div  id="GROUP1720" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="HEADLINE1718" class='ladi-element'>
-            <h3 class='ladi-headline'>3000+</h3>
-          </div>
-          <div  id="HEADLINE1719" class='ladi-element'>
-            <h3 class='ladi-headline'>Đối tác doanh nghiệp<br></h3>
-          </div>
-        </div>
-      </div>
-      <div  id="GROUP1721" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="HEADLINE1722" class='ladi-element'>
-            <h3 class='ladi-headline'>200%</h3>
-          </div>
-          <div  id="HEADLINE1723" class='ladi-element'>
-            <h3 class='ladi-headline'>Doanh thu tăng từ Marketing<br></h3>
-          </div>
-        </div>
-      </div>
-      <div  id="GROUP1724" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="HEADLINE1725" class='ladi-element'>
-            <h3 class='ladi-headline'>98%</h3>
-          </div>
-          <div  id="HEADLINE1726" class='ladi-element'>
-            <h3 class='ladi-headline'>Khách hàng hài lòng<br></h3>
-          </div>
-        </div>
-      </div>
-      <div  id="GROUP1727" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="HEADLINE1728" class='ladi-element'>
-            <h3 class='ladi-headline'>300+</h3>
-          </div>
-          <div  id="HEADLINE1729" class='ladi-element'>
-            <h3 class='ladi-headline'>Chiến dịch
-              <br>truyền thông<br>
-            </h3>
-          </div>
-        </div>
-      </div>
-      <div data-action="true" id="BUTTON1730" class='ladi-element'>
-        <div class='ladi-button'>
-          <div class="ladi-button-background"></div>
-          <a  id="BUTTON_TEXT1730" class='ladi-element' href="javascript:changeTab('login_widget', true)">
-            <p class='ladi-headline'>THAM GIA NGAY</p>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="SECTION1135" class='ladi-section'>
-    <div class='ladi-section-background'></div>
-    <div class="ladi-container">
-      <div  id="PARAGRAPH1165" class='ladi-element'>
-        <p class='ladi-paragraph'>Chỉ với vài thao tác cơ bản, bạn sẽ sở hữu ngay một tài
-          khoản cá nhân để trải nghiệm dịch vụ của chúng tôi.<br></p>
-      </div>
-      <div  id="GROUP1570" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="GROUP1544" class='ladi-element'>
-            <div class='ladi-group'>
-              <div  id="HEADLINE1188" class='ladi-element'>
-                <h3 class='ladi-headline'>Dễ dàng sử dụng dịch vụ<br></h3>
-              </div>
-              <div  id="HEADLINE1163" class='ladi-element'>
-                <h3 class='ladi-headline'>Dễ dàng sử dụng dịch vụ<br></h3>
-              </div>
-            </div>
-          </div>
-          <div id="LINE1164" class='ladi-element'>
-            <div class='ladi-line'>
-              <div class="ladi-line-container"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div  id="HEADLINE1732" class='ladi-element'>
-        <h3 class='ladi-headline'>ƯU ĐIỂM DỊCH VỤ</h3>
-      </div>
-      <div  id="IMAGE1740" class='ladi-element'>
-        <div class='ladi-image'>
-          <div class="ladi-image-background"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="SECTION1161" class='ladi-section'>
-    <div class='ladi-section-background'></div>
-    <div class="ladi-container">
-      <div  id="GROUP1733" class='ladi-element'>
-        <div class='ladi-group'>
-          <div id="LINE1737" class='ladi-element'>
-            <div class='ladi-line'>
-              <div class="ladi-line-container"></div>
-            </div>
-          </div>
-          <div  id="HEADLINE1736" class='ladi-element'>
-            <h3 class='ladi-headline'>Nạp tiền tự động hỗ trợ hầu hết các ngân hàng<br></h3>
-          </div>
-        </div>
-      </div>
-      <div  id="IMAGE1738" class='ladi-element'>
-        <div class='ladi-image'>
-          <div class="ladi-image-background"></div>
-        </div>
-      </div>
-      <div  id="PARAGRAPH1739" class='ladi-element'>
-        <p class='ladi-paragraph'>Hệ thống sẽ ghi nhận yêu cầu nhận tiền của bạn rất nhanh,
-           và số tiền sẽ được chuyển vào tài khoản của bạn gần như ngay lập tức.<br></p>
-      </div>
-    </div>
-  </div>
-  <div id="SECTION919" class='ladi-section'>
-    <div class='ladi-section-background'></div>
-    <div class="ladi-container">
-      <div  id="PARAGRAPH1745" class='ladi-element'>
-        <p class='ladi-paragraph'>Chúng tôi hỗ trợ các dịch vụ như Facebook, Instagram, TikTok, Youtube, Shopee... Nhằm đáp ứng mọi yêu cầu của bạn.<br></p>
-      </div>
-      <div  id="IMAGE1741" class='ladi-element'>
-        <div class='ladi-image'>
-          <div class="ladi-image-background"></div>
-        </div>
-      </div>
-      <div  id="GROUP1742" class='ladi-element'>
-        <div class='ladi-group'>
-          <div id="LINE1743" class='ladi-element'>
-            <div class='ladi-line'>
-              <div class="ladi-line-container"></div>
-            </div>
-          </div>
-          <div  id="HEADLINE1744" class='ladi-element'>
-            <h3 class='ladi-headline'>Dịch vụ đa dạng đầy đủ các công cụ bạn cần<br></h3>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="SECTION1642" class='ladi-section'>
-    <div class='ladi-section-background'></div>
-    <div class="ladi-container">
-      <div  id="GROUP1657" class='ladi-element'>
-        <div class='ladi-group'>
-          <div  id="HEADLINE1658" class='ladi-element'>
-            <h4 class='ladi-headline'>DỊCH VỤ</h4>
-          </div>
-          <ul class="service">
-            <li class="service-item">
-              <ul class="service-item-detail">
-                <li>
-                  <span class="service-link-icon">
-                    <i class="fa fa-facebook-square" aria-hidden="true"></i>
-                  </span>
-                  <span class="service-link-text">Facebook</span>
-                </li>
-                <li>
-                  <span class="service-link-icon">
-                    <i class="fa fa-instagram" aria-hidden="true"></i>
-                  </span>
-                  <span class="service-link-text">Instagram</span>
-                </li>
-                <li>
-                  <span class="service-link-icon">
-                    <i class="fa fa-youtube-play" aria-hidden="true"></i>
-                  </span>
-                  <span class="service-link-text">Youtube</span>
-                </li>
-                <li>
-                  <span class="service-link-icon">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                  </span>
-                  <span class="service-link-text">Shopee</span>
-                </li>
-                <li>
-                  <span class="service-link-icon">
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
-                  </span>
-                  <span class="service-link-text">Twitter</span>
-                </li>
-                <li>
-                  <span class="service-link-icon">
-                    <i class="fa fa-database" aria-hidden="true"></i>
-                  </span>
-                  <span class="service-link-text">Lazada</span>
-                </li>
-              </ul>
-            </li>
-
-            <li class="service-item ">
-              <ul class="service-item-detail">
-                <li>
-                  <span class="service-link-icon">
-                    <i class="fa fa-leaf" aria-hidden="true"></i>
-                  </span>
-                  <span class="service-link-text">Threads</span>
-                </li>
-                <li>
-                  <span class="service-link-icon">
-                    <i class="fa fa-free-code-camp" aria-hidden="true"></i>
-                  </span>
-                  <span class="service-link-text">TikTok</span>
-                </li>
-                <li>
-                  <span class="service-link-icon">
-                    <i class="fa fa-google" aria-hidden="true"></i>
-                  </span>
-                  <span class="service-link-text">Dịch Vụ Google</span>
-                </li>
-                <li>
-                  <span class="service-link-icon">
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                  </span>
-                  <span class="service-link-text">Tiện ích miễn phí</span>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div id="LINE1675" class='ladi-element'>
-        <div class='ladi-line'>
-          <div class="ladi-line-container"></div>
-        </div>
-      </div>
-      <div  id="HEADLINE1676" class='ladi-element'>
-        <h1 class='ladi-headline'>©2020 All Rights Reserved</h1>
-      </div>
-      <div  id="HEADLINE1644" class='ladi-element'>
-        <h4 class='ladi-headline'>HOANGKUN STORE</h4>
-      </div>
-      <div  id="PARAGRAPH1746" class='ladi-element'>
-        <p class='ladi-paragraph'>Với nhiều năm kinh nghiệm trong lĩnh vực Social Media, chúng tôi có đội ngũ kỹ thuật viên giàu kinh nghiệm, thấu hiểu tâm lý khách hàng. Từ đó mang đến cho bạn trải nghiệm tốt nhất khi sử dụng dịch vụ.</p>
-      </div>
-    </div>
-  </div>
-  <div id="SECTION_POPUP" class='ladi-section'>
-    <div class='ladi-section-background'></div>
-    <div class="ladi-container">
-      <div id="POPUP540" class='ladi-element no-cursor'>
-        <div class='ladi-popup'>
-          <div class="ladi-popup-background"></div>
-          <div class="ladi-overlay"></div>
-          <div  id="HEADLINE552" class='ladi-element'></div>
-          <div id="FORM541" class='ladi-element'>
-            <form autocomplete="off" method="post" class='ladi-form'>
-              <div  id="BUTTON542" class='ladi-element'></div>
-              <div id="FORM_ITEM544" class='ladi-element'></div>
-              <div id="FORM_ITEM545" class='ladi-element'></div>
-              <div id="FORM_ITEM546" class='ladi-element'></div>
-              <div id="FORM_ITEM547" class='ladi-element'></div>
-              <div id="FORM_ITEM548" class='ladi-element'></div>
-              <div id="FORM_ITEM549" class='ladi-element'></div>
-              <div id="FORM_ITEM550" class='ladi-element'></div>
-              <div id="FORM_ITEM551" class='ladi-element'></div>
-              <button type="submit" class="ladi-hidden"></button>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div id="POPUP1582" class='ladi-element no-cursor'>
-      </div>
-      <div id="POPUP1606" class='ladi-element no-cursor'>
-        <div class='ladi-popup'>
-          <div class="ladi-popup-background"></div>
-          <div class="ladi-overlay"></div>
-          <div  id="IMAGE1607" class='ladi-element'>
-            <div class='ladi-image'>
-              <div class="ladi-image-background"></div>
-            </div>
-          </div>
-          <div id="FORM1622" class='ladi-element'>
-            <form autocomplete="off" method="post" class='ladi-form'>
-              <div  id="BUTTON1623" class='ladi-element'></div>
-              <div id="FORM_ITEM1625" class='ladi-element'></div>
-              <div id="FORM_ITEM1626" class='ladi-element'></div>
-              <div id="FORM_ITEM1627" class='ladi-element'></div>
-              <div id="FORM_ITEM1628" class='ladi-element'></div>
-              <div id="FORM_ITEM1629" class='ladi-element'></div>
-              <div id="FORM_ITEM1630" class='ladi-element'></div>
-              <div id="FORM_ITEM1631" class='ladi-element'></div>
-              <button type="submit" class="ladi-hidden"></button>
-            </form>
-          </div>
-          <div  id="HEADLINE1632" class='ladi-element'></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div id="backdrop-popup" class="backdrop-popup"></div>
-<div id="lightbox-screen" class="lightbox-screen"></div>
-<script id="script_lazyload" type="text/javascript">(function () {var style_lazyload = document.getElementById('style_lazyload');var docEventScroll = window;var list_element_lazyload = document.querySelectorAll('.ladi-section-background, .ladi-image-background, .ladi-button-background, .ladi-headline, .ladi-video-background, .ladi-countdown-background, .ladi-box, .ladi-frame-background, .ladi-banner, .ladi-form-item-background, .ladi-gallery-view-item, .ladi-gallery-control-item, .ladi-spin-lucky-screen, .ladi-spin-lucky-start, .ladi-form-label-container .ladi-form-label-item.image, .ladi-list-paragraph ul li');for (var i = 0; i < list_element_lazyload.length; i++) {var rect = list_element_lazyload[i].getBoundingClientRect();if (rect.x == "undefined" || rect.x == undefined || rect.y == "undefined" || rect.y == undefined) {rect.x = rect.left;rect.y = rect.top;}var offset_top = rect.y + window.scrollY;if (offset_top >= window.scrollY + window.innerHeight || window.scrollY >= offset_top + list_element_lazyload[i].offsetHeight) {list_element_lazyload[i].classList.add('ladi-lazyload');}}style_lazyload.parentElement.removeChild(style_lazyload);var currentScrollY = window.scrollY;var stopLazyload = function (event) {if (event.type == "scroll" && window.scrollY == currentScrollY) {currentScrollY = -1;return;}docEventScroll.removeEventListener('scroll', stopLazyload);list_element_lazyload = document.getElementsByClassName('ladi-lazyload');while(list_element_lazyload.length > 0) {list_element_lazyload[0].classList.remove('ladi-lazyload');}};var scrollEventPassive = null;try {var opts = Object.defineProperty({}, 'passive', {get: function() {scrollEventPassive = {passive: true};}});window.addEventListener('testPassive', null, opts);window.removeEventListener('testPassive', null, opts);} catch (e) {}docEventScroll.addEventListener('scroll', stopLazyload, scrollEventPassive);})();</script>
-<link href="https://fonts.googleapis.com/css?family=Quicksand:bold,regular|Montserrat:bold,regular|Oswald:bold,regular&display=swap" rel="stylesheet" type="text/css">
-<link href="/assets/landing_pages/page2/ladipage.min.css" rel="stylesheet" type="text/css">
-<script src="/assets/landing_pages/page2/ladipage.vi.min.js" type="text/javascript"></script>
-<script src="/assets/landing_pages/page2/event.js" type="text/javascript"></script>
-
-
-<style>
-  /* ===== Menu liên hệ nổi góc phải — dạng timeline (label + icon trắng + gạch nối + nút Liên hệ) ===== */
-  .rc-fab{
-    --rc-blue:#2f54eb; --rc-blue-2:#3b5cf0; --rc-blue-deep:#2b48d4;
-    --rc-line:#c3cef7; --rc-shadow:0 10px 26px -8px rgba(47,84,235,.32);
-    position:fixed; right:14px; bottom:78px; z-index:95; /* nâng lên chừa chỗ cho nút cuộn lên bên dưới */
-    display:flex; flex-direction:column; align-items:center;
-    font-family:'Nunito','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
-  }
-  /* Phần bung ra (nhãn + icon) — ẩn khi thu gọn */
-  .rc-stack{
-    display:flex; flex-direction:column; align-items:center;
-    transform-origin:bottom center; transition:opacity .28s ease, transform .28s cubic-bezier(.34,1.4,.5,1);
-  }
-  .rc-fab.rc-collapsed .rc-stack{
-    opacity:0; transform:translateY(14px) scale(.82); pointer-events:none;
-  }
-  /* Khi thu gọn: cụm icon ẩn không chặn click lên nội dung trang, chỉ nút "Liên hệ" nhận click */
-  .rc-fab.rc-collapsed{ pointer-events:none; }
-  .rc-fab.rc-collapsed .rc-main{ pointer-events:auto; }
-
-  .rc-label{
-    background:#fff; color:var(--rc-blue); font-weight:800; font-size:14.5px; letter-spacing:-.01em;
-    padding:9px 18px; border-radius:22px; box-shadow:0 8px 22px -6px rgba(30,41,59,.22);
-    position:relative; white-space:nowrap;
-  }
-  .rc-label::after{ /* đuôi bong bóng nhỏ chỉ xuống */
-    content:''; position:absolute; left:50%; bottom:-5px; width:12px; height:12px; background:#fff;
-    transform:translateX(-50%) rotate(45deg); border-radius:2px;
-    box-shadow:3px 3px 6px -4px rgba(30,41,59,.2);
-  }
-
-  .rc-line{ width:0; height:16px; border-left:2.5px dotted var(--rc-line); margin:3px 0; }
-
-  .rc-ico{
-    width:58px; height:58px; border-radius:50%; background:#fff; box-shadow:var(--rc-shadow);
-    display:flex; align-items:center; justify-content:center; color:var(--rc-blue);
-    transition:transform .2s ease, box-shadow .2s ease; text-decoration:none; overflow:hidden;
-  }
-  .rc-ico svg{ width:32px; height:32px; display:block; }
-  .rc-ico:hover{ transform:translateY(-3px) scale(1.05); box-shadow:0 16px 30px -8px rgba(47,84,235,.45); }
-
-  .rc-main{
-    position:relative; margin-top:2px; width:66px; height:66px; border:none; cursor:pointer; padding:0;
-    border-radius:19px; background:linear-gradient(160deg,var(--rc-blue-2),var(--rc-blue-deep));
-    box-shadow:0 12px 28px -8px rgba(47,84,235,.55);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
-    color:#fff; transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;
-  }
-  /* Vòng tròn lan toả liên tục quanh nút "Liên hệ" để thu hút chú ý */
-  .rc-main::after{
-    content:''; position:absolute; inset:0; border-radius:inherit; z-index:-1;
-    background:var(--rc-blue-2); pointer-events:none;
-    animation:rc-ripple 2s cubic-bezier(.4,0,.2,1) infinite;
-  }
-  @keyframes rc-ripple{
-    0%   { transform:scale(1);     opacity:.55; }
-    70%  { transform:scale(1.55); opacity:0; }
-    100% { transform:scale(1.55); opacity:0; }
-  }
-  @media (prefers-reduced-motion:reduce){ .rc-main::after{ animation:none; } }
-  .rc-main svg{ width:26px; height:26px; }
-  .rc-main span{ font-size:11.5px; font-weight:700; letter-spacing:.01em; }
-  .rc-main:hover{ transform:translateY(-2px); box-shadow:0 18px 34px -8px rgba(47,84,235,.6); filter:brightness(1.05); }
-  .rc-main:active{ transform:translateY(0) scale(.96); }
-  .rc-fab.rc-collapsed .rc-main{ border-radius:50%; } /* thu gọn → nút tròn gọn */
-
-  @media (max-width:767px){
-    .rc-fab{ right:12px; bottom:68px; }
-    .rc-ico{ width:52px; height:52px; }
-    .rc-ico svg{ width:29px; height:29px; }
-    .rc-main{ width:58px; height:58px; }
-  }
-</style>
-
-<div class="rc-fab rc-collapsed" id="rcFab">
-  <div class="rc-stack" id="rcStack">
-    <div class="rc-label">Liên hệ &amp; hỗ trợ</div>
-    <div class="rc-line"></div>
-
-   
-   
-      <a class="rc-ico" href="https://zalo.me/0905093155" target="_blank"
-         data-toggle="tooltip" data-placement="left" title="Chat Zalo: 0905093155">
-        <svg viewBox="0 0 48 48"><rect x="4" y="4" width="40" height="40" rx="11" fill="#2f54eb"/><text x="24" y="30.5" font-family="Nunito,Arial,sans-serif" font-weight="900" font-size="15.5" fill="#fff" text-anchor="middle" letter-spacing="-.3">Zalo</text></svg>
-      </a>
-      <div class="rc-line"></div>
-   
-
-   
-      <a class="rc-ico" href="https://www.facebook.com/nhanvien.support" target="_blank"
-         data-toggle="tooltip" data-placement="left" title="Chat Messenger">
-        <svg viewBox="0 0 36 36"><path fill="#2f54eb" d="M18 2C9.2 2 2 8.7 2 17c0 4.6 2.2 8.7 5.7 11.4V34l5.2-2.9c1.3.4 2.7.5 4.1.5 8.8 0 16-6.7 16-15S26.8 2 18 2z"/><path fill="#fff" d="M8 22.6l4.7-7.4c.7-1.1 2.3-1.4 3.4-.6l3.7 2.8c.3.2.8.2 1.1 0l5-3.8c.7-.5 1.6.3 1.1 1l-4.7 7.4c-.7 1.1-2.3 1.4-3.4.6l-3.7-2.8c-.3-.2-.8-.2-1.1 0l-5 3.8c-.7.5-1.6-.3-1.1-1z"/></svg>
-      </a>
-      <div class="rc-line"></div>
-   
-
-   
-      <a class="rc-ico" href="tel:0905093155" data-toggle="tooltip" data-placement="left" title="Gọi: 0905093155">
-        <svg viewBox="0 0 24 24" fill="#2f54eb"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1l-2.2 2.2z"/></svg>
-      </a>
-      <div class="rc-line"></div>
-  </div>
-
-  <button type="button" class="rc-main" id="rcMain" data-toggle="tooltip" data-placement="left" title="Liên hệ &amp; hỗ trợ">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><path d="M4 15a2 2 0 0 1 2-2h1v6H6a2 2 0 0 1-2-2v-2z"/><path d="M20 15a2 2 0 0 0-2-2h-1v6h1a2 2 0 0 0 2-2v-2z"/><path d="M18 19a3 3 0 0 1-3 3h-3"/></svg>
-    <span>Liên hệ</span>
-  </button>
-</div>
-
-<script defer>
-  (function () {
-    var fab = document.getElementById('rcFab');
-    var main = document.getElementById('rcMain');
-    if (!fab || !main) return;
-    var KEY = 'rcContactOpen';
-    // Mặc định: THU GỌN (các icon nằm trong nút "Liên hệ") — trừ khi user đã tự mở
-    var saved = localStorage.getItem(KEY);
-    var open = saved === null ? false : (saved === '1');
-    fab.classList.toggle('rc-collapsed', !open);
-    main.addEventListener('click', function () {
-      open = fab.classList.toggle('rc-collapsed') === false;
-      try { localStorage.setItem(KEY, open ? '1' : '0'); } catch (e) {}
-    });
-
-    // Bấm ra ngoài widget khi đang mở → tự thu gọn lại
-    document.addEventListener('click', function (e) {
-      if (fab.classList.contains('rc-collapsed')) return; // đang thu gọn thì bỏ qua
-      if (fab.contains(e.target)) return;                 // bấm bên trong widget thì giữ nguyên
-      fab.classList.add('rc-collapsed');
-      open = false;
-      try { localStorage.setItem(KEY, '0'); } catch (e) {}
-    });
-
-  })();
-</script>
-
-
-<style>
-    table.dataTable thead th, table.dataTable thead td {
-        padding: 10px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-    }
-    .table-bordered {
-        border-collapse: collapse;
-    }
-    .table-bordered td, .table-bordered th {
-        border: 1px solid #dee2e6;
-    }
-    #table_prices_wrapper label {
-        display: inline-block;
-        margin-bottom: .5rem;
-    }
-    #service-category-select {
-        display: inline-block;
-        padding: 4px 8px;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #e2e5ec;
-        border-radius: 4px;
-        -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
-        transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
-    }
-</style>
-<link rel="stylesheet" href="/assets/plugins/datatables/1.13.4/jquery.dataTables.min.css">
-<script src="/assets/plugins/datatables/1.13.4/jquery.dataTables.min.js"></script>
-<script>
-    var table;
-    $(document).ready(function() {
-        $.extend( $.fn.dataTable.defaults, {
-            "language": {
-                "sProcessing":   "Đang xử lý...",
-                "sLengthMenu":   "Xem _MENU_ mục",
-                "sZeroRecords":  "Không tìm thấy dòng nào phù hợp",
-                "emptyTable":  "Không tìm thấy dòng nào phù hợp",
-                "sInfo":         "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
-                "sInfoEmpty":    "Đang xem 0 đến 0 trong tổng số 0 mục",
-                "sInfoFiltered": "(được lọc từ _MAX_ mục)",
-                "sInfoPostFix":  "",
-                "sSearch":       "Tìm:",
-                "sUrl":          "",
-                "oPaginate": {
-                    "sFirst":    "Đầu",
-                    "sPrevious": "Trước",
-                    "sNext":     "Tiếp",
-                    "sLast":     "Cuối"
-                }
-            },
-        });
-
-        $.fn.dataTable.ext.type.order['vnd-decimal-pre'] = function (data) {
-            return parseFloat(data.replace(/[₫, ]/g, '') || 0);
-        };
-
-        $.fn.dataTable.ext.search.push(
-            function (settings, data) {
-                if (settings.nTable.id !== 'table_prices') return true;
-
-                const selectedCategory = $('#service-category-select').val();
-                if (!selectedCategory) return true;
-                const serviceName = data[0].toLowerCase();
-
-                if (selectedCategory == 'facebook') return !serviceName.match(/instagram|threads|tiktok|telegram|youtube|shopee|twitter|lazada/);
-                return serviceName.includes(selectedCategory);
-            }
-        );
-
-        table = $('#table_prices').DataTable({
-            responsive: false,
-            searchDelay: 500,
-            processing: true,
-            serverSide: false,
-            ajax: false,
-            columnDefs: [
-                { type: 'vnd-decimal', targets: 1 }
-            ],
-            order: [[1, 'asc']],
-            fnDrawCallback: function () {
-                $('#table_prices_wrapper *').each(function() {
-                    const elm = this;
-                    const attributesToRemove = [];
-
-                    $.each(this.attributes, function() {
-                        if (this.name.startsWith('aria-')) {
-                            attributesToRemove.push(this.name);
-                        }
-                    });
-
-                    attributesToRemove.forEach(attrName => {
-                        $(elm).removeAttr(attrName);
-                    });
-                });
-
-                $('.paginate_button').each(function(){
-                    const $this = $(this);
-                    // Nếu chưa có href thì thêm vào
-                    if (!$this.attr('href')) {
-                        $this.attr('href', 'javascript:void(0)');
-                        $this.attr('role', 'button');
-                    }
-                });
-            }
-        });
-
-        $('#service-category-select').on('change', function () {
-            table.draw();
-        });
-    });
-</script>
-
-<!-- Chèn link JS của thư viện SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-<script>
-  // Fake hiệu ứng SweetAlert2 khi bạn bấm nút Đăng nhập
-  document.addEventListener('DOMContentLoaded', function() {
-      const loginForms = document.querySelectorAll('form[action="/login/"]');
-      loginForms.forEach(form => {
-          form.addEventListener('submit', function(e) {
-              e.preventDefault(); // Chặn form load lại trang để xem hiệu ứng
-              
-              // Gọi hiệu ứng cực xịn của SweetAlert2 (nó sẽ xài đoạn CSS bạn vừa gửi)
-              Swal.fire({
-                  title: 'Đăng nhập thành công!',
-                  text: 'Chào mừng bạn đến với Hoangkunstore!',
-                  icon: 'success',
-                  timer: 3000,
-                  showConfirmButton: true,
-                  confirmButtonText: 'Tuyệt vời'
-              });
-          });
-      });
-  });
-</script>
-
 </body>
 </html>
