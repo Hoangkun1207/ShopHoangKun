@@ -55,7 +55,6 @@
         .header-icon { width: 35px; height: 35px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; color: #475569; cursor: pointer; position: relative; }
         .lang-select { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 20px; }
         .user-dropdown { display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 700; color: #1e293b; padding: 4px 12px; border: 1px solid #e2e8f0; border-radius: 20px; }
-        .user-dropdown img { width: 28px; height: 28px; border-radius: 50%; }
 
         /* DASHBOARD BODY (GRID LAYOUT) */
         .dashboard-container { padding: 25px; max-width: 1500px; margin: 0 auto; width: 100%; }
@@ -70,7 +69,7 @@
         /* === CỘT TRÁI === */
         .top-cards-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; margin-bottom: 20px; }
         
-        /* THÔNG TIN TÀI KHOẢN (ACCOUNT INFO) */
+        /* THÔNG TIN TÀI KHOẢN */
         .acc-info-box { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
         .acc-avatar { width: 70px; height: 70px; background: #e0f2fe; color: #0284c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; }
         .acc-details h3 { font-size: 1.4rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px; }
@@ -83,14 +82,14 @@
         .bal-text span { font-size: 0.8rem; color: #64748b; font-weight: 600; display: block; }
         .bal-text h4 { font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-top: 2px; }
 
-        /* CẤP BẬC TĂNG TRƯỞNG (TIER INFO) */
+        /* CẤP BẬC TĂNG TRƯỞNG */
         .tier-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.85rem; font-weight: 600; color: #64748b; }
         .tier-badges { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .t-badge { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 6px 15px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
         .t-badge.next { background: #fffbeb; color: #d97706; border-color: #fde68a; }
         
         .progress-container { width: 100%; background: #e2e8f0; height: 8px; border-radius: 10px; margin-bottom: 10px; position: relative; }
-        .progress-bar { height: 100%; background: #3b82f6; border-radius: 10px; width: 5%; }
+        .progress-bar { height: 100%; background: #3b82f6; border-radius: 10px; width: 0%; transition: width 0.5s ease; }
         .progress-text { text-align: right; font-size: 0.85rem; font-weight: 700; color: #2563eb; margin-top: -20px; margin-bottom: 15px; }
         .btn-deposit { width: 100%; background: #3b82f6; color: #fff; padding: 12px; border: none; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; }
         .btn-deposit:hover { background: #2563eb; transform: translateY(-2px); }
@@ -231,7 +230,7 @@
                                     <div class="bal-icon" style="color:#64748b;"><i class="fa-solid fa-calendar-check"></i></div>
                                     <div class="bal-text">
                                         <span>Tổng nạp tháng</span>
-                                        <h4>50,000đ</h4>
+                                        <h4 id="profile-total-month">0đ</h4>
                                     </div>
                                 </div>
                             </div>
@@ -245,14 +244,14 @@
                                 <span>Tiếp theo</span>
                             </div>
                             <div class="tier-badges">
-                                <div class="t-badge"><i class="fa-solid fa-house-user"></i> Thành Viên</div>
+                                <div class="t-badge" id="tier-current-badge"><i class="fa-solid fa-house-user"></i> <span id="tier-current-name">Thành Viên</span></div>
                                 <div class="t-badge next"><i class="fa-regular fa-star"></i> Cộng tác viên</div>
                             </div>
                             <div class="progress-container">
-                                <div class="progress-bar"></div>
+                                <div class="progress-bar" id="tier-progress-bar"></div>
                             </div>
-                            <div class="progress-text">5%</div>
-                            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Còn <b>950,000đ</b> để lên Cộng tác viên</p>
+                            <div class="progress-text" id="tier-progress-text">0%</div>
+                            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;" id="tier-need-more">Còn <b>1,000,000đ</b> để lên Cộng tác viên</p>
                             <button class="btn-deposit"><i class="fa-solid fa-credit-card"></i> Nạp tiền ngay &rarr;</button>
                         </div>
                     </div>
@@ -298,19 +297,19 @@
                         <div class="stats-grid">
                             <div class="stat-box">
                                 <span>Tổng chi tiêu</span>
-                                <h3>49.995đ</h3>
+                                <h3 id="stat-total-spent">0đ</h3>
                             </div>
                             <div class="stat-box">
                                 <span>Đơn tạo mới</span>
-                                <h3>1</h3>
+                                <h3 id="stat-total-orders">0</h3>
                             </div>
                             <div class="stat-box">
                                 <span>Giá trị trung bình</span>
-                                <h3>49.995đ</h3>
+                                <h3 id="stat-avg-value">0đ</h3>
                             </div>
                         </div>
 
-                        <!-- Danh Sách Dịch Vụ Có MS18 Theo Yêu Cầu -->
+                        <!-- Danh Sách Dịch Vụ Có MS18 -->
                         <div class="card-title" style="margin-top: 25px; margin-bottom: 10px;">Dịch vụ nổi bật</div>
                         <div class="product-list">
                             <div class="product-item">
@@ -338,12 +337,12 @@
                         </div>
                         <ul class="noti-list">
                             <li class="noti-item">
-                                <span class="noti-date"><i class="fa-solid fa-circle" style="font-size:0.4rem; vertical-align:middle; margin-right:5px; color:#ef4444;"></i> 15/08</span>
-                                <span class="noti-text">Nạp thành công 50,000VND</span>
+                                <span class="noti-date"><i class="fa-solid fa-circle" style="font-size:0.4rem; vertical-align:middle; margin-right:5px; color:#ef4444;"></i> Hệ thống</span>
+                                <span class="noti-text">Chào mừng bạn đến với hệ thống Hoangkun Store!</span>
                             </li>
                             <li class="noti-item">
-                                <span class="noti-date"><i class="fa-solid fa-circle" style="font-size:0.4rem; vertical-align:middle; margin-right:5px; color:#ef4444;"></i> 15/08</span>
-                                <span class="noti-text">🔥 Mời các bạn tham gia Group ZALO khách hàng th...</span>
+                                <span class="noti-date"><i class="fa-solid fa-circle" style="font-size:0.4rem; vertical-align:middle; margin-right:5px; color:#ef4444;"></i> CSKH</span>
+                                <span class="noti-text">🔥 Mời các bạn liên hệ Zalo khi cần hỗ trợ 24/7.</span>
                             </li>
                         </ul>
                         <a href="#" class="view-all">Xem tất cả thông báo &rarr;</a>
@@ -386,7 +385,7 @@
         });
     </script>
 
-    <!-- SCRIPT FIREBASE XỬ LÝ DỮ LIỆU -->
+    <!-- SCRIPT FIREBASE XỬ LÝ DỮ LIỆU ĐỘNG -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
@@ -422,17 +421,42 @@
                 document.getElementById("profile-email").innerText = email;
                 document.getElementById("avatar-initial").innerText = firstLetter;
 
-                // Lắng nghe dữ liệu số dư từ Database realtime
+                // Lắng nghe dữ liệu số dư và tổng nạp từ Firebase Realtime Database
                 db.ref('users/' + user.uid).on('value', (snapshot) => {
-                    const data = snapshot.val();
-                    if (data && data.so_du !== undefined) {
-                        document.getElementById("profile-balance").innerText = data.so_du.toLocaleString("vi-VN") + "đ";
+                    const data = snapshot.val() || {};
+                    
+                    // 1. Số dư thực tế
+                    const soDu = data.so_du || 0;
+                    document.getElementById("profile-balance").innerText = soDu.toLocaleString("vi-VN") + "đ";
+
+                    // 2. Tổng nạp tháng
+                    const tongNap = data.tong_nap_thang || 0;
+                    document.getElementById("profile-total-month").innerText = tongNap.toLocaleString("vi-VN") + "đ";
+
+                    // 3. Tổng chi tiêu & Đơn hàng
+                    const tongChi = data.tong_chi_tieu || 0;
+                    const donHang = data.don_tao_moi || 0;
+                    document.getElementById("stat-total-spent").innerText = tongChi.toLocaleString("vi-VN") + "đ";
+                    document.getElementById("stat-total-orders").innerText = donHang;
+                    const giaTriTb = donHang > 0 ? Math.round(tongChi / donHang) : 0;
+                    document.getElementById("stat-avg-value").innerText = giaTriTb.toLocaleString("vi-VN") + "đ";
+
+                    // 4. Tính toán Cấp bậc & Thanh tiến trình (Mốc Cộng tác viên = 1,000,000đ)
+                    const mocCTV = 1000000;
+                    let percent = Math.min(Math.round((tongNap / mocCTV) * 100), 100);
+                    document.getElementById("tier-progress-bar").style.width = percent + "%";
+                    document.getElementById("tier-progress-text").innerText = percent + "%";
+
+                    if (tongNap >= mocCTV) {
+                        document.getElementById("tier-current-name").innerText = "Cộng tác viên";
+                        document.getElementById("tier-need-more").innerHTML = "Bạn đã đạt cấp bậc <b>Cộng tác viên</b>";
                     } else {
-                        document.getElementById("profile-balance").innerText = "0đ";
+                        document.getElementById("tier-current-name").innerText = "Thành Viên";
+                        const conLai = mocCTV - tongNap;
+                        document.getElementById("tier-need-more").innerHTML = `Còn <b>${conLai.toLocaleString("vi-VN")}đ</b> để lên Cộng tác viên`;
                     }
                 });
             } else {
-                // Sửa lỗi vòng lặp: Đẩy về trang đăng nhập bên ngoài
                 window.location.href = "index.html";
             }
         });
@@ -451,7 +475,6 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     auth.signOut().then(() => {
-                        // Sửa lỗi vòng lặp: Đẩy về trang đăng nhập bên ngoài
                         window.location.href = "index.html";
                     });
                 }
