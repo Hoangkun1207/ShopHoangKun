@@ -521,106 +521,193 @@
         <i class="fa-solid fa-headset"></i>
     </a>
 
-    <!-- SCRIPTS XỬ LÝ -->
-    <script>
-        // 1. Chuyển đổi Form Đăng Nhập / Đăng Ký
-        function toggleForm() {
-            const loginBox = document.getElementById('login-box');
-            const registerBox = document.getElementById('register-box');
-            if (loginBox.style.display === 'none') {
-                loginBox.style.display = 'block';
-                registerBox.style.display = 'none';
-            } else {
-                loginBox.style.display = 'none';
-                registerBox.style.display = 'block';
-            }
+  <!-- ==================== FIREBASE SDK ==================== -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<!-- ==================== FIREBASE + LOGIN ==================== -->
+<script>
+const firebaseConfig={
+    apiKey:"AIzaSyAaI0O-6LQs2vZTDBAeJX8piKX4pjfyCbM",
+    authDomain:"shophoangkun.firebaseapp.com",
+    databaseURL:"https://shophoangkun-default-rtdb.firebaseio.com",
+    projectId:"shophoangkun",
+    storageBucket:"shophoangkun.firebasestorage.app",
+    messagingSenderId:"364993334554",
+    appId:"1:364993334554:web:800c66509b355ebf5370a3",
+    measurementId:"G-KJ8HJ3H2D5"
+};
+
+if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+
+const auth=firebase.auth();
+const db=firebase.database();
+
+function toggleForm(){
+    const loginBox=document.getElementById("login-box");
+    const registerBox=document.getElementById("register-box");
+    if(loginBox.style.display==="none"){
+        loginBox.style.display="block";
+        registerBox.style.display="none";
+    }else{
+        loginBox.style.display="none";
+        registerBox.style.display="block";
+    }
+}
+
+const registerForm=document.getElementById("registerForm");
+
+if(registerForm){
+    registerForm.addEventListener("submit",async function(e){
+        e.preventDefault();
+
+        const username=document.getElementById("reg-user").value.trim();
+        const email=document.getElementById("reg-email").value.trim();
+        const password=document.getElementById("reg-pass").value;
+        const confirmPassword=document.getElementById("reg-repass").value;
+        const refcode=document.getElementById("reg-refcode").value.trim();
+
+        if(!username){
+            Swal.fire("Lỗi!","Vui lòng nhập tên đăng nhập!","error");
+            return;
         }
 
-        // 2. Fake Hiệu Ứng Submit Form bằng SweetAlert2
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Đăng nhập thành công!',
-                text: 'Chào mừng bạn trở lại hệ thống Hoangkun Store!',
-                icon: 'success',
-                timer: 2000,
-                showConfirmButton: false
-            });
-        });
-
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Đăng ký thành công!',
-                text: 'Tài khoản của bạn đã được tạo.',
-                icon: 'success',
-                confirmButtonText: 'Đăng nhập ngay'
-            }).then(() => {
-                toggleForm();
-            });
-        });
-
-        // 3. Hiệu ứng Typewriter (Lướt qua lại 2 nhịp) cho nút Đăng nhập
-        const textArray = ["Đăng nhập", "Đăng nhập / Đăng Ký"];
-        let textIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
-        function typeWriter() {
-            const currentText = textArray[textIndex];
-            const typeTextElement = document.getElementById("type-text");
-            
-            if (!typeTextElement) return;
-
-            if (isDeleting) {
-                typeTextElement.textContent = currentText.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typeTextElement.textContent = currentText.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
-            // Tốc độ lướt: gõ ra 50ms, thu về 25ms
-            let typeSpeed = isDeleting ? 25 : 50; 
-
-            if (!isDeleting && charIndex === currentText.length) {
-                typeSpeed = 1500; // Dừng lại 1.5s
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                textIndex++;
-                if (textIndex >= textArray.length) {
-                    textIndex = 0; // Lặp lại từ đầu
-                }
-                typeSpeed = 400; // Nghỉ 0.4s
-            }
-
-            setTimeout(typeWriter, typeSpeed);
+        if(!email){
+            Swal.fire("Lỗi!","Vui lòng nhập email!","error");
+            return;
         }
 
-        // 4. HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL BẬT/TẮT TỐI ƯU HÓA)
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                // Tối ưu hóa: Dùng requestAnimationFrame để thao tác giao diện không làm nghẽn luồng xử lý
-                window.requestAnimationFrame(() => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('in-view');
-                    } else {
-                        entry.target.classList.remove('in-view'); 
-                    }
-                });
-            });
-        }, { 
-            threshold: 0.1, // Chỉnh xuống 0.1 để kích hoạt sớm hơn, tránh cảm giác bị khựng
-            rootMargin: "0px 0px -20px 0px" // Bắt đầu tính khi phần tử cách đáy màn hình 20px
+        if(password.length<6){
+            Swal.fire("Lỗi!","Mật khẩu phải có ít nhất 6 ký tự!","error");
+            return;
+        }
+
+        if(password!==confirmPassword){
+            Swal.fire("Lỗi!","Mật khẩu nhập lại không khớp!","error");
+            return;
+        }
+
+        Swal.fire({
+            title:"Đang tạo tài khoản...",
+            text:"Vui lòng chờ",
+            allowOutsideClick:false,
+            didOpen:()=>Swal.showLoading()
         });
 
-        // Khởi động các hàm sau khi tải web
-        document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(typeWriter, 500); // Khởi động gõ chữ
-            revealElements.forEach(el => revealObserver.observe(el)); // Bật theo dõi cuộn
+        try{
+            const result=await auth.createUserWithEmailAndPassword(email,password);
+            const firebaseUser=result.user;
+            const uid=firebaseUser.uid;
+
+            await firebaseUser.updateProfile({displayName:username});
+
+            await db.ref("users/"+uid).set({
+                uid:uid,
+                ho_ten:username,
+                email:email,
+                ma_gioi_thieu:refcode||"Không có",
+                so_du:0,
+                ngay_tao:new Date().toLocaleString("vi-VN")
+            });
+
+            await Swal.fire({
+                icon:"success",
+                title:"Đăng ký thành công!",
+                html:"Tài khoản <b>"+username+"</b> đã được tạo.",
+                confirmButtonText:"Đăng nhập"
+            });
+
+            registerForm.reset();
+            document.getElementById("login-box").style.display="block";
+            document.getElementById("register-box").style.display="none";
+            await auth.signOut();
+
+        }catch(error){
+            console.error(error);
+            let message="Đã xảy ra lỗi!";
+
+            if(error.code==="auth/email-already-in-use")
+                message="Email này đã được đăng ký!";
+            else if(error.code==="auth/invalid-email")
+                message="Email không hợp lệ!";
+            else if(error.code==="auth/weak-password")
+                message="Mật khẩu quá yếu! Tối thiểu 6 ký tự.";
+            else if(error.code==="auth/operation-not-allowed")
+                message="Bạn chưa bật đăng nhập Email/Password trong Firebase.";
+
+            Swal.fire("Đăng ký thất bại",message,"error");
+        }
+    });
+}
+
+const loginForm=document.getElementById("loginForm");
+
+if(loginForm){
+    loginForm.addEventListener("submit",async function(e){
+        e.preventDefault();
+
+        const email=document.getElementById("login-email").value.trim();
+        const password=document.getElementById("login-pass").value;
+
+        if(!email||!password){
+            Swal.fire("Lỗi!","Vui lòng nhập email và mật khẩu!","warning");
+            return;
+        }
+
+        Swal.fire({
+            title:"Đang đăng nhập...",
+            text:"Đang kiểm tra tài khoản",
+            allowOutsideClick:false,
+            didOpen:()=>Swal.showLoading()
         });
-    </script>
+
+        try{
+            const result=await auth.signInWithEmailAndPassword(email,password);
+            const firebaseUser=result.user;
+
+            const snapshot=await db.ref("users/"+firebaseUser.uid).once("value");
+            const userData=snapshot.val();
+
+            const username=userData?.ho_ten||firebaseUser.displayName||email;
+
+            await Swal.fire({
+                icon:"success",
+                title:"Đăng nhập thành công!",
+                html:"Xin chào <b>"+username+"</b> 👋",
+                confirmButtonText:"Tiếp tục"
+            });
+
+            window.location.href="dashboard.html";
+
+        }catch(error){
+            console.error(error);
+            let message="Email hoặc mật khẩu không chính xác!";
+
+            if(error.code==="auth/user-not-found")
+                message="Không tìm thấy tài khoản này!";
+            else if(error.code==="auth/wrong-password")
+                message="Mật khẩu không chính xác!";
+            else if(error.code==="auth/invalid-email")
+                message="Email không hợp lệ!";
+            else if(error.code==="auth/user-disabled")
+                message="Tài khoản này đã bị khóa!";
+            else if(error.code==="auth/too-many-requests")
+                message="Bạn đăng nhập sai quá nhiều lần. Hãy thử lại sau!";
+
+            Swal.fire("Đăng nhập thất bại",message,"error");
+        }
+    });
+}
+
+auth.onAuthStateChanged(function(user){
+    if(user){
+        console.log("Đã đăng nhập:",user.email,user.uid);
+    }else{
+        console.log("Chưa đăng nhập");
+    }
+});
+</script>
+    
 </body>
 </html>
