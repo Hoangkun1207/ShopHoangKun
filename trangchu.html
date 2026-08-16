@@ -410,185 +410,153 @@
         });
     </script>
     
-    <!-- SCRIPT BIỂU ĐỒ CHART.JS -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const ctx = document.getElementById('spendChart').getContext('2d');
-            
-            // Biến toàn cục để lưu biểu đồ, tiện cho việc update sau này
-            window.spendChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['10/08', '11/08', '12/08', '13/08', '14/08', '15/08', '16/08'],
-                    datasets: [
-                        {
-                            label: 'Đơn hàng',
-                            data: [0, 0, 0, 0, 0, 0, 0], // Sẽ được cập nhật thật
-                            borderColor: '#10b981',
-                            backgroundColor: '#10b981',
-                            borderWidth: 2,
-                            fill: false,
-                            tension: 0.4,
-                            yAxisID: 'y1'
-                        },
-                        {
-                            label: 'Chi tiêu (đ)',
-                            data: [0, 0, 0, 0, 0, 0, 0], // Sẽ được cập nhật thật
-                            borderColor: '#3b82f6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            borderWidth: 2,
-                            fill: true,
-                            tension: 0.4,
-                            yAxisID: 'y'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    plugins: {
-                        legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
-                    },
-                    scales: {
-                        y: {
-                            type: 'linear', display: true, position: 'left',
-                            ticks: { callback: function(val) { return val >= 1000 ? (val/1000) + 'K' : val; } },
-                            min: 0,
-                            suggestedMax: 1000 // Tối thiểu hiển thị 1K để biểu đồ không bẹp dí
-                        },
-                        y1: {
-                            type: 'linear', display: true, position: 'right',
-                            grid: { drawOnChartArea: false },
-                            ticks: { stepSize: 1 },
-                            min: 0,
-                            suggestedMax: 5 // Tối thiểu hiển thị 5 đơn
-                        }
-                    }
-                }
-            });
-        });
-    </script>
+ <!-- CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded",()=>{const el=document.getElementById("spendChart");if(!el)return;window.spendChartInstance=new Chart(el.getContext("2d"),{type:"line",data:{labels:[],datasets:[{label:"Đơn hàng",data:[],borderColor:"#10b981",backgroundColor:"#10b981",borderWidth:2,fill:false,tension:.4,yAxisID:"y1"},{label:"Chi tiêu (đ)",data:[],borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,.1)",borderWidth:2,fill:true,tension:.4,yAxisID:"y"}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{position:"bottom",labels:{usePointStyle:true,boxWidth:8}}},scales:{y:{type:"linear",display:true,position:"left",min:0,suggestedMax:1000,ticks:{callback:v=>v>=1000?v/1000+"K":v}},y1:{type:"linear",display:true,position:"right",min:0,suggestedMax:5,grid:{drawOnChartArea:false},ticks:{stepSize:1}}}}});});
+</script>
 
-    <!-- SCRIPT FIREBASE XỬ LÝ DỮ LIỆU ĐỘNG -->
-    <script>
-       const firebaseConfig = {
-  apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
-  authDomain: "shophoangkun.firebaseapp.com",
-  projectId: "shophoangkun",
-  storageBucket: "shophoangkun.firebasestorage.app",
-  messagingSenderId: "364993334554",
-  appId: "1:364993334554:web:800c66509b355ebf5370a3",
-  measurementId: "G-KJ8HJ3H2D5"
+<!-- FIREBASE -->
+<script>
+const firebaseConfig={
+    apiKey:"AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
+    authDomain:"shophoangkun.firebaseapp.com",
+    projectId:"shophoangkun",
+    storageBucket:"shophoangkun.firebasestorage.app",
+    messagingSenderId:"364993334554",
+    appId:"1:364993334554:web:800c66509b355ebf5370a3",
+    measurementId:"G-KJ8HJ3H2D5"
 };
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+
+if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+
+const auth=firebase.auth();
+const db=firebase.database();
+
+function getLast7Days(){
+    const days=[];
+    for(let i=6;i>=0;i--){
+        const d=new Date();
+        d.setDate(d.getDate()-i);
+        days.push(
+            String(d.getDate()).padStart(2,"0")+"/"+
+            String(d.getMonth()+1).padStart(2,"0")
+        );
+    }
+    return days;
+}
+
+auth.onAuthStateChanged(async user=>{
+    if(!user){
+        window.location.href="index.html";
+        return;
+    }
+
+    const name=user.displayName||"Thành viên";
+    const email=user.email||"";
+    const letter=name.charAt(0).toUpperCase();
+
+    document.getElementById("display-username").innerText=name;
+    document.getElementById("avatar-mini").innerText=letter;
+    document.getElementById("profile-name").innerHTML=
+        `${name} <i class="fa-solid fa-circle-check" style="color:#2563eb;font-size:1rem"></i>`;
+    document.getElementById("profile-email").innerText=email;
+    document.getElementById("avatar-initial").innerText=letter;
+
+    try{
+        const snapshot=await db.ref("users/"+user.uid).once("value");
+        const data=snapshot.val()||{};
+
+        const soDu=Number(data.so_du)||0;
+        const tongNap=Number(data.tong_nap_thang)||0;
+        const tongChi=Number(data.tong_chi_tieu)||0;
+        const donHang=Number(data.don_tao_moi)||0;
+
+        document.getElementById("profile-balance").innerText=
+            soDu.toLocaleString("vi-VN")+"đ";
+
+        document.getElementById("profile-total-month").innerText=
+            tongNap.toLocaleString("vi-VN")+"đ";
+
+        document.getElementById("stat-total-spent").innerText=
+            tongChi.toLocaleString("vi-VN")+"đ";
+
+        document.getElementById("stat-total-orders").innerText=donHang;
+
+        const trungBinh=donHang?Math.round(tongChi/donHang):0;
+
+        document.getElementById("stat-avg-value").innerText=
+            trungBinh.toLocaleString("vi-VN")+"đ";
+
+        // BIỂU ĐỒ
+        if(window.spendChartInstance){
+            window.spendChartInstance.data.labels=getLast7Days();
+            window.spendChartInstance.data.datasets[0].data=
+                [0,0,0,0,0,0,donHang];
+            window.spendChartInstance.data.datasets[1].data=
+                [0,0,0,0,0,0,tongChi];
+            window.spendChartInstance.update();
         }
 
-        const auth = firebase.auth();
-        const db = firebase.database();
+        // CẤP BẬC
+        const mocCTV=1000000;
+        const percent=Math.min(
+            Math.round((tongNap/mocCTV)*100),100
+        );
 
-        // Tạo mảng ngày 7 ngày gần nhất
-        function getLast7Days() {
-            let days = [];
-            for (let i = 6; i >= 0; i--) {
-                let d = new Date();
-                d.setDate(d.getDate() - i);
-                days.push(('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2));
-            }
-            return days;
+        document.getElementById("tier-progress-bar").style.width=
+            percent+"%";
+
+        document.getElementById("tier-progress-text").innerText=
+            percent+"%";
+
+        if(tongNap>=mocCTV){
+            document.getElementById("tier-current-name").innerText=
+                "Cộng tác viên";
+
+            document.getElementById("tier-need-more").innerHTML=
+                "Bạn đã đạt cấp bậc <b>Cộng tác viên</b>";
+        }else{
+            document.getElementById("tier-current-name").innerText=
+                "Thành Viên";
+
+            const conLai=mocCTV-tongNap;
+
+            document.getElementById("tier-need-more").innerHTML=
+                `Còn <b>${conLai.toLocaleString("vi-VN")}đ</b> để lên Cộng tác viên`;
         }
 
-        // Kiểm tra tài khoản và đổ dữ liệu
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                const displayName = user.displayName || "Thành viên";
-                const email = user.email;
-                const firstLetter = displayName.charAt(0).toUpperCase();
-                
-                // Cập nhật Header
-                document.getElementById("display-username").innerText = displayName;
-                document.getElementById("avatar-mini").innerText = firstLetter;
-                
-                // Cập nhật thẻ Thông tin tài khoản
-                document.getElementById("profile-name").innerHTML = `${displayName} <i class="fa-solid fa-circle-check" style="color: #2563eb; font-size: 1rem;"></i>`;
-                document.getElementById("profile-email").innerText = email;
-                document.getElementById("avatar-initial").innerText = firstLetter;
+    }catch(error){
+        console.error("Lỗi Firebase:",error);
 
-                // Lắng nghe dữ liệu số dư và tổng nạp từ Firebase Realtime Database
-                db.ref('users/' + user.uid).once('value').then((snapshot) => {
-                    const data = snapshot.val() || {};
-                    
-                    // 1. Số dư thực tế
-                    const soDu = data.so_du || 0;
-                    document.getElementById("profile-balance").innerText = soDu.toLocaleString("vi-VN") + "đ";
+        // Không để giao diện bị treo
+        document.getElementById("profile-balance").innerText="0đ";
+        document.getElementById("profile-total-month").innerText="0đ";
+        document.getElementById("stat-total-spent").innerText="0đ";
+        document.getElementById("stat-total-orders").innerText="0";
+        document.getElementById("stat-avg-value").innerText="0đ";
+    }
+});
 
-                    // 2. Tổng nạp tháng
-                    const tongNap = data.tong_nap_thang || 0;
-                    document.getElementById("profile-total-month").innerText = tongNap.toLocaleString("vi-VN") + "đ";
-
-                    // 3. Tổng chi tiêu & Đơn hàng
-                    const tongChi = data.tong_chi_tieu || 0;
-                    const donHang = data.don_tao_moi || 0;
-                    document.getElementById("stat-total-spent").innerText = tongChi.toLocaleString("vi-VN") + "đ";
-                    document.getElementById("stat-total-orders").innerText = donHang;
-                    const giaTriTb = donHang > 0 ? Math.round(tongChi / donHang) : 0;
-                    document.getElementById("stat-avg-value").innerText = giaTriTb.toLocaleString("vi-VN") + "đ";
-                    
-                    // Cập nhật biểu đồ (Gắn chi tiêu vào ngày cuối cùng để mô phỏng)
-                    if (window.spendChartInstance) {
-                        let labels = getLast7Days();
-                        let orderData = [0, 0, 0, 0, 0, 0, donHang];
-                        let spendData = [0, 0, 0, 0, 0, 0, tongChi];
-                        
-                        window.spendChartInstance.data.labels = labels;
-                        window.spendChartInstance.data.datasets[0].data = orderData;
-                        window.spendChartInstance.data.datasets[1].data = spendData;
-                        window.spendChartInstance.update();
-                    }
-
-                    // 4. Tính toán Cấp bậc & Thanh tiến trình
-                    const mocCTV = 1000000;
-                    let percent = Math.min(Math.round((tongNap / mocCTV) * 100), 100);
-                    document.getElementById("tier-progress-bar").style.width = percent + "%";
-                    document.getElementById("tier-progress-text").innerText = percent + "%";
-
-                    if (tongNap >= mocCTV) {
-                        document.getElementById("tier-current-name").innerText = "Cộng tác viên";
-                        document.getElementById("tier-need-more").innerHTML = "Bạn đã đạt cấp bậc <b>Cộng tác viên</b>";
-                    } else {
-                        document.getElementById("tier-current-name").innerText = "Thành Viên";
-                        const conLai = mocCTV - tongNap;
-                        document.getElementById("tier-need-more").innerHTML = `Còn <b>${conLai.toLocaleString("vi-VN")}đ</b> để lên Cộng tác viên`;
-                    }
-                                }).catch((error) => {
-                    console.error("Lỗi tải dữ liệu Firebase:", error);
-                });
-            } else {
-                window.location.href = "index.html";
-            }
-        });
-
-        // Hàm Đăng xuất
-        function logout() {
-            Swal.fire({
-                title: 'Đăng xuất?',
-                text: "Bạn có chắc chắn muốn thoát tài khoản không?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#2563eb',
-                cancelButtonColor: '#ef4444',
-                confirmButtonText: 'Đồng ý',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    auth.signOut().then(() => {
-                        window.location.href = "index.html";
-                    });
-                }
+// ĐĂNG XUẤT
+function logout(){
+    Swal.fire({
+        title:"Đăng xuất?",
+        text:"Bạn có chắc chắn muốn thoát tài khoản không?",
+        icon:"warning",
+        showCancelButton:true,
+        confirmButtonColor:"#2563eb",
+        cancelButtonColor:"#ef4444",
+        confirmButtonText:"Đồng ý",
+        cancelButtonText:"Hủy"
+    }).then(result=>{
+        if(result.isConfirmed){
+            auth.signOut().then(()=>{
+                window.location.href="index.html";
             });
         }
-    </script>
+    });
+}
+</script>
 </body>
 </html>
