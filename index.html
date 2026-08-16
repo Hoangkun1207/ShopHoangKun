@@ -1138,12 +1138,10 @@ if (typeText) {
         const currentText = texts[textIndex];
 
         if (!deleting) {
-            // Gõ chữ
             typeText.textContent = currentText.substring(0, charIndex + 1);
             charIndex++;
 
             if (charIndex === currentText.length) {
-                // Đứng lại một chút rồi xóa
                 setTimeout(() => {
                     deleting = true;
                     typeLoop();
@@ -1155,7 +1153,6 @@ if (typeText) {
             setTimeout(typeLoop, 90);
 
         } else {
-            // Xóa chữ
             typeText.textContent = currentText.substring(0, charIndex - 1);
             charIndex--;
 
