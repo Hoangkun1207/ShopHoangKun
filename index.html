@@ -533,12 +533,11 @@
         <i class="fa-solid fa-headset"></i>
     </a>
 
-  <!-- ==================== FIREBASE SDK ==================== -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-<!-- ==================== FIREBASE + LOGIN ==================== -->
 <script>
 const firebaseConfig={
     apiKey:"AIzaSyAaI0O-6LQs2vZTDBAeJX8piKX4pjfyCbM",
@@ -551,173 +550,239 @@ const firebaseConfig={
     measurementId:"G-KJ8HJ3H2D5"
 };
 
-if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
 const auth=firebase.auth();
 const db=firebase.database();
 
+/* CHUYỂN LOGIN / REGISTER */
 function toggleForm(){
-    const loginBox=document.getElementById("login-box");
-    const registerBox=document.getElementById("register-box");
-    if(loginBox.style.display==="none"){
-        loginBox.style.display="block";
-        registerBox.style.display="none";
-    }else{
-        loginBox.style.display="none";
-        registerBox.style.display="block";
-    }
+    const login=document.getElementById("login-box");
+    const register=document.getElementById("register-box");
+    if(!login||!register)return;
+
+    const showRegister=register.style.display==="none"||!register.style.display;
+    login.style.display=showRegister?"none":"block";
+    register.style.display=showRegister?"block":"none";
 }
 
-const registerForm=document.getElementById("registerForm");
+/* ĐĂNG KÝ */
+document.getElementById("registerForm")?.addEventListener("submit",async e=>{
+    e.preventDefault();
 
-if(registerForm){
-    registerForm.addEventListener("submit",async function(e){
-        e.preventDefault();
+    const username=document.getElementById("reg-user").value.trim();
+    const email=document.getElementById("reg-email").value.trim();
+    const password=document.getElementById("reg-pass").value;
+    const repass=document.getElementById("reg-repass").value;
+    const refcode=document.getElementById("reg-refcode").value.trim();
 
-        const username=document.getElementById("reg-user").value.trim();
-        const email=document.getElementById("reg-email").value.trim();
-        const password=document.getElementById("reg-pass").value;
-        const confirmPassword=document.getElementById("reg-repass").value;
-        const refcode=document.getElementById("reg-refcode").value.trim();
+    if(username.length<4)
+        return Swal.fire("Lỗi!","Tên đăng nhập phải có ít nhất 4 ký tự!","error");
 
-        if(!username){
-            Swal.fire("Lỗi!","Vui lòng nhập tên đăng nhập!","error");
-            return;
-        }
+    if(!email)
+        return Swal.fire("Lỗi!","Vui lòng nhập Gmail khôi phục!","error");
 
-        if(!email){
-            Swal.fire("Lỗi!","Vui lòng nhập email!","error");
-            return;
-        }
+    if(password.length<6)
+        return Swal.fire("Lỗi!","Mật khẩu phải có ít nhất 6 ký tự!","error");
 
-        if(password.length<6){
-            Swal.fire("Lỗi!","Mật khẩu phải có ít nhất 6 ký tự!","error");
-            return;
-        }
+    if(password!==repass)
+        return Swal.fire("Lỗi!","Mật khẩu nhập lại không khớp!","error");
 
-        if(password!==confirmPassword){
-            Swal.fire("Lỗi!","Mật khẩu nhập lại không khớp!","error");
-            return;
-        }
+    Swal.fire({
+        title:"Đang tạo tài khoản...",
+        allowOutsideClick:false,
+        didOpen:()=>Swal.showLoading()
+    });
 
-        Swal.fire({
-            title:"Đang tạo tài khoản...",
-            text:"Vui lòng chờ",
-            allowOutsideClick:false,
-            didOpen:()=>Swal.showLoading()
+    try{
+        /* KIỂM TRA TÊN ĐĂNG NHẬP */
+        const check=await db.ref("users")
+            .orderByChild("ho_ten")
+            .equalTo(username)
+            .once("value");
+
+        if(check.exists())
+            return Swal.fire("Tên đăng nhập đã tồn tại!","Vui lòng chọn tên khác.","warning");
+
+        /* TẠO FIREBASE ACCOUNT BẰNG GMAIL */
+        const result=await auth.createUserWithEmailAndPassword(email,password);
+        const user=result.user;
+
+        await user.updateProfile({displayName:username});
+
+        /* LƯU USER */
+        await db.ref("users/"+user.uid).set({
+            uid:user.uid,
+            ho_ten:username,
+            email:email,
+            ma_gioi_thieu:refcode||"Không có",
+            so_du:0,
+            ngay_tao:new Date().toLocaleString("vi-VN")
         });
 
-        try{
-            const result=await auth.createUserWithEmailAndPassword(email,password);
-            const firebaseUser=result.user;
-            const uid=firebaseUser.uid;
+        await auth.signOut();
+        e.target.reset();
 
-            await firebaseUser.updateProfile({displayName:username});
-
-            await db.ref("users/"+uid).set({
-                uid:uid,
-                ho_ten:username,
-                email:email,
-                ma_gioi_thieu:refcode||"Không có",
-                so_du:0,
-                ngay_tao:new Date().toLocaleString("vi-VN")
-            });
-
-            await Swal.fire({
-                icon:"success",
-                title:"Đăng ký thành công!",
-                html:"Tài khoản <b>"+username+"</b> đã được tạo.",
-                confirmButtonText:"Đăng nhập"
-            });
-
-            registerForm.reset();
-            document.getElementById("login-box").style.display="block";
-            document.getElementById("register-box").style.display="none";
-            await auth.signOut();
-
-        }catch(error){
-            console.error(error);
-            let message="Đã xảy ra lỗi!";
-
-            if(error.code==="auth/email-already-in-use")
-                message="Email này đã được đăng ký!";
-            else if(error.code==="auth/invalid-email")
-                message="Email không hợp lệ!";
-            else if(error.code==="auth/weak-password")
-                message="Mật khẩu quá yếu! Tối thiểu 6 ký tự.";
-            else if(error.code==="auth/operation-not-allowed")
-                message="Bạn chưa bật đăng nhập Email/Password trong Firebase.";
-
-            Swal.fire("Đăng ký thất bại",message,"error");
-        }
-    });
-}
-
-const loginForm=document.getElementById("loginForm");
-
-if(loginForm){
-    loginForm.addEventListener("submit",async function(e){
-        e.preventDefault();
-
-        const email=document.getElementById("login-email").value.trim();
-        const password=document.getElementById("login-pass").value;
-
-        if(!email||!password){
-            Swal.fire("Lỗi!","Vui lòng nhập email và mật khẩu!","warning");
-            return;
-        }
+        document.getElementById("login-box").style.display="block";
+        document.getElementById("register-box").style.display="none";
 
         Swal.fire({
-            title:"Đang đăng nhập...",
-            text:"Đang kiểm tra tài khoản",
-            allowOutsideClick:false,
-            didOpen:()=>Swal.showLoading()
+            icon:"success",
+            title:"Đăng ký thành công!",
+            html:"Tên đăng nhập: <b>"+username+"</b>",
+            confirmButtonText:"Đăng nhập"
         });
 
-        try{
-            const result=await auth.signInWithEmailAndPassword(email,password);
-            const firebaseUser=result.user;
+    }catch(error){
+        console.error(error);
 
-            const snapshot=await db.ref("users/"+firebaseUser.uid).once("value");
-            const userData=snapshot.val();
+        let msg="Đã xảy ra lỗi khi đăng ký!";
 
-            const username=userData?.ho_ten||firebaseUser.displayName||email;
+        if(error.code==="auth/email-already-in-use")
+            msg="Gmail này đã được đăng ký!";
+        else if(error.code==="auth/invalid-email")
+            msg="Gmail không hợp lệ!";
+        else if(error.code==="auth/weak-password")
+            msg="Mật khẩu quá yếu!";
+        else if(error.code==="auth/operation-not-allowed")
+            msg="Chưa bật Email/Password trong Firebase!";
+        else if(error.code==="PERMISSION_DENIED")
+            msg="Firebase Database chưa được cấp quyền!";
 
-            await Swal.fire({
-                icon:"success",
-                title:"Đăng nhập thành công!",
-                html:"Xin chào <b>"+username+"</b> 👋",
-                confirmButtonText:"Tiếp tục"
-            });
-
-            window.location.href="dashboard.html";
-
-        }catch(error){
-            console.error(error);
-            let message="Email hoặc mật khẩu không chính xác!";
-
-            if(error.code==="auth/user-not-found")
-                message="Không tìm thấy tài khoản này!";
-            else if(error.code==="auth/wrong-password")
-                message="Mật khẩu không chính xác!";
-            else if(error.code==="auth/invalid-email")
-                message="Email không hợp lệ!";
-            else if(error.code==="auth/user-disabled")
-                message="Tài khoản này đã bị khóa!";
-            else if(error.code==="auth/too-many-requests")
-                message="Bạn đăng nhập sai quá nhiều lần. Hãy thử lại sau!";
-
-            Swal.fire("Đăng nhập thất bại",message,"error");
-        }
-    });
-}
-
-auth.onAuthStateChanged(function(user){
-    if(user){
-        console.log("Đã đăng nhập:",user.email,user.uid);
-    }else{
-        console.log("Chưa đăng nhập");
+        Swal.fire("Đăng ký thất bại!",msg,"error");
     }
+});
+
+/* ĐĂNG NHẬP BẰNG TÊN ĐĂNG NHẬP */
+document.getElementById("loginForm")?.addEventListener("submit",async e=>{
+    e.preventDefault();
+
+    const username=document.getElementById("login-user").value.trim();
+    const password=document.getElementById("login-pass").value;
+
+    if(!username||!password)
+        return Swal.fire("Thiếu thông tin!","Vui lòng nhập tên đăng nhập và mật khẩu!","warning");
+
+    Swal.fire({
+        title:"Đang đăng nhập...",
+        allowOutsideClick:false,
+        didOpen:()=>Swal.showLoading()
+    });
+
+    try{
+        /* TÌM GMAIL BẰNG USERNAME */
+        const snapshot=await db.ref("users")
+            .orderByChild("ho_ten")
+            .equalTo(username)
+            .once("value");
+
+        if(!snapshot.exists())
+            return Swal.fire("Đăng nhập thất bại!","Không tìm thấy tên đăng nhập!","error");
+
+        let userData=null;
+        snapshot.forEach(child=>userData=child.val());
+
+        if(!userData?.email)
+            return Swal.fire("Lỗi tài khoản!","Tài khoản chưa có Gmail liên kết.","error");
+
+        /* FIREBASE VẪN XÁC THỰC BẰNG EMAIL + PASSWORD */
+        await auth.signInWithEmailAndPassword(userData.email,password);
+
+        await Swal.fire({
+            icon:"success",
+            title:"Đăng nhập thành công!",
+            html:"Xin chào <b>"+username+"</b> 👋",
+            confirmButtonText:"Tiếp tục"
+        });
+
+        window.location.href="dashboard.html";
+
+    }catch(error){
+        console.error(error);
+
+        let msg="Tên đăng nhập hoặc mật khẩu không chính xác!";
+
+        if(error.code==="auth/wrong-password")
+            msg="Mật khẩu không chính xác!";
+        else if(error.code==="auth/user-not-found")
+            msg="Tài khoản không tồn tại!";
+        else if(error.code==="auth/user-disabled")
+            msg="Tài khoản đã bị khóa!";
+        else if(error.code==="auth/too-many-requests")
+            msg="Bạn thử quá nhiều lần. Vui lòng thử lại sau!";
+        else if(error.code==="PERMISSION_DENIED")
+            msg="Firebase Database chưa được cấp quyền!";
+
+        Swal.fire("Đăng nhập thất bại!",msg,"error");
+    }
+});
+
+/* QUÊN MẬT KHẨU */
+async function forgotPassword(){
+    const result=await Swal.fire({
+        title:"Quên mật khẩu?",
+        text:"Nhập tên đăng nhập để nhận Gmail khôi phục.",
+        input:"text",
+        inputPlaceholder:"Nhập tên đăng nhập",
+        showCancelButton:true,
+        confirmButtonText:"Gửi Gmail",
+        cancelButtonText:"Hủy",
+        inputValidator:value=>!value?"Vui lòng nhập tên đăng nhập!":null
+    });
+
+    if(!result.isConfirmed)return;
+
+    const username=result.value.trim();
+
+    Swal.fire({
+        title:"Đang xử lý...",
+        allowOutsideClick:false,
+        didOpen:()=>Swal.showLoading()
+    });
+
+    try{
+        const snapshot=await db.ref("users")
+            .orderByChild("ho_ten")
+            .equalTo(username)
+            .once("value");
+
+        if(!snapshot.exists())
+            return Swal.fire("Không tìm thấy!","Tên đăng nhập không tồn tại.","error");
+
+        let userData=null;
+        snapshot.forEach(child=>userData=child.val());
+
+        if(!userData?.email)
+            return Swal.fire("Lỗi!","Tài khoản chưa có Gmail khôi phục.","error");
+
+        await auth.sendPasswordResetEmail(userData.email);
+
+        Swal.fire({
+            icon:"success",
+            title:"Đã gửi Gmail!",
+            text:"Hãy kiểm tra Gmail khôi phục của tài khoản.",
+            confirmButtonText:"Đã hiểu"
+        });
+
+    }catch(error){
+        console.error(error);
+
+        let msg="Không thể gửi Gmail khôi phục!";
+
+        if(error.code==="auth/invalid-email")
+            msg="Gmail khôi phục không hợp lệ!";
+        else if(error.code==="auth/too-many-requests")
+            msg="Bạn yêu cầu quá nhiều lần. Hãy thử lại sau!";
+        else if(error.code==="PERMISSION_DENIED")
+            msg="Firebase Database chưa được cấp quyền!";
+
+        Swal.fire("Khôi phục thất bại!",msg,"error");
+    }
+});
+
+/* KIỂM TRA ĐĂNG NHẬP */
+auth.onAuthStateChanged(user=>{
+    console.log(user?"Đã đăng nhập: "+user.email:"Chưa đăng nhập");
 });
 </script>
     
