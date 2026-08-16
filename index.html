@@ -227,71 +227,117 @@
         </div>
     </section>
 
-    <!-- 3. BẢNG GIÁ DỊCH VỤ -->
-    <section class="pricing-section">
+   <!-- 3. DANH SÁCH DỊCH VỤ (Rút gọn) -->
+    <style>
+        .services-overview { padding: 80px 0; background: #fff; text-align: center; }
+        .services-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 40px; }
+        .srv-card { 
+            width: calc(33.333% - 20px); 
+            background: #f8fafc; 
+            padding: 30px 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); 
+            transition: all 0.3s ease;
+            text-align: left;
+            border-top: 4px solid #e2e8f0;
+        }
+        .srv-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(47,84,235,0.1); 
+            border-top-color: #2f54eb;
+        }
+        .srv-icon { font-size: 3rem; margin-bottom: 20px; }
+        .srv-card h3 { font-size: 1.4rem; color: #1e293b; margin-bottom: 15px; font-weight: 800; }
+        .srv-card ul { list-style: none; padding: 0; }
+        .srv-card ul li { margin-bottom: 12px; color: #475569; font-weight: 500; display: flex; align-items: flex-start; line-height: 1.4;}
+        .srv-card ul li i { font-size: 1rem; color: #10b981; margin-right: 10px; margin-top: 2px; }
+        
+        @media (max-width: 900px) {
+            .srv-card { width: calc(50% - 15px); }
+        }
+        @media (max-width: 600px) {
+            .srv-card { width: 100%; }
+        }
+    </style>
+
+    <section class="services-overview">
         <div class="container">
-            <h2 class="section-title" style="text-align: center;">Bảng giá dịch vụ</h2>
-            <div style="margin-bottom: 20px; text-align: left;">
-                <label style="font-weight: bold; font-size: 1.1rem; color: #2b4162;">Chọn dịch vụ: </label>
-                <select id="serviceFilter" style="padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit; font-size: 1rem; min-width: 200px;">
-                    <option value="">Tất cả dịch vụ</option>
-                    <option value="Facebook">Facebook</option>
-                    <option value="Instagram">Instagram</option>
-                    <option value="Tiktok">Tiktok</option>
-                    <option value="Youtube">Youtube</option>
-                    <option value="Twitter">Twitter</option>
-                    <option value="Shopee">Shopee</option>
-                    <option value="Lazada">Lazada</option>
-                    <option value="Threads">Threads</option>
-                </select>
+            <h4 style="color: #f03e3e; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">HỆ THỐNG ĐA NỀN TẢNG</h4>
+            <h2 class="section-title">Các Dịch Vụ Chúng Tôi Cung Cấp</h2>
+            <div class="hero-line"></div>
+            
+            <div class="services-grid">
+                <!-- Facebook -->
+                <div class="srv-card">
+                    <i class="fa-brands fa-facebook srv-icon" style="color: #1877F2;"></i>
+                    <h3>Facebook</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Like, Cảm xúc bài viết</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Follow, Sub trang cá nhân</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Mắt Livestream, Share</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Member Group, Like Page</li>
+                    </ul>
+                </div>
+
+                <!-- TikTok -->
+                <div class="srv-card">
+                    <i class="fa-brands fa-tiktok srv-icon" style="color: #000000;"></i>
+                    <h3>TikTok</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng View, Tim, Share Video</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Follow kênh TikTok</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Mắt Livestream, Điểm PK</li>
+                    </ul>
+                </div>
+
+                <!-- Instagram -->
+                <div class="srv-card">
+                    <i class="fa-brands fa-instagram srv-icon" style="color: #E1306C;"></i>
+                    <h3>Instagram</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Follow Instagram</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Like, View Story</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Mắt Livestream</li>
+                    </ul>
+                </div>
+
+                <!-- Youtube -->
+                <div class="srv-card">
+                    <i class="fa-brands fa-youtube srv-icon" style="color: #FF0000;"></i>
+                    <h3>YouTube</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Subscriber kênh</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng View 4000h, Like Video</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng View Youtube Short</li>
+                    </ul>
+                </div>
+
+                <!-- Shopee / E-commerce -->
+                <div class="srv-card">
+                    <i class="fa-solid fa-bag-shopping srv-icon" style="color: #EE4D2D;"></i>
+                    <h3>Thương mại điện tử</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Follow Shopee, Lazada</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Mắt Livestream Shopee</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Lượt xem, Yêu thích SP</li>
+                    </ul>
+                </div>
+
+                <!-- Other Services -->
+                <div class="srv-card">
+                    <i class="fa-solid fa-globe srv-icon" style="color: #2f54eb;"></i>
+                    <h3>Các Dịch Vụ Khác</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Follow, Like Twitter</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Tăng Like Threads</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Đánh giá, Report Google Map</li>
+                    </ul>
+                </div>
             </div>
             
-            <table id="priceTable" class="display" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Tên dịch vụ</th>
-                        <th>Giá dịch vụ (Cộng tác viên)</th>
-                    </tr>
-                </thead>
-                <!-- Dữ liệu gốc 100% của bạn -->
-                <tbody>
-                    <tr><td style="font-weight: 500">Tăng member Group</td><td style="color: #2c7baf;font-weight: bold">19.7 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Yêu thích Tiktok</td><td style="color: #2c7baf;font-weight: bold">7.1 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Lọc bạn bè k tương tác</td><td style="color: #2c7baf;font-weight: bold">16,350 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Sub Trang cá nhân + Fanpage</td><td style="color: #2c7baf;font-weight: bold">22 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Follow Instagram</td><td style="color: #2c7baf;font-weight: bold">36 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Follow Shopee</td><td style="color: #2c7baf;font-weight: bold">90 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Follow TikTok</td><td style="color: #2c7baf;font-weight: bold">38.4 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Follow Twitter</td><td style="color: #2c7baf;font-weight: bold">539.6 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Google Map</td><td style="color: #2c7baf;font-weight: bold">1,046,400 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Like Instagram</td><td style="color: #2c7baf;font-weight: bold">4.1 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Tim Livestream TikTok</td><td style="color: #2c7baf;font-weight: bold">8.3 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Like Fanpage Facebook</td><td style="color: #2c7baf;font-weight: bold">46.8 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Like Threads</td><td style="color: #2c7baf;font-weight: bold">408.8 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Like TikTok</td><td style="color: #2c7baf;font-weight: bold">13.8 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Like Twitter</td><td style="color: #2c7baf;font-weight: bold">73.7 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Like Youtube</td><td style="color: #2c7baf;font-weight: bold">45.2 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Like Youtube Short</td><td style="color: #2c7baf;font-weight: bold">41 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Mắt Livestream Instagram</td><td style="color: #2c7baf;font-weight: bold">245.3 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Mắt Livestream Shopee</td><td style="color: #2c7baf;font-weight: bold">775.1 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Mắt LiveStream TikTok</td><td style="color: #2c7baf;font-weight: bold">13.4 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Livestream Twitter</td><td style="color: #2c7baf;font-weight: bold">858.5 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Livestream Youtube</td><td style="color: #2c7baf;font-weight: bold">98.1 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Điểm chiến đấu (PK) Tiktok</td><td style="color: #2c7baf;font-weight: bold">22.5 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Tăng Like bài viết chậm</td><td style="color: #2c7baf;font-weight: bold">130.8 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Retweet Twitter</td><td style="color: #2c7baf;font-weight: bold">441.5 ₫</td></tr>
-                    <tr><td style="font-weight: 500">RIP Google Map</td><td style="color: #2c7baf;font-weight: bold">1,471,500 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Chia Sẻ Bài Viết Facebook</td><td style="color: #2c7baf;font-weight: bold">32.7 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Share TikTok</td><td style="color: #2c7baf;font-weight: bold">4.2 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Sub Lazada</td><td style="color: #2c7baf;font-weight: bold">196.2 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Subscribe Youtube</td><td style="color: #2c7baf;font-weight: bold">637.7 ₫</td></tr>
-                    <tr><td style="font-weight: 500">View 60k Live Facebook</td><td style="color: #2c7baf;font-weight: bold">188,025 ₫</td></tr>
-                    <tr><td style="font-weight: 500">View Instagram</td><td style="color: #2c7baf;font-weight: bold">3 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Tăng View Video</td><td style="color: #2c7baf;font-weight: bold">4.7 ₫</td></tr>
-                    <tr><td style="font-weight: 500">View Youtube 4000H</td><td style="color: #2c7baf;font-weight: bold">1,422.4 ₫</td></tr>
-                    <tr><td style="font-weight: 500">Vip Love TikTok</td><td style="color: #2c7baf;font-weight: bold">686.7 ₫</td></tr>
-                </tbody>
-            </table>
+            <div style="margin-top: 40px;">
+                <a href="#login-area" class="btn-main">ĐĂNG NHẬP ĐỂ XEM CHI TIẾT GIÁ</a>
+            </div>
         </div>
     </section>
 
