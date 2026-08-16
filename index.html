@@ -19,7 +19,7 @@
 
     <style>
         /* === GLOBAL RESET === */
-        html { scroll-behavior: smooth; } /* Chuyển scroll-behavior lên thẻ html để mượt hơn */
+        html { scroll-behavior: smooth; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
         body { background-color: #ffffff; color: #333; overflow-x: hidden; line-height: 1.6; }
         a { text-decoration: none; color: inherit; }
@@ -33,9 +33,9 @@
         /* === HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL) - TỐI ƯU GPU === */
         .reveal {
             opacity: 0;
-            transform: translateY(40px); /* Giảm khoảng cách trượt xuống 40px để nhanh hơn */
+            transform: translateY(40px);
             transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-            will-change: opacity, transform; /* Bật tăng tốc phần cứng (GPU Acceleration) */
+            will-change: opacity, transform;
         }
         .reveal.in-view {
             opacity: 1;
@@ -77,8 +77,8 @@
             display: block; 
             margin: 0 auto; 
             filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15)); 
-            will-change: transform; /* Tăng tốc hiệu ứng bay lơ lửng */
-            transform: translateZ(0); /* Ép xử lý đồ họa bằng GPU */
+            will-change: transform; 
+            transform: translateZ(0); 
         }
         @keyframes floatUpDown { 0%, 100% { transform: translateY(0) translateZ(0); } 50% { transform: translateY(-20px) translateZ(0); } }
         .floating { animation: floatUpDown 4s ease-in-out infinite; }
@@ -106,7 +106,7 @@
         .btn-login { width: 100%; background: #2f54eb; color: #fff; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
         .btn-login:hover { background: #1d39c4; transform: translateY(-2px) !important; }
 
-        /* === 3. DANH SÁCH DỊCH VỤ === */
+        /* === 3. DANH SÁCH DỊCH VỤ (Rút gọn) === */
         .services-overview { padding: 80px 0; background: #fff; text-align: center; }
         .services-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 40px; }
         .srv-card { 
@@ -437,9 +437,7 @@
                 <p>Chỉ với vài thao tác cơ bản, bạn sẽ sở hữu ngay một tài khoản cá nhân để trải nghiệm dịch vụ của chúng tôi.</p>
             </div>
             <div class="col-50 reveal" style="transition-delay: 0.1s;">
-                <div class="mock-img mock-map floating">
-                    <i class="fa-solid fa-map-location-dot"></i>
-                </div>
+                <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/World%20map/3D/world_map_3d.png" alt="Bản đồ" class="graphic-img floating">
             </div>
         </div>
     </section>
@@ -448,9 +446,7 @@
     <section class="zigzag">
         <div class="container row">
             <div class="col-50 reveal" style="order: 1; transition-delay: 0.1s;">
-                <div class="mock-img mock-bank floating" style="animation-delay: 1.5s;">
-                    <i class="fa-solid fa-building-columns"></i>
-                </div>
+                <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Bank/3D/bank_3d.png" alt="Ngân hàng" class="graphic-img floating" style="animation-delay: 1.5s;">
             </div>
             <div class="col-50 reveal" style="order: 2; padding-left: 40px;">
                 <h3 style="font-size: 2.2rem; font-weight: 800; color: #2b4162; margin-bottom: 20px;">Nạp tiền tự động hỗ trợ hầu hết các ngân hàng</h3>
@@ -469,9 +465,7 @@
                 <p>Chúng tôi hỗ trợ các dịch vụ như Facebook, Instagram, TikTok, Youtube, Shopee... Nhằm đáp ứng mọi yêu cầu của bạn.</p>
             </div>
             <div class="col-50 reveal" style="transition-delay: 0.1s;">
-                <div class="mock-img mock-globe floating">
-                    <i class="fa-solid fa-mobile-screen-button"></i>
-                </div>
+                <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Mobile%20phone/3D/mobile_phone_3d.png" alt="Đa nền tảng" class="graphic-img floating">
             </div>
         </div>
     </section>
