@@ -189,6 +189,201 @@
         @media (max-width: 600px) {
             .srv-card { width: 100%; }
         }
+
+        /* =====================================================
+   📱 MOBILE - TỐI ƯU GIAO DIỆN ĐIỆN THOẠI
+   Không ảnh hưởng giao diện PC
+===================================================== */
+@media (max-width: 600px) {
+
+    /* Khung login */
+    .login-section {
+        padding: 35px 12px;
+    }
+
+    .login-section .container {
+        padding: 0;
+    }
+
+    /* Ẩn ảnh minh họa bên trái trên điện thoại
+       để form gọn và không bị chật */
+    .login-section .col-50:first-child {
+        display: none;
+    }
+
+    /* Cột form full màn hình */
+    .login-section .col-50:last-child {
+        width: 100%;
+        margin: 0;
+    }
+
+    /* Khung đăng nhập */
+    .login-card {
+        width: 100%;
+        padding: 24px 18px;
+        border-radius: 18px;
+        margin: 0 auto;
+        box-shadow: 0 8px 25px rgba(0,0,0,.07);
+    }
+
+    /* Header */
+    .login-header {
+        margin-bottom: 20px;
+    }
+
+    .brand-hk {
+        font-size: 1.9rem;
+    }
+
+    .login-header h3 {
+        font-size: 1.35rem !important;
+    }
+
+    /* Ô nhập */
+    .input-group {
+        margin-bottom: 14px;
+    }
+
+    .input-group label {
+        font-size: .88rem;
+        margin-bottom: 6px;
+    }
+
+    .input-wrapper input {
+        height: 48px;
+        padding: 12px 12px 12px 42px;
+        font-size: .92rem;
+        border-radius: 10px;
+    }
+
+    .input-wrapper i {
+        left: 14px;
+        font-size: 1rem;
+    }
+
+    /* Quên mật khẩu / đăng ký */
+    .login-options {
+        gap: 8px;
+        margin-bottom: 18px;
+        font-size: .78rem;
+        line-height: 1.4;
+    }
+
+    .login-options a {
+        max-width: 50%;
+    }
+
+    /* Nút đăng nhập */
+    .btn-login {
+        height: 48px;
+        padding: 10px;
+        font-size: .95rem;
+        border-radius: 10px;
+    }
+
+    /* Form đăng ký */
+    #register-box {
+        padding: 24px 18px;
+    }
+
+    /* Không cho chữ bị tràn */
+    .section-title {
+        font-size: 1.7rem;
+    }
+
+    .section-subtitle {
+        font-size: .95rem;
+    }
+
+    /* Ảnh các section khác */
+    .graphic-img {
+        max-width: 85%;
+    }
+
+    /* Hero */
+    .hero {
+        padding: 35px 12px;
+    }
+
+    .hero-logo {
+        font-size: 2rem;
+    }
+
+    .hero .section-title {
+        font-size: 1.65rem;
+        line-height: 1.4;
+    }
+
+    .hero-line {
+        width: 80px;
+        margin: 12px auto 20px;
+    }
+
+    .btn-main {
+        min-width: 220px;
+        padding: 11px 20px;
+        font-size: .95rem;
+    }
+
+    /* Dịch vụ */
+    .services-overview,
+    .features-section,
+    .why-choose,
+    .stats-section {
+        padding: 50px 12px;
+    }
+
+    /* Card dịch vụ */
+    .srv-card {
+        width: 100%;
+        padding: 22px 18px;
+    }
+
+    /* Nút liên hệ */
+    .fab {
+        width: 52px;
+        height: 52px;
+        right: 16px;
+        bottom: 16px;
+        font-size: 1.4rem;
+    }
+}
+
+
+/* =====================================================
+   📱 ĐIỆN THOẠI RẤT NHỎ
+===================================================== */
+@media (max-width: 380px) {
+
+    .login-section {
+        padding: 25px 8px;
+    }
+
+    .login-card {
+        padding: 20px 14px;
+        border-radius: 15px;
+    }
+
+    .brand-hk {
+        font-size: 1.7rem;
+    }
+
+    .login-header h3 {
+        font-size: 1.2rem !important;
+    }
+
+    .login-options {
+        font-size: .72rem;
+    }
+
+    .hero-logo {
+        font-size: 1.7rem;
+    }
+
+    .hero .section-title {
+        font-size: 1.45rem;
+    }
+}
     </style>
 </head>
 <body>
