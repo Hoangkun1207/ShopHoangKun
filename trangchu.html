@@ -517,7 +517,7 @@
                 document.getElementById("avatar-initial").innerText = firstLetter;
 
                 // Lắng nghe dữ liệu số dư và tổng nạp từ Firebase Realtime Database
-                db.ref('users/' + user.uid).on('value', (snapshot) => {
+                db.ref('users/' + user.uid).once('value').then((snapshot) => {
                     const data = snapshot.val() || {};
                     
                     // 1. Số dư thực tế
@@ -562,6 +562,8 @@
                         const conLai = mocCTV - tongNap;
                         document.getElementById("tier-need-more").innerHTML = `Còn <b>${conLai.toLocaleString("vi-VN")}đ</b> để lên Cộng tác viên`;
                     }
+                                }).catch((error) => {
+                    console.error("Lỗi tải dữ liệu Firebase:", error);
                 });
             } else {
                 window.location.href = "index.html";
