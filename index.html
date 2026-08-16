@@ -89,23 +89,25 @@
         .hero-line { width: 120px; height: 4px; background-color: #f03e3e; margin: 15px auto 30px auto; border-radius: 2px;}
         .hero .col-50 { text-align: center; }
 
-        /* === 2. LOGIN SECTION === */
-        .login-section { padding: 60px 0; background-color: #f6eff4; }
-        .login-card { background: #fff; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; }
-        .login-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .brand-hk { font-size: 2.2rem; font-weight: 800; color: #9c27b0; }
-        .brand-hk span { color: #4caf50; }
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; }
+       /* === 2. FORM ĐĂNG NHẬP (TỐI ƯU GỌN ĐẸP) === */
+        .login-section { padding: 60px 0; background-color: #f8fafc; }
+        .login-card { background: #fff; padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); text-align: left; position: relative; overflow: hidden; border: 1px solid #f1f5f9; }
+        .login-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .brand-hk { font-size: 2.2rem; font-weight: 800; color: #2f54eb; letter-spacing: -1px; }
+        .brand-hk span { color: #00b4d8; }
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 700; color: #334155; font-size: 0.95rem;}
         .input-wrapper { position: relative; }
-        .input-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #888; }
-        .input-wrapper input { width: 100%; padding: 12px 15px 12px 40px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.3s; background: #fafafa; }
-        .input-wrapper input:focus { border-color: #3b5cf0; background: #fff; box-shadow: 0 0 0 3px rgba(59,92,240,0.1); }
-        .login-options { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 20px; }
-        .login-options a { color: #3b5cf0; font-weight: 600; }
-        .btn-login { width: 100%; background: #2f54eb; color: #fff; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        .btn-login:hover { background: #1d39c4; transform: translateY(-2px) !important; }
-
+        .input-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1.1rem; transition: 0.3s; z-index: 10; }
+        .input-wrapper input { width: 100%; padding: 14px 15px 14px 45px; border: 2px solid #e2e8f0; border-radius: 12px; outline: none; transition: 0.3s; background: #f8fafc; color: #1e293b; font-size: 1rem; font-weight: 500; }
+        .input-wrapper:focus-within input { border-color: #2f54eb; background: #fff; box-shadow: 0 4px 15px rgba(47,84,235,0.08); transform: translateY(-2px); }
+        .input-wrapper:focus-within i { color: #2f54eb; }
+        .login-options { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 25px; }
+        .login-options a { color: #2f54eb; font-weight: 700; transition: 0.2s; }
+        .login-options a:hover { color: #00b4d8; text-decoration: underline; }
+        .btn-login { width: 100%; background: linear-gradient(135deg, #2f54eb, #00b4d8); color: #fff; border: none; padding: 14px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(47,84,235,0.25); }
+        .btn-login:hover { transform: translateY(-3px) !important; box-shadow: 0 12px 25px rgba(47,84,235,0.35); }
+        
         /* === 3. DANH SÁCH DỊCH VỤ (Rút gọn) === */
         .services-overview { padding: 80px 0; background: #fff; text-align: center; }
         .services-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 40px; }
@@ -209,7 +211,7 @@
         </div>
     </section>
 
-    <!-- 2. LOGIN SECTION -->
+  <!-- 2. LOGIN SECTION -->
     <section class="login-section" id="login-area">
         <div class="container row">
             <div class="col-50 reveal">
@@ -219,26 +221,27 @@
                 <div class="login-card" id="login-box">
                     <div class="login-header">
                         <div class="brand-hk">H<span>K</span></div>
-                        <h3 style="font-size: 1.5rem; color:#333;">Đăng nhập</h3>
+                        <h3 style="font-size: 1.6rem; color:#1e293b; font-weight: 800;">Đăng nhập</h3>
                     </div>
                     <form id="loginForm">
                         <div class="input-group">
-                            <label>Tên đăng nhập:</label>
+                            <label>Tên đăng nhập</label>
                             <div class="input-wrapper">
                                 <i class="fa-regular fa-user"></i>
                                 <input type="text" placeholder="Nhập tài khoản" required>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>Mật khẩu:</label>
+                            <label>Mật khẩu</label>
                             <div class="input-wrapper">
                                 <i class="fa-solid fa-key"></i>
                                 <input type="password" placeholder="Nhập mật khẩu" required>
                             </div>
                         </div>
                         <div class="login-options">
-                            <a href="#" onclick="toggleForm()">Chưa có tài khoản? Đăng ký</a>
-                            <a href="#" style="color:#888;">Quên mật khẩu?</a>
+                            <!-- Đã sửa href="#..." thành href="javascript:void(0)" để không bị nhảy lên đầu trang -->
+                            <a href="javascript:void(0)" onclick="toggleForm()">Chưa có tài khoản? Đăng ký</a>
+                            <a href="javascript:void(0)" style="color:#64748b; font-weight: 500;">Quên mật khẩu?</a>
                         </div>
                         <button type="submit" class="btn-login">Đăng nhập ngay</button>
                     </form>
@@ -248,25 +251,25 @@
                 <div class="login-card" id="register-box" style="display: none;">
                     <div class="login-header">
                         <div class="brand-hk">H<span>K</span></div>
-                        <h3 style="font-size: 1.5rem; color:#333;">Đăng ký</h3>
+                        <h3 style="font-size: 1.6rem; color:#1e293b; font-weight: 800;">Đăng ký</h3>
                     </div>
                     <form id="registerForm">
                         <div class="input-group">
-                            <label>Tên đăng nhập:</label>
+                            <label>Tên đăng nhập</label>
                             <div class="input-wrapper">
                                 <i class="fa-regular fa-user"></i>
                                 <input type="text" placeholder="Tạo tài khoản" required>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>Mật khẩu:</label>
+                            <label>Mật khẩu</label>
                             <div class="input-wrapper">
                                 <i class="fa-solid fa-key"></i>
                                 <input type="password" placeholder="Tạo mật khẩu" required>
                             </div>
                         </div>
                         <div class="login-options">
-                            <a href="#" onclick="toggleForm()">Đã có tài khoản? Đăng nhập</a>
+                            <a href="javascript:void(0)" onclick="toggleForm()">Đã có tài khoản? Đăng nhập</a>
                         </div>
                         <button type="submit" class="btn-login">Tạo tài khoản</button>
                     </form>
