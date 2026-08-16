@@ -29,6 +29,17 @@
         .col-50 { width: 48%; }
         .col-100 { width: 100%; text-align: center; }
 
+        /* === HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL) === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Nút Bấm Khắp Web & Typewriter */
         .btn-main {
             background: linear-gradient(90deg, #ff4b4b, #fa2828);
@@ -38,11 +49,10 @@
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            min-width: 280px; /* Chống giật nút khi đổi chữ */
+            min-width: 280px; 
         }
-        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(250, 40, 40, 0.4); color: #fff; }
+        .btn-main:hover { transform: translateY(-3px) !important; box-shadow: 0 8px 20px rgba(250, 40, 40, 0.4); color: #fff; }
         
-        /* Con trỏ nhấp nháy cho nút */
         .btn-main .cursor {
             display: inline-block;
             width: 2px;
@@ -56,7 +66,7 @@
         .section-title { font-size: 2.2rem; font-weight: 800; color: #0b1220; margin-bottom: 20px; }
         .section-subtitle { font-size: 1.1rem; color: #555; margin-bottom: 40px; }
 
-        /* MOCK IMAGES (Thay thế ảnh thật cho đẹp) */
+        /* MOCK IMAGES */
         .mock-img { width: 100%; height: 400px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 6rem; position: relative; overflow: hidden; }
         .mock-globe { background: #e0f2f1; color: #00897b; border-radius: 50%; animation: spin 20s linear infinite; }
         .mock-mega { background: #ede7f6; color: #5e35b1; }
@@ -87,9 +97,9 @@
         .login-options { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 20px; }
         .login-options a { color: #3b5cf0; font-weight: 600; }
         .btn-login { width: 100%; background: #2f54eb; color: #fff; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        .btn-login:hover { background: #1d39c4; }
+        .btn-login:hover { background: #1d39c4; transform: translateY(-2px) !important; }
 
-        /* === 3. DANH SÁCH DỊCH VỤ (Dạng thẻ rút gọn) === */
+        /* === 3. DANH SÁCH DỊCH VỤ === */
         .services-overview { padding: 80px 0; background: #fff; text-align: center; }
         .services-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 40px; }
         .srv-card { 
@@ -102,8 +112,8 @@
             text-align: left;
             border-top: 4px solid #e2e8f0;
         }
-        .srv-card:hover { 
-            transform: translateY(-8px); 
+        .srv-card.in-view:hover { 
+            transform: translateY(-8px) !important; 
             box-shadow: 0 15px 30px rgba(47,84,235,0.1); 
             border-top-color: #2f54eb;
         }
@@ -113,7 +123,7 @@
         .srv-card ul li { margin-bottom: 12px; color: #475569; font-weight: 500; display: flex; align-items: flex-start; line-height: 1.4;}
         .srv-card ul li i { font-size: 1rem; color: #10b981; margin-right: 10px; margin-top: 2px; }
 
-        /* === 4. FEATURES (3 Cột) === */
+        /* === 4. FEATURES === */
         .features-section { padding: 80px 0; text-align: center; }
         .feat-grid { display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 40px; }
         .feat-box { width: 30%; padding: 20px; }
@@ -176,7 +186,7 @@
     <!-- 1. HERO SECTION -->
     <section class="hero">
         <div class="container row">
-            <div class="col-50">
+            <div class="col-50 reveal">
                 <div class="hero-logo">HOANGKUNSTORE</div>
                 <div class="hero-line"></div>
                 <h1 class="section-title">Nền Tảng Được Tin Cậy Và Phổ Biến Nhất Cho Các Dịch Vụ Truyền Thông Xã Hội</h1>
@@ -185,7 +195,7 @@
                     <span id="type-text"></span><span class="cursor"></span>
                 </a>
             </div>
-            <div class="col-50">
+            <div class="col-50 reveal" style="transition-delay: 0.2s;">
                 <div class="mock-img mock-globe floating">
                     <i class="fa-solid fa-earth-americas"></i>
                 </div>
@@ -196,12 +206,12 @@
     <!-- 2. LOGIN SECTION -->
     <section class="login-section" id="login-area">
         <div class="container row">
-            <div class="col-50">
+            <div class="col-50 reveal">
                 <div class="mock-img mock-mega floating" style="animation-delay: 1s;">
                     <i class="fa-solid fa-bullhorn"></i>
                 </div>
             </div>
-            <div class="col-50">
+            <div class="col-50 reveal" style="transition-delay: 0.2s;">
                 <div class="login-card" id="login-box">
                     <div class="login-header">
                         <div class="brand-hk">H<span>K</span></div>
@@ -264,13 +274,12 @@
     <!-- 3. DANH SÁCH DỊCH VỤ (Rút gọn) -->
     <section class="services-overview">
         <div class="container">
-            <h4 style="color: #f03e3e; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">HỆ THỐNG ĐA NỀN TẢNG</h4>
-            <h2 class="section-title">Các Dịch Vụ Chúng Tôi Cung Cấp</h2>
-            <div class="hero-line"></div>
+            <h4 class="reveal" style="color: #f03e3e; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">HỆ THỐNG ĐA NỀN TẢNG</h4>
+            <h2 class="section-title reveal">Các Dịch Vụ Chúng Tôi Cung Cấp</h2>
+            <div class="hero-line reveal" style="margin-bottom: 0;"></div>
             
             <div class="services-grid">
-                <!-- Facebook -->
-                <div class="srv-card">
+                <div class="srv-card reveal" style="transition-delay: 0.1s;">
                     <i class="fa-brands fa-facebook srv-icon" style="color: #1877F2;"></i>
                     <h3>Facebook</h3>
                     <ul>
@@ -280,9 +289,7 @@
                         <li><i class="fa-solid fa-circle-check"></i> Tăng Member Group, Like Page</li>
                     </ul>
                 </div>
-
-                <!-- TikTok -->
-                <div class="srv-card">
+                <div class="srv-card reveal" style="transition-delay: 0.2s;">
                     <i class="fa-brands fa-tiktok srv-icon" style="color: #000000;"></i>
                     <h3>TikTok</h3>
                     <ul>
@@ -291,9 +298,7 @@
                         <li><i class="fa-solid fa-circle-check"></i> Mắt Livestream, Điểm PK</li>
                     </ul>
                 </div>
-
-                <!-- Instagram -->
-                <div class="srv-card">
+                <div class="srv-card reveal" style="transition-delay: 0.3s;">
                     <i class="fa-brands fa-instagram srv-icon" style="color: #E1306C;"></i>
                     <h3>Instagram</h3>
                     <ul>
@@ -302,9 +307,7 @@
                         <li><i class="fa-solid fa-circle-check"></i> Tăng Mắt Livestream</li>
                     </ul>
                 </div>
-
-                <!-- Youtube -->
-                <div class="srv-card">
+                <div class="srv-card reveal" style="transition-delay: 0.1s;">
                     <i class="fa-brands fa-youtube srv-icon" style="color: #FF0000;"></i>
                     <h3>YouTube</h3>
                     <ul>
@@ -313,9 +316,7 @@
                         <li><i class="fa-solid fa-circle-check"></i> Tăng View Youtube Short</li>
                     </ul>
                 </div>
-
-                <!-- Shopee / E-commerce -->
-                <div class="srv-card">
+                <div class="srv-card reveal" style="transition-delay: 0.2s;">
                     <i class="fa-solid fa-bag-shopping srv-icon" style="color: #EE4D2D;"></i>
                     <h3>Thương mại điện tử</h3>
                     <ul>
@@ -324,9 +325,7 @@
                         <li><i class="fa-solid fa-circle-check"></i> Tăng Lượt xem, Yêu thích SP</li>
                     </ul>
                 </div>
-
-                <!-- Other Services -->
-                <div class="srv-card">
+                <div class="srv-card reveal" style="transition-delay: 0.3s;">
                     <i class="fa-solid fa-globe srv-icon" style="color: #2f54eb;"></i>
                     <h3>Các Dịch Vụ Khác</h3>
                     <ul>
@@ -337,7 +336,7 @@
                 </div>
             </div>
             
-            <div style="margin-top: 40px;">
+            <div class="reveal" style="margin-top: 40px; transition-delay: 0.4s;">
                 <a href="#login-area" class="btn-main" style="min-width: unset;">ĐĂNG NHẬP ĐỂ XEM CHI TIẾT GIÁ</a>
             </div>
         </div>
@@ -346,28 +345,28 @@
     <!-- 4. FEATURES SECTION -->
     <section class="features-section">
         <div class="container">
-            <h2 class="section-title">Trải nghiệm dịch vụ hoàn hảo!</h2>
-            <div class="hero-line"></div>
+            <h2 class="section-title reveal">Trải nghiệm dịch vụ hoàn hảo!</h2>
+            <div class="hero-line reveal"></div>
             
             <div class="feat-grid">
-                <div class="feat-box">
+                <div class="feat-box reveal" style="transition-delay: 0.1s;">
                     <i class="fa-solid fa-rocket feat-icon icon-rocket"></i>
                     <h3 class="feat-title">Nhanh</h3>
                     <p class="feat-desc">Chúng tôi sử dụng những công cụ tốt nhất để mang đến cho bạn trải nghiệm tuyệt vời nhất.</p>
                 </div>
-                <div class="feat-box">
+                <div class="feat-box reveal" style="transition-delay: 0.2s;">
                     <i class="fa-solid fa-sack-dollar feat-icon icon-money"></i>
                     <h3 class="feat-title">Giá Tốt</h3>
                     <p class="feat-desc">Chúng tôi tự hào đưa ra mức giá thấp nhất, mang lại cho bạn sự tiết kiệm và giá trị tốt nhất.</p>
                 </div>
-                <div class="feat-box">
+                <div class="feat-box reveal" style="transition-delay: 0.3s;">
                     <i class="fa-solid fa-headset feat-icon icon-support"></i>
                     <h3 class="feat-title">Hỗ trợ 24/7</h3>
                     <p class="feat-desc">Chúng tôi sẵn sàng hỗ trợ bạn mọi lúc, mọi nơi - 24/7, để đảm bảo bạn có trải nghiệm tuyệt vời nhất.</p>
                 </div>
             </div>
             
-            <div style="margin-top: 40px;">
+            <div class="reveal" style="margin-top: 40px; transition-delay: 0.4s;">
                 <a href="#login-area" class="btn-main" style="min-width: unset;">ĐĂNG NHẬP NGAY</a>
             </div>
         </div>
@@ -376,17 +375,17 @@
     <!-- 5. WHY CHOOSE US -->
     <section class="why-choose">
         <div class="container">
-            <h2 class="section-title" style="color: #004d40;">Tại sao bạn nên chọn Dịch vụ của chúng tôi</h2>
+            <h2 class="section-title reveal" style="color: #004d40;">Tại sao bạn nên chọn Dịch vụ của chúng tôi</h2>
             <div class="why-grid">
-                <div class="why-box">
+                <div class="why-box reveal" style="transition-delay: 0.1s;">
                     <i class="fa-solid fa-bullseye"></i>
                     <p>Với nền tảng kinh nghiệm dày dặn trong lĩnh vực Marketing trên Internet, chúng tôi tự tin mang đến dịch vụ chuyên nghiệp và hiệu quả.</p>
                 </div>
-                <div class="why-box">
+                <div class="why-box reveal" style="transition-delay: 0.2s;">
                     <i class="fa-solid fa-chart-line"></i>
                     <p>Luôn lấy KPI là chỉ tiêu cho sự hiệu quả công việc. Chúng tôi hiểu rằng giúp KH đạt hiệu quả cao cũng chính là giúp chúng tôi.</p>
                 </div>
-                <div class="why-box">
+                <div class="why-box reveal" style="transition-delay: 0.3s;">
                     <i class="fa-solid fa-users"></i>
                     <p>Đội ngũ nhân sự trẻ trung và năng động của chúng tôi cam kết mang lại kết quả tuyệt vời cho từng dự án.</p>
                 </div>
@@ -397,43 +396,43 @@
     <!-- 6. STATS SECTION -->
     <section class="stats-section">
         <div class="container">
-            <h4 style="color: #f03e3e; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">THÀNH TỰU</h4>
-            <h2 class="section-title">Thành tựu đã đạt được của chúng tôi!</h2>
-            <p class="section-subtitle">Với kinh nghiệm hơn 3 năm trong lĩnh vực Marketing giúp hơn 3000+ doanh nghiệp hiện diện trên Internet.</p>
+            <h4 class="reveal" style="color: #f03e3e; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">THÀNH TỰU</h4>
+            <h2 class="section-title reveal">Thành tựu đã đạt được của chúng tôi!</h2>
+            <p class="section-subtitle reveal">Với kinh nghiệm hơn 3 năm trong lĩnh vực Marketing giúp hơn 3000+ doanh nghiệp hiện diện trên Internet.</p>
             
             <div class="stats-grid">
-                <div class="stat-box">
+                <div class="stat-box reveal" style="transition-delay: 0.1s;">
                     <div class="stat-num">3000+</div>
                     <div class="stat-text">Đối tác doanh nghiệp</div>
                 </div>
-                <div class="stat-box">
+                <div class="stat-box reveal" style="transition-delay: 0.2s;">
                     <div class="stat-num">200%</div>
                     <div class="stat-text">Doanh thu tăng từ Marketing</div>
                 </div>
-                <div class="stat-box">
+                <div class="stat-box reveal" style="transition-delay: 0.3s;">
                     <div class="stat-num">98%</div>
                     <div class="stat-text">Khách hàng hài lòng</div>
                 </div>
-                <div class="stat-box">
+                <div class="stat-box reveal" style="transition-delay: 0.4s;">
                     <div class="stat-num">300+</div>
                     <div class="stat-text">Chiến dịch truyền thông</div>
                 </div>
             </div>
             
-            <a href="#login-area" class="btn-main" style="min-width: unset;">THAM GIA NGAY</a>
+            <a href="#login-area" class="btn-main reveal" style="min-width: unset; transition-delay: 0.5s;">THAM GIA NGAY</a>
         </div>
     </section>
 
     <!-- 7. ZIGZAG MAP & EASY -->
     <section class="zigzag bg-light-blue">
         <div class="container row">
-            <div class="col-50">
+            <div class="col-50 reveal">
                 <h4 style="color: #f03e3e; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">ƯU ĐIỂM DỊCH VỤ</h4>
                 <h3 style="font-size: 2.2rem; font-weight: 800; color: #2b4162; margin-bottom: 20px;">Dễ dàng sử dụng dịch vụ</h3>
                 <div class="hero-line" style="margin: 0 0 20px 0; width: 60px;"></div>
                 <p>Chỉ với vài thao tác cơ bản, bạn sẽ sở hữu ngay một tài khoản cá nhân để trải nghiệm dịch vụ của chúng tôi.</p>
             </div>
-            <div class="col-50">
+            <div class="col-50 reveal" style="transition-delay: 0.2s;">
                 <div class="mock-img mock-map floating">
                     <i class="fa-solid fa-map-location-dot"></i>
                 </div>
@@ -444,12 +443,12 @@
     <!-- 8. ZIGZAG BANK -->
     <section class="zigzag">
         <div class="container row">
-            <div class="col-50" style="order: 1;">
+            <div class="col-50 reveal" style="order: 1; transition-delay: 0.2s;">
                 <div class="mock-img mock-bank floating" style="animation-delay: 1.5s;">
                     <i class="fa-solid fa-building-columns"></i>
                 </div>
             </div>
-            <div class="col-50" style="order: 2; padding-left: 40px;">
+            <div class="col-50 reveal" style="order: 2; padding-left: 40px;">
                 <h3 style="font-size: 2.2rem; font-weight: 800; color: #2b4162; margin-bottom: 20px;">Nạp tiền tự động hỗ trợ hầu hết các ngân hàng</h3>
                 <div class="hero-line" style="margin: 0 0 20px 0; width: 60px;"></div>
                 <p>Hệ thống sẽ ghi nhận yêu cầu nhận tiền của bạn rất nhanh, và số tiền sẽ được chuyển vào tài khoản của bạn gần như ngay lập tức.</p>
@@ -460,12 +459,12 @@
     <!-- 9. ZIGZAG ALL TOOLS -->
     <section class="zigzag bg-light-blue" style="border-bottom-left-radius: 100px; border-bottom-right-radius: 100px;">
         <div class="container row">
-            <div class="col-50">
+            <div class="col-50 reveal">
                 <h3 style="font-size: 2.2rem; font-weight: 800; color: #2b4162; margin-bottom: 20px;">Dịch vụ đa dạng đầy đủ các công cụ bạn cần</h3>
                 <div class="hero-line" style="margin: 0 0 20px 0; width: 60px;"></div>
                 <p>Chúng tôi hỗ trợ các dịch vụ như Facebook, Instagram, TikTok, Youtube, Shopee... Nhằm đáp ứng mọi yêu cầu của bạn.</p>
             </div>
-            <div class="col-50">
+            <div class="col-50 reveal" style="transition-delay: 0.2s;">
                 <div class="mock-img mock-globe floating">
                     <i class="fa-solid fa-mobile-screen-button"></i>
                 </div>
@@ -476,11 +475,11 @@
     <!-- 10. FOOTER -->
     <footer class="footer">
         <div class="container row">
-            <div class="col-50 footer-brand">
+            <div class="col-50 footer-brand reveal">
                 <h4>HOANGKUNSTORE</h4>
                 <p>Với nhiều năm kinh nghiệm trong lĩnh vực Social Media, chúng tôi có đội ngũ kỹ thuật viên giàu kinh nghiệm, thấu hiểu tâm lý khách hàng. Từ đó mang đến cho bạn trải nghiệm tốt nhất khi sử dụng dịch vụ.</p>
             </div>
-            <div class="col-50 footer-links">
+            <div class="col-50 footer-links reveal" style="transition-delay: 0.2s;">
                 <h4>DỊCH VỤ</h4>
                 <ul>
                     <li><i class="fa-brands fa-facebook"></i> Facebook</li>
@@ -496,7 +495,7 @@
                 </ul>
             </div>
         </div>
-        <div class="container footer-bottom">
+        <div class="container footer-bottom reveal" style="transition-delay: 0.4s;">
             ©2026 All Rights Reserved - HOANGKUN STORE
         </div>
     </footer>
@@ -583,9 +582,25 @@
             setTimeout(typeWriter, typeSpeed);
         }
 
-        // Khởi động hiệu ứng gõ chữ
+        // 4. HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL BẬT/TẮT LIÊN TỤC)
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                } else {
+                    // Cứ khuất khỏi màn hình là thu hồi class, để cuộn tới lại bung ra
+                    entry.target.classList.remove('in-view'); 
+                }
+            });
+        }, { 
+            threshold: 0.15 // Hiện 15% là kích hoạt
+        });
+
+        // Khởi động các hàm sau khi tải web
         document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(typeWriter, 500);
+            setTimeout(typeWriter, 500); // Khởi động gõ chữ
+            revealElements.forEach(el => revealObserver.observe(el)); // Bật theo dõi cuộn
         });
     </script>
 </body>
