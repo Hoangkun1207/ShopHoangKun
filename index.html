@@ -539,121 +539,142 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-const firebaseConfig={
-    apiKey:"AIzaSyAaI0O-6LQs2vZTDBAeJX8piKX4pjfyCbM",
-    authDomain:"shophoangkun.firebaseapp.com",
-    databaseURL:"https://shophoangkun-default-rtdb.firebaseio.com",
-    projectId:"shophoangkun",
-    storageBucket:"shophoangkun.firebasestorage.app",
-    messagingSenderId:"364993334554",
-    appId:"1:364993334554:web:800c66509b355ebf5370a3",
-    measurementId:"G-KJ8HJ3H2D5"
+const firebaseConfig = {
+    apiKey: "AIzaSyAaI0O-6LQs2vZTDBAeJX8piKX4pjfyCbM",
+    authDomain: "shophoangkun.firebaseapp.com",
+    databaseURL: "https://shophoangkun-default-rtdb.firebaseio.com",
+    projectId: "shophoangkun",
+    storageBucket: "shophoangkun.firebasestorage.app",
+    messagingSenderId: "364993334554",
+    appId: "1:364993334554:web:800c66509b355ebf5370a3",
+    measurementId: "G-KJ8HJ3H2D5"
 };
 
-if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
-const auth=firebase.auth();
-const db=firebase.database();
+const auth = firebase.auth();
+const db = firebase.database();
 
-/* CHUYỂN LOGIN / REGISTER */
-function toggleForm(){
-    const login=document.getElementById("login-box");
-    const register=document.getElementById("register-box");
-    if(!login||!register)return;
 
-    const showRegister=register.style.display==="none"||!register.style.display;
-    login.style.display=showRegister?"none":"block";
-    register.style.display=showRegister?"block":"none";
+/* ================= LOGIN / REGISTER ================= */
+
+function toggleForm() {
+    const login = document.getElementById("login-box");
+    const register = document.getElementById("register-box");
+
+    if (!login || !register) return;
+
+    const showRegister =
+        register.style.display === "none" || !register.style.display;
+
+    login.style.display = showRegister ? "none" : "block";
+    register.style.display = showRegister ? "block" : "none";
 }
 
-/* ĐĂNG KÝ */
-document.getElementById("registerForm")?.addEventListener("submit",async e=>{
+
+/* ================= ĐĂNG KÝ ================= */
+
+document.getElementById("registerForm")?.addEventListener("submit", async e => {
     e.preventDefault();
 
-    const username=document.getElementById("reg-user").value.trim();
-    const email=document.getElementById("reg-email").value.trim();
-    const password=document.getElementById("reg-pass").value;
-    const repass=document.getElementById("reg-repass").value;
-    const refcode=document.getElementById("reg-refcode").value.trim();
+    const username = document.getElementById("reg-user").value.trim();
+    const email = document.getElementById("reg-email").value.trim();
+    const password = document.getElementById("reg-pass").value;
+    const repass = document.getElementById("reg-repass").value;
+    const refcode = document.getElementById("reg-refcode").value.trim();
 
-    if(username.length<4)
-        return Swal.fire("Lỗi!","Tên đăng nhập phải có ít nhất 4 ký tự!","error");
+    if (username.length < 4)
+        return Swal.fire("Lỗi!", "Tên đăng nhập phải có ít nhất 4 ký tự!", "error");
 
-    if(!email)
-        return Swal.fire("Lỗi!","Vui lòng nhập Gmail khôi phục!","error");
+    if (!email)
+        return Swal.fire("Lỗi!", "Vui lòng nhập Gmail khôi phục!", "error");
 
-    if(password.length<6)
-        return Swal.fire("Lỗi!","Mật khẩu phải có ít nhất 6 ký tự!","error");
+    if (password.length < 6)
+        return Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
 
-    if(password!==repass)
-        return Swal.fire("Lỗi!","Mật khẩu nhập lại không khớp!","error");
+    if (password !== repass)
+        return Swal.fire("Lỗi!", "Mật khẩu nhập lại không khớp!", "error");
 
     Swal.fire({
-        title:"Đang tạo tài khoản...",
-        allowOutsideClick:false,
-        didOpen:()=>Swal.showLoading()
+        title: "Đang tạo tài khoản...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
     });
 
-    try{
-        /* KIỂM TRA TÊN ĐĂNG NHẬP */
-        const check=await db.ref("users")
+    try {
+        // Kiểm tra tên đăng nhập
+        const check = await db.ref("users")
             .orderByChild("ho_ten")
             .equalTo(username)
             .once("value");
 
-        if(check.exists())
-            return Swal.fire("Tên đăng nhập đã tồn tại!","Vui lòng chọn tên khác.","warning");
+        if (check.exists()) {
+            return Swal.fire(
+                "Tên đăng nhập đã tồn tại!",
+                "Vui lòng chọn tên khác.",
+                "warning"
+            );
+        }
 
-        /* TẠO FIREBASE ACCOUNT BẰNG GMAIL */
-        const result=await auth.createUserWithEmailAndPassword(email,password);
-        const user=result.user;
+        // Tạo tài khoản Firebase
+        const result = await auth.createUserWithEmailAndPassword(email, password);
+        const user = result.user;
 
-        await user.updateProfile({displayName:username});
+        await user.updateProfile({ displayName: username });
 
-        /* LƯU USER */
-        await db.ref("users/"+user.uid).set({
-            uid:user.uid,
-            ho_ten:username,
-            email:email,
-            ma_gioi_thieu:refcode||"Không có",
-            so_du:0,
-            ngay_tao:new Date().toLocaleString("vi-VN")
+        // Lưu thông tin user
+        await db.ref("users/" + user.uid).set({
+            uid: user.uid,
+            ho_ten: username,
+            email: email,
+            ma_gioi_thieu: refcode || "Không có",
+            so_du: 0,
+            ngay_tao: new Date().toLocaleString("vi-VN")
         });
 
         await auth.signOut();
         e.target.reset();
 
-        document.getElementById("login-box").style.display="block";
-        document.getElementById("register-box").style.display="none";
+        document.getElementById("login-box").style.display = "block";
+        document.getElementById("register-box").style.display = "none";
 
         Swal.fire({
-            icon:"success",
-            title:"Đăng ký thành công!",
-            html:"Tên đăng nhập: <b>"+username+"</b>",
-            confirmButtonText:"Đăng nhập"
+            icon: "success",
+            title: "Đăng ký thành công!",
+            html: `Tên đăng nhập: <b>${username}</b>`,
+            confirmButtonText: "Đăng nhập"
         });
 
-    }catch(error){
+    } catch (error) {
         console.error(error);
 
-        let msg="Đã xảy ra lỗi khi đăng ký!";
+        let msg = "Đã xảy ra lỗi khi đăng ký!";
 
-        if(error.code==="auth/email-already-in-use")
-            msg="Gmail này đã được đăng ký!";
-        else if(error.code==="auth/invalid-email")
-            msg="Gmail không hợp lệ!";
-        else if(error.code==="auth/weak-password")
-            msg="Mật khẩu quá yếu!";
-        else if(error.code==="auth/operation-not-allowed")
-            msg="Chưa bật Email/Password trong Firebase!";
-        else if(error.code==="PERMISSION_DENIED")
-            msg="Firebase Database chưa được cấp quyền!";
+        switch (error.code) {
+            case "auth/email-already-in-use":
+                msg = "Gmail này đã được đăng ký!";
+                break;
+            case "auth/invalid-email":
+                msg = "Gmail không hợp lệ!";
+                break;
+            case "auth/weak-password":
+                msg = "Mật khẩu quá yếu!";
+                break;
+            case "auth/operation-not-allowed":
+                msg = "Chưa bật Email/Password trong Firebase!";
+                break;
+            case "PERMISSION_DENIED":
+                msg = "Firebase Database chưa được cấp quyền!";
+                break;
+        }
 
-        Swal.fire("Đăng ký thất bại!",msg,"error");
+        Swal.fire("Đăng ký thất bại!", msg, "error");
     }
 });
 
-/* ĐĂNG NHẬP BẰNG EMAIL */
+
+/* ================= ĐĂNG NHẬP ================= */
+
 document.getElementById("loginForm")?.addEventListener("submit", async e => {
     e.preventDefault();
 
@@ -690,92 +711,149 @@ document.getElementById("loginForm")?.addEventListener("submit", async e => {
 
         let msg = "Email hoặc mật khẩu không chính xác!";
 
-        if (error.code === "auth/user-not-found")
-            msg = "Không tìm thấy tài khoản!";
-        else if (error.code === "auth/wrong-password")
-            msg = "Mật khẩu không chính xác!";
-        else if (error.code === "auth/invalid-email")
-            msg = "Email không hợp lệ!";
-        else if (error.code === "auth/user-disabled")
-            msg = "Tài khoản đã bị khóa!";
-        else if (error.code === "auth/too-many-requests")
-            msg = "Bạn thử quá nhiều lần. Vui lòng thử lại sau!";
+        switch (error.code) {
+            case "auth/user-not-found":
+                msg = "Không tìm thấy tài khoản!";
+                break;
+            case "auth/wrong-password":
+                msg = "Mật khẩu không chính xác!";
+                break;
+            case "auth/invalid-email":
+                msg = "Email không hợp lệ!";
+                break;
+            case "auth/user-disabled":
+                msg = "Tài khoản đã bị khóa!";
+                break;
+            case "auth/too-many-requests":
+                msg = "Bạn thử quá nhiều lần. Vui lòng thử lại sau!";
+                break;
+            case "auth/invalid-credential":
+                msg = "Email hoặc mật khẩu không chính xác!";
+                break;
+        }
 
-        Swal.fire(
-            "Đăng nhập thất bại!",
-            msg,
-            "error"
-        );
+        Swal.fire("Đăng nhập thất bại!", msg, "error");
     }
 });
 
-/* QUÊN MẬT KHẨU */
-async function forgotPassword(){
-    const result=await Swal.fire({
-        title:"Quên mật khẩu?",
-        text:"Nhập tên đăng nhập để nhận Gmail khôi phục.",
-        input:"text",
-        inputPlaceholder:"Nhập tên đăng nhập",
-        showCancelButton:true,
-        confirmButtonText:"Gửi Gmail",
-        cancelButtonText:"Hủy",
-        inputValidator:value=>!value?"Vui lòng nhập tên đăng nhập!":null
+
+/* ================= QUÊN MẬT KHẨU ================= */
+
+async function forgotPassword() {
+    const result = await Swal.fire({
+        title: "Quên mật khẩu?",
+        text: "Nhập tên đăng nhập để nhận Gmail khôi phục.",
+        input: "text",
+        inputPlaceholder: "Nhập tên đăng nhập",
+        showCancelButton: true,
+        confirmButtonText: "Gửi Gmail",
+        cancelButtonText: "Hủy",
+        inputValidator: value =>
+            !value ? "Vui lòng nhập tên đăng nhập!" : null
     });
 
-    if(!result.isConfirmed)return;
+    if (!result.isConfirmed) return;
 
-    const username=result.value.trim();
+    const username = result.value.trim();
 
     Swal.fire({
-        title:"Đang xử lý...",
-        allowOutsideClick:false,
-        didOpen:()=>Swal.showLoading()
+        title: "Đang xử lý...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
     });
 
-    try{
-        const snapshot=await db.ref("users")
+    try {
+        const snapshot = await db.ref("users")
             .orderByChild("ho_ten")
             .equalTo(username)
             .once("value");
 
-        if(!snapshot.exists())
-            return Swal.fire("Không tìm thấy!","Tên đăng nhập không tồn tại.","error");
+        if (!snapshot.exists()) {
+            return Swal.fire(
+                "Không tìm thấy!",
+                "Tên đăng nhập không tồn tại.",
+                "error"
+            );
+        }
 
-        let userData=null;
-        snapshot.forEach(child=>userData=child.val());
+        let userData = null;
+        snapshot.forEach(child => userData = child.val());
 
-        if(!userData?.email)
-            return Swal.fire("Lỗi!","Tài khoản chưa có Gmail khôi phục.","error");
+        if (!userData?.email) {
+            return Swal.fire(
+                "Lỗi!",
+                "Tài khoản chưa có Gmail khôi phục.",
+                "error"
+            );
+        }
 
         await auth.sendPasswordResetEmail(userData.email);
 
         Swal.fire({
-            icon:"success",
-            title:"Đã gửi Gmail!",
-            text:"Hãy kiểm tra Gmail khôi phục của tài khoản.",
-            confirmButtonText:"Đã hiểu"
+            icon: "success",
+            title: "Đã gửi Gmail!",
+            text: "Hãy kiểm tra Gmail khôi phục của tài khoản.",
+            confirmButtonText: "Đã hiểu"
         });
 
-    }catch(error){
+    } catch (error) {
         console.error(error);
 
-        let msg="Không thể gửi Gmail khôi phục!";
+        let msg = "Không thể gửi Gmail khôi phục!";
 
-        if(error.code==="auth/invalid-email")
-            msg="Gmail khôi phục không hợp lệ!";
-        else if(error.code==="auth/too-many-requests")
-            msg="Bạn yêu cầu quá nhiều lần. Hãy thử lại sau!";
-        else if(error.code==="PERMISSION_DENIED")
-            msg="Firebase Database chưa được cấp quyền!";
+        if (error.code === "auth/invalid-email")
+            msg = "Gmail khôi phục không hợp lệ!";
+        else if (error.code === "auth/too-many-requests")
+            msg = "Bạn yêu cầu quá nhiều lần. Hãy thử lại sau!";
+        else if (error.code === "PERMISSION_DENIED")
+            msg = "Firebase Database chưa được cấp quyền!";
 
-        Swal.fire("Khôi phục thất bại!",msg,"error");
+        Swal.fire("Khôi phục thất bại!", msg, "error");
     }
+}
+
+
+/* ================= KIỂM TRA ĐĂNG NHẬP ================= */
+
+auth.onAuthStateChanged(user => {
+    console.log(
+        user ? "Đã đăng nhập: " + user.email : "Chưa đăng nhập"
+    );
 });
 
-/* KIỂM TRA ĐĂNG NHẬP */
-auth.onAuthStateChanged(user=>{
-    console.log(user?"Đã đăng nhập: "+user.email:"Chưa đăng nhập");
+
+/* ================= SCROLL REVEAL ================= */
+
+const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll(".reveal").forEach(el => {
+    revealObserver.observe(el);
 });
+
+
+/* ================= TYPEWRITER ================= */
+
+const typeText = document.getElementById("type-text");
+
+if (typeText) {
+    const text = "BẮT ĐẦU NGAY";
+    let i = 0;
+
+    function typing() {
+        if (i < text.length) {
+            typeText.textContent += text.charAt(i++);
+            setTimeout(typing, 80);
+        }
+    }
+
+    typing();
+}
 </script>
     
 </body>
