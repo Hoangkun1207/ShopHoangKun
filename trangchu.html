@@ -326,8 +326,13 @@
                                 <span>Giá trị trung bình</span>
                                 <h3 id="stat-avg-value">0đ</h3>
                             </div>
+                        
+                        <!-- KHU VỰC BIỂU ĐỒ ĐƯỜNG -->
+                        <div style="margin-top: 30px; height: 280px; width: 100%;">
+                            <canvas id="spendChart"></canvas>
                         </div>
-
+                      </div>
+                        
                         <!-- Danh Sách Dịch Vụ Có MS18 -->
                         <div class="card-title" style="margin-top: 25px; margin-bottom: 10px;">Dịch vụ nổi bật</div>
                         <div class="product-list">
@@ -404,6 +409,62 @@
         });
     </script>
 
+    <!-- SCRIPT BIỂU ĐỒ CHART.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctx = document.getElementById('spendChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['10/08', '11/08', '12/08', '13/08', '14/08', '15/08', '16/08'],
+                    datasets: [
+                        {
+                            label: 'Đơn hàng',
+                            data: [0, 0, 0, 0, 0, 1, 0],
+                            borderColor: '#10b981',
+                            backgroundColor: '#10b981',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.4, // Tạo đường cong mượt
+                            yAxisID: 'y1'
+                        },
+                        {
+                            label: 'Chi tiêu (đ)',
+                            data: [0, 0, 0, 0, 0, 49995, 0],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 2,
+                            fill: true, // Tô màu bên dưới
+                            tension: 0.4,
+                            yAxisID: 'y'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear', display: true, position: 'left',
+                            ticks: { callback: function(val) { return val >= 1000 ? (val/1000) + 'K' : val; } }
+                        },
+                        y1: {
+                            type: 'linear', display: true, position: 'right',
+                            grid: { drawOnChartArea: false },
+                            ticks: { stepSize: 1 }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    
     <!-- SCRIPT FIREBASE XỬ LÝ DỮ LIỆU ĐỘNG -->
     <script>
         const firebaseConfig = {
