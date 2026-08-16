@@ -19,8 +19,9 @@
 
     <style>
         /* === GLOBAL RESET === */
+        html { scroll-behavior: smooth; } /* Chuyển scroll-behavior lên thẻ html để mượt hơn */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
-        body { background-color: #ffffff; color: #333; overflow-x: hidden; line-height: 1.6; scroll-behavior: smooth; }
+        body { background-color: #ffffff; color: #333; overflow-x: hidden; line-height: 1.6; }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
         
@@ -29,11 +30,12 @@
         .col-50 { width: 48%; }
         .col-100 { width: 100%; text-align: center; }
 
-        /* === HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL) === */
+        /* === HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL) - TỐI ƯU GPU === */
         .reveal {
             opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: translateY(40px); /* Giảm khoảng cách trượt xuống 40px để nhanh hơn */
+            transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: opacity, transform; /* Bật tăng tốc phần cứng (GPU Acceleration) */
         }
         .reveal.in-view {
             opacity: 1;
@@ -50,6 +52,7 @@
             justify-content: center;
             align-items: center;
             min-width: 280px; 
+            will-change: transform;
         }
         .btn-main:hover { transform: translateY(-3px) !important; box-shadow: 0 8px 20px rgba(250, 40, 40, 0.4); color: #fff; }
         
@@ -66,7 +69,7 @@
         .section-title { font-size: 2.2rem; font-weight: 800; color: #0b1220; margin-bottom: 20px; }
         .section-subtitle { font-size: 1.1rem; color: #555; margin-bottom: 40px; }
 
-      /* === ẢNH MINH HỌA 3D === */
+        /* === ẢNH MINH HỌA 3D - TỐI ƯU GPU === */
         .graphic-img { 
             width: 100%; 
             max-width: 450px; 
@@ -74,8 +77,10 @@
             display: block; 
             margin: 0 auto; 
             filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15)); 
+            will-change: transform; /* Tăng tốc hiệu ứng bay lơ lửng */
+            transform: translateZ(0); /* Ép xử lý đồ họa bằng GPU */
         }
-        @keyframes floatUpDown { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes floatUpDown { 0%, 100% { transform: translateY(0) translateZ(0); } 50% { transform: translateY(-20px) translateZ(0); } }
         .floating { animation: floatUpDown 4s ease-in-out infinite; }
 
         /* === 1. HERO SECTION === */
@@ -113,6 +118,7 @@
             transition: all 0.3s ease;
             text-align: left;
             border-top: 4px solid #e2e8f0;
+            will-change: transform;
         }
         .srv-card.in-view:hover { 
             transform: translateY(-8px) !important; 
@@ -167,7 +173,7 @@
         .footer-bottom { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; padding-top: 20px; color: #718096; }
 
         /* FAB NÚT LIÊN HỆ */
-        .fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #2f54eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.8rem; box-shadow: 0 5px 20px rgba(47,84,235,0.5); cursor: pointer; transition: 0.3s; z-index: 1000; }
+        .fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #2f54eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.8rem; box-shadow: 0 5px 20px rgba(47,84,235,0.5); cursor: pointer; transition: 0.3s; z-index: 1000; will-change: transform; }
         .fab:hover { transform: scale(1.1); background: #1d39c4; }
 
         /* RESPONSIVE */
@@ -197,7 +203,7 @@
                     <span id="type-text"></span><span class="cursor"></span>
                 </a>
             </div>
-            <div class="col-50 reveal" style="transition-delay: 0.2s;">
+            <div class="col-50 reveal" style="transition-delay: 0.1s;">
                <img src="./Animation.gif" alt="Hoangkun Services" class="graphic-img floating">
             </div>
         </div>
@@ -209,7 +215,7 @@
             <div class="col-50 reveal">
                <img src="https://subvv.com/assets/landing_pages/page4/images/hero-18-img.png" alt="Đăng nhập" class="graphic-img floating" style="animation-delay: 1s;">
             </div>
-            <div class="col-50 reveal" style="transition-delay: 0.2s;">
+            <div class="col-50 reveal" style="transition-delay: 0.1s;">
                 <div class="login-card" id="login-box">
                     <div class="login-header">
                         <div class="brand-hk">H<span>K</span></div>
@@ -287,7 +293,7 @@
                         <li><i class="fa-solid fa-circle-check"></i> Tăng Member Group, Like Page</li>
                     </ul>
                 </div>
-                <div class="srv-card reveal" style="transition-delay: 0.2s;">
+                <div class="srv-card reveal" style="transition-delay: 0.15s;">
                     <i class="fa-brands fa-tiktok srv-icon" style="color: #000000;"></i>
                     <h3>TikTok</h3>
                     <ul>
@@ -296,7 +302,7 @@
                         <li><i class="fa-solid fa-circle-check"></i> Mắt Livestream, Điểm PK</li>
                     </ul>
                 </div>
-                <div class="srv-card reveal" style="transition-delay: 0.3s;">
+                <div class="srv-card reveal" style="transition-delay: 0.2s;">
                     <i class="fa-brands fa-instagram srv-icon" style="color: #E1306C;"></i>
                     <h3>Instagram</h3>
                     <ul>
@@ -314,7 +320,7 @@
                         <li><i class="fa-solid fa-circle-check"></i> Tăng View Youtube Short</li>
                     </ul>
                 </div>
-                <div class="srv-card reveal" style="transition-delay: 0.2s;">
+                <div class="srv-card reveal" style="transition-delay: 0.15s;">
                     <i class="fa-solid fa-bag-shopping srv-icon" style="color: #EE4D2D;"></i>
                     <h3>Thương mại điện tử</h3>
                     <ul>
@@ -323,7 +329,7 @@
                         <li><i class="fa-solid fa-circle-check"></i> Tăng Lượt xem, Yêu thích SP</li>
                     </ul>
                 </div>
-                <div class="srv-card reveal" style="transition-delay: 0.3s;">
+                <div class="srv-card reveal" style="transition-delay: 0.2s;">
                     <i class="fa-solid fa-globe srv-icon" style="color: #2f54eb;"></i>
                     <h3>Các Dịch Vụ Khác</h3>
                     <ul>
@@ -334,7 +340,7 @@
                 </div>
             </div>
             
-            <div class="reveal" style="margin-top: 40px; transition-delay: 0.4s;">
+            <div class="reveal" style="margin-top: 40px; transition-delay: 0.3s;">
                 <a href="#login-area" class="btn-main" style="min-width: unset;">ĐĂNG NHẬP ĐỂ XEM CHI TIẾT GIÁ</a>
             </div>
         </div>
@@ -352,19 +358,19 @@
                     <h3 class="feat-title">Nhanh</h3>
                     <p class="feat-desc">Chúng tôi sử dụng những công cụ tốt nhất để mang đến cho bạn trải nghiệm tuyệt vời nhất.</p>
                 </div>
-                <div class="feat-box reveal" style="transition-delay: 0.2s;">
+                <div class="feat-box reveal" style="transition-delay: 0.15s;">
                     <i class="fa-solid fa-sack-dollar feat-icon icon-money"></i>
                     <h3 class="feat-title">Giá Tốt</h3>
                     <p class="feat-desc">Chúng tôi tự hào đưa ra mức giá thấp nhất, mang lại cho bạn sự tiết kiệm và giá trị tốt nhất.</p>
                 </div>
-                <div class="feat-box reveal" style="transition-delay: 0.3s;">
+                <div class="feat-box reveal" style="transition-delay: 0.2s;">
                     <i class="fa-solid fa-headset feat-icon icon-support"></i>
                     <h3 class="feat-title">Hỗ trợ 24/7</h3>
                     <p class="feat-desc">Chúng tôi sẵn sàng hỗ trợ bạn mọi lúc, mọi nơi - 24/7, để đảm bảo bạn có trải nghiệm tuyệt vời nhất.</p>
                 </div>
             </div>
             
-            <div class="reveal" style="margin-top: 40px; transition-delay: 0.4s;">
+            <div class="reveal" style="margin-top: 40px; transition-delay: 0.3s;">
                 <a href="#login-area" class="btn-main" style="min-width: unset;">ĐĂNG NHẬP NGAY</a>
             </div>
         </div>
@@ -379,11 +385,11 @@
                     <i class="fa-solid fa-bullseye"></i>
                     <p>Với nền tảng kinh nghiệm dày dặn trong lĩnh vực Marketing trên Internet, chúng tôi tự tin mang đến dịch vụ chuyên nghiệp và hiệu quả.</p>
                 </div>
-                <div class="why-box reveal" style="transition-delay: 0.2s;">
+                <div class="why-box reveal" style="transition-delay: 0.15s;">
                     <i class="fa-solid fa-chart-line"></i>
                     <p>Luôn lấy KPI là chỉ tiêu cho sự hiệu quả công việc. Chúng tôi hiểu rằng giúp KH đạt hiệu quả cao cũng chính là giúp chúng tôi.</p>
                 </div>
-                <div class="why-box reveal" style="transition-delay: 0.3s;">
+                <div class="why-box reveal" style="transition-delay: 0.2s;">
                     <i class="fa-solid fa-users"></i>
                     <p>Đội ngũ nhân sự trẻ trung và năng động của chúng tôi cam kết mang lại kết quả tuyệt vời cho từng dự án.</p>
                 </div>
@@ -403,21 +409,21 @@
                     <div class="stat-num">3000+</div>
                     <div class="stat-text">Đối tác doanh nghiệp</div>
                 </div>
-                <div class="stat-box reveal" style="transition-delay: 0.2s;">
+                <div class="stat-box reveal" style="transition-delay: 0.15s;">
                     <div class="stat-num">200%</div>
                     <div class="stat-text">Doanh thu tăng từ Marketing</div>
                 </div>
-                <div class="stat-box reveal" style="transition-delay: 0.3s;">
+                <div class="stat-box reveal" style="transition-delay: 0.2s;">
                     <div class="stat-num">98%</div>
                     <div class="stat-text">Khách hàng hài lòng</div>
                 </div>
-                <div class="stat-box reveal" style="transition-delay: 0.4s;">
+                <div class="stat-box reveal" style="transition-delay: 0.25s;">
                     <div class="stat-num">300+</div>
                     <div class="stat-text">Chiến dịch truyền thông</div>
                 </div>
             </div>
             
-            <a href="#login-area" class="btn-main reveal" style="min-width: unset; transition-delay: 0.5s;">THAM GIA NGAY</a>
+            <a href="#login-area" class="btn-main reveal" style="min-width: unset; transition-delay: 0.3s;">THAM GIA NGAY</a>
         </div>
     </section>
 
@@ -430,7 +436,7 @@
                 <div class="hero-line" style="margin: 0 0 20px 0; width: 60px;"></div>
                 <p>Chỉ với vài thao tác cơ bản, bạn sẽ sở hữu ngay một tài khoản cá nhân để trải nghiệm dịch vụ của chúng tôi.</p>
             </div>
-            <div class="col-50 reveal" style="transition-delay: 0.2s;">
+            <div class="col-50 reveal" style="transition-delay: 0.1s;">
                 <div class="mock-img mock-map floating">
                     <i class="fa-solid fa-map-location-dot"></i>
                 </div>
@@ -441,7 +447,7 @@
     <!-- 8. ZIGZAG BANK -->
     <section class="zigzag">
         <div class="container row">
-            <div class="col-50 reveal" style="order: 1; transition-delay: 0.2s;">
+            <div class="col-50 reveal" style="order: 1; transition-delay: 0.1s;">
                 <div class="mock-img mock-bank floating" style="animation-delay: 1.5s;">
                     <i class="fa-solid fa-building-columns"></i>
                 </div>
@@ -462,7 +468,7 @@
                 <div class="hero-line" style="margin: 0 0 20px 0; width: 60px;"></div>
                 <p>Chúng tôi hỗ trợ các dịch vụ như Facebook, Instagram, TikTok, Youtube, Shopee... Nhằm đáp ứng mọi yêu cầu của bạn.</p>
             </div>
-            <div class="col-50 reveal" style="transition-delay: 0.2s;">
+            <div class="col-50 reveal" style="transition-delay: 0.1s;">
                 <div class="mock-img mock-globe floating">
                     <i class="fa-solid fa-mobile-screen-button"></i>
                 </div>
@@ -477,7 +483,7 @@
                 <h4>HOANGKUNSTORE</h4>
                 <p>Với nhiều năm kinh nghiệm trong lĩnh vực Social Media, chúng tôi có đội ngũ kỹ thuật viên giàu kinh nghiệm, thấu hiểu tâm lý khách hàng. Từ đó mang đến cho bạn trải nghiệm tốt nhất khi sử dụng dịch vụ.</p>
             </div>
-            <div class="col-50 footer-links reveal" style="transition-delay: 0.2s;">
+            <div class="col-50 footer-links reveal" style="transition-delay: 0.1s;">
                 <h4>DỊCH VỤ</h4>
                 <ul>
                     <li><i class="fa-brands fa-facebook"></i> Facebook</li>
@@ -487,7 +493,7 @@
                 </ul>
             </div>
         </div>
-        <div class="container footer-bottom reveal" style="transition-delay: 0.4s;">
+        <div class="container footer-bottom reveal" style="transition-delay: 0.2s;">
             ©2026 All Rights Reserved - HOANGKUN STORE
         </div>
     </footer>
@@ -574,19 +580,22 @@
             setTimeout(typeWriter, typeSpeed);
         }
 
-        // 4. HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL BẬT/TẮT LIÊN TỤC)
+        // 4. HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL BẬT/TẮT TỐI ƯU HÓA)
         const revealElements = document.querySelectorAll('.reveal');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                } else {
-                    // Cứ khuất khỏi màn hình là thu hồi class, để cuộn tới lại bung ra
-                    entry.target.classList.remove('in-view'); 
-                }
+                // Tối ưu hóa: Dùng requestAnimationFrame để thao tác giao diện không làm nghẽn luồng xử lý
+                window.requestAnimationFrame(() => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    } else {
+                        entry.target.classList.remove('in-view'); 
+                    }
+                });
             });
         }, { 
-            threshold: 0.15 // Hiện 15% là kích hoạt
+            threshold: 0.1, // Chỉnh xuống 0.1 để kích hoạt sớm hơn, tránh cảm giác bị khựng
+            rootMargin: "0px 0px -20px 0px" // Bắt đầu tính khi phần tử cách đáy màn hình 20px
         });
 
         // Khởi động các hàm sau khi tải web
