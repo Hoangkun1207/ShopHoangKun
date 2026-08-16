@@ -3,467 +3,502 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hoangkun Store - Hệ Thống Dịch Vụ Mạng Xã Hội Đa Nền Tảng Uy Tín</title>
+    <title>Trang Tổng Quan - Hoangkun Store</title>
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- SweetAlert2 CSS & JS -->
+    <!-- Hiệu ứng AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- SweetAlert2 & Firebase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
-        /* === GLOBAL RESET === */
-        html { scroll-behavior: smooth; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
-        body { background-color: #ffffff; color: #333; overflow-x: hidden; line-height: 1.6; }
+        body { background-color: #f8fafc; color: #334155; display: flex; height: 100vh; overflow: hidden; }
         a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
+
+        /* === SIDEBAR === */
+        .sidebar { width: 260px; background-color: #111827; color: #9ca3af; display: flex; flex-direction: column; height: 100%; border-right: 1px solid #1f2937; z-index: 10; flex-shrink: 0; }
+        .sidebar-brand { padding: 20px; font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: 1px; border-bottom: 1px solid #1f2937; text-transform: uppercase; }
+        .sidebar-menu { padding: 15px 10px; overflow-y: auto; flex: 1; }
+        .sidebar-menu::-webkit-scrollbar { width: 4px; }
+        .sidebar-menu::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+        .menu-category { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; margin: 15px 10px 8px 10px; font-weight: 700; }
+        .menu-item { display: flex; align-items: center; padding: 10px 15px; color: #d1d5db; border-radius: 8px; margin-bottom: 4px; font-size: 0.95rem; font-weight: 600; transition: 0.2s; position: relative; }
+        .menu-item i { margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }
+        .menu-item:hover { background-color: #1f2937; color: #fff; }
+        .menu-item.active { background-color: #2563eb; color: #fff; }
+        .badge-new { position: absolute; right: 10px; background: #059669; color: #fff; font-size: 0.6rem; padding: 2px 6px; border-radius: 10px; font-weight: 800; }
+
+        /* === MAIN CONTENT === */
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; scroll-behavior: smooth; }
         
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; }
-        .col-50 { width: 48%; }
-        .col-100 { width: 100%; text-align: center; }
-
-        /* === HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL) - TỐI ƯU GPU === */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-            will-change: opacity, transform;
-        }
-        .reveal.in-view {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Nút Bấm Khắp Web & Typewriter */
-        .btn-main {
-            background: linear-gradient(90deg, #ff4b4b, #fa2828);
-            color: #fff; border: none; padding: 12px 35px; font-size: 1.1rem; font-weight: 700;
-            border-radius: 30px; cursor: pointer; box-shadow: 0 6px 15px rgba(250, 40, 40, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s; 
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            min-width: 280px; 
-            will-change: transform;
-        }
-        .btn-main:hover { transform: translateY(-3px) !important; box-shadow: 0 8px 20px rgba(250, 40, 40, 0.4); color: #fff; }
+        /* HEADER PHÍA TRÊN */
+        .header { background: #fff; padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 5; }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .header-path { font-size: 0.95rem; color: #64748b; font-weight: 600; }
+        .header-path span { color: #0f172a; font-weight: 700; }
         
-        .btn-main .cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.2em;
-            min-width: 2px;
-            background: #fff;
-            margin-left: 5px;
-            vertical-align: middle;
-            animation: blinkCursor 0.7s infinite;
-            flex-shrink: 0;
-        }
-        @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .search-bar { background: #f1f5f9; border-radius: 8px; padding: 8px 15px; display: flex; align-items: center; width: 350px; border: 1px solid #e2e8f0; }
+        .search-bar i { color: #94a3b8; margin-right: 10px; }
+        .search-bar input { border: none; background: transparent; outline: none; flex: 1; font-size: 0.9rem; font-family: 'Quicksand'; }
+        .search-bar .shortcut { font-size: 0.75rem; background: #fff; border: 1px solid #cbd5e1; padding: 2px 6px; border-radius: 4px; color: #94a3b8; font-weight: 600; }
 
-        .section-title { font-size: 2.2rem; font-weight: 800; color: #0b1220; margin-bottom: 20px; }
-        .section-subtitle { font-size: 1.1rem; color: #555; margin-bottom: 40px; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .header-icon { width: 35px; height: 35px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; color: #475569; cursor: pointer; position: relative; }
+        .lang-select { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 20px; }
+        .user-dropdown { display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 700; color: #1e293b; padding: 4px 12px; border: 1px solid #e2e8f0; border-radius: 20px; }
 
-        /* === ẢNH MINH HỌA 3D - TỐI ƯU GPU === */
-        .graphic-img { 
-            width: 100%; 
-            max-width: 450px; 
-            height: auto; 
-            display: block; 
-            margin: 0 auto; 
-            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15)); 
-            will-change: transform; 
-            transform: translateZ(0); 
-        }
-        @keyframes floatUpDown { 0%, 100% { transform: translateY(0) translateZ(0); } 50% { transform: translateY(-20px) translateZ(0); } }
-        .floating { animation: floatUpDown 4s ease-in-out infinite; }
-
-        /* === 1. HERO SECTION === */
-        .hero { padding: 60px 0; background: linear-gradient(to bottom, #ffffff 60%, #f6eff4 100%); }
-        .hero-logo { font-size: 2.8rem; font-weight: 800; color: #2b4162; text-transform: uppercase; }
-        .hero-line { width: 120px; height: 4px; background-color: #f03e3e; margin: 15px auto 30px auto; border-radius: 2px;}
-        .hero .col-50 { text-align: center; }
-
-        /* === 2. FORM ĐĂNG NHẬP (TỐI ƯU GỌN ĐẸP) === */
-        .login-section { padding: 60px 0; background-color: #f8fafc; }
-        .login-card { background: #fff; padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); text-align: left; position: relative; overflow: hidden; border: 1px solid #f1f5f9; }
-        .login-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .brand-hk { font-size: 2.2rem; font-weight: 800; color: #2f54eb; letter-spacing: -1px; }
-        .brand-hk span { color: #00b4d8; }
-        .input-group { margin-bottom: 18px; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: 700; color: #334155; font-size: 0.95rem;}
-        .input-wrapper { position: relative; }
-        .input-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1.1rem; transition: 0.3s; z-index: 10; }
-        .input-wrapper input { width: 100%; padding: 14px 15px 14px 45px; border: 2px solid #e2e8f0; border-radius: 12px; outline: none; transition: 0.3s; background: #f8fafc; color: #1e293b; font-size: 1rem; font-weight: 500; }
-        .input-wrapper:focus-within input { border-color: #2f54eb; background: #fff; box-shadow: 0 4px 15px rgba(47,84,235,0.08); transform: translateY(-2px); }
-        .input-wrapper:focus-within i { color: #2f54eb; }
-        .login-options { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 25px; }
-        .login-options a { color: #2f54eb; font-weight: 700; transition: 0.2s; }
-        .login-options a:hover { color: #00b4d8; text-decoration: underline; }
-        .btn-login { width: 100%; background: linear-gradient(135deg, #2f54eb, #00b4d8); color: #fff; border: none; padding: 14px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(47,84,235,0.25); }
-        .btn-login:hover { transform: translateY(-3px) !important; box-shadow: 0 12px 25px rgba(47,84,235,0.35); }
+        /* DASHBOARD BODY (GRID LAYOUT) */
+        .dashboard-container { padding: 25px; max-width: 1500px; margin: 0 auto; width: 100%; }
+        .layout-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: start; }
         
-        /* === 3. DANH SÁCH DỊCH VỤ === */
-        .services-overview { padding: 80px 0; background: #fff; text-align: center; }
-        .services-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 40px; }
-        .srv-card { width: calc(33.333% - 20px); background: #f8fafc; padding: 30px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: all 0.3s ease; text-align: left; border-top: 4px solid #e2e8f0; will-change: transform; }
-        .srv-card.in-view:hover { transform: translateY(-8px) !important; box-shadow: 0 15px 30px rgba(47,84,235,0.1); border-top-color: #2f54eb; }
-        .srv-icon { font-size: 3rem; margin-bottom: 20px; }
-        .srv-card h3 { font-size: 1.4rem; color: #1e293b; margin-bottom: 15px; font-weight: 800; }
-        .srv-card ul { list-style: none; padding: 0; }
-        .srv-card ul li { margin-bottom: 12px; color: #475569; font-weight: 500; display: flex; align-items: flex-start; line-height: 1.4;}
-        .srv-card ul li i { font-size: 1rem; color: #10b981; margin-right: 10px; margin-top: 2px; }
+        /* CARDS CHUNG */
+        .card { background: #fff; border-radius: 16px; padding: 20px; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); transition: transform 0.3s; }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .card-title { font-size: 1.05rem; font-weight: 700; color: #1e293b; }
 
-        /* === NÚT LIÊN HỆ HIỆU ỨNG (TỪ BẢN GỐC) === */
-        .rc-fab { --rc-blue:#2f54eb; --rc-blue-2:#3b5cf0; --rc-blue-deep:#2b48d4; --rc-line:#c3cef7; --rc-shadow:0 10px 26px -8px rgba(47,84,235,.32); position:fixed; right:20px; bottom:30px; z-index:95; display:flex; flex-direction:column; align-items:center; font-family:'Quicksand',sans-serif; }
-        .rc-stack { display:flex; flex-direction:column; align-items:center; transform-origin:bottom center; transition:opacity .28s ease, transform .28s cubic-bezier(.34,1.4,.5,1); }
-        .rc-fab.rc-collapsed .rc-stack { opacity:0; transform:translateY(14px) scale(.82); pointer-events:none; }
-        .rc-fab.rc-collapsed { pointer-events:none; }
-        .rc-fab.rc-collapsed .rc-main { pointer-events:auto; }
-        .rc-label { background:#fff; color:var(--rc-blue); font-weight:800; font-size:14px; padding:9px 18px; border-radius:22px; box-shadow:0 8px 22px -6px rgba(30,41,59,.22); position:relative; white-space:nowrap; }
-        .rc-label::after { content:''; position:absolute; left:50%; bottom:-5px; width:12px; height:12px; background:#fff; transform:translateX(-50%) rotate(45deg); border-radius:2px; box-shadow:3px 3px 6px -4px rgba(30,41,59,.2); }
-        .rc-line { width:0; height:16px; border-left:2.5px dotted var(--rc-line); margin:3px 0; }
-        .rc-ico { width:52px; height:52px; border-radius:50%; background:#fff; box-shadow:var(--rc-shadow); display:flex; align-items:center; justify-content:center; color:var(--rc-blue); transition:transform .2s ease, box-shadow .2s ease; text-decoration:none; overflow:hidden; }
-        .rc-ico svg { width:28px; height:28px; display:block; }
-        .rc-ico:hover { transform:translateY(-3px) scale(1.05); box-shadow:0 16px 30px -8px rgba(47,84,235,.45); }
-        .rc-main { position:relative; margin-top:2px; width:60px; height:60px; border:none; cursor:pointer; padding:0; border-radius:19px; background:linear-gradient(160deg,var(--rc-blue-2),var(--rc-blue-deep)); box-shadow:0 12px 28px -8px rgba(47,84,235,.55); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; color:#fff; transition:transform .2s ease, box-shadow .2s ease, filter .2s ease; }
-        .rc-main::after { content:''; position:absolute; inset:0; border-radius:inherit; z-index:-1; background:var(--rc-blue-2); pointer-events:none; animation:rc-ripple 2s cubic-bezier(.4,0,.2,1) infinite; }
-        @keyframes rc-ripple { 0% { transform:scale(1); opacity:.55; } 70% { transform:scale(1.55); opacity:0; } 100% { transform:scale(1.55); opacity:0; } }
-        .rc-main svg { width:24px; height:24px; }
-        .rc-main span { font-size:11px; font-weight:700; letter-spacing:.01em; }
-        .rc-main:hover { transform:translateY(-2px); box-shadow:0 18px 34px -8px rgba(47,84,235,.6); filter:brightness(1.05); }
-        .rc-fab.rc-collapsed .rc-main { border-radius:50%; }
+        /* === CỘT TRÁI === */
+        .top-cards-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; margin-bottom: 20px; }
+        
+        /* THÔNG TIN TÀI KHOẢN */
+        .acc-info-box { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .acc-avatar { width: 70px; height: 70px; background: #e0f2fe; color: #0284c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; }
+        .acc-details h3 { font-size: 1.4rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px; }
+        .acc-details p { color: #64748b; font-size: 0.9rem; margin-top: 2px; display: flex; align-items: center; gap: 5px; }
+        .badge-unverified { background: #fef3c7; color: #d97706; font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; font-weight: 700; border: 1px solid #fde68a; margin-left: 5px; }
+        
+        .balance-blocks { display: flex; gap: 15px; }
+        .bal-box { flex: 1; background: #f0f9ff; border: 1px solid #bae6fd; padding: 12px 15px; border-radius: 12px; display: flex; align-items: center; gap: 12px; }
+        .bal-icon { width: 35px; height: 35px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #3b82f6; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .bal-text span { font-size: 0.8rem; color: #64748b; font-weight: 600; display: block; }
+        .bal-text h4 { font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-top: 2px; }
 
-        /* RESPONSIVE & MOBILE */
-        @media (max-width: 900px) {
-            .col-50, .srv-card { width: 100%; margin-bottom: 20px; text-align: center; }
-            .login-card { margin-top: 20px; }
-            .hero-line { margin: 15px auto; }
-            .rc-fab { right:12px; bottom:20px; }
-        }
-        @media (max-width: 600px) {
-            .login-section { padding: 35px 12px; }
-            .login-section .col-50:first-child { display: none; } /* Ẩn ảnh gif bên trái trên đt */
-            .login-section .col-50:last-child { width: 100%; margin: 0; }
-            .login-card { width: 100%; padding: 24px 18px; border-radius: 18px; margin: 0 auto; box-shadow: 0 8px 25px rgba(0,0,0,.07); }
-            .brand-hk { font-size: 1.9rem; }
-            .input-wrapper input { height: 48px; padding: 12px 12px 12px 42px; font-size: .92rem; border-radius: 10px; }
-            .btn-login { height: 48px; padding: 10px; font-size: .95rem; border-radius: 10px; }
-            .hero { padding: 35px 12px; }
-            .hero-logo { font-size: 2rem; }
-            .btn-main { min-width: 220px; padding: 11px 20px; font-size: .95rem; }
+        /* CẤP BẬC TĂNG TRƯỞNG */
+        .tier-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.85rem; font-weight: 600; color: #64748b; }
+        .tier-badges { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .t-badge { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 6px 15px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
+        .t-badge.next { background: #fffbeb; color: #d97706; border-color: #fde68a; }
+        
+        .progress-container { width: 100%; background: #e2e8f0; height: 8px; border-radius: 10px; margin-bottom: 10px; position: relative; }
+        .progress-bar { height: 100%; background: #3b82f6; border-radius: 10px; width: 0%; transition: width 0.5s ease; }
+        .progress-text { text-align: right; font-size: 0.85rem; font-weight: 700; color: #2563eb; margin-top: -20px; margin-bottom: 15px; }
+        .btn-deposit { width: 100%; background: #3b82f6; color: #fff; padding: 12px; border: none; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+        .btn-deposit:hover { background: #2563eb; transform: translateY(-2px); }
+
+        /* BẢNG TIN KHUYẾN MÃI */
+        .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .news-item { padding: 15px; border-radius: 12px; color: #fff; position: relative; overflow: hidden; min-height: 140px; display: flex; flex-direction: column; justify-content: space-between; }
+        .news-item.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .news-item.dark { background: linear-gradient(135deg, #1e3a8a, #172554); }
+        .news-item.promo { background: url('https://subvv.com/assets/images/banner-promo.png') center/cover; border: 1px solid #e2e8f0; color: #1e293b; }
+        
+        .n-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+        .n-icon { width: 30px; height: 30px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+        .n-link { font-size: 0.8rem; font-weight: 700; color: rgba(255,255,255,0.9); text-decoration: none; }
+        .news-item.promo .n-link { color: #2563eb; }
+        .n-body { font-size: 0.85rem; font-weight: 600; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* BIỂU ĐỒ CHI TIÊU */
+        .stats-tabs { display: flex; gap: 10px; background: #f1f5f9; padding: 4px; border-radius: 8px; }
+        .s-tab { padding: 6px 12px; font-size: 0.85rem; font-weight: 700; color: #64748b; border-radius: 6px; cursor: pointer; }
+        .s-tab.active { background: #fff; color: #1e293b; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
+        .stat-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; }
+        .stat-box span { font-size: 0.85rem; color: #64748b; font-weight: 600; }
+        .stat-box h3 { font-size: 1.3rem; font-weight: 800; color: #0f172a; margin-top: 5px; }
+
+        /* DỊCH VỤ NỔI BẬT */
+        .product-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .product-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; }
+        .product-item strong { color: #1e293b; font-size: 0.95rem; }
+        .product-price.free { color: #10b981; font-weight: 800; background: #d1fae5; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; }
+
+        /* === CỘT PHẢI === */
+        /* THÔNG BÁO */
+        .noti-tabs { display: flex; border-bottom: 1px solid #e2e8f0; margin-bottom: 15px; }
+        .n-tab { flex: 1; text-align: center; padding: 10px 0; font-size: 0.9rem; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 2px solid transparent; }
+        .n-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+        .noti-list { list-style: none; }
+        .noti-item { display: flex; gap: 15px; padding: 10px 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.85rem; }
+        .noti-item:last-child { border: none; }
+        .noti-date { color: #ef4444; font-weight: 700; white-space: nowrap; }
+        .noti-text { color: #334155; font-weight: 500; }
+        .view-all { display: block; text-align: center; margin-top: 15px; color: #2563eb; font-weight: 600; font-size: 0.9rem; }
+
+        /* THAO TÁC NHANH */
+        .qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .qa-btn { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px 10px; border-radius: 10px; text-align: center; font-weight: 600; font-size: 0.85rem; color: #334155; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
+        .qa-btn:hover { background: #f1f5f9; border-color: #cbd5e1; transform: translateY(-2px); }
+        .qa-btn i { color: #3b82f6; font-size: 1.1rem; width: 20px; }
+        .qa-btn.add { border: 1px dashed #cbd5e1; color: #64748b; justify-content: center; }
+
+        /* BANNER VIDEO */
+        .video-banner { width: 100%; border-radius: 12px; border: 1px solid #e2e8f0; }
+
+        /* =====================================================
+           📱 TỐI ƯU GIAO DIỆN MOBILE CHO TRANG QUẢN TRỊ
+        ===================================================== */
+        @media (max-width: 768px) {
+            .layout-grid, .top-cards-row { grid-template-columns: 1fr; gap: 15px; }
+            .dashboard-container { padding: 12px; }
+            .card { padding: 15px; margin-bottom: 15px; }
+            .header { padding: 10px 15px; }
+            .search-bar, .lang-select { display: none; }
+            .header-right { gap: 10px; }
+            .acc-info-box { flex-direction: column; text-align: center; gap: 10px; }
+            .balance-blocks { flex-direction: column; gap: 10px; }
+            .tier-badges { flex-direction: column; gap: 10px; align-items: flex-start; width: 100%; }
+            .t-badge { width: 100%; justify-content: center; }
+            .news-grid, .stats-grid, .qa-grid { grid-template-columns: 1fr; gap: 10px; }
+            .stat-box h3 { font-size: 1.15rem; }
+            .sidebar { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. HERO SECTION -->
-    <section class="hero">
-        <div class="container row">
-            <div class="col-50 reveal">
-                <div class="hero-logo">HOANGKUNSTORE</div>
-                <div class="hero-line"></div>
-                <h1 class="section-title">Nền Tảng Được Tin Cậy Và Phổ Biến Nhất Cho Các Dịch Vụ Truyền Thông Xã Hội</h1>
-                <p class="section-subtitle">Công cụ Tiếp thị Truyền thông Xã hội Tất cả Trong Một mà bạn sẽ cần!</p>
-                <a href="#login-area" class="btn-main">
-                    <span id="type-text"></span><span class="cursor"></span>
-                </a>
-            </div>
-            <div class="col-50 reveal" style="transition-delay: 0.1s;">
-               <img src="./Animation.gif" alt="Hoangkun Services" class="graphic-img floating">
-            </div>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-brand">HOANGKUN</div>
+        <div class="sidebar-menu">
+            <div class="menu-category">Quản lý chung</div>
+            <a href="#" class="menu-item active"><i class="fa-solid fa-house"></i> Trang chủ</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-globe"></i> Website & API</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-tags"></i> Bảng giá & Cấp bậc</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-sack-dollar"></i> Kiếm tiền</a>
+            <a href="https://zalo.me/0788265513" target="_blank" class="menu-item"><i class="fa-solid fa-headset"></i> Liên hệ CSKH</a>
+
+            <div class="menu-category">Tài khoản</div>
+            <a href="#" class="menu-item"><i class="fa-solid fa-user-shield"></i> Tài khoản & bảo mật</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-wallet"></i> Nạp tiền</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-clock-rotate-left"></i> Nhật ký hoạt động</a>
+
+            <div class="menu-category">Danh sách dịch vụ</div>
+            <a href="#" class="menu-item"><i class="fa-solid fa-layer-group"></i> Dịch vụ khác <span class="badge-new">MỚI</span></a>
+            <a href="#" class="menu-item"><i class="fa-brands fa-facebook" style="color: #3b82f6;"></i> Facebook</a>
+            <a href="#" class="menu-item"><i class="fa-brands fa-instagram" style="color: #ec4899;"></i> Instagram</a>
+            <a href="#" class="menu-item"><i class="fa-brands fa-tiktok" style="color: #fff;"></i> TikTok</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-bag-shopping" style="color: #f97316;"></i> Shopee</a>
+            <a href="#" class="menu-item"><i class="fa-brands fa-youtube" style="color: #ef4444;"></i> Youtube</a>
+            <a href="#" class="menu-item"><i class="fa-brands fa-twitter" style="color: #38bdf8;"></i> Twitter</a>
+            <a href="javascript:void(0)" onclick="logout()" class="menu-item" style="color: #ef4444; margin-top: 20px;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
         </div>
-    </section>
-
-    <!-- 2. LOGIN SECTION -->
-    <section class="login-section" id="login-area">
-        <div class="container row">
-            <div class="col-50 reveal">
-                <img src="https://subvv.com/assets/landing_pages/page4/images/hero-18-img.png" alt="Đăng nhập" class="graphic-img floating" style="animation-delay:1s;">
-            </div>
-
-            <div class="col-50 reveal" style="transition-delay:0.1s;">
-                <!-- ĐĂNG NHẬP -->
-                <div class="login-card" id="login-box">
-                    <div class="login-header">
-                        <div class="brand-hk">H<span>K</span></div>
-                        <h3 style="font-size:1.6rem;color:#1e293b;font-weight:800;">Đăng nhập</h3>
-                    </div>
-
-                    <form id="loginForm">
-                        <div class="input-group">
-                            <label>Email đăng nhập</label>
-                            <div class="input-wrapper">
-                                <i class="fa-regular fa-envelope"></i>
-                                <input type="email" id="login-email" placeholder="Nhập email của bạn" required>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label>Mật khẩu</label>
-                            <div class="input-wrapper">
-                                <i class="fa-solid fa-key"></i>
-                                <input type="password" id="login-pass" placeholder="Nhập mật khẩu" required>
-                            </div>
-                        </div>
-
-                        <div class="login-options">
-                            <a href="javascript:void(0)" onclick="toggleForm()">Chưa có tài khoản? Đăng ký</a>
-                            <a href="javascript:void(0)" onclick="forgotPassword()" style="color:#64748b;font-weight:500;">Quên mật khẩu?</a>
-                        </div>
-
-                        <button type="submit" class="btn-login">Đăng nhập ngay</button>
-                    </form>
-                </div>
-
-                <!-- ĐĂNG KÝ -->
-                <div class="login-card" id="register-box" style="display:none;">
-                    <div class="login-header">
-                        <div class="brand-hk">H<span>K</span></div>
-                        <h3 style="font-size:1.6rem;color:#1e293b;font-weight:800;">Đăng ký</h3>
-                    </div>
-
-                    <form id="registerForm">
-                        <div class="input-group">
-                            <label>Tên đăng nhập</label>
-                            <div class="input-wrapper">
-                                <i class="fa-regular fa-user"></i>
-                                <input type="text" id="reg-user" placeholder="Tạo tên đăng nhập" required>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label>Gmail khôi phục mật khẩu</label>
-                            <div class="input-wrapper">
-                                <i class="fa-regular fa-envelope"></i>
-                                <input type="email" id="reg-email" placeholder="Nhập Gmail của bạn" required>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label>Mật khẩu</label>
-                            <div class="input-wrapper">
-                                <i class="fa-solid fa-key"></i>
-                                <input type="password" id="reg-pass" placeholder="Tạo mật khẩu" required>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label>Nhập lại mật khẩu</label>
-                            <div class="input-wrapper">
-                                <i class="fa-solid fa-lock"></i>
-                                <input type="password" id="reg-repass" placeholder="Nhập lại mật khẩu" required>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label>Mã giới thiệu (Nếu có)</label>
-                            <div class="input-wrapper">
-                                <i class="fa-solid fa-gift"></i>
-                                <input type="text" id="reg-refcode" placeholder="Nhập mã giới thiệu">
-                            </div>
-                        </div>
-
-                        <div class="login-options">
-                            <a href="javascript:void(0)" onclick="toggleForm()">Đã có tài khoản? Đăng nhập</a>
-                        </div>
-
-                        <button type="submit" class="btn-login">Tạo tài khoản</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NÚT LIÊN HỆ GÓC PHẢI (HIỆU ỨNG TỪ BẢN GỐC) -->
-    <div class="rc-fab rc-collapsed" id="rcFab">
-      <div class="rc-stack" id="rcStack">
-        <div class="rc-label">Liên hệ &amp; hỗ trợ</div>
-        <div class="rc-line"></div>
-        
-        <a class="rc-ico" href="https://zalo.me/0905093155" target="_blank" title="Chat Zalo: 0905093155">
-          <svg viewBox="0 0 48 48"><rect x="4" y="4" width="40" height="40" rx="11" fill="#2f54eb"/><text x="24" y="30.5" font-family="Quicksand,Arial,sans-serif" font-weight="900" font-size="15.5" fill="#fff" text-anchor="middle" letter-spacing="-.3">Zalo</text></svg>
-        </a>
-        <div class="rc-line"></div>
-        
-        <a class="rc-ico" href="https://www.facebook.com/nhanvien.support" target="_blank" title="Chat Messenger">
-          <svg viewBox="0 0 36 36"><path fill="#2f54eb" d="M18 2C9.2 2 2 8.7 2 17c0 4.6 2.2 8.7 5.7 11.4V34l5.2-2.9c1.3.4 2.7.5 4.1.5 8.8 0 16-6.7 16-15S26.8 2 18 2z"/><path fill="#fff" d="M8 22.6l4.7-7.4c.7-1.1 2.3-1.4 3.4-.6l3.7 2.8c.3.2.8.2 1.1 0l5-3.8c.7-.5 1.6.3 1.1 1l-4.7 7.4c-.7 1.1-2.3 1.4-3.4.6l-3.7-2.8c-.3-.2-.8-.2-1.1 0l-5 3.8c-.7.5-1.6-.3-1.1-1z"/></svg>
-        </a>
-        <div class="rc-line"></div>
-        
-        <a class="rc-ico" href="tel:0905093155" title="Gọi Hotline">
-          <svg viewBox="0 0 24 24" fill="#2f54eb"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1l-2.2 2.2z"/></svg>
-        </a>
-        <div class="rc-line"></div>
-        
-        <a class="rc-ico" href="http://t.me/TeleThongBaoHeThongBot?start=4330569_95d05454880ca51e8117d1dfbec538c7" target="_blank" title="Telegram">
-          <svg viewBox="0 0 24 24"><g fill="#2f54eb"><circle cx="12" cy="3" r="1.6"/><rect x="11.25" y="4.2" width="1.5" height="2.2" rx=".6"/><rect x="4" y="6.2" width="16" height="12" rx="4"/><rect x="1.4" y="10" width="1.9" height="4.6" rx=".95"/><rect x="20.7" y="10" width="1.9" height="4.6" rx=".95"/></g><circle cx="9" cy="11.6" r="1.6" fill="#fff"/><circle cx="15" cy="11.6" r="1.6" fill="#fff"/><rect x="8.6" y="14.8" width="6.8" height="1.5" rx=".75" fill="#fff"/></svg>
-        </a>
-        <div class="rc-line"></div>
-      </div>
-
-      <button type="button" class="rc-main" id="rcMain" title="Liên hệ &amp; hỗ trợ">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><path d="M4 15a2 2 0 0 1 2-2h1v6H6a2 2 0 0 1-2-2v-2z"/><path d="M20 15a2 2 0 0 0-2-2h-1v6h1a2 2 0 0 0 2-2v-2z"/><path d="M18 19a3 3 0 0 1-3 3h-3"/></svg>
-        <span>Liên hệ</span>
-      </button>
     </div>
 
-<!-- SCRIPT XỬ LÝ (FIREBASE + HIỆU ỨNG) -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <div class="header-path">Trang chủ / <span>Trang Tổng Quan</span></div>
+                <div class="search-bar">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" placeholder="Tìm dịch vụ seeding">
+                    <span class="shortcut">Ctrl K</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-icon"><i class="fa-solid fa-gear"></i></div>
+                <div class="header-icon"><i class="fa-solid fa-bell"></i></div>
+                <div class="lang-select">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" width="20" style="border-radius: 2px;"> Tiếng Việt <i class="fa-solid fa-angle-down" style="font-size: 0.8rem;"></i>
+                </div>
+                <div class="user-dropdown">
+                    <div id="avatar-mini" style="width:28px; height:28px; background:#e0f2fe; color:#0284c7; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.9rem;">H</div>
+                    <span id="display-username">Đang tải...</span> <i class="fa-solid fa-angle-down" style="font-size: 0.8rem;"></i>
+                </div>
+            </div>
+        </div>
 
-<script>
-// CONFIG FIREBASE
-const firebaseConfig = {
-  apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
-  authDomain: "shophoangkun.firebaseapp.com",
-  projectId: "shophoangkun",
-  storageBucket: "shophoangkun.firebasestorage.app",
-  messagingSenderId: "364993334554",
-  appId: "1:364993334554:web:800c66509b355ebf5370a3"
-};
+        <!-- DASHBOARD BODY -->
+        <div class="dashboard-container">
+            <div class="layout-grid">
+                
+                <!-- CỘT TRÁI -->
+                <div>
+                    <!-- Hàng 1: Tài khoản & Cấp bậc -->
+                    <div class="top-cards-row">
+                        <!-- THÔNG TIN TÀI KHOẢN -->
+                        <div class="card" style="margin-bottom: 0;" data-aos="fade-up" data-aos-duration="600">
+                            <div class="card-title">Thông tin tài khoản</div>
+                            <div class="acc-info-box">
+                                <div class="acc-avatar" id="avatar-initial">H</div>
+                                <div class="acc-details">
+                                    <h3 id="profile-name">Đang tải... <i class="fa-solid fa-circle-check" style="color: #2563eb; font-size: 1rem;"></i></h3>
+                                    <p><i class="fa-regular fa-envelope"></i> <span id="profile-email">...</span> <span class="badge-unverified"><i class="fa-solid fa-circle-exclamation"></i> Chưa xác minh</span></p>
+                                </div>
+                            </div>
+                            <div class="balance-blocks">
+                                <div class="bal-box">
+                                    <div class="bal-icon"><i class="fa-solid fa-wallet"></i></div>
+                                    <div class="bal-text">
+                                        <span>Số dư <span style="display:inline; background:#bfdbfe; color:#1d4ed8; font-size:0.6rem; padding:2px 4px; border-radius:4px;">VND <i class="fa-solid fa-angle-down"></i></span></span>
+                                        <h4 id="profile-balance">0đ</h4>
+                                    </div>
+                                </div>
+                                <div class="bal-box" style="background:#f8fafc; border-color:#e2e8f0;">
+                                    <div class="bal-icon" style="color:#64748b;"><i class="fa-solid fa-calendar-check"></i></div>
+                                    <div class="bal-text">
+                                        <span>Tổng nạp tháng</span>
+                                        <h4 id="profile-total-month">0đ</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
+                        <!-- CẤP BẬC -->
+                        <div class="card" style="margin-bottom: 0;" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
+                            <div class="card-title">Cấp bậc tăng trưởng</div>
+                            <div class="tier-header">
+                                <span>Hiện tại</span>
+                                <span>Tiếp theo</span>
+                            </div>
+                            <div class="tier-badges">
+                                <div class="t-badge" id="tier-current-badge"><i class="fa-solid fa-house-user"></i> <span id="tier-current-name">Thành Viên</span></div>
+                                <div class="t-badge next"><i class="fa-regular fa-star"></i> Cộng tác viên</div>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" id="tier-progress-bar"></div>
+                            </div>
+                            <div class="progress-text" id="tier-progress-text">0%</div>
+                            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;" id="tier-need-more">Còn <b>1,000,000đ</b> để lên Cộng tác viên</p>
+                            <button class="btn-deposit"><i class="fa-solid fa-credit-card"></i> Nạp tiền ngay &rarr;</button>
+                        </div>
+                    </div>
 
-/* ================= HIỆU ỨNG NÚT LIÊN HỆ ================= */
-(function () {
-    var fab = document.getElementById('rcFab');
-    var main = document.getElementById('rcMain');
-    if (!fab || !main) return;
-    
-    var open = false;
-    main.addEventListener('click', function () {
-        open = !open;
-        fab.classList.toggle('rc-collapsed', !open);
-    });
+                    <!-- Hàng 2: Bảng tin & Khuyến mãi -->
+                    <div class="card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
+                        <div class="card-title">Bảng tin & khuyến mãi</div>
+                        <div class="news-grid">
+                            <div class="news-item orange">
+                                <div class="n-head">
+                                    <div class="n-icon">H</div>
+                                    <a href="#" class="n-link">Xem &rarr;</a>
+                                </div>
+                                <div class="n-body">🔥 +Tuyển đại lý mở web con chiết khấu cực hấp dẫn 🔥 +Chúng tôi sẽ có nhân viên hỗ trợ khách hàng cho bạn 24/24 👍...<br><br><span style="text-decoration:underline;">... xem thêm ...</span></div>
+                            </div>
+                            <div class="news-item dark">
+                                <div class="n-head">
+                                    <div class="n-icon">H</div>
+                                    <a href="#" class="n-link">Xem &rarr;</a>
+                                </div>
+                                <div class="n-body">Hệ thống hoạt động ổn định. Mở lại nhiều sever buff giá rẻ lên nhanh. Các bạn nhanh tay lên đơn cho khách thu 💸 nhé...<br><br><span style="text-decoration:underline;">... xem thêm ...</span></div>
+                            </div>
+                            <div class="news-item promo">
+                                <div class="n-head">
+                                    <div class="n-icon" style="background:#e2e8f0; color:#1e293b;">H</div>
+                                    <a href="#" class="n-link">Xem &rarr;</a>
+                                </div>
+                                <div class="n-body">- THÔNG BÁO KM: Tặng 10% giá trị tiền nạp mỗi thứ 4...<br>14/01/2026</div>
+                            </div>
+                        </div>
+                    </div>
 
-    document.addEventListener('click', function (e) {
-        if (!open) return;
-        if (fab.contains(e.target)) return;
-        fab.classList.add('rc-collapsed');
-        open = false;
-    });
-})();
+                    <!-- Hàng 3: Biểu đồ & Dịch vụ nổi bật -->
+                    <div class="card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300">
+                        <div class="card-header">
+                            <div class="card-title" style="margin:0;">Biểu đồ chi tiêu</div>
+                            <div class="stats-tabs">
+                                <div class="s-tab active">7 Ngày</div>
+                                <div class="s-tab">30 Ngày</div>
+                                <div class="s-tab">90 Ngày</div>
+                            </div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <span>Tổng chi tiêu</span>
+                                <h3 id="stat-total-spent">0đ</h3>
+                            </div>
+                            <div class="stat-box">
+                                <span>Đơn tạo mới</span>
+                                <h3 id="stat-total-orders">0</h3>
+                            </div>
+                            <div class="stat-box">
+                                <span>Giá trị trung bình</span>
+                                <h3 id="stat-avg-value">0đ</h3>
+                            </div>
+                        </div>
 
-/* ================= CHUYỂN ĐỔI FORM ĐĂNG NHẬP / ĐĂNG KÝ ================= */
-function toggleForm() {
-    const login = document.getElementById("login-box");
-    const register = document.getElementById("register-box");
-    if (!login || !register) return;
+                        <!-- Danh Sách Dịch Vụ Có MS18 -->
+                        <div class="card-title" style="margin-top: 25px; margin-bottom: 10px;">Dịch vụ nổi bật</div>
+                        <div class="product-list">
+                            <div class="product-item">
+                                <div>
+                                    <strong>Mã MS18 - Auto Tương Tác Chéo Hệ Thống</strong>
+                                    <p style="font-size: 0.85rem; color: #64748b; margin-top: 2px;">Tương tác tự động hệ thống cơ bản</p>
+                                </div>
+                                <span class="product-price free">Miễn phí</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    const showRegister = register.style.display === "none" || !register.style.display;
-    login.style.display = showRegister ? "none" : "block";
-    register.style.display = showRegister ? "block" : "none";
-}
+                <!-- CỘT PHẢI -->
+                <div>
+                    <!-- THÔNG BÁO -->
+                    <div class="card" data-aos="fade-left" data-aos-duration="600">
+                        <div class="card-header">
+                            <div class="card-title" style="margin:0;"><i class="fa-regular fa-bell" style="color:#3b82f6;"></i> Thông báo</div>
+                        </div>
+                        <div class="noti-tabs">
+                            <div class="n-tab active">Quan trọng</div>
+                            <div class="n-tab">Tài chính</div>
+                            <div class="n-tab">Đơn hàng</div>
+                        </div>
+                        <ul class="noti-list">
+                            <li class="noti-item">
+                                <span class="noti-date"><i class="fa-solid fa-circle" style="font-size:0.4rem; vertical-align:middle; margin-right:5px; color:#ef4444;"></i> Hệ thống</span>
+                                <span class="noti-text">Chào mừng bạn đến với hệ thống Hoangkun Store!</span>
+                            </li>
+                            <li class="noti-item">
+                                <span class="noti-date"><i class="fa-solid fa-circle" style="font-size:0.4rem; vertical-align:middle; margin-right:5px; color:#ef4444;"></i> CSKH</span>
+                                <span class="noti-text">🔥 Mời các bạn liên hệ Zalo khi cần hỗ trợ 24/7.</span>
+                            </li>
+                        </ul>
+                        <a href="#" class="view-all">Xem tất cả thông báo &rarr;</a>
+                    </div>
 
-/* ================= ĐĂNG KÝ ================= */
-document.getElementById("registerForm")?.addEventListener("submit", async e => {
-    e.preventDefault();
-    const username = document.getElementById("reg-user").value.trim();
-    const email = document.getElementById("reg-email").value.trim();
-    const password = document.getElementById("reg-pass").value;
-    const repass = document.getElementById("reg-repass").value;
-    const refcode = document.getElementById("reg-refcode").value.trim();
+                    <!-- THAO TÁC NHANH -->
+                    <div class="card" data-aos="fade-left" data-aos-duration="600" data-aos-delay="150">
+                        <div class="card-header">
+                            <div class="card-title" style="margin:0;"><i class="fa-solid fa-bolt" style="color:#3b82f6;"></i> Thao tác nhanh</div>
+                            <a href="#" style="font-size: 0.85rem; color: #3b82f6; font-weight: 600;">Chỉnh sửa</a>
+                        </div>
+                        <div class="qa-grid">
+                            <div class="qa-btn"><i class="fa-regular fa-credit-card"></i> Nạp tiền</div>
+                            <div class="qa-btn"><i class="fa-solid fa-clock-rotate-left"></i> Nhật ký hoạt động</div>
+                            <div class="qa-btn"><i class="fa-regular fa-user"></i> Tài khoản & bảo ...</div>
+                            <div class="qa-btn"><i class="fa-solid fa-globe"></i> Website & API</div>
+                            <div class="qa-btn add">+ Thêm thao tác</div>
+                        </div>
+                    </div>
 
-    if (username.length < 4) return Swal.fire("Lỗi!", "Tên đăng nhập phải có ít nhất 4 ký tự!", "error");
-    if (password.length < 6) return Swal.fire("Lỗi!", "Mật khẩu tối thiểu 6 ký tự!", "error");
-    if (password !== repass) return Swal.fire("Lỗi!", "Mật khẩu không khớp!", "error");
+                    <!-- HƯỚNG DẪN -->
+                    <div class="card" style="padding: 15px;" data-aos="fade-left" data-aos-duration="600" data-aos-delay="300">
+                        <div class="card-header">
+                            <div class="card-title" style="margin:0; font-size:1rem;"><i class="fa-regular fa-circle-play" style="color:#3b82f6;"></i> Video hướng dẫn</div>
+                        </div>
+                        <img src="https://subvv.com/assets/images/banner-video.jpg" alt="Hướng dẫn" class="video-banner" onerror="this.src='https://via.placeholder.com/400x200/e2e8f0/64748b?text=Video+Huong+Dan'">
+                    </div>
+                </div>
 
-    Swal.fire({ title: "Đang xử lý...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            </div>
+        </div>
+    </div>
 
-    try {
-        const check = await db.ref("users").orderByChild("ho_ten").equalTo(username).once("value");
-        if (check.exists()) return Swal.fire("Lỗi!", "Tên đăng nhập đã tồn tại!", "warning");
+    <!-- SCRIPT AOS (KÍCH HOẠT HIỆU ỨNG) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            offset: 30
+        });
+    </script>
 
-        const result = await auth.createUserWithEmailAndPassword(email, password);
-        const user = result.user;
-        await user.updateProfile({ displayName: username });
+    <!-- SCRIPT FIREBASE XỬ LÝ DỮ LIỆU ĐỘNG -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
+            authDomain: "shophoangkun.firebaseapp.com",
+            databaseURL: "https://shophoangkun-default-rtdb.firebaseio.com",
+            projectId: "shophoangkun",
+            storageBucket: "shophoangkun.firebasestorage.app",
+            messagingSenderId: "364993334554",
+            appId: "1:364993334554:web:800c66509b355ebf5370a3",
+            measurementId: "G-KJ8HJ3H2D5"
+        };
 
-        await db.ref("users/" + user.uid).set({
-            uid: user.uid, ho_ten: username, email: email,
-            ma_gioi_thieu: refcode || "Không có", so_du: 0,
-            tong_nap_thang: 0, tong_chi_tieu: 0, don_tao_moi: 0,
-            ngay_tao: new Date().toLocaleString("vi-VN")
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // Kiểm tra tài khoản và đổ dữ liệu
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                const displayName = user.displayName || "Thành viên";
+                const email = user.email;
+                const firstLetter = displayName.charAt(0).toUpperCase();
+                
+                // Cập nhật Header
+                document.getElementById("display-username").innerText = displayName;
+                document.getElementById("avatar-mini").innerText = firstLetter;
+                
+                // Cập nhật thẻ Thông tin tài khoản
+                document.getElementById("profile-name").innerHTML = `${displayName} <i class="fa-solid fa-circle-check" style="color: #2563eb; font-size: 1rem;"></i>`;
+                document.getElementById("profile-email").innerText = email;
+                document.getElementById("avatar-initial").innerText = firstLetter;
+
+                // Lắng nghe dữ liệu số dư và tổng nạp từ Firebase Realtime Database
+                db.ref('users/' + user.uid).on('value', (snapshot) => {
+                    const data = snapshot.val() || {};
+                    
+                    // 1. Số dư thực tế
+                    const soDu = data.so_du || 0;
+                    document.getElementById("profile-balance").innerText = soDu.toLocaleString("vi-VN") + "đ";
+
+                    // 2. Tổng nạp tháng
+                    const tongNap = data.tong_nap_thang || 0;
+                    document.getElementById("profile-total-month").innerText = tongNap.toLocaleString("vi-VN") + "đ";
+
+                    // 3. Tổng chi tiêu & Đơn hàng
+                    const tongChi = data.tong_chi_tieu || 0;
+                    const donHang = data.don_tao_moi || 0;
+                    document.getElementById("stat-total-spent").innerText = tongChi.toLocaleString("vi-VN") + "đ";
+                    document.getElementById("stat-total-orders").innerText = donHang;
+                    const giaTriTb = donHang > 0 ? Math.round(tongChi / donHang) : 0;
+                    document.getElementById("stat-avg-value").innerText = giaTriTb.toLocaleString("vi-VN") + "đ";
+
+                    // 4. Tính toán Cấp bậc & Thanh tiến trình (Mốc Cộng tác viên = 1,000,000đ)
+                    const mocCTV = 1000000;
+                    let percent = Math.min(Math.round((tongNap / mocCTV) * 100), 100);
+                    document.getElementById("tier-progress-bar").style.width = percent + "%";
+                    document.getElementById("tier-progress-text").innerText = percent + "%";
+
+                    if (tongNap >= mocCTV) {
+                        document.getElementById("tier-current-name").innerText = "Cộng tác viên";
+                        document.getElementById("tier-need-more").innerHTML = "Bạn đã đạt cấp bậc <b>Cộng tác viên</b>";
+                    } else {
+                        document.getElementById("tier-current-name").innerText = "Thành Viên";
+                        const conLai = mocCTV - tongNap;
+                        document.getElementById("tier-need-more").innerHTML = `Còn <b>${conLai.toLocaleString("vi-VN")}đ</b> để lên Cộng tác viên`;
+                    }
+                });
+            } else {
+                window.location.href = "index.html";
+            }
         });
 
-        await auth.signOut();
-        e.target.reset();
-        toggleForm();
-        Swal.fire("Thành công!", `Tài khoản <b>${username}</b> đã được tạo. Vui lòng đăng nhập!`, "success");
-    } catch (error) {
-        Swal.fire("Thất bại!", "Email đã được sử dụng hoặc không hợp lệ!", "error");
-    }
-});
-
-/* ================= ĐĂNG NHẬP ================= */
-document.getElementById("loginForm")?.addEventListener("submit", async e => {
-    e.preventDefault();
-    const email = document.getElementById("login-email").value.trim();
-    const password = document.getElementById("login-pass").value;
-
-    Swal.fire({ title: "Đang kiểm tra...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-
-    try {
-        await auth.signInWithEmailAndPassword(email, password);
-        await Swal.fire({ icon: "success", title: "Đăng nhập thành công!", confirmButtonText: "Tiếp tục" });
-        window.location.href = "trangchu.html";
-    } catch (error) {
-        Swal.fire("Lỗi!", "Email hoặc mật khẩu không chính xác!", "error");
-    }
-});
-
-/* ================= TỰ ĐỘNG CHUYỂN TRANG ================= */
-auth.onAuthStateChanged(user => {
-    if (user) {
-        window.location.href = "trangchu.html";
-    }
-});
-
-/* ================= SCROLL REVEAL & TYPEWRITER ================= */
-const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add("in-view"); });
-}, { threshold: 0.1 });
-document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
-
-document.addEventListener("DOMContentLoaded", function () {
-    const typeText = document.getElementById("type-text");
-    if (!typeText) return;
-    const texts = ["ĐĂNG NHẬP", "ĐĂNG KÝ"];
-    let textIndex = 0, charIndex = 0, deleting = false;
-
-    function typeLoop() {
-        const currentText = texts[textIndex];
-        if (!deleting) {
-            typeText.textContent = currentText.slice(0, charIndex + 1);
-            charIndex++;
-            if (charIndex >= currentText.length) { deleting = true; setTimeout(typeLoop, 1800); return; }
-            setTimeout(typeLoop, 100);
-        } else {
-            typeText.textContent = currentText.slice(0, charIndex - 1);
-            charIndex--;
-            if (charIndex <= 0) {
-                charIndex = 0; deleting = false; textIndex++;
-                if (textIndex >= texts.length) textIndex = 0;
-                setTimeout(typeLoop, 500); return;
-            }
-            setTimeout(typeLoop, 60);
+        // Hàm Đăng xuất
+        function logout() {
+            Swal.fire({
+                title: 'Đăng xuất?',
+                text: "Bạn có chắc chắn muốn thoát tài khoản không?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb',
+                cancelButtonColor: '#ef4444',
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    auth.signOut().then(() => {
+                        window.location.href = "index.html";
+                    });
+                }
+            });
         }
-    }
-    typeText.textContent = "";
-    typeLoop();
-});
-</script>
-    
+    </script>
 </body>
 </html>
