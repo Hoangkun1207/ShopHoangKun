@@ -1120,22 +1120,58 @@ document.querySelectorAll(".reveal").forEach(el => {
 });
 
 
-/* ================= TYPEWRITER ================= */
+/* ================= TYPEWRITER ĐĂNG NHẬP / ĐĂNG KÝ ================= */
 
 const typeText = document.getElementById("type-text");
 
 if (typeText) {
-    const text = "BẮT ĐẦU NGAY";
-    let i = 0;
+    const texts = [
+        "ĐĂNG NHẬP",
+        "ĐĂNG KÝ"
+    ];
 
-    function typing() {
-        if (i < text.length) {
-            typeText.textContent += text.charAt(i++);
-            setTimeout(typing, 80);
+    let textIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function typeLoop() {
+        const currentText = texts[textIndex];
+
+        if (!deleting) {
+            // Gõ chữ
+            typeText.textContent = currentText.substring(0, charIndex + 1);
+            charIndex++;
+
+            if (charIndex === currentText.length) {
+                // Đứng lại một chút rồi xóa
+                setTimeout(() => {
+                    deleting = true;
+                    typeLoop();
+                }, 1800);
+
+                return;
+            }
+
+            setTimeout(typeLoop, 90);
+
+        } else {
+            // Xóa chữ
+            typeText.textContent = currentText.substring(0, charIndex - 1);
+            charIndex--;
+
+            if (charIndex === 0) {
+                deleting = false;
+                textIndex = (textIndex + 1) % texts.length;
+
+                setTimeout(typeLoop, 400);
+                return;
+            }
+
+            setTimeout(typeLoop, 55);
         }
     }
 
-    typing();
+    typeLoop();
 }
 </script>
     
