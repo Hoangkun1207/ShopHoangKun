@@ -9,6 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Hiệu ứng AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     <!-- SweetAlert2 & Firebase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -59,7 +62,8 @@
         .layout-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: start; }
         
         /* CARDS CHUNG */
-        .card { background: #fff; border-radius: 16px; padding: 20px; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .card { background: #fff; border-radius: 16px; padding: 20px; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); transition: transform 0.3s; }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .card-title { font-size: 1.05rem; font-weight: 700; color: #1e293b; }
 
@@ -89,14 +93,14 @@
         .progress-bar { height: 100%; background: #3b82f6; border-radius: 10px; width: 5%; }
         .progress-text { text-align: right; font-size: 0.85rem; font-weight: 700; color: #2563eb; margin-top: -20px; margin-bottom: 15px; }
         .btn-deposit { width: 100%; background: #3b82f6; color: #fff; padding: 12px; border: none; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; }
-        .btn-deposit:hover { background: #2563eb; }
+        .btn-deposit:hover { background: #2563eb; transform: translateY(-2px); }
 
         /* BẢNG TIN KHUYẾN MÃI */
         .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         .news-item { padding: 15px; border-radius: 12px; color: #fff; position: relative; overflow: hidden; min-height: 140px; display: flex; flex-direction: column; justify-content: space-between; }
         .news-item.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .news-item.dark { background: linear-gradient(135deg, #1e3a8a, #172554); }
-        .news-item.promo { background: url('https://subvv.com/assets/images/banner-promo.png') center/cover; border: 1px solid #e2e8f0; color: #1e293b; } /* Ảnh placeholder minh họa */
+        .news-item.promo { background: url('https://subvv.com/assets/images/banner-promo.png') center/cover; border: 1px solid #e2e8f0; color: #1e293b; }
         
         .n-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
         .n-icon { width: 30px; height: 30px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
@@ -113,12 +117,11 @@
         .stat-box span { font-size: 0.85rem; color: #64748b; font-weight: 600; }
         .stat-box h3 { font-size: 1.3rem; font-weight: 800; color: #0f172a; margin-top: 5px; }
 
-        /* DỊCH VỤ NỔI BẬT (CHỨA MS18) */
+        /* DỊCH VỤ NỔI BẬT */
         .product-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
         .product-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; }
         .product-item strong { color: #1e293b; font-size: 0.95rem; }
         .product-price.free { color: #10b981; font-weight: 800; background: #d1fae5; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; }
-        .product-price.paid { color: #ef4444; font-weight: 800; font-size: 0.9rem; }
 
         /* === CỘT PHẢI === */
         /* THÔNG BÁO */
@@ -135,7 +138,7 @@
         /* THAO TÁC NHANH */
         .qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .qa-btn { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px 10px; border-radius: 10px; text-align: center; font-weight: 600; font-size: 0.85rem; color: #334155; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
-        .qa-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+        .qa-btn:hover { background: #f1f5f9; border-color: #cbd5e1; transform: translateY(-2px); }
         .qa-btn i { color: #3b82f6; font-size: 1.1rem; width: 20px; }
         .qa-btn.add { border: 1px dashed #cbd5e1; color: #64748b; justify-content: center; }
 
@@ -208,7 +211,7 @@
                     <!-- Hàng 1: Tài khoản & Cấp bậc -->
                     <div class="top-cards-row">
                         <!-- THÔNG TIN TÀI KHOẢN -->
-                        <div class="card" style="margin-bottom: 0;">
+                        <div class="card" style="margin-bottom: 0;" data-aos="fade-up" data-aos-duration="600">
                             <div class="card-title">Thông tin tài khoản</div>
                             <div class="acc-info-box">
                                 <div class="acc-avatar" id="avatar-initial">H</div>
@@ -236,7 +239,7 @@
                         </div>
 
                         <!-- CẤP BẬC -->
-                        <div class="card" style="margin-bottom: 0;">
+                        <div class="card" style="margin-bottom: 0;" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
                             <div class="card-title">Cấp bậc tăng trưởng</div>
                             <div class="tier-header">
                                 <span>Hiện tại</span>
@@ -256,7 +259,7 @@
                     </div>
 
                     <!-- Hàng 2: Bảng tin & Khuyến mãi -->
-                    <div class="card">
+                    <div class="card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
                         <div class="card-title">Bảng tin & khuyến mãi</div>
                         <div class="news-grid">
                             <div class="news-item orange">
@@ -279,13 +282,12 @@
                                     <a href="#" class="n-link">Xem &rarr;</a>
                                 </div>
                                 <div class="n-body">- THÔNG BÁO KM: Tặng 10% giá trị tiền nạp mỗi thứ 4...<br>14/01/2026</div>
-                                <!-- CSS background URL handles the image representation -->
                             </div>
                         </div>
                     </div>
 
                     <!-- Hàng 3: Biểu đồ & Dịch vụ nổi bật -->
-                    <div class="card">
+                    <div class="card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300">
                         <div class="card-header">
                             <div class="card-title" style="margin:0;">Biểu đồ chi tiêu</div>
                             <div class="stats-tabs">
@@ -326,7 +328,7 @@
                 <!-- CỘT PHẢI -->
                 <div>
                     <!-- THÔNG BÁO -->
-                    <div class="card">
+                    <div class="card" data-aos="fade-left" data-aos-duration="600">
                         <div class="card-header">
                             <div class="card-title" style="margin:0;"><i class="fa-regular fa-bell" style="color:#3b82f6;"></i> Thông báo</div>
                         </div>
@@ -349,7 +351,7 @@
                     </div>
 
                     <!-- THAO TÁC NHANH -->
-                    <div class="card">
+                    <div class="card" data-aos="fade-left" data-aos-duration="600" data-aos-delay="150">
                         <div class="card-header">
                             <div class="card-title" style="margin:0;"><i class="fa-solid fa-bolt" style="color:#3b82f6;"></i> Thao tác nhanh</div>
                             <a href="#" style="font-size: 0.85rem; color: #3b82f6; font-weight: 600;">Chỉnh sửa</a>
@@ -364,7 +366,7 @@
                     </div>
 
                     <!-- HƯỚNG DẪN -->
-                    <div class="card" style="padding: 15px;">
+                    <div class="card" style="padding: 15px;" data-aos="fade-left" data-aos-duration="600" data-aos-delay="300">
                         <div class="card-header">
                             <div class="card-title" style="margin:0; font-size:1rem;"><i class="fa-regular fa-circle-play" style="color:#3b82f6;"></i> Video hướng dẫn</div>
                         </div>
@@ -375,6 +377,15 @@
             </div>
         </div>
     </div>
+
+    <!-- SCRIPT AOS (KÍCH HOẠT HIỆU ỨNG) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            offset: 30
+        });
+    </script>
 
     <!-- SCRIPT FIREBASE XỬ LÝ DỮ LIỆU -->
     <script>
@@ -422,8 +433,8 @@
                     }
                 });
             } else {
-                // Nếu chưa đăng nhập, đá văng về trang chủ
-                window.location.href = "trangchu.html";
+                // Sửa lỗi vòng lặp: Đẩy về trang đăng nhập bên ngoài
+                window.location.href = "index.html";
             }
         });
 
@@ -441,7 +452,8 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     auth.signOut().then(() => {
-                        window.location.href = "trangchu.html";
+                        // Sửa lỗi vòng lặp: Đẩy về trang đăng nhập bên ngoài
+                        window.location.href = "index.html";
                     });
                 }
             });
