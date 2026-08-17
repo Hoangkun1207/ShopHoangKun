@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#2563eb">
     <title>HoangKun Store - Dashboard</title>
-
     <style>
-        /* =========================================
-           1. BIẾN MÀU SẮC & CẤU HÌNH GỐC
-        ========================================= */
         :root {
             --primary: #2563eb;
             --primary2: #3b82f6;
@@ -46,19 +42,28 @@
             min-height: 100vh;
         }
 
-        button, input, select, textarea { font: inherit; }
-        button { cursor: pointer; }
-        a { text-decoration: none; color: inherit; }
-        .hidden { display: none !important; }
+        button, input, select, textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .hidden {
+            display: none !important;
+        }
 
         .app {
             display: flex;
             min-height: 100vh;
         }
 
-        /* =========================================
-           2. KHU VỰC SIDEBAR (THANH ĐIỀU HƯỚNG TRÁI)
-        ========================================= */
         .sidebar {
             width: var(--sidebar);
             position: fixed;
@@ -84,7 +89,9 @@
             letter-spacing: 1px;
         }
 
-        .brand span { color: #60a5fa; }
+        .brand span {
+            color: #60a5fa;
+        }
 
         .sidebar-scroll {
             flex: 1;
@@ -116,9 +123,20 @@
             transition: .2s;
         }
 
-        .menu:hover { background: #1f2937; color: #fff; }
-        .menu.active { background: var(--primary); color: #fff; }
-        .menu i { width: 20px; text-align: center; }
+        .menu:hover {
+            background: #1f2937;
+            color: #fff;
+        }
+
+        .menu.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .menu i {
+            width: 20px;
+            text-align: center;
+        }
 
         .menu .badge {
             margin-left: auto;
@@ -135,9 +153,6 @@
             border-top: 1px solid #263244;
         }
 
-        /* =========================================
-           3. KHU VỰC NỘI DUNG CHÍNH (MAIN CONTENT)
-        ========================================= */
         .main {
             margin-left: var(--sidebar);
             width: calc(100% - var(--sidebar));
@@ -248,14 +263,21 @@
             margin-bottom: 20px;
         }
 
-        .page-head h1 { font-size: 24px; }
-        .page-head p { margin-top: 5px; color: var(--muted); font-size: 14px; }
+        .page-head h1 {
+            font-size: 24px;
+        }
 
-        /* =========================================
-           4. THÀNH PHẦN GIAO DIỆN (COMPONENTS)
-        ========================================= */
-        .actions { display: flex; gap: 8px; }
-        
+        .page-head p {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
         .btn {
             border: 0;
             border-radius: 10px;
@@ -263,16 +285,48 @@
             font-weight: 700;
             transition: .2s;
         }
-        .btn:hover { transform: translateY(-1px); }
-        .btn-primary { background: var(--primary); color: #fff; }
-        .btn-secondary { background: #fff; border: 1px solid var(--border); color: var(--text); }
-        .btn-success { background: var(--success); color: #fff; }
-        .btn-danger { background: var(--danger); color: #fff; }
 
-        .grid { display: grid; gap: 18px; }
-        .grid-4 { grid-template-columns: repeat(4, 1fr); }
-        .grid-3 { grid-template-columns: repeat(3, 1fr); }
-        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #fff;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .grid {
+            display: grid;
+            gap: 18px;
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
 
         .card {
             background: var(--card);
@@ -290,10 +344,22 @@
             margin-bottom: 16px;
         }
 
-        .card-title { font-size: 16px; font-weight: 800; }
-        .card-sub { font-size: 12px; color: var(--muted); }
+        .card-title {
+            font-size: 16px;
+            font-weight: 800;
+        }
 
-        .stat { min-height: 145px; position: relative; overflow: hidden; }
+        .card-sub {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .stat {
+            min-height: 145px;
+            position: relative;
+            overflow: hidden;
+        }
+
         .stat-icon {
             width: 44px;
             height: 44px;
@@ -304,9 +370,25 @@
             color: var(--primary);
             margin-bottom: 16px;
         }
-        .stat h3 { font-size: 24px; margin: 5px 0; }
-        .stat p { font-size: 12px; color: var(--muted); }
-        .stat .trend { position: absolute; right: 18px; top: 18px; font-size: 12px; font-weight: 700; }
+
+        .stat h3 {
+            font-size: 24px;
+            margin: 5px 0;
+        }
+
+        .stat p {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .stat .trend {
+            position: absolute;
+            right: 18px;
+            top: 18px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
         .trend.up { color: var(--success); }
         .trend.down { color: var(--danger); }
 
@@ -317,10 +399,25 @@
             margin-top: 18px;
         }
 
-        .profile { display: flex; align-items: center; gap: 15px; }
-        .profile .avatar { width: 68px; height: 68px; font-size: 25px; }
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile .avatar {
+            width: 68px;
+            height: 68px;
+            font-size: 25px;
+        }
+
         .profile h2 { font-size: 20px; }
-        .profile p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+        .profile p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 4px;
+        }
 
         .badge {
             display: inline-flex;
@@ -331,6 +428,7 @@
             padding: 5px 8px;
             border-radius: 8px;
         }
+
         .badge-blue { background: #dbeafe; color: #1d4ed8; }
         .badge-green { background: #d1fae5; color: #047857; }
         .badge-yellow { background: #fef3c7; color: #b45309; }
@@ -343,9 +441,23 @@
             background: linear-gradient(135deg, #eff6ff, #f8fbff);
             border: 1px solid #bfdbfe;
         }
-        .balance-label { font-size: 12px; color: var(--muted); }
-        .balance-value { font-size: 30px; font-weight: 800; margin: 5px 0 14px; }
-        .balance-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .balance-label {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .balance-value {
+            font-size: 30px;
+            font-weight: 800;
+            margin: 5px 0 14px;
+        }
+
+        .balance-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
 
         .progress {
             height: 9px;
@@ -353,12 +465,14 @@
             border-radius: 20px;
             overflow: hidden;
         }
+
         .progress-bar {
             height: 100%;
             width: 0;
             background: linear-gradient(90deg, #2563eb, #60a5fa);
             transition: width .6s ease;
         }
+
         .progress-meta {
             display: flex;
             justify-content: space-between;
@@ -367,7 +481,12 @@
             margin-top: 8px;
         }
 
-        .news { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .news {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
         .news-item {
             min-height: 150px;
             border-radius: 14px;
@@ -377,13 +496,19 @@
             flex-direction: column;
             justify-content: space-between;
         }
+
         .news-blue { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
         .news-orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .news-dark { background: linear-gradient(135deg, #1e3a8a, #172554); }
         .news-item small { opacity: .8; }
         .news-item strong { line-height: 1.45; }
 
-        .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
         .quick {
             padding: 14px;
             border: 1px solid var(--border);
@@ -394,19 +519,54 @@
             gap: 10px;
             font-weight: 700;
         }
-        .quick i { color: var(--primary); width: 20px; text-align: center; }
 
-        .chart-wrap { height: 300px; position: relative; }
-        canvas { width: 100%; height: 100%; }
+        .quick i {
+            color: var(--primary);
+            width: 20px;
+            text-align: center;
+        }
+
+        .chart-wrap {
+            height: 300px;
+            position: relative;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
 
         .table-wrap { overflow: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 700px; }
-        th, td { text-align: left; padding: 13px 10px; border-bottom: 1px solid var(--border); font-size: 13px; }
-        th { font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: var(--muted); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 13px 10px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        th {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            color: var(--muted);
+        }
+
         tr:hover td { background: #f8fafc; }
         .status { font-weight: 700; font-size: 11px; }
 
-        .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
         .service {
             border: 1px solid var(--border);
             border-radius: 14px;
@@ -414,8 +574,18 @@
             background: #fff;
             transition: .2s;
         }
-        .service:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-        .service-top { display: flex; justify-content: space-between; gap: 10px; }
+
+        .service:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .service-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
         .service-icon {
             width: 44px;
             height: 44px;
@@ -425,18 +595,51 @@
             background: #eff6ff;
             color: #2563eb;
         }
-        .service h3 { font-size: 15px; margin: 14px 0 6px; }
-        .service p { font-size: 12px; color: var(--muted); line-height: 1.5; }
-        .service-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 15px; }
-        .price { font-weight: 800; color: #0f172a; }
 
-        /* =========================================
-           5. FORMS, MODALS & TOASTS
-        ========================================= */
-        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-        .field { display: flex; flex-direction: column; gap: 6px; }
+        .service h3 {
+            font-size: 15px;
+            margin: 14px 0 6px;
+        }
+
+        .service p {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .service-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .price {
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
         .field.full { grid-column: 1 / -1; }
-        .field label { font-size: 12px; font-weight: 700; color: #475569; }
+
+        .field label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #475569;
+        }
+
         .field input, .field select, .field textarea {
             width: 100%;
             border: 1px solid var(--border);
@@ -446,6 +649,7 @@
             background: #fff;
             color: var(--text);
         }
+
         .field input:focus, .field select:focus, .field textarea:focus {
             border-color: #60a5fa;
             box-shadow: 0 0 0 3px #dbeafe;
@@ -460,6 +664,7 @@
             padding: 20px;
             z-index: 3000;
         }
+
         .modal-box {
             width: min(600px, 100%);
             max-height: 90vh;
@@ -469,8 +674,21 @@
             padding: 22px;
             box-shadow: 0 25px 60px rgba(0, 0, 0, .2);
         }
-        .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-        .close { border: 0; background: #f1f5f9; width: 36px; height: 36px; border-radius: 50%; }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .close {
+            border: 0;
+            background: #f1f5f9;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+        }
 
         .toast {
             position: fixed;
@@ -488,10 +706,24 @@
             transition: .25s;
             font-size: 13px;
         }
-        .toast.show { transform: translateY(0); opacity: 1; }
 
-        .empty { text-align: center; padding: 35px; color: var(--muted); }
-        .notification-list { display: flex; flex-direction: column; gap: 9px; }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: var(--muted);
+        }
+
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
         .notification {
             display: flex;
             gap: 10px;
@@ -499,12 +731,27 @@
             border: 1px solid var(--border);
             border-radius: 11px;
         }
-        .notification.unread { background: #eff6ff; border-color: #bfdbfe; }
+
+        .notification.unread {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+        }
+
         .notification i { color: var(--primary); }
         .notification small { display: block; color: var(--muted); margin-top: 4px; }
 
-        .settings-grid { display: grid; grid-template-columns: 220px 1fr; gap: 18px; }
-        .settings-nav { display: flex; flex-direction: column; gap: 5px; }
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 18px;
+        }
+
+        .settings-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
         .settings-nav button {
             padding: 11px;
             border: 0;
@@ -513,8 +760,13 @@
             border-radius: 9px;
             color: var(--muted);
         }
-        .settings-nav button.active { background: #eff6ff; color: #2563eb; font-weight: 700; }
-        
+
+        .settings-nav button.active {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 700;
+        }
+
         .toggle-row {
             display: flex;
             justify-content: space-between;
@@ -522,6 +774,7 @@
             padding: 14px 0;
             border-bottom: 1px solid var(--border);
         }
+
         .switch {
             width: 44px;
             height: 24px;
@@ -530,6 +783,7 @@
             position: relative;
             border: 0;
         }
+
         .switch:after {
             content: "";
             position: absolute;
@@ -541,6 +795,7 @@
             top: 3px;
             transition: .2s;
         }
+
         .switch.on { background: #2563eb; }
         .switch.on:after { left: 23px; }
 
@@ -551,16 +806,15 @@
             z-index: 1500;
             display: none;
         }
+
         .overlay.show { display: block; }
 
-        /* =========================================
-           6. QUY TẮC PHẢN HỒI (RESPONSIVE)
-        ========================================= */
-        @media(max-width: 1200px) {
+        @media (max-width: 1200px) {
             .grid-4 { grid-template-columns: repeat(2, 1fr); }
             .service-grid { grid-template-columns: repeat(2, 1fr); }
         }
-        @media(max-width: 900px) {
+
+        @media (max-width: 900px) {
             .sidebar { transform: translateX(-100%); transition: .25s; }
             .sidebar.open { transform: translateX(0); }
             .main { margin-left: 0; width: 100%; }
@@ -569,7 +823,8 @@
             .search { width: 240px; }
             .news { grid-template-columns: 1fr; }
         }
-        @media(max-width: 650px) {
+
+        @media (max-width: 650px) {
             .content { padding: 14px; }
             .topbar { padding: 0 12px; }
             .search { display: none; }
@@ -587,28 +842,23 @@
     </style>
 </head>
 <body>
-
     <div class="app">
-        <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="brand">HOANG<span>KUN</span></div>
             <div class="sidebar-scroll">
                 <div class="menu-title">Quản lý chung</div>
                 <button class="menu active" data-page="dashboard"><i>⌂</i> Trang tổng quan</button>
-                <button class="menu" data-page="services"><i>◈</i> Dịch vụ</button>
+                <button class="menu" onclick="window.location.href='banggia.html'"><i>◈</i> Bảng giá & Cấp bậc</button>
                 <button class="menu" data-page="orders"><i>▣</i> Đơn hàng</button>
                 <button class="menu" data-page="analytics"><i>◒</i> Thống kê</button>
-                
                 <div class="menu-title">Tài chính</div>
                 <button class="menu" data-page="deposit"><i>＋</i> Nạp tiền</button>
                 <button class="menu" data-page="transactions"><i>↺</i> Giao dịch</button>
                 <button class="menu" data-page="wallet"><i>▣</i> Ví & số dư</button>
-                
                 <div class="menu-title">Tài khoản</div>
                 <button class="menu" data-page="profile"><i>♙</i> Tài khoản</button>
                 <button class="menu" data-page="notifications"><i>♢</i> Thông báo <span class="badge" id="sideUnread">3</span></button>
                 <button class="menu" data-page="settings"><i>⚙</i> Cài đặt</button>
-                
                 <div class="menu-title">Hỗ trợ</div>
                 <button class="menu" data-page="support"><i>?</i> Trung tâm hỗ trợ</button>
                 <button class="menu" data-page="api"><i>{ }</i> Website & API</button>
@@ -621,7 +871,6 @@
         <div class="overlay" id="overlay"></div>
 
         <main class="main">
-            <!-- TOPBAR -->
             <header class="topbar">
                 <div class="top-left">
                     <button class="mobile-toggle" id="mobileToggle">☰</button>
@@ -641,7 +890,6 @@
             </header>
 
             <div class="content">
-                <!-- ================== PAGE: DASHBOARD ================== -->
                 <section id="dashboardPage" class="page">
                     <div class="page-head">
                         <div>
@@ -653,7 +901,6 @@
                             <button class="btn btn-primary" id="depositTopBtn">＋ Nạp tiền</button>
                         </div>
                     </div>
-
                     <div class="grid grid-4">
                         <div class="card stat">
                             <div class="stat-icon">▣</div>
@@ -684,9 +931,7 @@
                             <p>Trong 30 ngày</p>
                         </div>
                     </div>
-
                     <div class="dashboard-grid">
-                        <!-- Cột Trái -->
                         <div>
                             <div class="card">
                                 <div class="card-head">
@@ -728,7 +973,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="card" style="margin-top:18px">
                                 <div class="card-head">
                                     <div>
@@ -740,11 +984,8 @@
                                         <button class="btn btn-secondary range" data-range="30">30 ngày</button>
                                     </div>
                                 </div>
-                                <div class="chart-wrap">
-                                    <canvas id="spendChart"></canvas>
-                                </div>
+                                <div class="chart-wrap"><canvas id="spendChart"></canvas></div>
                             </div>
-
                             <div class="card" style="margin-top:18px">
                                 <div class="card-head">
                                     <div>
@@ -772,8 +1013,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Cột Phải -->
                         <div>
                             <div class="card">
                                 <div class="card-head">
@@ -782,7 +1021,6 @@
                                 </div>
                                 <div class="notification-list" id="dashboardNotifications"></div>
                             </div>
-
                             <div class="card" style="margin-top:18px">
                                 <div class="card-head">
                                     <div class="card-title">Thao tác nhanh</div>
@@ -790,13 +1028,12 @@
                                 <div class="quick-grid">
                                     <button class="quick" data-action="deposit"><i>＋</i>Nạp tiền</button>
                                     <button class="quick" data-page-link="orders"><i>▣</i>Đơn hàng</button>
-                                    <button class="quick" data-page-link="services"><i>◈</i>Dịch vụ</button>
+                                    <button class="quick" onclick="window.location.href='banggia.html'"><i>◈</i>Dịch vụ</button>
                                     <button class="quick" data-page-link="transactions"><i>↺</i>Giao dịch</button>
                                     <button class="quick" data-page-link="profile"><i>♙</i>Tài khoản</button>
                                     <button class="quick" data-page-link="support"><i>?</i>CSKH</button>
                                 </div>
                             </div>
-
                             <div class="card" style="margin-top:18px">
                                 <div class="card-head">
                                     <div>
@@ -810,7 +1047,6 @@
                     </div>
                 </section>
 
-                <!-- ================== PAGE: SERVICES ================== -->
                 <section id="servicesPage" class="page hidden">
                     <div class="page-head">
                         <div>
@@ -843,14 +1079,13 @@
                     <div class="service-grid" id="serviceGrid" style="margin-top:18px"></div>
                 </section>
 
-                <!-- ================== PAGE: ORDERS ================== -->
                 <section id="ordersPage" class="page hidden">
                     <div class="page-head">
                         <div>
                             <h1>Đơn hàng</h1>
                             <p>Quản lý toàn bộ đơn hàng của bạn.</p>
                         </div>
-                        <button class="btn btn-primary" data-page-link="services">＋ Tạo đơn</button>
+                        <button class="btn btn-primary" onclick="window.location.href='banggia.html'">＋ Tạo đơn</button>
                     </div>
                     <div class="card">
                         <div class="card-head">
@@ -882,7 +1117,6 @@
                     </div>
                 </section>
 
-                <!-- ================== PAGE: ANALYTICS ================== -->
                 <section id="analyticsPage" class="page hidden">
                     <div class="page-head">
                         <div>
@@ -920,7 +1154,6 @@
                     </div>
                 </section>
 
-                <!-- ================== PAGE: DEPOSIT ================== -->
                 <section id="depositPage" class="page hidden">
                     <div class="page-head">
                         <div>
@@ -955,7 +1188,6 @@
                     </div>
                 </section>
 
-                <!-- ================== PAGE: TRANSACTIONS ================== -->
                 <section id="transactionsPage" class="page hidden">
                     <div class="page-head">
                         <div>
@@ -982,7 +1214,6 @@
                     </div>
                 </section>
 
-                <!-- ================== PAGE: WALLET ================== -->
                 <section id="walletPage" class="page hidden">
                     <div class="page-head">
                         <div>
@@ -1007,7 +1238,6 @@
                     </div>
                 </section>
 
-                <!-- ================== PAGE: PROFILE ================== -->
                 <section id="profilePage" class="page hidden">
                     <div class="page-head">
                         <div>
@@ -1027,7 +1257,6 @@
                     </div>
                 </section>
 
-                <!-- ================== PAGE: NOTIFICATIONS ================== -->
                 <section id="notificationsPage" class="page hidden">
                     <div class="page-head">
                         <div>
@@ -1041,7 +1270,6 @@
                     </div>
                 </section>
 
-                <!-- ================== PAGE: SETTINGS ================== -->
                 <section id="settingsPage" class="page hidden">
                     <div class="page-head">
                         <div>
@@ -1074,7 +1302,6 @@
                     </div>
                 </section>
 
-                <!-- ================== PAGE: SUPPORT ================== -->
                 <section id="supportPage" class="page hidden">
                     <div class="page-head">
                         <div>
@@ -1111,7 +1338,6 @@
                     </div>
                 </section>
 
-                <!-- ================== PAGE: API ================== -->
                 <section id="apiPage" class="page hidden">
                     <div class="page-head">
                         <div>
@@ -1122,14 +1348,14 @@
                     <div class="card">
                         <div class="card-title">API Key</div>
                         <p class="card-sub" style="margin-top:6px">Không chia sẻ khóa API công khai.</p>
-                        <div style="display:flex; gap:8px; margin-top:15px">
-                            <input id="apiKey" readonly value="hk_demo_********************************" style="flex:1; padding:11px; border:1px solid var(--border); border-radius:9px">
+                        <div style="display:flex;gap:8px;margin-top:15px">
+                            <input id="apiKey" readonly value="hk_demo_********************************" style="flex:1;padding:11px;border:1px solid var(--border);border-radius:9px">
                             <button class="btn btn-secondary" id="copyApi">Sao chép</button>
                         </div>
                     </div>
                     <div class="card" style="margin-top:18px">
                         <div class="card-title">Ví dụ request</div>
-                        <pre style="margin-top:14px; padding:15px; background:#0f172a; color:#dbeafe; border-radius:10px; overflow:auto; font-size:12px">POST /api/order
+                        <pre style="margin-top:14px;padding:15px;background:#0f172a;color:#dbeafe;border-radius:10px;overflow:auto;font-size:12px">POST /api/order
 {
   "service": "MS18",
   "link": "https://example.com",
@@ -1141,90 +1367,38 @@
         </main>
     </div>
 
-    <!-- =========================================
-       MODALS VÀ CÁC THÀNH PHẦN NỔI LÊN (POPUP)
-    ========================================= -->
-    
-    <!-- Modal Nạp Tiền -->
     <div class="modal hidden" id="depositModal">
         <div class="modal-box">
-            <div class="modal-head">
-                <h2>Nạp tiền</h2>
-                <button class="close" data-close="depositModal">×</button>
-            </div>
+            <div class="modal-head"><h2>Nạp tiền</h2><button class="close" data-close="depositModal">×</button></div>
             <div class="form-grid">
-                <div class="field full">
-                    <label>Số tiền</label>
-                    <input id="depositAmount" type="number" min="1000" placeholder="Nhập số tiền">
-                </div>
-                <div class="field">
-                    <label>Phương thức</label>
-                    <select id="depositMethod">
-                        <option>Chuyển khoản ngân hàng</option>
-                        <option>Ví điện tử</option>
-                        <option>Mã nạp</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Mã giao dịch</label>
-                    <input id="depositCode" placeholder="Không bắt buộc">
-                </div>
+                <div class="field full"><label>Số tiền</label><input id="depositAmount" type="number" min="1000" placeholder="Nhập số tiền"></div>
+                <div class="field"><label>Phương thức</label><select id="depositMethod"><option>Chuyển khoản ngân hàng</option><option>Ví điện tử</option><option>Mã nạp</option></select></div>
+                <div class="field"><label>Mã giao dịch</label><input id="depositCode" placeholder="Không bắt buộc"></div>
             </div>
-            <div style="margin-top:16px; padding:13px; background:#eff6ff; border-radius:10px; color:#1d4ed8; font-size:12px">
-                Đây là giao diện demo. Khi tích hợp backend/Firebase, giao dịch cần được xác nhận từ máy chủ trước khi cộng số dư.
-            </div>
-            <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px">
-                <button class="btn btn-secondary" data-close="depositModal">Hủy</button>
-                <button class="btn btn-primary" id="submitDeposit">Tạo yêu cầu</button>
-            </div>
+            <div style="margin-top:16px;padding:13px;background:#eff6ff;border-radius:10px;color:#1d4ed8;font-size:12px">Đây là giao diện demo. Khi tích hợp backend/Firebase, giao dịch cần được xác nhận từ máy chủ trước khi cộng số dư.</div>
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px"><button class="btn btn-secondary" data-close="depositModal">Hủy</button><button class="btn btn-primary" id="submitDeposit">Tạo yêu cầu</button></div>
         </div>
     </div>
 
-    <!-- Modal Tạo Đơn Hàng -->
     <div class="modal hidden" id="orderModal">
         <div class="modal-box">
-            <div class="modal-head">
-                <h2>Tạo đơn hàng</h2>
-                <button class="close" data-close="orderModal">×</button>
-            </div>
+            <div class="modal-head"><h2>Tạo đơn hàng</h2><button class="close" data-close="orderModal">×</button></div>
             <div class="form-grid">
-                <div class="field full">
-                    <label>Dịch vụ</label>
-                    <input id="orderService" readonly>
-                </div>
-                <div class="field full">
-                    <label>Link / ID</label>
-                    <input id="orderLink" placeholder="https://...">
-                </div>
-                <div class="field">
-                    <label>Số lượng</label>
-                    <input id="orderQuantity" type="number" min="1" value="100">
-                </div>
-                <div class="field">
-                    <label>Giá / đơn vị</label>
-                    <input id="orderUnitPrice" readonly>
-                </div>
+                <div class="field full"><label>Dịch vụ</label><input id="orderService" readonly></div>
+                <div class="field full"><label>Link / ID</label><input id="orderLink" placeholder="https://..."></div>
+                <div class="field"><label>Số lượng</label><input id="orderQuantity" type="number" min="1" value="100"></div>
+                <div class="field"><label>Giá / đơn vị</label><input id="orderUnitPrice" readonly></div>
             </div>
-            <div style="margin-top:16px; padding:14px; background:#f8fafc; border:1px solid var(--border); border-radius:10px">
-                Tổng tiền: <b id="orderTotal">0đ</b>
-            </div>
-            <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px">
-                <button class="btn btn-secondary" data-close="orderModal">Hủy</button>
-                <button class="btn btn-primary" id="submitOrder">Tạo đơn</button>
-            </div>
+            <div style="margin-top:16px;padding:14px;background:#f8fafc;border:1px solid var(--border);border-radius:10px">Tổng tiền: <b id="orderTotal">0đ</b></div>
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px"><button class="btn btn-secondary" data-close="orderModal">Hủy</button><button class="btn btn-primary" id="submitOrder">Tạo đơn</button></div>
         </div>
     </div>
 
-    <!-- Toast Thông Báo (Góc phải dưới) -->
     <div class="toast" id="toast"></div>
 
-    <!-- =========================================
-       JAVASCRIPT XỬ LÝ (LOGIC CHÍNH)
-    ========================================= -->
     <script>
         "use strict";
 
-        // Khởi tạo và Quản lý State
         const STORAGE_KEY = "hoangkun_dashboard_v2";
 
         const defaultState = {
@@ -1267,7 +1441,6 @@
             { id: "OTHER", category: "Khác", name: "Dịch vụ tùy chỉnh", description: "Liên hệ CSKH để được tư vấn.", price: 100, unit: "1 đơn" }
         ];
 
-        // Hàm tiện ích State
         function loadState() {
             try {
                 const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
@@ -1293,7 +1466,6 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         }
 
-        // Hàm tiện ích Giao diện
         function money(value) {
             return Number(value || 0).toLocaleString("vi-VN") + "đ";
         }
@@ -1314,13 +1486,6 @@
             return (name || "H").trim().charAt(0).toUpperCase();
         }
 
-        function escapeHtml(value) {
-            return String(value ?? "").replace(/[&<>"']/g, m => ({
-                "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
-            }[m]));
-        }
-
-        // Render Functions
         function renderUser() {
             const name = state.user.name || "Hoangkun";
             document.getElementById("topName").textContent = name;
@@ -1329,7 +1494,6 @@
             document.getElementById("profileEmail").textContent = state.user.email || "";
             document.getElementById("topAvatar").textContent = initials(name);
             document.getElementById("profileAvatar").textContent = initials(name);
-            
             document.getElementById("profileInputName").value = name;
             document.getElementById("profileInputEmail").value = state.user.email || "";
             document.getElementById("profileInputPhone").value = state.user.phone || "";
@@ -1342,24 +1506,22 @@
             document.getElementById("statDeposit").textContent = money(state.deposit);
             document.getElementById("statOrders").textContent = state.orders.length;
             document.getElementById("statSpent").textContent = money(state.spent);
-            
             document.getElementById("mainBalance").textContent = money(state.balance);
             document.getElementById("walletBalance").textContent = money(state.balance);
             document.getElementById("walletDeposit").textContent = money(state.deposit);
             document.getElementById("walletSpent").textContent = money(state.spent);
             document.getElementById("walletBonus").textContent = money(state.bonus);
-            
             document.getElementById("analyticsSpent").textContent = money(state.spent);
             document.getElementById("analyticsOrders").textContent = state.orders.length;
             document.getElementById("analyticsAverage").textContent = money(
                 state.orders.length ? Math.round(state.spent / state.orders.length) : 0
             );
-
             const percent = Math.min(100, Math.round(state.deposit / 1000000 * 100));
             document.getElementById("tierProgress").style.width = percent + "%";
             document.getElementById("tierPercent").textContent = percent + "%";
-            
-            if (state.deposit >= 1000000) { state.user.tier = "Cộng tác viên"; }
+            if (state.deposit >= 1000000) {
+                state.user.tier = "Cộng tác viên";
+            }
             document.getElementById("profileTier").textContent = state.user.tier;
         }
 
@@ -1367,7 +1529,6 @@
             const unread = state.notifications.filter(n => n.unread).length;
             document.getElementById("sideUnread").textContent = unread;
             document.getElementById("sideUnread").classList.toggle("hidden", unread === 0);
-            
             const html = state.notifications.map(n => `
                 <div class="notification ${n.unread ? "unread" : ""}" data-notification="${n.id}">
                     <i>♢</i>
@@ -1376,9 +1537,7 @@
                         <div>${escapeHtml(n.text)}</div>
                         <small>${escapeHtml(n.time)}</small>
                     </div>
-                </div>`
-            ).join("");
-            
+                </div>`).join("");
             document.getElementById("dashboardNotifications").innerHTML = html || '<div class="empty">Không có thông báo.</div>';
             document.getElementById("allNotifications").innerHTML = html || '<div class="empty">Không có thông báo.</div>';
         }
@@ -1386,13 +1545,11 @@
         function renderServices() {
             const q = (document.getElementById("serviceSearch")?.value || "").toLowerCase();
             const cat = document.getElementById("serviceCategory")?.value || "all";
-            
             const list = services.filter(s => {
                 const matchQ = !q || s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q) || s.category.toLowerCase().includes(q);
                 const matchCat = cat === "all" || s.category === cat;
                 return matchQ && matchCat;
             });
-            
             document.getElementById("serviceGrid").innerHTML = list.map(s => `
                 <div class="service">
                     <div class="service-top">
@@ -1402,48 +1559,38 @@
                     <h3>${escapeHtml(s.name)}</h3>
                     <p>${escapeHtml(s.description)}</p>
                     <div class="service-bottom">
-                        <div>
-                            <span class="price">${s.id === 'MS18' ? 'Miễn phí' : money(s.price)}</span>
-                            <small> / ${escapeHtml(s.unit)}</small>
-                        </div>
+                        <div><span class="price">${s.id === 'MS18' ? 'Miễn phí' : money(s.price)}</span><small> / ${escapeHtml(s.unit)}</small></div>
                         <button class="btn btn-primary order-service" data-id="${s.id}">Đặt ngay</button>
                     </div>
-                </div>`
-            ).join("") || '<div class="card empty" style="grid-column:1/-1">Không tìm thấy dịch vụ.</div>';
+                </div>`).join("") || '<div class="card empty" style="grid-column:1/-1">Không tìm thấy dịch vụ.</div>';
 
             document.getElementById("featuredServices").innerHTML = services.slice(0, 3).map(s => `
                 <div class="quick" style="margin-bottom:8px">
                     <i>◈</i>
-                    <div style="flex:1">
-                        <b>${escapeHtml(s.name)}</b>
-                        <small style="display:block;color:var(--muted)">${s.id === 'MS18' ? 'Miễn phí' : money(s.price) + ' / ' + escapeHtml(s.unit)}</small>
-                    </div>
+                    <div style="flex:1"><b>${escapeHtml(s.name)}</b><small style="display:block;color:var(--muted)">${s.id === 'MS18' ? 'Miễn phí' : money(s.price) + ' / ' + escapeHtml(s.unit)}</small></div>
                     <button class="btn btn-primary order-service" data-id="${s.id}">Đặt</button>
-                </div>`
-            ).join("");
+                </div>`).join("");
         }
 
         function renderOrders() {
             const filter = document.getElementById("orderFilter")?.value || "all";
             const list = state.orders.filter(o => filter === "all" || o.status === filter);
-            
             document.getElementById("ordersBody").innerHTML = list.map(o => {
                 const status = o.status === "completed"
                     ? '<span class="status" style="color:#059669">Hoàn thành</span>'
                     : o.status === "cancelled"
-                        ? '<span class="status" style="color:#dc2626">Đã hủy</span>'
-                        : '<span class="status" style="color:#d97706">Đang xử lý</span>';
-                return `
-                    <tr>
-                        <td><b>${escapeHtml(o.id)}</b></td>
-                        <td>${escapeHtml(o.service)}</td>
-                        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(o.link)}</td>
-                        <td>${o.quantity.toLocaleString("vi-VN")}</td>
-                        <td><b>${money(o.total)}</b></td>
-                        <td>${status}</td>
-                        <td>${escapeHtml(o.date)}</td>
-                        <td><button class="btn btn-secondary cancel-order" data-id="${o.id}" ${o.status !== "pending" ? "disabled" : ""}>Hủy</button></td>
-                    </tr>`;
+                    ? '<span class="status" style="color:#dc2626">Đã hủy</span>'
+                    : '<span class="status" style="color:#d97706">Đang xử lý</span>';
+                return `<tr>
+                    <td><b>${escapeHtml(o.id)}</b></td>
+                    <td>${escapeHtml(o.service)}</td>
+                    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(o.link)}</td>
+                    <td>${o.quantity.toLocaleString("vi-VN")}</td>
+                    <td><b>${o.serviceId === 'MS18' ? '0đ' : money(o.total)}</b></td>
+                    <td>${status}</td>
+                    <td>${escapeHtml(o.date)}</td>
+                    <td><button class="btn btn-secondary cancel-order" data-id="${o.id}" ${o.status !== "pending" ? "disabled" : ""}>Hủy</button></td>
+                </tr>`;
             }).join("") || '<tr><td colspan="8" class="empty">Chưa có đơn hàng.</td></tr>';
         }
 
@@ -1456,32 +1603,26 @@
                     <td style="font-weight:800;color:${t.amount >= 0 ? "#059669" : "#dc2626"}">${t.amount >= 0 ? "+" : "-"}${money(Math.abs(t.amount))}</td>
                     <td><span class="badge badge-green">${escapeHtml(t.status)}</span></td>
                     <td>${escapeHtml(t.date)}</td>
-                </tr>`
-            ).join("") || '<tr><td colspan="6" class="empty">Chưa có giao dịch.</td></tr>';
+                </tr>`).join("") || '<tr><td colspan="6" class="empty">Chưa có giao dịch.</td></tr>';
         }
 
-        // --- CHART JS ---
         function drawChart(canvasId, days = 7) {
             const canvas = document.getElementById(canvasId);
             if (!canvas) return;
             const ctx = canvas.getContext("2d");
             const rect = canvas.getBoundingClientRect();
             const dpr = window.devicePixelRatio || 1;
-            
             canvas.width = Math.max(300, rect.width) * dpr;
             canvas.height = Math.max(240, rect.height) * dpr;
             ctx.scale(dpr, dpr);
-            
             const w = rect.width;
             const h = rect.height;
             ctx.clearRect(0, 0, w, h);
-            
             ctx.strokeStyle = "#e2e8f0";
             ctx.lineWidth = 1;
             const pad = { l: 45, r: 20, t: 20, b: 35 };
             const cw = w - pad.l - pad.r;
             const ch = h - pad.t - pad.b;
-            
             for (let i = 0; i <= 5; i++) {
                 const y = pad.t + ch - i * ch / 5;
                 ctx.beginPath();
@@ -1489,10 +1630,8 @@
                 ctx.lineTo(w - pad.r, y);
                 ctx.stroke();
             }
-            
             const values = buildChartValues(days);
             const max = Math.max(1000, ...values);
-            
             ctx.font = "11px Arial";
             ctx.fillStyle = "#64748b";
             for (let i = 0; i <= 5; i++) {
@@ -1500,25 +1639,21 @@
                 const y = h - pad.b - ch * i / 5 + 4;
                 ctx.fillText(money(value).replace("đ", ""), 5, y);
             }
-            
             const points = values.map((v, i) => ({
                 x: pad.l + (days === 1 ? 0 : i * cw / (values.length - 1)),
                 y: pad.t + ch - (v / max) * ch
             }));
-            
             ctx.strokeStyle = "#3b82f6";
             ctx.lineWidth = 3;
             ctx.beginPath();
             points.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
             ctx.stroke();
-            
             ctx.fillStyle = "#3b82f6";
             points.forEach(p => {
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
                 ctx.fill();
             });
-            
             ctx.fillStyle = "#64748b";
             ctx.font = "11px Arial";
             points.forEach((p, i) => {
@@ -1556,23 +1691,31 @@
             saveState();
         }
 
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, m => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+            }[m]));
+        }
+
         function showPage(page) {
             document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
             const target = document.getElementById(page + "Page");
             if (target) target.classList.remove("hidden");
-            
             document.querySelectorAll(".menu[data-page]").forEach(m => m.classList.toggle("active", m.dataset.page === page));
-            
             if (page === "analytics") drawChart("analyticsChart", 30);
             if (page === "dashboard") drawChart("spendChart", 7);
-            
             document.getElementById("sidebar").classList.remove("open");
             document.getElementById("overlay").classList.remove("show");
             window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
-        function openModal(id) { document.getElementById(id).classList.remove("hidden"); }
-        function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
+        function openModal(id) {
+            document.getElementById(id).classList.remove("hidden");
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add("hidden");
+        }
 
         function openOrder(service) {
             selectedService = service;
@@ -1588,21 +1731,21 @@
             document.getElementById("orderTotal").textContent = selectedService.id === 'MS18' ? '0đ' : money(q * selectedService.price);
         }
 
-        // --- XỬ LÝ SỰ KIỆN (EVENTS) ---
         function submitOrder() {
             if (!selectedService) return;
             const link = document.getElementById("orderLink").value.trim();
             const quantity = Math.max(1, Number(document.getElementById("orderQuantity").value) || 1);
             const total = selectedService.id === 'MS18' ? 0 : quantity * selectedService.price;
-            
-            if (!link) { toast("Vui lòng nhập link hoặc ID."); return; }
+            if (!link) {
+                toast("Vui lòng nhập link hoặc ID.");
+                return;
+            }
             if (state.balance < total) {
                 toast("Số dư không đủ. Hãy nạp tiền trước.");
                 closeModal("orderModal");
                 openModal("depositModal");
                 return;
             }
-            
             const order = {
                 id: "HK" + Date.now().toString().slice(-8),
                 service: selectedService.name,
@@ -1613,23 +1756,26 @@
                 status: "pending",
                 date: new Date().toLocaleString("vi-VN")
             };
-            
             state.balance -= total;
             state.spent += total;
             state.orders.unshift(order);
-            
-            if(total > 0) {
+            if (total > 0) {
                 state.transactions.unshift({
-                    id: id("GD"), type: "Thanh toán", note: "Đặt " + selectedService.name,
-                    amount: -total, status: "Thành công", date: new Date().toLocaleString("vi-VN")
+                    id: id("GD"),
+                    type: "Thanh toán",
+                    note: "Đặt " + selectedService.name,
+                    amount: -total,
+                    status: "Thành công",
+                    date: new Date().toLocaleString("vi-VN")
                 });
             }
-            
             state.notifications.unshift({
-                id: Date.now(), title: "Tạo đơn thành công", text: "Đơn " + order.id + " đã được tạo và đang xử lý.",
-                time: "Vừa xong", unread: true
+                id: Date.now(),
+                title: "Tạo đơn thành công",
+                text: "Đơn " + order.id + " đã được tạo và đang xử lý.",
+                time: "Vừa xong",
+                unread: true
             });
-            
             saveState();
             renderAll();
             closeModal("orderModal");
@@ -1640,20 +1786,28 @@
 
         function submitDeposit() {
             const amount = Number(document.getElementById("depositAmount").value) || 0;
-            if (amount < 1000) { toast("Số tiền tối thiểu là 1.000đ."); return; }
+            if (amount < 1000) {
+                toast("Số tiền tối thiểu là 1.000đ.");
+                return;
+            }
             const code = document.getElementById("depositCode").value.trim();
-            
             state.balance += amount;
             state.deposit += amount;
             state.transactions.unshift({
-                id: id("GD"), type: "Nạp tiền", note: code ? "Mã giao dịch: " + code : "Nạp tiền demo",
-                amount, status: "Thành công", date: new Date().toLocaleString("vi-VN")
+                id: id("GD"),
+                type: "Nạp tiền",
+                note: code ? "Mã giao dịch: " + code : "Nạp tiền demo",
+                amount,
+                status: "Thành công",
+                date: new Date().toLocaleString("vi-VN")
             });
             state.notifications.unshift({
-                id: Date.now(), title: "Nạp tiền thành công", text: "Số dư đã được cập nhật " + money(amount) + ".",
-                time: "Vừa xong", unread: true
+                id: Date.now(),
+                title: "Nạp tiền thành công",
+                text: "Số dư đã được cập nhật " + money(amount) + ".",
+                time: "Vừa xong",
+                unread: true
             });
-            
             saveState();
             renderAll();
             closeModal("depositModal");
@@ -1665,17 +1819,19 @@
         function cancelOrder(orderId) {
             const order = state.orders.find(o => o.id === orderId);
             if (!order || order.status !== "pending") return;
-            
             order.status = "cancelled";
-            if(order.total > 0) {
+            if (order.total > 0) {
                 state.balance += order.total;
                 state.spent -= order.total;
                 state.transactions.unshift({
-                    id: id("GD"), type: "Hoàn tiền", note: "Hủy đơn " + order.id,
-                    amount: order.total, status: "Thành công", date: new Date().toLocaleString("vi-VN")
+                    id: id("GD"),
+                    type: "Hoàn tiền",
+                    note: "Hủy đơn " + order.id,
+                    amount: order.total,
+                    status: "Thành công",
+                    date: new Date().toLocaleString("vi-VN")
                 });
             }
-            
             saveState();
             renderAll();
             toast("Đã hủy đơn và hoàn tiền.");
@@ -1683,27 +1839,36 @@
 
         document.addEventListener("click", e => {
             const menu = e.target.closest("[data-page]");
-            if (menu) { showPage(menu.dataset.page); return; }
-            
+            if (menu) {
+                showPage(menu.dataset.page);
+                return;
+            }
             const link = e.target.closest("[data-page-link]");
-            if (link) { showPage(link.dataset.pageLink); return; }
-            
+            if (link) {
+                showPage(link.dataset.pageLink);
+                return;
+            }
             const serviceBtn = e.target.closest(".order-service");
             if (serviceBtn) {
                 const service = services.find(s => s.id === serviceBtn.dataset.id);
                 if (service) openOrder(service);
                 return;
             }
-            
             const quick = e.target.closest("[data-action]");
-            if (quick && quick.dataset.action === "deposit") { openModal("depositModal"); return; }
-            
+            if (quick && quick.dataset.action === "deposit") {
+                openModal("depositModal");
+                return;
+            }
             const close = e.target.closest("[data-close]");
-            if (close) { closeModal(close.dataset.close); return; }
-            
+            if (close) {
+                closeModal(close.dataset.close);
+                return;
+            }
             const cancel = e.target.closest(".cancel-order");
-            if (cancel) { cancelOrder(cancel.dataset.id); return; }
-            
+            if (cancel) {
+                cancelOrder(cancel.dataset.id);
+                return;
+            }
             const method = e.target.closest("[data-deposit-method]");
             if (method) {
                 document.getElementById("depositMethod").value = method.dataset.depositMethod === "bank"
@@ -1717,7 +1882,6 @@
         document.getElementById("balanceDeposit").onclick = () => openModal("depositModal");
         document.getElementById("submitDeposit").onclick = submitDeposit;
         document.getElementById("submitOrder").onclick = submitOrder;
-        
         document.getElementById("orderQuantity").addEventListener("input", updateOrderTotal);
         document.getElementById("orderFilter").addEventListener("change", renderOrders);
         document.getElementById("serviceSearch").addEventListener("input", renderServices);
@@ -1734,7 +1898,9 @@
             toast("Đã làm mới dữ liệu.");
         };
         
-        document.getElementById("notificationBtn").onclick = () => showPage("notifications");
+        document.getElementById("notificationBtn").onclick = () => {
+            showPage("notifications");
+        };
         
         document.getElementById("markRead").onclick = () => {
             state.notifications.forEach(n => n.unread = false);
@@ -1847,11 +2013,6 @@
             if (!document.getElementById("dashboardPage").classList.contains("hidden")) drawChart("spendChart", 7);
         });
 
-        // Cập nhật dịch vụ MS18 là miễn phí (giữ cấu hình người dùng yêu cầu)
-        const ms18 = services.find(s => s.id === 'MS18');
-        if(ms18) ms18.price = 0;
-
-        // Khởi động
         renderAll();
 
         setInterval(() => {
