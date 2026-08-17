@@ -41,20 +41,30 @@
         button, input { font-family: inherit; border: 0; outline: 0; }
         button { cursor: pointer; }
 
-        /* SIDEBAR */
+        /* ========================= SIDEBAR ========================= */
         .sidebar {
             position: fixed; left: 0; top: 0; bottom: 0; width: var(--sidebar);
             background: linear-gradient(180deg, #0c1627, #101b2d);
             color: #fff; z-index: 1000; display: flex; flex-direction: column;
+        }
+        .sidebar.open {
+            transform: translateX(0) !important;
+            transition: 0.3s;
         }
         .brand {
             height: 76px; display: flex; align-items: center; padding: 0 25px;
             font-size: 18px; font-weight: 800; letter-spacing: .5px; border-bottom: 1px solid rgba(255,255,255,.04);
         }
         .brand span { color: #fff; }
-        .sidebar-scroll { flex: 1; overflow-y: auto; padding: 15px 0; }
+        
+        /* SCROLLBAR FIX */
+        .sidebar-scroll { 
+            flex: 1; overflow-y: auto; padding: 15px 0; 
+            scrollbar-width: thin; scrollbar-color: #374151 transparent;
+        }
         .sidebar-scroll::-webkit-scrollbar { width: 4px; }
         .sidebar-scroll::-webkit-scrollbar-thumb { background: #26344a; border-radius: 10px; }
+        
         .sb-title {
             padding: 13px 22px 9px; color: #60708b; font-size: 10px;
             font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
@@ -82,7 +92,7 @@
         }
         .sidebar-footer { padding: 10px 0; border-top: 1px solid rgba(255,255,255,.05); }
 
-        /* MAIN */
+        /* ========================= MAIN ========================= */
         .main { margin-left: var(--sidebar); min-height: 100vh; }
         .topbar {
             height: 76px; background: #fff; border-bottom: 1px solid var(--border);
@@ -104,6 +114,8 @@
             font-size: 10px; color: #9aa6b8; background: #f5f7fb;
             border: 1px solid #e8edf5; border-radius: 5px; padding: 3px 6px; white-space: nowrap;
         }
+        
+        .mobile-menu { display: none; border: none; cursor: pointer; }
         .icon-btn {
             width: 40px; height: 40px; border: 1px solid var(--border);
             background: #fff; border-radius: 50%; color: #526074; font-size: 15px; position: relative;
@@ -119,6 +131,9 @@
             font-size: 13px; font-weight: 600; color: #526074;
         }
         .lang img { width: 21px; }
+        
+        /* USER DROPDOWN */
+        .user-dropdown { position: relative; }
         .user {
             height: 44px; padding: 4px 10px 4px 4px; border: 1px solid var(--border);
             background: #fff; border-radius: 24px; display: flex; align-items: center; gap: 9px;
@@ -129,8 +144,30 @@
         }
         .user-name { font-size: 13px; font-weight: 800; color: var(--text); }
         .user i { font-size: 10px; color: #9ba6b8; }
+        
+        .user-menu {
+            position: absolute; right: 0; top: 52px; width: 230px; background: #fff;
+            border: 1px solid #e7edf6; border-radius: 14px; padding: 8px;
+            box-shadow: 0 12px 35px rgba(0,0,0,.12); opacity: 0; visibility: hidden;
+            transform: translateY(-8px); transition: .2s; z-index: 2000;
+        }
+        .user-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .user-menu-header { display: flex; align-items: center; gap: 10px; padding: 8px; }
+        .user-menu-header > div:last-child { display: flex; flex-direction: column; gap: 2px; }
+        .user-menu-header strong { font-size: 13px; color: #172033; }
+        .user-menu-header span { font-size: 10px; color: #94a0b2; }
+        .user-menu-line { height: 1px; background: #edf1f6; margin: 5px 0; }
+        .user-menu button {
+            width: 100%; height: 38px; display: flex; align-items: center; gap: 10px;
+            padding: 0 10px; background: transparent; border-radius: 9px;
+            color: #526074; font-size: 12px; font-weight: 700; text-align: left;
+        }
+        .user-menu button:hover { background: #eef6ff; color: #1677ff; }
+        .user-menu button i { width: 18px; text-align: center; }
+        .user-menu .logout-item { color: #ef4444; }
+        .user-menu .logout-item:hover { background: #fff1f1; color: #ef4444; }
 
-        /* CONTENT */
+        /* ========================= CONTENT ========================= */
         .content { padding: 25px 28px 40px; max-width: 1450px; margin: auto; }
         .dashboard {
             display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 20px;
@@ -221,7 +258,16 @@
         .tier-remain { margin-top: 22px; color: #7e8a9e; font-size: 12px; }
         .tier-remain b { color: #38475c; }
 
-        /* NOTIFICATION */
+        /* BUTTON */
+        .btn-primary {
+            width: 100%; height: 48px; margin-top: 18px; border-radius: 13px;
+            background: linear-gradient(100deg, #0878ff, #3099ff); color: #fff;
+            font-size: 14px; font-weight: 800; box-shadow: 0 8px 18px rgba(22,119,255,.18);
+            transition: .2s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(22,119,255,.25); }
+
+        /* NOTICE */
         .notice-card { min-height: 315px; }
         .notice-head {
             padding: 14px 16px; background: #eaf3ff; border-radius: 12px;
@@ -292,15 +338,6 @@
         .news-meta { display: flex; justify-content: space-between; margin-top: 6px; color: #8793a5; font-size: 10px; }
         .news-more { color: #1677ff; font-weight: 700; }
 
-        /* BUTTON */
-        .btn-primary {
-            width: 100%; height: 48px; margin-top: 18px; border-radius: 13px;
-            background: linear-gradient(100deg, #0878ff, #3099ff); color: #fff;
-            font-size: 14px; font-weight: 800; box-shadow: 0 8px 18px rgba(22,119,255,.18);
-            transition: .2s;
-        }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(22,119,255,.25); }
-
         /* FLOAT SUPPORT */
         .support {
             position: fixed; right: 25px; bottom: 25px; width: 64px; height: 64px; border-radius: 50%;
@@ -322,7 +359,7 @@
             .right-col { grid-template-columns: 1fr; }
             .search { width: 220px; }
         }
-        @media(max-width: 760px){
+        @media(max-width: 800px){
             :root { --sidebar: 0px; }
             .sidebar { transform: translateX(-100%); transition: .3s; }
             .main { margin-left: 0; }
@@ -334,6 +371,19 @@
             .content { padding: 12px; }
             .dashboard { padding: 10px; border-radius: 17px; }
             .news-grid { grid-template-columns: 1fr; }
+            
+            /* CSS nút 3 gạch mobile */
+            .mobile-menu {
+                display: grid;
+                place-items: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                background: #eef5ff;
+                color: #1677ff;
+                margin-right: 15px;
+                font-size: 18px;
+            }
         }
         @media(max-width: 520px){
             .search { display: none; }
@@ -342,30 +392,6 @@
             .profile-name { font-size: 16px; }
             .profile-avatar { width: 65px; height: 65px; }
         }
-
-        /* USER DROPDOWN */
-        .user-dropdown { position: relative; }
-        .user-menu {
-            position: absolute; top: 52px; right: 0; width: 230px; background: #fff;
-            border: 1px solid #e7edf6; border-radius: 14px; padding: 8px;
-            box-shadow: 0 12px 35px rgba(0,0,0,.12); opacity: 0; visibility: hidden;
-            transform: translateY(-8px); transition: .2s; z-index: 2000;
-        }
-        .user-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        .user-menu-header { display: flex; align-items: center; gap: 10px; padding: 8px; }
-        .user-menu-header > div:last-child { display: flex; flex-direction: column; gap: 2px; }
-        .user-menu-header strong { font-size: 13px; color: #172033; }
-        .user-menu-header span { font-size: 10px; color: #94a0b2; }
-        .user-menu-line { height: 1px; background: #edf1f6; margin: 5px 0; }
-        .user-menu button {
-            width: 100%; height: 38px; display: flex; align-items: center; gap: 10px;
-            padding: 0 10px; background: transparent; border-radius: 9px;
-            color: #526074; font-size: 12px; font-weight: 700; text-align: left;
-        }
-        .user-menu button:hover { background: #eef6ff; color: #1677ff; }
-        .user-menu button i { width: 18px; text-align: center; }
-        .user-menu .logout-item { color: #ef4444; }
-        .user-menu .logout-item:hover { background: #fff1f1; color: #ef4444; }
     </style>
 </head>
 
@@ -384,7 +410,6 @@
 
             <button class="sb-mi" onclick="go('website-api.html')">
                 <span class="sb-icon"><i class="fa-solid fa-display"></i></span>Website & API
-                <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
             </button>
 
             <button class="sb-mi" onclick="go('banggia.html')">
@@ -397,7 +422,6 @@
 
             <button class="sb-mi" onclick="openZalo()">
                 <span class="sb-icon"><i class="fa-solid fa-headset"></i></span>Liên hệ CSKH
-                <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
             </button>
 
             <div class="sb-title">Tài khoản</div>
@@ -419,32 +443,27 @@
             <button class="sb-mi" onclick="go('dichvu.html')">
                 <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span>Dịch vụ khác
                 <span class="badge">MỚI</span>
-                <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
             </button>
 
             <button class="sb-mi" onclick="go('facebook.html')">
-                <span class="sb-icon"><i class="fa-brands fa-facebook"></i></span>Facebook
-                <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+                <span class="sb-icon"><i class="fa-brands fa-facebook" style="color:#1877f2"></i></span>Facebook
             </button>
 
             <button class="sb-mi" onclick="go('instagram.html')">
-                <span class="sb-icon"><i class="fa-brands fa-instagram"></i></span>Instagram
-                <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+                <span class="sb-icon"><i class="fa-brands fa-instagram" style="color:#e1306c"></i></span>Instagram
             </button>
 
             <button class="sb-mi" onclick="go('tiktok.html')">
                 <span class="sb-icon"><i class="fa-brands fa-tiktok"></i></span>TikTok
-                <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
             </button>
 
             <button class="sb-mi" onclick="go('youtube.html')">
-                <span class="sb-icon"><i class="fa-brands fa-youtube"></i></span>YouTube
-                <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+                <span class="sb-icon"><i class="fa-brands fa-youtube" style="color:#ff1744"></i></span>YouTube
             </button>
         </div>
 
         <div class="sidebar-footer">
-            <button class="sb-mi" onclick="logout()" style="color:#ff6670">
+            <button class="sb-mi" onclick="logout()" style="color:#ef4444">
                 <span class="sb-icon"><i class="fa-solid fa-right-from-bracket"></i></span>Đăng xuất
             </button>
         </div>
@@ -452,80 +471,85 @@
 
     <!-- MAIN -->
     <main class="main">
-       <header class="topbar">
-    <div class="top-left">
-        <div class="crumb">
-            <span>Trang chủ</span>
-            <i class="fa-solid fa-chevron-right"></i>
-            <span class="current">Trang Tổng Quan</span>
-        </div>
+        <header class="topbar">
+            <div class="top-left">
+                <!-- Nút 3 gạch hiện trên điện thoại -->
+                <button class="mobile-menu" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
 
-        <div class="search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input id="serviceSearch" type="text" placeholder="Tìm dịch vụ">
-            <span class="shortcut">Ctrl K</span>
-        </div>
-    </div>
-
-    <div class="top-right">
-        <button class="icon-btn" onclick="go('taikhoan.html')">
-            <i class="fa-solid fa-gear"></i>
-        </button>
-
-        <button class="icon-btn" onclick="go('thongbao.html')">
-            <i class="fa-regular fa-bell"></i>
-            <span class="dot"></span>
-        </button>
-
-        <div class="lang">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="VN">
-            <span>VN</span> Tiếng Việt
-            <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
-        </div>
-
-        <div class="user-dropdown">
-            <button class="user" id="userBtn">
-                <div class="avatar" id="avatarMini">H</div>
-                <span class="user-name" id="navUserName">Đang tải...</span>
-                <i class="fa-solid fa-chevron-down"></i>
-            </button>
-
-            <div class="user-menu" id="userMenu">
-                <div class="user-menu-header">
-                    <div class="avatar" id="menuAvatar">H</div>
-                    <div>
-                        <strong id="menuUserName">Đang tải...</strong>
-                        <span>Thành viên</span>
-                    </div>
+                <div class="crumb">
+                    <span>Trang chủ</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                    <span class="current">Trang Tổng Quan</span>
                 </div>
 
-                <div class="user-menu-line"></div>
-
-                <button onclick="go('taikhoan.html')">
-                    <i class="fa-regular fa-user"></i>
-                    Tài khoản của tôi
-                </button>
-
-                <button onclick="go('naptien.html')">
-                    <i class="fa-regular fa-credit-card"></i>
-                    Nạp tiền
-                </button>
-
-                <button onclick="go('lichsu.html')">
-                    <i class="fa-regular fa-clock"></i>
-                    Nhật ký hoạt động
-                </button>
-
-                <div class="user-menu-line"></div>
-
-                <button class="logout-item" onclick="logout()">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    Đăng xuất
-                </button>
+                <div class="search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="serviceSearch" type="text" placeholder="Tìm dịch vụ">
+                    <span class="shortcut">Ctrl K</span>
+                </div>
             </div>
-        </div>
-    </div>
-</header>
+
+            <div class="top-right">
+                <button class="icon-btn" onclick="go('taikhoan.html')">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+
+                <button class="icon-btn" onclick="go('thongbao.html')">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="dot"></span>
+                </button>
+
+                <div class="lang">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="VN">
+                    <span>VN</span> Tiếng Việt
+                    <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
+                </div>
+
+                <div class="user-dropdown">
+                    <button class="user" id="userBtn">
+                        <div class="avatar" id="avatarMini">H</div>
+                        <span class="user-name" id="navUserName">Đang tải...</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div class="user-menu" id="userMenu">
+                        <div class="user-menu-header">
+                            <div class="avatar" id="menuAvatar">H</div>
+                            <div>
+                                <strong id="menuUserName">Đang tải...</strong>
+                                <span>Thành viên</span>
+                            </div>
+                        </div>
+
+                        <div class="user-menu-line"></div>
+
+                        <button onclick="go('taikhoan.html')">
+                            <i class="fa-regular fa-user"></i>
+                            Tài khoản của tôi
+                        </button>
+
+                        <button onclick="go('naptien.html')">
+                            <i class="fa-regular fa-credit-card"></i>
+                            Nạp tiền
+                        </button>
+
+                        <button onclick="go('lichsu.html')">
+                            <i class="fa-regular fa-clock"></i>
+                            Nhật ký hoạt động
+                        </button>
+
+                        <div class="user-menu-line"></div>
+
+                        <button class="logout-item" onclick="logout()">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            Đăng xuất
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
 
         <div class="content">
             <div class="dashboard">
@@ -766,6 +790,11 @@
             return Number(value || 0).toLocaleString("vi-VN") + "đ";
         }
 
+        // Hàm mở/tắt sidebar trên điện thoại
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        }
+
         auth.onAuthStateChanged(user => {
             if (user) {
                 const name = user.displayName || "Thành viên";
@@ -779,67 +808,67 @@
                 document.getElementById("mainAvatar").textContent = letter;
 
                 document.getElementById("menuUserName").textContent = name;
-                document.getElementById("menuAvatar").textContent = letter; 
+                document.getElementById("menuAvatar").textContent = letter;
                 
-// =====================================================
-        // POPUP THÔNG BÁO KHAI TRƯƠNG + HIỆU ỨNG PHÁO HOA
-        // =====================================================
-        if (sessionStorage.getItem("vua_moi_dang_nhap") === "true") {
-            setTimeout(() => {
-                
-                // --- HÀM BẮN PHÁO HOA ---
-                var duration = 3000; // Bắn trong 3 giây
-                var end = Date.now() + duration;
+                // =====================================================
+                // POPUP THÔNG BÁO KHAI TRƯƠNG + HIỆU ỨNG PHÁO HOA
+                // =====================================================
+                if (sessionStorage.getItem("vua_moi_dang_nhap") === "true") {
+                    setTimeout(() => {
+                        
+                        // --- HÀM BẮN PHÁO HOA ---
+                        var duration = 3000; // Bắn trong 3 giây
+                        var end = Date.now() + duration;
 
-                (function frame() {
-                    confetti({
-                        particleCount: 5,
-                        angle: 60,
-                        spread: 55,
-                        origin: { x: 0 },
-                        colors: ['#1677ff', '#ef4444', '#10b981', '#f59e0b']
-                    });
-                    confetti({
-                        particleCount: 5,
-                        angle: 120,
-                        spread: 55,
-                        origin: { x: 1 },
-                        colors: ['#1677ff', '#ef4444', '#10b981', '#f59e0b']
-                    });
-                    if (Date.now() < end) {
-                        requestAnimationFrame(frame);
-                    }
-                }());
-                // ------------------------
+                        (function frame() {
+                            confetti({
+                                particleCount: 5,
+                                angle: 60,
+                                spread: 55,
+                                origin: { x: 0 },
+                                colors: ['#1677ff', '#ef4444', '#10b981', '#f59e0b']
+                            });
+                            confetti({
+                                particleCount: 5,
+                                angle: 120,
+                                spread: 55,
+                                origin: { x: 1 },
+                                colors: ['#1677ff', '#ef4444', '#10b981', '#f59e0b']
+                            });
+                            if (Date.now() < end) {
+                                requestAnimationFrame(frame);
+                            }
+                        }());
+                        // ------------------------
 
-                Swal.fire({
-                    title: '🎉 KHAI TRƯƠNG RỰC RỠ 🎉',
-                    html: `
-                        <div style="line-height: 1.6; color: #526074; font-size: 14px; text-align: left;">
-                            <p>Chào mừng <b>${name}</b> đã đến với hệ thống <b>HoangKunStore</b>!</p>
-                            <p style="margin-top: 8px;">Nhân dịp khai trương, hệ thống tung ra ngập tràn ưu đãi cực khủng:</p>
-                            <ul style="background: #f0f6ff; padding: 15px 15px 15px 35px; border-radius: 12px; margin-top: 12px; color: #1677ff; font-weight: 700; border: 1px solid #dbe9fb;">
-                                <li>💸 Hoa hồng giới thiệu bạn bè lên đến 5%.</li>
-                                <li>🚀 Dịch vụ siêu tốc, hệ thống auto 24/7.</li>
-                            </ul>
-                            <p style="margin-top: 15px; font-weight: 800; color: #ef4444; text-align: center;">Chúc bạn có trải nghiệm tuyệt vời cùng HoangKun!</p>
-                        </div>
-                    `,
-                    imageUrl: 'https://cdn-icons-png.flaticon.com/512/7650/7650771.png', 
-                    imageWidth: 100,
-                    imageHeight: 100,
-                    imageAlt: 'Welcome Icon',
-                    confirmButtonText: 'Khám phá ngay! 🚀',
-                    confirmButtonColor: '#1677ff',
-                    allowOutsideClick: false,
-                    backdrop: `rgba(13, 23, 40, 0.85)`
-                });
-                
-                // Hiện xong thì xóa cờ luôn để F5 hoặc mở tab mới không bị hiện lại
-                sessionStorage.removeItem("vua_moi_dang_nhap");
-            }, 800); // Delay nhẹ 0.8s cho giao diện load xong mới bật popup
-        }
-                
+                        Swal.fire({
+                            title: '🎉 KHAI TRƯƠNG RỰC RỠ 🎉',
+                            html: `
+                                <div style="line-height: 1.6; color: #526074; font-size: 14px; text-align: left;">
+                                    <p>Chào mừng <b>${name}</b> đã đến với hệ thống <b>HoangKunStore</b>!</p>
+                                    <p style="margin-top: 8px;">Nhân dịp khai trương, hệ thống tung ra ngập tràn ưu đãi cực khủng:</p>
+                                    <ul style="background: #f0f6ff; padding: 15px 15px 15px 35px; border-radius: 12px; margin-top: 12px; color: #1677ff; font-weight: 700; border: 1px solid #dbe9fb;">
+                                        <li>💸 Hoa hồng giới thiệu bạn bè lên đến 5%.</li>
+                                        <li>🚀 Dịch vụ siêu tốc, hệ thống auto 24/7.</li>
+                                    </ul>
+                                    <p style="margin-top: 15px; font-weight: 800; color: #ef4444; text-align: center;">Chúc bạn có trải nghiệm tuyệt vời cùng HoangKun!</p>
+                                </div>
+                            `,
+                            imageUrl: 'https://cdn-icons-png.flaticon.com/512/7650/7650771.png', 
+                            imageWidth: 100,
+                            imageHeight: 100,
+                            imageAlt: 'Welcome Icon',
+                            confirmButtonText: 'Khám phá ngay! 🚀',
+                            confirmButtonColor: '#1677ff',
+                            allowOutsideClick: false,
+                            backdrop: `rgba(13, 23, 40, 0.85)`
+                        });
+                        
+                        // Hiện xong thì xóa cờ luôn để F5 hoặc mở tab mới không bị hiện lại
+                        sessionStorage.removeItem("vua_moi_dang_nhap");
+                    }, 800); // Delay nhẹ 0.8s cho giao diện load xong mới bật popup
+                }
+
                 db.ref("users/" + user.uid).on("value", snapshot => {
                     const data = snapshot.val() || {};
 
