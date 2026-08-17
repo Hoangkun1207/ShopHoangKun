@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>Bảng giá & Cấp bậc | HoangKun Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<style>
+:root{
+--primary:#1677ff;
+--primary2:#238cff;
+--dark:#0d1728;
+--dark2:#111d31;
+--bg:#f3f6fc;
+--card:#fff;
+--text:#172033;
+--muted:#8a96aa;
+--border:#e7edf6;
+--success:#16b978;
+--warning:#f59e0b;
+--danger:#ef4444;
+--sidebar:280px;
+--radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Quicksand',sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input{font-family:inherit;border:0;outline:0}
+button{cursor:pointer}
+
+/* SIDEBAR */
+.sidebar{
+position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);
+background:linear-gradient(180deg,#0c1627,#101b2d);
+color:#fff;z-index:1000;display:flex;flex-direction:column
+}
+.brand{
+height:76px;display:flex;align-items:center;padding:0 25px;
+font-size:18px;font-weight:800;letter-spacing:.5px;border-bottom:1px solid rgba(255,255,255,.04)
+}
+.brand span{color:#fff}
+.sidebar-scroll{flex:1;overflow-y:auto;padding:15px 0}
+.sidebar-scroll::-webkit-scrollbar{width:4px}
+.sidebar-scroll::-webkit-scrollbar-thumb{background:#26344a;border-radius:10px}
+.sb-title{
+padding:13px 22px 9px;color:#60708b;font-size:10px;
+font-weight:800;text-transform:uppercase;letter-spacing:1px
+}
+.sb-mi{
+position:relative;width:calc(100% - 20px);margin:0 10px 4px;
+height:42px;padding:0 15px;border-radius:9px;background:transparent;
+color:#b9c4d6;display:flex;align-items:center;gap:14px;
+font-size:14px;font-weight:700;text-align:left;transition:.2s
+}
+.sb-mi:hover{background:#17253b;color:#fff}
+.sb-mi.active{
+background:linear-gradient(90deg,#193e72,#18365f);
+color:#fff;box-shadow:inset 3px 0 #1681ff
+}
+.sb-mi.active:before{
+content:"";position:absolute;left:-10px;top:0;width:3px;height:42px;
+background:#1681ff;border-radius:0 5px 5px 0
+}
+.sb-icon{width:20px;text-align:center;font-size:15px}
+.sb-mi .arrow{margin-left:auto;color:#64748b;font-size:10px}
+.badge{
+margin-left:auto;background:#0fc58a;color:#fff;padding:2px 6px;
+border-radius:5px;font-size:8px;font-weight:800
+}
+.sidebar-footer{padding:10px 0;border-top:1px solid rgba(255,255,255,.05)}
+
+/* MAIN */
+.main{margin-left:var(--sidebar);min-height:100vh}
+.topbar{
+height:76px;background:#fff;border-bottom:1px solid var(--border);
+display:flex;align-items:center;justify-content:space-between;
+padding:0 30px;position:sticky;top:0;z-index:900
+}
+.top-left,.top-right{display:flex;align-items:center;gap:14px}
+.crumb{display:flex;align-items:center;gap:10px;color:#99a4b7;font-size:14px;font-weight:600}
+.crumb i{font-size:11px;color:#c4ccda}
+.crumb .current{color:#172033;font-weight:800}
+.search{
+width:285px;height:42px;border:1px solid var(--border);
+border-radius:12px;display:flex;align-items:center;gap:10px;
+padding:0 12px;color:#9aa6b8;background:#fff;margin-left:5px
+}
+.search input{width:100%;font-size:13px;color:#334155;background:transparent}
+.search input::placeholder{color:#9aa6b8}
+.shortcut{
+font-size:10px;color:#9aa6b8;background:#f5f7fb;
+border:1px solid #e8edf5;border-radius:5px;padding:3px 6px;white-space:nowrap
+}
+.icon-btn{
+width:40px;height:40px;border:1px solid var(--border);
+background:#fff;border-radius:50%;color:#526074;font-size:15px;position:relative
+}
+.icon-btn:hover{background:#f5f8fc}
+.dot{
+position:absolute;right:7px;top:7px;width:7px;height:7px;
+border-radius:50%;background:#1677ff;border:2px solid #fff
+}
+.lang{
+height:40px;padding:0 12px;border:1px solid var(--border);
+border-radius:11px;display:flex;align-items:center;gap:8px;
+font-size:13px;font-weight:600;color:#526074
+}
+.lang img{width:21px}
+.user{
+height:44px;padding:4px 10px 4px 4px;border:1px solid var(--border);
+background:#fff;border-radius:24px;display:flex;align-items:center;gap:9px
+}
+.avatar{
+width:35px;height:35px;border-radius:50%;display:grid;place-items:center;
+background:linear-gradient(135deg,#d9edff,#b8dcff);color:#1677ff;font-weight:800
+}
+.user-name{font-size:13px;font-weight:800;color:#253047}
+.user i{font-size:10px;color:#9ba6b8}
+
+/* CONTENT */
+.content{padding:25px 28px 40px;max-width:1450px;margin:auto}
+.page-head{
+display:flex;align-items:center;justify-content:space-between;margin-bottom:25px
+}
+.page-title h1{font-size:25px;font-weight:800;margin-bottom:5px;color:var(--text)}
+.page-title p{color:var(--muted);font-weight:500}
+.balance{
+background:#fff;border:1px solid var(--border);border-radius:12px;
+padding:12px 18px;box-shadow:0 3px 15px rgba(0,0,0,.03)
+}
+.balance small{display:block;color:var(--muted);font-weight:600;margin-bottom:3px}
+.balance strong{font-size:18px;color:var(--primary)}
+
+/* TABS */
+.tabs{
+background:#fff;border:1px solid var(--border);padding:6px;
+border-radius:12px;display:flex;gap:5px;margin-bottom:22px;overflow:auto
+}
+.tab{
+border:0;background:transparent;padding:11px 19px;border-radius:8px;
+font-weight:700;color:#718096;white-space:nowrap
+}
+.tab:hover{background:#f3f7fd;color:var(--primary)}
+.tab.active{background:#e9f2ff;color:var(--primary)}
+
+/* PRICE GRID */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.price-card{
+background:#fff;border:1px solid var(--border);border-radius:18px;
+padding:22px;box-shadow:0 5px 20px rgba(31,51,73,.045);
+transition:.25s;position:relative;overflow:hidden
+}
+.price-card:hover{
+transform:translateY(-4px);box-shadow:0 12px 30px rgba(24,85,170,.09);
+border-color:#cfe1ff
+}
+.price-top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.service-icon{
+width:48px;height:48px;border-radius:12px;display:grid;
+place-items:center;font-size:22px
+}
+.fb{background:#e8f1ff;color:#1877f2}
+.ig{background:#ffeaf3;color:#e1306c}
+.tt{background:#eef1f5;color:#111}
+.yt{background:#ffe9e9;color:#f00}
+.other{background:#e9fdf5;color:#059669}
+.service-name{font-size:17px;font-weight:800;color:var(--text)}
+.service-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.price-row{
+display:flex;align-items:end;justify-content:space-between;
+padding:12px 0;border-top:1px solid #edf1f6
+}
+.price-row:first-of-type{border-top:0}
+.price-label{color:#64748b;font-size:13px;font-weight:600}
+.price-value{font-size:16px;font-weight:800;color:var(--primary)}
+.unit{font-size:11px;color:#94a3b8;font-weight:600}
+.order-btn{
+width:100%;border:0;background:#1677ff;color:#fff;border-radius:13px;
+padding:12px;margin-top:13px;font-weight:800;transition:.2s
+}
+.order-btn:hover{background:#0866e8;box-shadow:0 5px 15px rgba(22,119,255,.22)}
+
+/* TIERS SECTION */
+.tier-section{
+margin-top:25px;background:#fff;border:1px solid var(--border);
+border-radius:18px;padding:25px;box-shadow:0 5px 20px rgba(31,51,73,.045)
+}
+.card-title{font-size:15px;font-weight:800;color:#172033;margin-bottom:5px}
+.card-desc{color:var(--muted);font-size:13px;margin-bottom:22px;font-weight:500}
+.tier-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.tier{
+border:1px solid var(--border);border-radius:14px;padding:18px;
+position:relative;background:#fff;transition:.2s
+}
+.tier.current{border-color:#82b7ff;background:#f8fbff}
+.tier-tag{
+position:absolute;right:12px;top:12px;font-size:9px;
+background:#1677ff;color:#fff;padding:4px 7px;border-radius:5px;font-weight:800
+}
+.tier-icon{
+width:42px;height:42px;border-radius:11px;background:#edf5ff;
+color:#1677ff;display:grid;place-items:center;font-size:18px;margin-bottom:12px
+}
+.tier h3{font-size:16px;margin-bottom:5px;color:var(--text)}
+.tier p{font-size:12px;color:var(--muted);line-height:1.6}
+.tier strong{display:block;color:#1677ff;margin-top:10px}
+
+/* INFO SECTION */
+.info-grid{
+display:grid;grid-template-columns:1.5fr 1fr;gap:20px;margin-top:25px
+}
+.info-card{
+background:#fff;border:1px solid var(--border);border-radius:18px;
+padding:23px;box-shadow:0 5px 20px rgba(31,51,73,.045)
+}
+.info-title{font-size:15px;font-weight:800;margin-bottom:17px;color:var(--text)}
+.rule{
+display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #edf1f6;
+color:#536177;line-height:1.5;font-weight:600;font-size:13px
+}
+.rule:last-child{border-bottom:0}
+.rule i{color:#1677ff;margin-top:3px}
+.deposit-btn{
+width:100%;background:#1677ff;color:#fff;border:0;border-radius:11px;
+padding:13px;font-weight:800;margin-top:15px;transition:.2s
+}
+.deposit-btn:hover{background:#0866e8}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+:root{--sidebar:240px}
+.search{width:230px}
+.price-grid{grid-template-columns:repeat(2,1fr)}
+.tier-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:800px){
+:root{--sidebar:0px}
+.sidebar{transform:translateX(-100%);transition:.3s}
+.main{margin-left:0}
+.topbar{padding:0 15px}
+.crumb{display:none}
+.search{margin:0;width:220px}
+.lang{display:none}
+.content{padding:18px}
+.page-head{align-items:flex-start;gap:15px}
+.balance{display:none}
+.price-grid{grid-template-columns:1fr}
+.info-grid{grid-template-columns:1fr}
+}
+@media(max-width:500px){
+.topbar{height:65px}
+.search{width:170px}
+.shortcut{display:none}
+.top-right{gap:4px}
+.user span{display:none}
+.page-title h1{font-size:21px}
+.tabs{margin-left:-5px;margin-right:-5px}
+.tier-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="brand"><span>HOANGKUN</span></div>
+    <div class="sidebar-scroll">
+        <div class="sb-title">Quản lý chung</div>
+
+        <button class="sb-mi" onclick="go('trangchu.html')">
+            <span class="sb-icon"><i class="fa-solid fa-house"></i></span>Trang chủ
+        </button>
+
+        <button class="sb-mi" onclick="go('website-api.html')">
+            <span class="sb-icon"><i class="fa-solid fa-display"></i></span>Website & API
+            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </button>
+
+        <button class="sb-mi active" onclick="go('banggia.html')">
+            <span class="sb-icon"><i class="fa-solid fa-chart-simple"></i></span>Bảng giá & Cấp bậc
+        </button>
+
+        <button class="sb-mi" onclick="go('kiemtien.html')">
+            <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span>Kiếm tiền
+        </button>
+
+        <button class="sb-mi" onclick="openZalo()">
+            <span class="sb-icon"><i class="fa-solid fa-headset"></i></span>Liên hệ CSKH
+            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </button>
+
+        <div class="sb-title">Tài khoản</div>
+
+        <button class="sb-mi" onclick="go('taikhoan.html')">
+            <span class="sb-icon"><i class="fa-regular fa-user"></i></span>Tài khoản & bảo mật
+        </button>
+
+        <button class="sb-mi" onclick="go('naptien.html')">
+            <span class="sb-icon"><i class="fa-regular fa-credit-card"></i></span>Nạp tiền
+        </button>
+
+        <button class="sb-mi" onclick="go('lichsu.html')">
+            <span class="sb-icon"><i class="fa-regular fa-clock"></i></span>Nhật ký hoạt động
+        </button>
+
+        <div class="sb-title">Danh sách dịch vụ</div>
+
+        <button class="sb-mi" onclick="go('dichvu.html')">
+            <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span>Dịch vụ khác
+            <span class="badge">MỚI</span>
+            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </button>
+
+        <button class="sb-mi" onclick="go('facebook.html')">
+            <span class="sb-icon"><i class="fa-brands fa-facebook"></i></span>Facebook
+            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </button>
+
+        <button class="sb-mi" onclick="go('instagram.html')">
+            <span class="sb-icon"><i class="fa-brands fa-instagram"></i></span>Instagram
+            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </button>
+
+        <button class="sb-mi" onclick="go('tiktok.html')">
+            <span class="sb-icon"><i class="fa-brands fa-tiktok"></i></span>TikTok
+            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </button>
+
+        <button class="sb-mi" onclick="go('youtube.html')">
+            <span class="sb-icon"><i class="fa-brands fa-youtube"></i></span>YouTube
+            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </button>
+    </div>
+
+    <div class="sidebar-footer">
+        <button class="sb-mi" onclick="logout()" style="color:#ff6670">
+            <span class="sb-icon"><i class="fa-solid fa-right-from-bracket"></i></span>Đăng xuất
+        </button>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+    <header class="topbar">
+        <div class="top-left">
+            <div class="crumb">
+                <span>Trang chủ</span>
+                <i class="fa-solid fa-chevron-right"></i>
+                <span class="current">Bảng giá & Cấp bậc</span>
+            </div>
+
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Tìm dịch vụ...">
+                <span class="shortcut">Ctrl K</span>
+            </div>
+        </div>
+
+        <div class="top-right">
+            <button class="icon-btn" onclick="go('taikhoan.html')"><i class="fa-solid fa-gear"></i></button>
+            <button class="icon-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+
+            <div class="lang">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="VN Flag">
+                <span>VN</span> Tiếng Việt
+                <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
+            </div>
+
+            <button class="user">
+                <div class="avatar" id="avatar">H</div>
+                <span class="user-name" id="userName">Đang tải...</span>
+                <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="page-head">
+            <div class="page-title">
+                <h1>Bảng giá & Cấp bậc</h1>
+                <p>Giá dịch vụ được cập nhật tự động theo cấp bậc tài khoản.</p>
+            </div>
+
+            <div class="balance">
+                <small>Số dư khả dụng</small>
+                <strong id="balance">0đ</strong>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-cat="all">Tất cả dịch vụ</button>
+            <button class="tab" data-cat="facebook">Facebook</button>
+            <button class="tab" data-cat="instagram">Instagram</button>
+            <button class="tab" data-cat="tiktok">TikTok</button>
+            <button class="tab" data-cat="youtube">YouTube</button>
+        </div>
+
+        <div class="price-grid" id="priceGrid">
+            <div class="price-card" data-cat="facebook" data-name="facebook">
+                <div class="price-top">
+                    <div class="service-icon fb"><i class="fa-brands fa-facebook-f"></i></div>
+                    <div>
+                        <div class="service-name">Facebook</div>
+                        <div class="service-sub">Dịch vụ tương tác Facebook</div>
+                    </div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Like bài viết</span>
+                    <div><b class="price-value">30đ</b><span class="unit"> / 1 like</span></div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Theo dõi</span>
+                    <div><b class="price-value">45đ</b><span class="unit"> / 1 follow</span></div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Bình luận</span>
+                    <div><b class="price-value">500đ</b><span class="unit"> / 1 cmt</span></div>
+                </div>
+                <button class="order-btn" onclick="go('facebook.html')">Xem dịch vụ →</button>
+            </div>
+
+            <div class="price-card" data-cat="instagram" data-name="instagram">
+                <div class="price-top">
+                    <div class="service-icon ig"><i class="fa-brands fa-instagram"></i></div>
+                    <div>
+                        <div class="service-name">Instagram</div>
+                        <div class="service-sub">Dịch vụ tương tác Instagram</div>
+                    </div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Like bài viết</span>
+                    <div><b class="price-value">40đ</b><span class="unit"> / 1 like</span></div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Theo dõi</span>
+                    <div><b class="price-value">60đ</b><span class="unit"> / 1 follow</span></div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Lượt xem</span>
+                    <div><b class="price-value">5đ</b><span class="unit"> / 1 view</span></div>
+                </div>
+                <button class="order-btn" onclick="go('instagram.html')">Xem dịch vụ →</button>
+            </div>
+
+            <div class="price-card" data-cat="tiktok" data-name="tiktok">
+                <div class="price-top">
+                    <div class="service-icon tt"><i class="fa-brands fa-tiktok"></i></div>
+                    <div>
+                        <div class="service-name">TikTok</div>
+                        <div class="service-sub">Dịch vụ TikTok</div>
+                    </div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Like</span>
+                    <div><b class="price-value">25đ</b><span class="unit"> / 1 like</span></div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Theo dõi</span>
+                    <div><b class="price-value">50đ</b><span class="unit"> / 1 follow</span></div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Lượt xem</span>
+                    <div><b class="price-value">3đ</b><span class="unit"> / 1 view</span></div>
+                </div>
+                <button class="order-btn" onclick="go('tiktok.html')">Xem dịch vụ →</button>
+            </div>
+
+            <div class="price-card" data-cat="youtube" data-name="youtube">
+                <div class="price-top">
+                    <div class="service-icon yt"><i class="fa-brands fa-youtube"></i></div>
+                    <div>
+                        <div class="service-name">YouTube</div>
+                        <div class="service-sub">Dịch vụ YouTube</div>
+                    </div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Like video</span>
+                    <div><b class="price-value">50đ</b><span class="unit"> / 1 like</span></div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Đăng ký</span>
+                    <div><b class="price-value">100đ</b><span class="unit"> / 1 sub</span></div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Lượt xem</span>
+                    <div><b class="price-value">5đ</b><span class="unit"> / 1 view</span></div>
+                </div>
+                <button class="order-btn" onclick="go('youtube.html')">Xem dịch vụ →</button>
+            </div>
+
+            <div class="price-card" data-cat="all" data-name="dich vu khac">
+                <div class="price-top">
+                    <div class="service-icon other"><i class="fa-solid fa-layer-group"></i></div>
+                    <div>
+                        <div class="service-name">Dịch vụ khác</div>
+                        <div class="service-sub">Nhiều dịch vụ MXH khác</div>
+                    </div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Nhiều nền tảng</span>
+                    <div><b class="price-value">Liên hệ</b></div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Giá đại lý</span>
+                    <div><b class="price-value">Ưu đãi</b></div>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">API</span>
+                    <div><b class="price-value">Có hỗ trợ</b></div>
+                </div>
+                <button class="order-btn" onclick="go('dichvu.html')">Xem dịch vụ →</button>
+            </div>
+        </div>
+
+        <div class="tier-section">
+            <div class="card-title">Cấp bậc thành viên</div>
+            <div class="card-desc">Nạp tiền càng nhiều, cấp bậc càng cao và giá dịch vụ càng tốt.</div>
+
+            <div class="tier-grid">
+                <div class="tier current" id="tierMember">
+                    <span class="tier-tag" id="currentTag">HIỆN TẠI</span>
+                    <div class="tier-icon"><i class="fa-regular fa-user"></i></div>
+                    <h3>Thành viên</h3>
+                    <p>Điều kiện: Tài khoản mới</p>
+                    <strong>Giá cơ bản</strong>
+                </div>
+
+                <div class="tier">
+                    <div class="tier-icon"><i class="fa-solid fa-star"></i></div>
+                    <h3>Cộng tác viên</h3>
+                    <p>Điều kiện: Nạp từ 1.000.000đ</p>
+                    <strong>Giảm giá dịch vụ</strong>
+                </div>
+
+                <div class="tier">
+                    <div class="tier-icon"><i class="fa-solid fa-crown"></i></div>
+                    <h3>Đại lý</h3>
+                    <p>Điều kiện: Nạp từ 5.000.000đ</p>
+                    <strong>Giá đại lý</strong>
+                </div>
+
+                <div class="tier">
+                    <div class="tier-icon"><i class="fa-solid fa-gem"></i></div>
+                    <h3>VIP</h3>
+                    <p>Điều kiện: Nạp từ 20.000.000đ</p>
+                    <strong>Giá VIP đặc biệt</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-title">Quyền lợi cấp bậc</div>
+                <div class="rule">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>Được áp dụng mức giá tương ứng với cấp bậc tài khoản.</span>
+                </div>
+                <div class="rule">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>Cấp bậc được cập nhật tự động dựa trên tổng tiền đã nạp.</span>
+                </div>
+                <div class="rule">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>Cấp càng cao, mức chiết khấu dịch vụ càng tốt.</span>
+                </div>
+                <div class="rule">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>Đại lý có thể đăng ký Website con và sử dụng API.</span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-title">Muốn nhận giá tốt hơn?</div>
+                <p style="color:#718096;line-height:1.7;font-size:13px;font-weight:500;">
+                    Nạp thêm tiền để tăng cấp bậc và nhận mức giá ưu đãi hơn.
+                </p>
+                <button class="deposit-btn" onclick="go('naptien.html')">
+                    <i class="fa-solid fa-wallet"></i> Nạp tiền ngay →
+                </button>
+                <button class="deposit-btn" style="background:#eef5ff;color:#1677ff" onclick="go('kiemtien.html')">
+                    <i class="fa-solid fa-chart-line"></i> Xem chương trình kiếm tiền
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+const firebaseConfig = {
+    apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
+    authDomain: "shophoangkun.firebaseapp.com",
+    databaseURL: "https://shophoangkun-default-rtdb.firebaseio.com",
+    projectId: "shophoangkun",
+    storageBucket: "shophoangkun.firebasestorage.app",
+    messagingSenderId: "364993334554",
+    appId: "1:364993334554:web:800c66509b355ebf5370a3"
+};
+
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+
+function go(file) {
+    window.location.href = file;
+}
+
+function openZalo() {
+    window.open("https://zalo.me/0788265513", "_blank");
+}
+
+auth.onAuthStateChanged(user => {
+    if (user) {
+        const name = user.displayName || "Thành viên";
+        document.getElementById("userName").innerText = name;
+        document.getElementById("avatar").innerText = name.charAt(0).toUpperCase();
+
+        db.ref("users/" + user.uid).on("value", snap => {
+            const data = snap.val() || {};
+            const nap = Number(data.tong_nap_thang || 0);
+            const sodu = Number(data.so_du || 0);
+
+            document.getElementById("balance").innerText = sodu.toLocaleString("vi-VN") + "đ";
+
+            document.querySelectorAll(".tier").forEach(x => x.classList.remove("current"));
+            document.getElementById("currentTag").style.display = "none";
+
+            let index = 0;
+            if (nap >= 20000000) index = 3;
+            else if (nap >= 5000000) index = 2;
+            else if (nap >= 1000000) index = 1;
+
+            const tiers = document.querySelectorAll(".tier");
+            tiers[index].classList.add("current");
+            const tag = tiers[index].querySelector(".tier-tag");
+
+            if (!tag) {
+                const t = document.createElement("span");
+                t.className = "tier-tag";
+                t.innerText = "HIỆN TẠI";
+                tiers[index].appendChild(t);
+            } else {
+                tag.style.display = "block";
+            }
+        });
+    } else {
+        window.location.href = "index.html";
+    }
+});
+
+function logout() {
+    Swal.fire({
+        title: "Đăng xuất?",
+        text: "Bạn có chắc muốn đăng xuất khỏi tài khoản?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#1677ff",
+        cancelButtonColor: "#ef4444",
+        confirmButtonText: "Đăng xuất",
+        cancelButtonText: "Hủy"
+    }).then(r => {
+        if (r.isConfirmed) auth.signOut().then(() => location.href = "index.html");
+    });
+}
+
+document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+        tab.classList.add("active");
+        const cat = tab.dataset.cat;
+
+        document.querySelectorAll(".price-card").forEach(card => {
+            card.style.display = cat === "all" || card.dataset.cat === cat ? "block" : "none";
+        });
+    });
+});
+
+document.getElementById("searchInput").addEventListener("input", function() {
+    const key = this.value.toLowerCase().trim();
+
+    document.querySelectorAll(".price-card").forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(key) ? "block" : "none";
+    });
+});
+
+document.addEventListener("keydown", e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        document.getElementById("searchInput").focus();
+    }
+});
+</script>
+
+</body>
+</html>
