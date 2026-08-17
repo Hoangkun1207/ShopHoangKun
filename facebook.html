@@ -465,6 +465,12 @@
             box-shadow:0 0 0 3px rgba(22,119,255,.08);
         }
 
+        .field small {
+            color:#8a96aa;
+            font-size:10px;
+            margin-top:-2px;
+        }
+
         .price {
             margin-top:18px;
             padding:16px;
@@ -910,16 +916,37 @@
                             <label>Chọn dịch vụ</label>
 
                             <select id="service">
-                                <option value="like">Tăng Like bài viết</option>
-                                <option value="follow">Tăng Follow Facebook</option>
-                                <option value="comment">Tăng Comment</option>
-                                <option value="share">Tăng Share bài viết</option>
-                                <option value="view">Tăng View video</option>
+
+                                <option value="reaction">
+                                    Thả cảm xúc — 700 xu / 1
+                                </option>
+
+                                <option value="follow">
+                                    Theo dõi Facebook — 1.700 xu / 1
+                                </option>
+
+                                <option value="comment">
+                                    Like Comment — 1.300 xu / 1
+                                </option>
+
+                                <option value="postview">
+                                    View bài viết — 300 xu / 1
+                                </option>
+
+                                <option value="pagelike">
+                                    Like Page — 2.300 xu / 1
+                                </option>
+
+                                <option value="storyview">
+                                    View Story — 300 xu / 1
+                                </option>
+
                             </select>
                         </div>
 
                         <div class="field">
                             <label>Link Facebook</label>
+
                             <input
                                 id="link"
                                 type="text"
@@ -928,16 +955,21 @@
 
                         <div class="field">
                             <label>Số lượng</label>
+
                             <input
                                 id="quantity"
                                 type="number"
-                                value="100"
-                                min="10"
+                                value="50"
+                                min="50"
+                                step="1"
                                 placeholder="Nhập số lượng">
+
+                            <small>Số lượng tối thiểu: 50</small>
                         </div>
 
                         <div class="field full">
                             <label>Ghi chú</label>
+
                             <input
                                 id="note"
                                 type="text"
@@ -948,7 +980,7 @@
 
                     <div class="price">
                         <span>Tạm tính</span>
-                        <strong id="totalPrice">1.000đ</strong>
+                        <strong id="totalPrice">35.000 xu</strong>
                     </div>
 
                     <button class="btn-order" onclick="createOrder()">
@@ -1015,6 +1047,14 @@
                             <div>
                                 <strong>Tốc độ xử lý</strong>
                                 Hệ thống tự động xử lý đơn sau khi đặt.
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <i class="fa-solid fa-coins"></i>
+                            <div>
+                                <strong>Bảng giá</strong>
+                                Giá dịch vụ được tính theo số xu trên mỗi đơn vị.
                             </div>
                         </div>
 
@@ -1092,16 +1132,26 @@ function openZalo() {
     window.open("https://zalo.me/0788265513","_blank");
 }
 
-function formatMoney(value) {
-    return Number(value || 0).toLocaleString("vi-VN") + "đ";
+/* =========================
+   FORMAT XU
+========================= */
+
+function formatXu(value) {
+
+    return Number(value || 0).toLocaleString("vi-VN") + " xu";
+
 }
 
-/* USER */
+/* =========================
+   USER
+========================= */
 
 auth.onAuthStateChanged(user => {
 
     if (!user) {
+
         window.location.href = "index.html";
+
         return;
     }
 
@@ -1116,7 +1166,9 @@ auth.onAuthStateChanged(user => {
 
 });
 
-/* DROPDOWN */
+/* =========================
+   DROPDOWN
+========================= */
 
 const userBtn = document.getElementById("userBtn");
 const userDropdown = document.querySelector(".user-dropdown");
@@ -1132,12 +1184,16 @@ userBtn.addEventListener("click", e => {
 document.addEventListener("click", e => {
 
     if (!userDropdown.contains(e.target)) {
+
         userDropdown.classList.remove("open");
+
     }
 
 });
 
-/* SEARCH */
+/* =========================
+   SEARCH
+========================= */
 
 document.addEventListener("keydown", e => {
 
@@ -1151,92 +1207,258 @@ document.addEventListener("keydown", e => {
 
 });
 
-/* PRICE */
+/* =========================
+   BẢNG GIÁ FACEBOOK
+========================= */
+
+const prices = {
+
+    reaction: 700,
+    follow: 1700,
+    comment: 1300,
+    postview: 300,
+    pagelike: 2300,
+    storyview: 300
+
+};
+
+/* =========================
+   TÊN DỊCH VỤ
+========================= */
+
+const serviceNames = {
+
+    reaction: "Thả cảm xúc",
+    follow: "Theo dõi Facebook",
+    comment: "Like Comment",
+    postview: "View bài viết",
+    pagelike: "Like Page",
+    storyview: "View Story"
+
+};
+
+/* =========================
+   ELEMENT
+========================= */
 
 const service = document.getElementById("service");
 const quantity = document.getElementById("quantity");
 const totalPrice = document.getElementById("totalPrice");
 
-const prices = {
-    like:10,
-    follow:15,
-    comment:20,
-    share:25,
-    view:5
-};
+/* =========================
+   TÍNH TIỀN
+========================= */
 
 function updatePrice() {
 
-    const amount = Number(quantity.value || 0);
+    let amount = Number(quantity.value || 0);
+
+    if (amount < 0) {
+        amount = 0;
+    }
+
     const price = prices[service.value] || 0;
 
-    totalPrice.textContent = formatMoney(amount * price);
+    const total = amount * price;
+
+    totalPrice.textContent = formatXu(total);
 
 }
 
+/* =========================
+   SỰ KIỆN TÍNH GIÁ
+========================= */
+
 service.addEventListener("change", updatePrice);
+
 quantity.addEventListener("input", updatePrice);
 
-/* ORDER */
+quantity.addEventListener("blur", () => {
+
+    let amount = Number(quantity.value || 0);
+
+    if (amount < 50) {
+
+        quantity.value = 50;
+
+    }
+
+    updatePrice();
+
+});
+
+/* =========================
+   KHỞI TẠO GIÁ
+========================= */
+
+updatePrice();
+
+/* =========================
+   ĐẶT DỊCH VỤ
+========================= */
 
 function createOrder() {
 
     const link = document.getElementById("link").value.trim();
+
     const amount = Number(quantity.value || 0);
-    const serviceName =
-        service.options[service.selectedIndex].text;
+
+    const serviceId = service.value;
+
+    const serviceName = serviceNames[serviceId];
+
+    const unitPrice = prices[serviceId];
+
+    const total = amount * unitPrice;
+
+    /* KIỂM TRA LINK */
 
     if (!link) {
 
         Swal.fire({
+
             icon:"warning",
+
             title:"Thiếu link",
-            text:"Vui lòng nhập link Facebook cần chạy."
+
+            text:"Vui lòng nhập link Facebook cần chạy.",
+
+            confirmButtonColor:"#1677ff"
+
         });
 
         return;
+
     }
 
-    if (amount < 10) {
+    /* KIỂM TRA SỐ LƯỢNG */
+
+    if (!Number.isInteger(amount) || amount < 50) {
 
         Swal.fire({
+
             icon:"warning",
+
             title:"Số lượng không hợp lệ",
-            text:"Số lượng tối thiểu là 10."
+
+            text:"Số lượng tối thiểu là 50.",
+
+            confirmButtonColor:"#1677ff"
+
         });
 
+        quantity.value = 50;
+
+        updatePrice();
+
         return;
+
     }
 
+    /* XÁC NHẬN */
+
     Swal.fire({
-        icon:"success",
-        title:"Đã tiếp nhận đơn",
+
+        icon:"question",
+
+        title:"Xác nhận đặt dịch vụ",
+
         html:
-            "Dịch vụ: <b>" + serviceName + "</b><br>" +
-            "Số lượng: <b>" + amount.toLocaleString("vi-VN") + "</b>",
+
+            "<div style='text-align:left;line-height:1.9'>" +
+
+            "<b>Dịch vụ:</b> " + serviceName + "<br>" +
+
+            "<b>Đơn giá:</b> " + formatXu(unitPrice) + " / 1<br>" +
+
+            "<b>Số lượng:</b> " +
+            amount.toLocaleString("vi-VN") + "<br>" +
+
+            "<b>Tổng tiền:</b> " +
+            "<span style='color:#1677ff;font-weight:800'>" +
+            formatXu(total) +
+            "</span>" +
+
+            "</div>",
+
+        showCancelButton:true,
+
         confirmButtonColor:"#1677ff",
-        confirmButtonText:"Đã hiểu"
+
+        cancelButtonColor:"#ef4444",
+
+        confirmButtonText:"Xác nhận",
+
+        cancelButtonText:"Hủy"
+
+    }).then(result => {
+
+        if (!result.isConfirmed) {
+            return;
+        }
+
+        Swal.fire({
+
+            icon:"success",
+
+            title:"Đã tiếp nhận đơn",
+
+            html:
+
+                "Dịch vụ: <b>" +
+                serviceName +
+                "</b><br>" +
+
+                "Số lượng: <b>" +
+                amount.toLocaleString("vi-VN") +
+                "</b><br>" +
+
+                "Chi phí: <b>" +
+                formatXu(total) +
+                "</b>",
+
+            confirmButtonColor:"#1677ff",
+
+            confirmButtonText:"Đã hiểu"
+
+        });
+
     });
 
 }
 
+/* =========================
+   LOGOUT
+========================= */
+
 function logout() {
 
     Swal.fire({
+
         title:"Đăng xuất?",
+
         text:"Bạn có chắc muốn đăng xuất khỏi tài khoản?",
+
         icon:"warning",
+
         showCancelButton:true,
+
         confirmButtonColor:"#1677ff",
+
         cancelButtonColor:"#ef4444",
+
         confirmButtonText:"Đăng xuất",
+
         cancelButtonText:"Hủy"
+
     }).then(result => {
 
         if (result.isConfirmed) {
 
             auth.signOut().then(() => {
+
                 window.location.href = "index.html";
+
             });
 
         }
