@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,6 +51,7 @@
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         button,
@@ -76,9 +76,15 @@
             width: var(--sidebar);
             background: linear-gradient(180deg, #0c1627, #101b2d);
             color: #fff;
-            z-index: 1000;
+            z-index: 2000;
             display: flex;
             flex-direction: column;
+        }
+
+        .sidebar.open {
+            transform: translateX(0) !important;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 40px rgba(0,0,0,0.6);
         }
 
         .brand {
@@ -89,12 +95,24 @@
             font-size: 18px;
             font-weight: 800;
             border-bottom: 1px solid rgba(255,255,255,.04);
+            flex-shrink: 0;
         }
 
         .sidebar-scroll {
             flex: 1;
             overflow-y: auto;
             padding: 15px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #374151 transparent;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: #26344a;
+            border-radius: 10px;
         }
 
         .sb-title {
@@ -159,6 +177,7 @@
         .sidebar-footer {
             padding: 10px 0;
             border-top: 1px solid rgba(255,255,255,.05);
+            flex-shrink: 0;
         }
 
         /* =========================
@@ -204,6 +223,13 @@
             font-size: 11px;
         }
 
+        .mobile-menu { 
+            display: none; 
+            border: none; 
+            cursor: pointer; 
+            flex-shrink: 0; 
+        }
+
         .search {
             width: 285px;
             height: 42px;
@@ -241,6 +267,13 @@
             border-radius: 50%;
             background: #fff;
             color: #526074;
+            transition: .2s;
+        }
+
+        .icon-btn:hover {
+            color: var(--primary);
+            border-color: #c8ddff;
+            background: #f5f9ff;
         }
 
         .dot {
@@ -306,6 +339,11 @@
             font-weight: 800;
         }
 
+        .user i {
+            font-size: 9px;
+            color: #9ba6b8;
+        }
+
         .user-menu {
             position: absolute;
             top: 52px;
@@ -367,6 +405,7 @@
             font-size: 12px;
             font-weight: 700;
             text-align: left;
+            transition: .2s;
         }
 
         .user-menu button:hover {
@@ -375,6 +414,11 @@
         }
 
         .user-menu .logout-item {
+            color: var(--danger);
+        }
+
+        .user-menu .logout-item:hover {
+            background: #fff1f1;
             color: var(--danger);
         }
 
@@ -488,6 +532,12 @@
             background: #fff;
             color: var(--primary);
             border: 1px solid #dceaff;
+            transition: .2s;
+        }
+        
+        .refresh-balance:hover {
+            background: var(--primary);
+            color: #fff;
         }
 
         /* =========================
@@ -789,34 +839,55 @@
             }
         }
 
-        @media(max-width:760px) {
+        @media(max-width:800px) {
             :root {
                 --sidebar: 0px;
             }
 
-            .sidebar {
-                transform: translateX(-100%);
+            .sidebar { 
+                width: 260px !important; 
+                transform: translateX(-100%); 
+                transition: transform 0.3s ease; 
             }
 
             .main {
                 margin-left: 0;
+                width: 100%;
             }
 
             .topbar {
                 padding: 0 15px;
             }
 
-            .crumb,
-            .lang {
+            .top-left .crumb {
                 display: none;
             }
 
             .search {
+                margin: 0;
                 width: 200px;
+            }
+
+            .lang, .user-name {
+                display: none;
             }
 
             .content {
                 padding: 15px;
+            }
+
+            /* Giao diện nút 3 gạch trên mobile */
+            .mobile-menu {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                background: #eef5ff;
+                color: #1677ff;
+                margin-right: 10px;
+                font-size: 18px;
             }
         }
 
@@ -831,10 +902,6 @@
 
             .field.full {
                 grid-column: auto;
-            }
-
-            .user-name {
-                display: none;
             }
         }
     </style>
@@ -922,12 +989,15 @@
 
         <div class="sb-title">Danh sách dịch vụ</div>
 
-        <button class="sb-mi">
+        <button class="sb-mi" onclick="go('dichvu.html')">
             <span class="sb-icon">
                 <i class="fa-solid fa-circle-dollar-to-slot"></i>
             </span>
             Dịch vụ khác
             <span class="badge">MỚI</span>
+            <span class="arrow">
+                <i class="fa-solid fa-chevron-right"></i>
+            </span>
         </button>
 
         <button class="sb-mi active" onclick="go('facebook.html')">
@@ -1001,6 +1071,11 @@
     <header class="topbar">
 
         <div class="top-left">
+
+            <!-- Nút 3 gạch hiện trên điện thoại -->
+            <button class="mobile-menu" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
 
             <div class="crumb">
                 <span>Trang chủ</span>
@@ -1611,6 +1686,23 @@ if (!firebase.apps.length) {
 
 const auth = firebase.auth();
 const db = firebase.database();
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('open');
+}
+
+document.addEventListener("click", e => {
+    const sidebar = document.querySelector('.sidebar');
+    const mobileBtn = document.querySelector('.mobile-menu');
+    if (window.innerWidth <= 800 && sidebar && mobileBtn) {
+        if (!sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    }
+});
 
 
 /* =====================================================
