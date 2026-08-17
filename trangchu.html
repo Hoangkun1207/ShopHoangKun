@@ -810,64 +810,61 @@
                 document.getElementById("menuUserName").textContent = name;
                 document.getElementById("menuAvatar").textContent = letter;
                 
-                // =====================================================
+              // =====================================================
                 // POPUP THÔNG BÁO KHAI TRƯƠNG + HIỆU ỨNG PHÁO HOA
+                // (CỨ LOAD LẠI TRANG LÀ HIỆN)
                 // =====================================================
-                if (sessionStorage.getItem("vua_moi_dang_nhap") === "true") {
-                    setTimeout(() => {
+                setTimeout(() => {
                         
-                        // --- HÀM BẮN PHÁO HOA ---
-                        var duration = 3000; // Bắn trong 3 giây
-                        var end = Date.now() + duration;
+                    // --- HÀM BẮN PHÁO HOA ---
+                    var duration = 3000; // Bắn trong 3 giây
+                    var end = Date.now() + duration;
 
-                        (function frame() {
-                            confetti({
-                                particleCount: 5,
-                                angle: 60,
-                                spread: 55,
-                                origin: { x: 0 },
-                                colors: ['#1677ff', '#ef4444', '#10b981', '#f59e0b']
-                            });
-                            confetti({
-                                particleCount: 5,
-                                angle: 120,
-                                spread: 55,
-                                origin: { x: 1 },
-                                colors: ['#1677ff', '#ef4444', '#10b981', '#f59e0b']
-                            });
-                            if (Date.now() < end) {
-                                requestAnimationFrame(frame);
-                            }
-                        }());
-                        // ------------------------
-
-                        Swal.fire({
-                            title: '🎉 KHAI TRƯƠNG RỰC RỠ 🎉',
-                            html: `
-                                <div style="line-height: 1.6; color: #526074; font-size: 14px; text-align: left;">
-                                    <p>Chào mừng <b>${name}</b> đã đến với hệ thống <b>HoangKunStore</b>!</p>
-                                    <p style="margin-top: 8px;">Nhân dịp khai trương, hệ thống tung ra ngập tràn ưu đãi cực khủng:</p>
-                                    <ul style="background: #f0f6ff; padding: 15px 15px 15px 35px; border-radius: 12px; margin-top: 12px; color: #1677ff; font-weight: 700; border: 1px solid #dbe9fb;">
-                                        <li>💸 Hoa hồng giới thiệu bạn bè lên đến 5%.</li>
-                                        <li>🚀 Dịch vụ siêu tốc, hệ thống auto 24/7.</li>
-                                    </ul>
-                                    <p style="margin-top: 15px; font-weight: 800; color: #ef4444; text-align: center;">Chúc bạn có trải nghiệm tuyệt vời cùng HoangKun!</p>
-                                </div>
-                            `,
-                            imageUrl: 'https://cdn-icons-png.flaticon.com/512/7650/7650771.png', 
-                            imageWidth: 100,
-                            imageHeight: 100,
-                            imageAlt: 'Welcome Icon',
-                            confirmButtonText: 'Khám phá ngay! 🚀',
-                            confirmButtonColor: '#1677ff',
-                            allowOutsideClick: false,
-                            backdrop: `rgba(13, 23, 40, 0.85)`
+                    (function frame() {
+                        confetti({
+                            particleCount: 5,
+                            angle: 60,
+                            spread: 55,
+                            origin: { x: 0 },
+                            colors: ['#1677ff', '#ef4444', '#10b981', '#f59e0b']
                         });
-                        
-                        // Hiện xong thì xóa cờ luôn để F5 hoặc mở tab mới không bị hiện lại
-                        sessionStorage.removeItem("vua_moi_dang_nhap");
-                    }, 800); // Delay nhẹ 0.8s cho giao diện load xong mới bật popup
-                }
+                        confetti({
+                            particleCount: 5,
+                            angle: 120,
+                            spread: 55,
+                            origin: { x: 1 },
+                            colors: ['#1677ff', '#ef4444', '#10b981', '#f59e0b']
+                        });
+                        if (Date.now() < end) {
+                            requestAnimationFrame(frame);
+                        }
+                    }());
+                    // ------------------------
+
+                    Swal.fire({
+                        title: '🎉 KHAI TRƯƠNG RỰC RỠ 🎉',
+                        html: `
+                            <div style="line-height: 1.6; color: #526074; font-size: 14px; text-align: left;">
+                                <p>Chào mừng <b>${name}</b> đã đến với hệ thống <b>HoangKunStore</b>!</p>
+                                <p style="margin-top: 8px;">Nhân dịp khai trương, hệ thống tung ra ngập tràn ưu đãi cực khủng:</p>
+                                <ul style="background: #f0f6ff; padding: 15px 15px 15px 35px; border-radius: 12px; margin-top: 12px; color: #1677ff; font-weight: 700; border: 1px solid #dbe9fb;">
+                                    <li>💸 Hoa hồng giới thiệu bạn bè lên đến 5%.</li>
+                                    <li>🚀 Dịch vụ siêu tốc, hệ thống auto 24/7.</li>
+                                </ul>
+                                <p style="margin-top: 15px; font-weight: 800; color: #ef4444; text-align: center;">Chúc bạn có trải nghiệm tuyệt vời cùng HoangKun!</p>
+                            </div>
+                        `,
+                        imageUrl: 'https://cdn-icons-png.flaticon.com/512/7650/7650771.png', 
+                        imageWidth: 100,
+                        imageHeight: 100,
+                        imageAlt: 'Welcome Icon',
+                        confirmButtonText: 'Khám phá ngay! 🚀',
+                        confirmButtonColor: '#1677ff',
+                        allowOutsideClick: false,
+                        backdrop: `rgba(13, 23, 40, 0.85)`
+                    });
+
+                }, 800); // Delay nhẹ 0.8s cho giao diện load xong mới bật popup
 
                 db.ref("users/" + user.uid).on("value", snapshot => {
                     const data = snapshot.val() || {};
