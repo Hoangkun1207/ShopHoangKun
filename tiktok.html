@@ -1,686 +1,747 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TikTok | HoangKun Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <title>TikTok | HoangKun Store</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-<style>
-:root{
-    --primary:#1677ff;
-    --dark:#0d1728;
-    --bg:#f3f6fc;
-    --card:#fff;
-    --text:#172033;
-    --muted:#8a96aa;
-    --border:#e7edf6;
-    --danger:#ef4444;
-    --success:#16b978;
-    --sidebar:280px;
-}
+    <style>
+        :root{
+            --primary:#1677ff;
+            --dark:#0d1728;
+            --bg:#f3f6fc;
+            --card:#fff;
+            --text:#172033;
+            --muted:#8a96aa;
+            --border:#e7edf6;
+            --danger:#ef4444;
+            --success:#16b978;
+            --sidebar:280px;
+        }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Quicksand',sans-serif;
-}
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Quicksand',sans-serif;
+        }
 
-body{
-    background:var(--bg);
-    color:var(--text);
-    min-height:100vh;
-}
+        body{
+            background:var(--bg);
+            color:var(--text);
+            min-height:100vh;
+            overflow-x: hidden;
+        }
 
-button,input,select{
-    font-family:inherit;
-    border:0;
-    outline:0;
-}
+        button,input,select{
+            font-family:inherit;
+            border:0;
+            outline:0;
+        }
 
-button{
-    cursor:pointer;
-}
+        button{
+            cursor:pointer;
+        }
 
-/* ========================= SIDEBAR ========================= */
-.sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-    bottom:0;
-    width:var(--sidebar);
-    background:linear-gradient(180deg,#0c1627,#101b2d);
-    color:#fff;
-    z-index:1000;
-    display:flex;
-    flex-direction:column;
-}
+        /* ========================= SIDEBAR ========================= */
+        .sidebar{
+            position:fixed;
+            left:0;
+            top:0;
+            bottom:0;
+            width:var(--sidebar);
+            background:linear-gradient(180deg,#0c1627,#101b2d);
+            color:#fff;
+            z-index:2000;
+            display:flex;
+            flex-direction:column;
+        }
 
-.brand{
-    height:76px;
-    display:flex;
-    align-items:center;
-    padding:0 25px;
-    font-size:18px;
-    font-weight:800;
-    border-bottom:1px solid rgba(255,255,255,.04);
-}
+        .sidebar.open {
+            transform: translateX(0) !important;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 40px rgba(0,0,0,0.6);
+        }
 
-.sidebar-scroll{
-    flex:1;
-    overflow-y:auto;
-    padding:15px 0;
-}
+        .brand{
+            height:76px;
+            display:flex;
+            align-items:center;
+            padding:0 25px;
+            font-size:18px;
+            font-weight:800;
+            border-bottom:1px solid rgba(255,255,255,.04);
+            flex-shrink: 0;
+        }
 
-.sb-title{
-    padding:13px 22px 9px;
-    color:#60708b;
-    font-size:10px;
-    font-weight:800;
-    text-transform:uppercase;
-    letter-spacing:1px;
-}
+        .sidebar-scroll{
+            flex:1;
+            overflow-y:auto;
+            padding:15px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #374151 transparent;
+        }
 
-.sb-mi{
-    position:relative;
-    width:calc(100% - 20px);
-    margin:0 10px 4px;
-    height:42px;
-    padding:0 15px;
-    border-radius:9px;
-    background:transparent;
-    color:#b9c4d6;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    font-size:14px;
-    font-weight:700;
-    text-align:left;
-    transition:.2s;
-}
+        .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: #26344a; border-radius: 10px; }
 
-.sb-mi:hover{
-    background:#17253b;
-    color:#fff;
-}
+        .sb-title{
+            padding:13px 22px 9px;
+            color:#60708b;
+            font-size:10px;
+            font-weight:800;
+            text-transform:uppercase;
+            letter-spacing:1px;
+        }
 
-.sb-mi.active{
-    background:linear-gradient(90deg,#193e72,#18365f);
-    color:#fff;
-    box-shadow:inset 3px 0 #1681ff;
-}
+        .sb-mi{
+            position:relative;
+            width:calc(100% - 20px);
+            margin:0 10px 4px;
+            height:42px;
+            padding:0 15px;
+            border-radius:9px;
+            background:transparent;
+            color:#b9c4d6;
+            display:flex;
+            align-items:center;
+            gap:14px;
+            font-size:14px;
+            font-weight:700;
+            text-align:left;
+            transition:.2s;
+        }
 
-.sb-icon{
-    width:20px;
-    text-align:center;
-    font-size:15px;
-}
+        .sb-mi:hover{
+            background:#17253b;
+            color:#fff;
+        }
 
-.arrow{
-    margin-left:auto;
-    color:#64748b;
-    font-size:10px;
-}
+        .sb-mi.active{
+            background:linear-gradient(90deg,#193e72,#18365f);
+            color:#fff;
+            box-shadow:inset 3px 0 #1681ff;
+        }
 
-.badge{
-    margin-left:auto;
-    background:#0fc58a;
-    color:#fff;
-    padding:2px 6px;
-    border-radius:5px;
-    font-size:8px;
-    font-weight:800;
-}
+        .sb-icon{
+            width:20px;
+            text-align:center;
+            font-size:15px;
+        }
 
-.sidebar-footer{
-    padding:10px 0;
-    border-top:1px solid rgba(255,255,255,.05);
-}
+        .arrow{
+            margin-left:auto;
+            color:#64748b;
+            font-size:10px;
+        }
 
-/* ========================= MAIN & TOPBAR ========================= */
-.main{
-    margin-left:var(--sidebar);
-    min-height:100vh;
-}
+        .badge{
+            margin-left:auto;
+            background:#0fc58a;
+            color:#fff;
+            padding:2px 6px;
+            border-radius:5px;
+            font-size:8px;
+            font-weight:800;
+        }
 
-.topbar{
-    height:76px;
-    background:#fff;
-    border-bottom:1px solid var(--border);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 30px;
-    position:sticky;
-    top:0;
-    z-index:900;
-}
+        .sidebar-footer{
+            padding:10px 0;
+            border-top:1px solid rgba(255,255,255,.05);
+            flex-shrink: 0;
+        }
 
-.top-left,
-.top-right{
-    display:flex;
-    align-items:center;
-    gap:14px;
-}
+        /* ========================= MAIN & TOPBAR ========================= */
+        .main{
+            margin-left:var(--sidebar);
+            min-height:100vh;
+        }
 
-.crumb{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:#99a4b7;
-    font-size:14px;
-    font-weight:600;
-}
+        .topbar{
+            height:76px;
+            background:#fff;
+            border-bottom:1px solid var(--border);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:0 30px;
+            position:sticky;
+            top:0;
+            z-index:900;
+        }
 
-.crumb i{font-size:11px;}
-.crumb .current{color:#172033;font-weight:800;}
+        .top-left,
+        .top-right{
+            display:flex;
+            align-items:center;
+            gap:14px;
+        }
 
-.search{
-    width:285px;
-    height:42px;
-    border:1px solid var(--border);
-    border-radius:12px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:0 12px;
-    color:#9aa6b8;
-}
+        .mobile-menu { 
+            display: none; 
+            border: none; 
+            cursor: pointer; 
+            flex-shrink: 0; 
+        }
 
-.search input{
-    width:100%;
-    background:transparent;
-}
+        .crumb{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            color:#99a4b7;
+            font-size:14px;
+            font-weight:600;
+        }
 
-.shortcut{
-    font-size:10px;
-    color:#9aa6b8;
-    background:#f5f7fb;
-    border:1px solid #e8edf5;
-    border-radius:5px;
-    padding:3px 6px;
-    white-space:nowrap;
-}
+        .crumb i{font-size:11px;}
+        .crumb .current{color:#172033;font-weight:800;}
 
-.icon-btn{
-    width:40px;
-    height:40px;
-    border:1px solid var(--border);
-    background:#fff;
-    border-radius:50%;
-    color:#526074;
-    position:relative;
-}
+        .search{
+            width:285px;
+            height:42px;
+            border:1px solid var(--border);
+            border-radius:12px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            padding:0 12px;
+            color:#9aa6b8;
+        }
 
-.dot{
-    position:absolute;
-    right:7px;
-    top:7px;
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:#1677ff;
-    border:2px solid #fff;
-}
+        .search input{
+            width:100%;
+            background:transparent;
+        }
 
-.lang{
-    height:40px;
-    padding:0 12px;
-    border:1px solid var(--border);
-    border-radius:11px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-size:13px;
-    font-weight:600;
-    color:#526074;
-}
-.lang img{width:21px;}
+        .shortcut{
+            font-size:10px;
+            color:#9aa6b8;
+            background:#f5f7fb;
+            border:1px solid #e8edf5;
+            border-radius:5px;
+            padding:3px 6px;
+            white-space:nowrap;
+        }
 
-.user-dropdown{position:relative;}
+        .icon-btn{
+            width:40px;
+            height:40px;
+            border:1px solid var(--border);
+            background:#fff;
+            border-radius:50%;
+            color:#526074;
+            position:relative;
+            transition: .2s;
+            display: grid;
+            place-items: center;
+        }
 
-.user{
-    height:44px;
-    padding:4px 10px 4px 4px;
-    border:1px solid var(--border);
-    background:#fff;
-    border-radius:24px;
-    display:flex;
-    align-items:center;
-    gap:9px;
-}
+        .icon-btn:hover{
+            color: var(--primary);
+            background: #f5f8fc;
+        }
 
-.avatar{
-    width:35px;
-    height:35px;
-    border-radius:50%;
-    display:grid;
-    place-items:center;
-    background:linear-gradient(135deg,#d9edff,#b8dcff);
-    color:#1677ff;
-    font-weight:800;
-}
+        .dot{
+            position:absolute;
+            right:7px;
+            top:7px;
+            width:7px;
+            height:7px;
+            border-radius:50%;
+            background:#1677ff;
+            border:2px solid #fff;
+        }
 
-.user-name{
-    font-size:13px;
-    font-weight:800;
-}
+        .lang{
+            height:40px;
+            padding:0 12px;
+            border:1px solid var(--border);
+            border-radius:11px;
+            display:flex;
+            align-items:center;
+            gap:8px;
+            font-size:13px;
+            font-weight:600;
+            color:#526074;
+        }
+        .lang img{width:21px;}
 
-.user i{
-    font-size:10px;
-    color:#9ba6b8;
-}
+        .user-dropdown{position:relative;}
 
-.user-menu{
-    position:absolute;
-    right:0;
-    top:52px;
-    width:230px;
-    background:#fff;
-    border:1px solid #e7edf6;
-    border-radius:14px;
-    padding:8px;
-    box-shadow:0 12px 35px rgba(0,0,0,.12);
-    opacity:0;
-    visibility:hidden;
-    transform:translateY(-8px);
-    transition:.2s;
-    z-index:2000;
-}
+        .user{
+            height:44px;
+            padding:4px 10px 4px 4px;
+            border:1px solid var(--border);
+            background:#fff;
+            border-radius:24px;
+            display:flex;
+            align-items:center;
+            gap:9px;
+            transition: .2s;
+        }
+        .user:hover { background: #f8fafc; }
 
-.user-menu.show{
-    opacity:1;
-    visibility:visible;
-    transform:translateY(0);
-}
+        .avatar{
+            width:35px;
+            height:35px;
+            border-radius:50%;
+            display:grid;
+            place-items:center;
+            background:linear-gradient(135deg,#d9edff,#b8dcff);
+            color:#1677ff;
+            font-weight:800;
+        }
 
-.user-menu-header{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:8px;
-}
+        .user-name{
+            font-size:13px;
+            font-weight:800;
+        }
 
-.user-menu-header strong{display:block;font-size:13px;}
-.user-menu-header span{display:block;font-size:10px;color:#94a0b2;margin-top:2px;}
+        .user i{
+            font-size:10px;
+            color:#9ba6b8;
+        }
 
-.user-menu-line{
-    height:1px;
-    background:#edf1f6;
-    margin:5px 0;
-}
+        .user-menu{
+            position:absolute;
+            right:0;
+            top:52px;
+            width:230px;
+            background:#fff;
+            border:1px solid #e7edf6;
+            border-radius:14px;
+            padding:8px;
+            box-shadow:0 12px 35px rgba(0,0,0,.12);
+            opacity:0;
+            visibility:hidden;
+            transform:translateY(-8px);
+            transition:.2s;
+            z-index:2000;
+        }
 
-.user-menu button{
-    width:100%;
-    height:38px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:0 10px;
-    background:transparent;
-    border-radius:9px;
-    color:#526074;
-    font-size:12px;
-    font-weight:700;
-    text-align:left;
-}
+        .user-dropdown.open .user-menu{
+            opacity:1;
+            visibility:visible;
+            transform:translateY(0);
+        }
 
-.user-menu button:hover{background:#eef6ff;color:#1677ff;}
-.user-menu .logout-item{color:#ef4444;}
+        .user-menu-header{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            padding:8px;
+        }
 
-/* ========================= CONTENT ========================= */
-.content{
-    padding:28px;
-    max-width:1450px;
-    margin:auto;
-}
+        .user-menu-header strong{display:block;font-size:13px;}
+        .user-menu-header span{display:block;font-size:10px;color:#94a0b2;margin-top:2px;}
 
-.page-title{margin-bottom:20px;}
-.page-title h1{font-size:24px;font-weight:800;}
-.page-title p{margin-top:5px;color:#8a96aa;font-size:13px;}
+        .user-menu-line{
+            height:1px;
+            background:#edf1f6;
+            margin:5px 0;
+        }
 
-.layout {
-    display: grid;
-    grid-template-columns: minmax(0,1fr) 320px;
-    gap: 20px;
-}
+        .user-menu button{
+            width:100%;
+            height:38px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            padding:0 10px;
+            background:transparent;
+            border-radius:9px;
+            color:#526074;
+            font-size:12px;
+            font-weight:700;
+            text-align:left;
+            transition: .2s;
+        }
 
-.card {
-    padding: 22px;
-    border: 1px solid #e8eef7;
-    border-radius: 18px;
-    background: #fff;
-    box-shadow: 0 5px 20px rgba(31,51,73,.045);
-    margin-bottom: 20px;
-}
+        .user-menu button:hover{background:#eef6ff;color:#1677ff;}
+        .user-menu .logout-item{color:#ef4444;}
+        .user-menu .logout-item:hover{background:#fff1f1;color:#ef4444;}
 
-.card-title {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 16px;
-    font-weight: 800;
-}
+        /* ========================= CONTENT ========================= */
+        .content{
+            padding:28px;
+            max-width:1450px;
+            margin:auto;
+        }
 
-.tiktok-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    background: #000;
-    color: #fff;
-    font-size: 21px;
-    box-shadow: 0 8px 20px rgba(0,0,0,.22);
-}
+        .page-title{margin-bottom:20px;}
+        .page-title h1{font-size:24px;font-weight:800;}
+        .page-title p{margin-top:5px;color:#8a96aa;font-size:13px;}
 
-/* BALANCE */
-.balance-box {
-    margin-bottom: 18px;
-    padding: 15px 17px;
-    border: 1px solid #dceaff;
-    border-radius: 14px;
-    background: linear-gradient(135deg,#eef6ff,#f8fbff);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-.balance-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-.balance-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 11px;
-    background: #dceeff;
-    color: var(--primary);
-    display: grid;
-    place-items: center;
-}
-.balance-label {
-    color: #758299;
-    font-size: 11px;
-    font-weight: 700;
-}
-.balance-value {
-    margin-top: 2px;
-    color: var(--primary);
-    font-size: 18px;
-    font-weight: 800;
-}
-.refresh-balance {
-    width: 35px;
-    height: 35px;
-    border-radius: 9px;
-    background: #fff;
-    color: var(--primary);
-    border: 1px solid #dceaff;
-}
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0,1fr) 320px;
+            gap: 20px;
+        }
 
-/* SERVICE FORM */
-.service-box {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-.field {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-.field.full { grid-column: 1/-1; }
-.field label {
-    color: #526074;
-    font-size: 12px;
-    font-weight: 800;
-}
-.field input, .field select {
-    width: 100%;
-    height: 46px;
-    padding: 0 13px;
-    border: 1px solid #dfe7f2;
-    border-radius: 11px;
-    color: #334155;
-    background: #fff;
-    font-size: 13px;
-}
-.field input:focus, .field select:focus {
-    border-color: #7eb8ff;
-    box-shadow: 0 0 0 3px rgba(22,119,255,.08);
-}
-.field small {
-    margin-top: -2px;
-    color: #8a96aa;
-    font-size: 10px;
-}
-.link-error {
-    display: none;
-    margin-top: -2px;
-    color: var(--danger);
-    font-size: 10px;
-    font-weight: 700;
-}
+        .card {
+            padding: 22px;
+            border: 1px solid #e8eef7;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(31,51,73,.045);
+            margin-bottom: 20px;
+        }
 
-/* QUANTITY */
-.quantity-control {
-    height: 46px;
-    display: flex;
-    align-items: center;
-    border: 1px solid #dfe7f2;
-    border-radius: 11px;
-    overflow: hidden;
-    background: #fff;
-}
-.quantity-control button {
-    width: 46px;
-    height: 100%;
-    background: #f5f8fc;
-    color: #526074;
-    font-size: 15px;
-    transition: .2s;
-}
-.quantity-control button:hover {
-    background: #eaf3ff;
-    color: var(--primary);
-}
-.quantity-control input {
-    height: 100%;
-    border: 0;
-    border-radius: 0;
-    text-align: center;
-    box-shadow: none !important;
-}
+        .card-title {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 800;
+        }
 
-/* PRICE */
-.price {
-    margin-top: 18px;
-    padding: 16px;
-    border-radius: 13px;
-    background: #eef6ff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-.price span {
-    color: #738096;
-    font-size: 12px;
-    font-weight: 700;
-}
-.price strong {
-    color: var(--primary);
-    font-size: 18px;
-}
-.price-note {
-    margin-top: 7px;
-    color: #8a96aa;
-    font-size: 10px;
-    text-align: right;
-}
+        .tiktok-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: #000;
+            color: #fff;
+            font-size: 21px;
+            box-shadow: 0 8px 20px rgba(0,0,0,.22);
+        }
 
-/* ORDER BUTTON */
-.btn-order {
-    width: 100%;
-    height: 48px;
-    margin-top: 16px;
-    border-radius: 12px;
-    background: #000;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 800;
-    box-shadow: 0 8px 18px rgba(0,0,0,.22);
-    transition: .2s;
-}
-.btn-order:hover { transform: translateY(-1px); }
-.btn-order:disabled {
-    cursor: not-allowed;
-    opacity: .65;
-    transform: none;
-}
+        /* BALANCE */
+        .balance-box {
+            margin-bottom: 18px;
+            padding: 15px 17px;
+            border: 1px solid #dceaff;
+            border-radius: 14px;
+            background: linear-gradient(135deg,#eef6ff,#f8fbff);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .balance-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .balance-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: #dceeff;
+            color: var(--primary);
+            display: grid;
+            place-items: center;
+        }
+        .balance-label {
+            color: #758299;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .balance-value {
+            margin-top: 2px;
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 800;
+        }
+        .refresh-balance {
+            width: 35px;
+            height: 35px;
+            border-radius: 9px;
+            background: #fff;
+            color: var(--primary);
+            border: 1px solid #dceaff;
+            transition: .2s;
+        }
+        .refresh-balance:hover {
+            background: var(--primary);
+            color: #fff;
+        }
 
-/* INFO LIST */
-.info-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.info-item {
-    padding: 12px;
-    border: 1px solid #edf1f6;
-    border-radius: 12px;
-    display: flex;
-    gap: 12px;
-}
-.info-item i {
-    width: 20px;
-    margin-top: 2px;
-    color: var(--primary);
-    text-align: center;
-}
-.info-item div {
-    color: #68758a;
-    font-size: 12px;
-    line-height: 1.5;
-}
-.info-item strong {
-    display: block;
-    margin-bottom: 2px;
-    color: #26344a;
-}
-.server-box {
-    margin-top: 18px;
-    padding: 15px;
-    border-radius: 13px;
-    background: #f5f8fc;
-}
-.server-box strong { font-size: 13px; }
-.online {
-    float: right;
-    color: #16b978;
-    font-size: 11px;
-    font-weight: 800;
-}
-.online::before {
-    content: "";
-    width: 7px;
-    height: 7px;
-    margin-right: 5px;
-    display: inline-block;
-    border-radius: 50%;
-    background: #16b978;
-}
+        /* SERVICE FORM */
+        .service-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .field.full { grid-column: 1/-1; }
+        .field label {
+            color: #526074;
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .field input, .field select {
+            width: 100%;
+            height: 46px;
+            padding: 0 13px;
+            border: 1px solid #dfe7f2;
+            border-radius: 11px;
+            color: #334155;
+            background: #fff;
+            font-size: 13px;
+        }
+        .field input:focus, .field select:focus {
+            border-color: #7eb8ff;
+            box-shadow: 0 0 0 3px rgba(22,119,255,.08);
+        }
+        .field small {
+            margin-top: -2px;
+            color: #8a96aa;
+            font-size: 10px;
+        }
+        .link-error {
+            display: none;
+            margin-top: -2px;
+            color: var(--danger);
+            font-size: 10px;
+            font-weight: 700;
+        }
 
-/* TABLE */
-.table-wrap { overflow-x: auto; }
-table {
-    width: 100%;
-    min-width: 650px;
-    border-collapse: collapse;
-}
-th {
-    padding: 12px;
-    background: #f7f9fc;
-    color: #7d899c;
-    font-size: 11px;
-    text-align: left;
-}
-td {
-    padding: 13px 12px;
-    border-top: 1px solid #edf1f6;
-    color: #526074;
-    font-size: 12px;
-}
-.status {
-    padding: 4px 8px;
-    border-radius: 7px;
-    background: #eef6ff;
-    color: var(--primary);
-    display: inline-flex;
-    font-size: 10px;
-    font-weight: 800;
-}
+        /* QUANTITY */
+        .quantity-control {
+            height: 46px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #dfe7f2;
+            border-radius: 11px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .quantity-control button {
+            width: 46px;
+            height: 100%;
+            background: #f5f8fc;
+            color: #526074;
+            font-size: 15px;
+            transition: .2s;
+        }
+        .quantity-control button:hover {
+            background: #eaf3ff;
+            color: var(--primary);
+        }
+        .quantity-control input {
+            height: 100%;
+            border: 0;
+            border-radius: 0;
+            text-align: center;
+            box-shadow: none !important;
+        }
 
-/* SUPPORT */
-.support {
-    position: fixed;
-    right: 25px;
-    bottom: 25px;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: linear-gradient(145deg,#3568ee,#244bd5);
-    color: #fff;
-    z-index: 1100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 25px rgba(37,83,220,.35);
-    font-size: 10px;
-    font-weight: 800;
-}
-.support i {
-    margin-bottom: 2px;
-    font-size: 19px;
-}
+        /* PRICE */
+        .price {
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 13px;
+            background: #eef6ff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .price span {
+            color: #738096;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .price strong {
+            color: var(--primary);
+            font-size: 18px;
+        }
+        .price-note {
+            margin-top: 7px;
+            color: #8a96aa;
+            font-size: 10px;
+            text-align: right;
+        }
 
-@media(max-width:1100px){
-    .layout{grid-template-columns:1fr;}
-}
+        /* ORDER BUTTON */
+        .btn-order {
+            width: 100%;
+            height: 48px;
+            margin-top: 16px;
+            border-radius: 12px;
+            background: #000;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            box-shadow: 0 8px 18px rgba(0,0,0,.22);
+            transition: .2s;
+        }
+        .btn-order:hover { transform: translateY(-1px); }
+        .btn-order:disabled {
+            cursor: not-allowed;
+            opacity: .65;
+            transform: none;
+        }
 
-@media(max-width:800px){
-    :root{--sidebar:0px}
-    .sidebar{transform:translateX(-100%);}
-    .main{margin-left:0;}
-    .topbar{padding:0 15px;}
-    .crumb, .lang{display:none;}
-    .search{width:220px;}
-    .content{padding:15px;}
-}
+        /* INFO LIST */
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .info-item {
+            padding: 12px;
+            border: 1px solid #edf1f6;
+            border-radius: 12px;
+            display: flex;
+            gap: 12px;
+        }
+        .info-item i {
+            width: 20px;
+            margin-top: 2px;
+            color: var(--primary);
+            text-align: center;
+        }
+        .info-item div {
+            color: #68758a;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .info-item strong {
+            display: block;
+            margin-bottom: 2px;
+            color: #26344a;
+        }
+        .server-box {
+            margin-top: 18px;
+            padding: 15px;
+            border-radius: 13px;
+            background: #f5f8fc;
+        }
+        .server-box strong { font-size: 13px; }
+        .online {
+            float: right;
+            color: #16b978;
+            font-size: 11px;
+            font-weight: 800;
+        }
+        .online::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            margin-right: 5px;
+            display: inline-block;
+            border-radius: 50%;
+            background: #16b978;
+        }
 
-@media(max-width:500px){
-    .search{display:none;}
-    .user-name{display:none;}
-    .service-box { grid-template-columns: 1fr; }
-    .field.full { grid-column: auto; }
-}
-</style>
+        /* TABLE */
+        .table-wrap { overflow-x: auto; }
+        table {
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
+        }
+        th {
+            padding: 12px;
+            background: #f7f9fc;
+            color: #7d899c;
+            font-size: 11px;
+            text-align: left;
+        }
+        td {
+            padding: 13px 12px;
+            border-top: 1px solid #edf1f6;
+            color: #526074;
+            font-size: 12px;
+        }
+        .status {
+            padding: 4px 8px;
+            border-radius: 7px;
+            background: #eef6ff;
+            color: var(--primary);
+            display: inline-flex;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        /* SUPPORT */
+        .support {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #000;
+            color: #fff;
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,.35);
+            font-size: 10px;
+            font-weight: 800;
+            transition: .2s;
+        }
+        .support i {
+            margin-bottom: 2px;
+            font-size: 19px;
+        }
+        .support:hover { transform: translateY(-3px); }
+
+        /* ========================= RESPONSIVE ========================= */
+        @media(max-width:1100px){
+            .layout{grid-template-columns:1fr;}
+        }
+
+        @media(max-width:800px){
+            :root{--sidebar:0px}
+            .sidebar{
+                width: 260px !important; 
+                transform:translateX(-100%);
+                transition: transform 0.3s ease; 
+            }
+            .main{margin-left:0; width: 100%;}
+            .topbar{padding:0 15px;}
+            .crumb, .lang{display:none;}
+            .search{width:220px;}
+            .content{padding:15px;}
+
+            /* Giao diện nút 3 gạch mobile */
+            .mobile-menu {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                background: #eef5ff;
+                color: var(--primary);
+                margin-right: 10px;
+                font-size: 18px;
+            }
+        }
+
+        @media(max-width:500px){
+            .search{display:none;}
+            .user-name{display:none;}
+            .service-box { grid-template-columns: 1fr; }
+            .field.full { grid-column: auto; }
+        }
+    </style>
 </head>
 
 <body>
 
+<!-- SIDEBAR -->
 <aside class="sidebar">
     <div class="brand">HOANGKUN</div>
     <div class="sidebar-scroll">
@@ -704,13 +765,13 @@ td {
 
         <div class="sb-title">Tài khoản</div>
         <button class="sb-mi" onclick="go('taikhoan.html')">
-            <span class="sb-icon"><i class="fa-regular fa-user"></i></span> Tài khoản & bảo mật
+            <span class="sb-icon"><i class="fa-solid fa-user-shield"></i></span> Tài khoản & bảo mật
         </button>
         <button class="sb-mi" onclick="go('naptien.html')">
-            <span class="sb-icon"><i class="fa-regular fa-credit-card"></i></span> Nạp tiền
+            <span class="sb-icon"><i class="fa-solid fa-wallet"></i></span> Nạp tiền
         </button>
         <button class="sb-mi" onclick="go('lichsu.html')">
-            <span class="sb-icon"><i class="fa-regular fa-clock"></i></span> Nhật ký hoạt động
+            <span class="sb-icon"><i class="fa-solid fa-clock-rotate-left"></i></span> Nhật ký hoạt động
         </button>
 
         <div class="sb-title">Danh sách dịch vụ</div>
@@ -719,10 +780,10 @@ td {
             <span class="badge">MỚI</span>
         </button>
         <button class="sb-mi" onclick="go('facebook.html')">
-            <span class="sb-icon"><i class="fa-brands fa-facebook" style="color:#60a5fa"></i></span> Facebook
+            <span class="sb-icon"><i class="fa-brands fa-facebook" style="color:#1877f2"></i></span> Facebook
         </button>
         <button class="sb-mi" onclick="go('instagram.html')">
-            <span class="sb-icon"><i class="fa-brands fa-instagram" style="color:#f472b6"></i></span> Instagram
+            <span class="sb-icon"><i class="fa-brands fa-instagram" style="color:#e1306c"></i></span> Instagram
         </button>
         <button class="sb-mi active">
             <span class="sb-icon"><i class="fa-brands fa-tiktok"></i></span> TikTok
@@ -732,200 +793,204 @@ td {
         </button>
     </div>
     <div class="sidebar-footer">
-        <button class="sb-mi" onclick="logout()" style="color:#ff6670">
+        <button class="sb-mi" onclick="logout()" style="color:#ef4444">
             <span class="sb-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Đăng xuất
         </button>
     </div>
 </aside>
 
+<!-- MAIN -->
 <main class="main">
-
-<header class="topbar">
-    <div class="top-left">
-        <div class="crumb">
-            <span>Trang chủ</span> <i class="fa-solid fa-chevron-right"></i> <span class="current">TikTok</span>
-        </div>
-        <div class="search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="serviceSearch" placeholder="Tìm dịch vụ...">
-            <span class="shortcut">Ctrl K</span>
-        </div>
-    </div>
-    <div class="top-right">
-        <button class="icon-btn" onclick="go('taikhoan.html')"><i class="fa-solid fa-gear"></i></button>
-        <button class="icon-btn" onclick="go('thongbao.html')">
-            <i class="fa-regular fa-bell"></i> <span class="dot"></span>
-        </button>
-        <div class="lang">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg">
-            <span>VN</span> Tiếng Việt
-        </div>
-        <div class="user-dropdown">
-            <button class="user" id="userBtn">
-                <div class="avatar" id="avatarMini">H</div>
-                <span class="user-name" id="navUserName">Đang tải...</span>
-                <i class="fa-solid fa-chevron-down"></i>
+    <header class="topbar">
+        <div class="top-left">
+            <!-- Nút 3 gạch hiện trên điện thoại -->
+            <button class="mobile-menu" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
             </button>
-            <div class="user-menu" id="userMenu">
-                <div class="user-menu-header">
-                    <div class="avatar" id="menuAvatar">H</div>
-                    <div>
-                        <strong id="menuUserName">Đang tải...</strong>
-                        <span>Thành viên</span>
-                    </div>
-                </div>
-                <div class="user-menu-line"></div>
-                <button onclick="go('taikhoan.html')"><i class="fa-regular fa-user"></i> Tài khoản của tôi</button>
-                <button onclick="go('naptien.html')"><i class="fa-regular fa-credit-card"></i> Nạp tiền</button>
-                <button onclick="go('lichsu.html')"><i class="fa-regular fa-clock"></i> Nhật ký hoạt động</button>
-                <div class="user-menu-line"></div>
-                <button class="logout-item" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</button>
+            <div class="crumb">
+                <span>Trang chủ</span> <i class="fa-solid fa-chevron-right"></i> <span class="current">TikTok</span>
+            </div>
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="serviceSearch" placeholder="Tìm dịch vụ...">
+                <span class="shortcut">Ctrl K</span>
             </div>
         </div>
-    </div>
-</header>
-
-<div class="content">
-    <div class="page-title">
-        <h1>TikTok</h1>
-        <p>Dịch vụ TikTok chất lượng cao tại HoangKun Store.</p>
-    </div>
-
-    <div class="layout">
-        <!-- LEFT -->
-        <div>
-            <div class="card">
-                <div class="card-title">
-                    <div class="tiktok-icon"><i class="fa-brands fa-tiktok"></i></div>
-                    Dịch vụ TikTok
-                </div>
-
-                <!-- BALANCE -->
-                <div class="balance-box">
-                    <div class="balance-left">
-                        <div class="balance-icon"><i class="fa-solid fa-coins"></i></div>
-                        <div>
-                            <div class="balance-label">Số dư hiện tại</div>
-                            <div class="balance-value" id="balanceValue">Đang tải...</div>
-                        </div>
-                    </div>
-                    <button class="refresh-balance" onclick="loadBalance()" title="Làm mới số dư"><i class="fa-solid fa-rotate"></i></button>
-                </div>
-
-                <!-- FORM -->
-                <div class="service-box">
-                    <div class="field full">
-                        <label>Chọn dịch vụ</label>
-                        <select id="service">
-                            <option value="tiktok_like">Thả tim video — 700 xu / 1</option>
-                            <option value="tiktok_follow">Theo dõi — 1.700 xu / 1</option>
-                            <option value="tiktok_save">Lượt lưu video — 500 xu / 1</option>
-                            <option value="tiktok_view">View video — 300 xu / 1</option>
-                            <option value="tiktok_share">Share video — 300 xu / 1</option>
-                            <option value="tiktok_share_live">Share Livestream — 500 xu / 1</option>
-                            <option value="tiktok_view_live">Mắt xem Livestream — 1.000 xu / 1</option>
-                        </select>
-                    </div>
-
-                    <div class="field">
-                        <label>Link TikTok</label>
-                        <input id="link" type="text" autocomplete="off" placeholder="https://www.tiktok.com/...">
-                        <small>Ví dụ: https://www.tiktok.com/@username/video/123</small>
-                        <span class="link-error" id="linkError"></span>
-                    </div>
-
-                    <div class="field">
-                        <label>Số lượng</label>
-                        <div class="quantity-control">
-                            <button type="button" onclick="changeQuantity(-50)"><i class="fa-solid fa-minus"></i></button>
-                            <input id="quantity" type="number" value="50" min="50" step="1" inputmode="numeric">
-                            <button type="button" onclick="changeQuantity(50)"><i class="fa-solid fa-plus"></i></button>
-                        </div>
-                        <small style="color:#ef4444; font-weight:bold;">1 ID KHÔNG CÀI 2 ĐƠN CÙNG LÚC TRONG HỆ THỐNG !</small>
-                    </div>
-
-                    <div class="field full">
-                        <label>Ghi chú</label>
-                        <input id="note" type="text" maxlength="300" placeholder="Nhập ghi chú nếu cần...">
-                    </div>
-                </div>
-
-                <!-- PRICE -->
-                <div class="price">
-                    <span>Tạm tính</span>
-                    <strong id="totalPrice">35.000 xu</strong>
-                </div>
-                <div class="price-note" id="priceNote">Đơn giá: 700 xu / 1</div>
-
-                <!-- ORDER BUTTON -->
-                <button class="btn-order" id="orderButton" onclick="createOrder()">
-                    <i class="fa-solid fa-cart-shopping"></i> &nbsp; Đặt dịch vụ
+        <div class="top-right">
+            <button class="icon-btn" onclick="go('taikhoan.html')"><i class="fa-solid fa-gear"></i></button>
+            <button class="icon-btn" onclick="go('thongbao.html')">
+                <i class="fa-regular fa-bell"></i> <span class="dot"></span>
+            </button>
+            <div class="lang">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg">
+                <span>VN</span> Tiếng Việt
+            </div>
+            <div class="user-dropdown">
+                <button class="user" id="userBtn">
+                    <div class="avatar" id="avatarMini">H</div>
+                    <span class="user-name" id="navUserName">Đang tải...</span>
+                    <i class="fa-solid fa-chevron-down"></i>
                 </button>
-            </div>
-
-            <!-- HISTORY -->
-            <div class="card table-card">
-                <div class="card-title">
-                    <i class="fa-solid fa-clock-rotate-left" style="color:#1677ff"></i> Đơn hàng TikTok gần đây
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Mã đơn</th>
-                                <th>Dịch vụ</th>
-                                <th>Số lượng</th>
-                                <th>Chi phí</th>
-                                <th>Trạng thái</th>
-                                <th>Thời gian</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orderTable">
-                            <tr>
-                                <td colspan="6" style="text-align:center;color:#9aa6b8;padding:25px">Chưa có đơn hàng</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="user-menu" id="userMenu">
+                    <div class="user-menu-header">
+                        <div class="avatar" id="menuAvatar">H</div>
+                        <div>
+                            <strong id="menuUserName">Đang tải...</strong>
+                            <span>Thành viên</span>
+                        </div>
+                    </div>
+                    <div class="user-menu-line"></div>
+                    <button onclick="go('taikhoan.html')"><i class="fa-regular fa-user"></i> Tài khoản của tôi</button>
+                    <button onclick="go('naptien.html')"><i class="fa-regular fa-credit-card"></i> Nạp tiền</button>
+                    <button onclick="go('lichsu.html')"><i class="fa-regular fa-clock"></i> Nhật ký hoạt động</button>
+                    <div class="user-menu-line"></div>
+                    <button class="logout-item" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</button>
                 </div>
             </div>
         </div>
+    </header>
 
-        <!-- RIGHT INFO -->
-        <div>
-            <div class="card">
-                <div class="card-title">
-                    <i class="fa-solid fa-circle-info" style="color:#1677ff"></i> Thông tin dịch vụ
+    <div class="content">
+        <div class="page-title">
+            <h1>TikTok</h1>
+            <p>Dịch vụ TikTok chất lượng cao tại HoangKun Store.</p>
+        </div>
+
+        <div class="layout">
+            <!-- LEFT -->
+            <div>
+                <div class="card">
+                    <div class="card-title">
+                        <div class="tiktok-icon"><i class="fa-brands fa-tiktok"></i></div>
+                        Dịch vụ TikTok
+                    </div>
+
+                    <!-- BALANCE -->
+                    <div class="balance-box">
+                        <div class="balance-left">
+                            <div class="balance-icon"><i class="fa-solid fa-coins"></i></div>
+                            <div>
+                                <div class="balance-label">Số dư hiện tại</div>
+                                <div class="balance-value" id="balanceValue">Đang tải...</div>
+                            </div>
+                        </div>
+                        <button class="refresh-balance" onclick="loadBalance()" title="Làm mới số dư"><i class="fa-solid fa-rotate"></i></button>
+                    </div>
+
+                    <!-- FORM -->
+                    <div class="service-box">
+                        <div class="field full">
+                            <label>Chọn dịch vụ</label>
+                            <select id="service">
+                                <option value="tiktok_like">Thả tim video — 700 xu / 1</option>
+                                <option value="tiktok_follow">Theo dõi — 1.700 xu / 1</option>
+                                <option value="tiktok_save">Lượt lưu video — 500 xu / 1</option>
+                                <option value="tiktok_view">View video — 300 xu / 1</option>
+                                <option value="tiktok_share">Share video — 300 xu / 1</option>
+                                <option value="tiktok_share_live">Share Livestream — 500 xu / 1</option>
+                                <option value="tiktok_view_live">Mắt xem Livestream — 1.000 xu / 1</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label>Link TikTok</label>
+                            <input id="link" type="text" autocomplete="off" placeholder="https://www.tiktok.com/...">
+                            <small>Ví dụ: https://www.tiktok.com/@username/video/123</small>
+                            <span class="link-error" id="linkError"></span>
+                        </div>
+
+                        <div class="field">
+                            <label>Số lượng</label>
+                            <div class="quantity-control">
+                                <button type="button" onclick="changeQuantity(-50)"><i class="fa-solid fa-minus"></i></button>
+                                <input id="quantity" type="number" value="50" min="50" step="1" inputmode="numeric">
+                                <button type="button" onclick="changeQuantity(50)"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <small style="color:#ef4444; font-weight:bold;">1 ID KHÔNG CÀI 2 ĐƠN CÙNG LÚC !</small>
+                        </div>
+
+                        <div class="field full">
+                            <label>Ghi chú</label>
+                            <input id="note" type="text" maxlength="300" placeholder="Nhập ghi chú nếu cần...">
+                        </div>
+                    </div>
+
+                    <!-- PRICE -->
+                    <div class="price">
+                        <span>Tạm tính</span>
+                        <strong id="totalPrice">35.000 xu</strong>
+                    </div>
+                    <div class="price-note" id="priceNote">Đơn giá: 700 xu / 1</div>
+
+                    <!-- ORDER BUTTON -->
+                    <button class="btn-order" id="orderButton" onclick="createOrder()">
+                        <i class="fa-solid fa-cart-shopping"></i> &nbsp; Đặt dịch vụ
+                    </button>
                 </div>
-                <div class="info-list">
-                    <div class="info-item">
-                        <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444"></i>
-                        <div><strong>Lưu ý quan trọng</strong> 1 ID KHÔNG CÀI 2 ĐƠN CÙNG LÚC TRONG HỆ THỐNG ! ĐƠN CŨ XONG MỚI CÀI ĐƠN MỚI ! CỐ TÌNH CÀI BỊ HỤT SỐ LƯỢNG SẼ KHÔNG XỬ LÝ !</div>
+
+                <!-- HISTORY -->
+                <div class="card table-card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-clock-rotate-left" style="color:#1677ff"></i> Đơn hàng TikTok gần đây
                     </div>
-                    <div class="info-item">
-                        <i class="fa-solid fa-bolt"></i>
-                        <div><strong>Tốc độ xử lý</strong> Hệ thống tự động xử lý đơn sau khi đặt.</div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fa-solid fa-coins"></i>
-                        <div><strong>Bảng giá</strong> Giá dịch vụ được tính theo số xu trên mỗi đơn vị.</div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <div><strong>An toàn</strong> Không yêu cầu mật khẩu tài khoản TikTok.</div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fa-solid fa-rotate"></i>
-                        <div><strong>Bảo hành</strong> Hỗ trợ xử lý khi đơn gặp vấn đề.</div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Mã đơn</th>
+                                    <th>Dịch vụ</th>
+                                    <th>Số lượng</th>
+                                    <th>Chi phí</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thời gian</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderTable">
+                                <tr>
+                                    <td colspan="6" style="text-align:center;color:#9aa6b8;padding:25px">Chưa có đơn hàng</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="server-box">
-                    <strong>Trạng thái hệ thống</strong>
-                    <span class="online">ONLINE</span>
+            </div>
+
+            <!-- RIGHT INFO -->
+            <div>
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-circle-info" style="color:#1677ff"></i> Thông tin dịch vụ
+                    </div>
+                    <div class="info-list">
+                        <div class="info-item">
+                            <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444"></i>
+                            <div><strong>Lưu ý quan trọng</strong> 1 ID KHÔNG CÀI 2 ĐƠN CÙNG LÚC TRONG HỆ THỐNG ! ĐƠN CŨ XONG MỚI CÀI ĐƠN MỚI ! CỐ TÌNH CÀI BỊ HỤT SỐ LƯỢNG SẼ KHÔNG XỬ LÝ !</div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-bolt"></i>
+                            <div><strong>Tốc độ xử lý</strong> Hệ thống tự động xử lý đơn sau khi đặt.</div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-coins"></i>
+                            <div><strong>Bảng giá</strong> Giá dịch vụ được tính theo số xu trên mỗi đơn vị.</div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div><strong>An toàn</strong> Không yêu cầu mật khẩu tài khoản TikTok.</div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-rotate"></i>
+                            <div><strong>Bảo hành</strong> Hỗ trợ xử lý khi đơn gặp vấn đề.</div>
+                        </div>
+                    </div>
+                    <div class="server-box">
+                        <strong>Trạng thái hệ thống</strong>
+                        <span class="online">ONLINE</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </main>
 
 <button class="support" onclick="openZalo()">
@@ -949,6 +1014,23 @@ const firebaseConfig = {
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('open');
+}
+
+document.addEventListener("click", e => {
+    const sidebar = document.querySelector('.sidebar');
+    const mobileBtn = document.querySelector('.mobile-menu');
+    if (window.innerWidth <= 800 && sidebar && mobileBtn) {
+        if (!sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    }
+});
 
 /* =====================================================
    NAVIGATION
@@ -1035,8 +1117,8 @@ auth.onAuthStateChanged(user => {
 ===================================================== */
 const userBtn = document.getElementById("userBtn");
 const userDropdown = document.querySelector(".user-dropdown");
-userBtn.addEventListener("click", e => { e.stopPropagation(); userDropdown.classList.toggle("show"); });
-document.addEventListener("click", e => { if (!userDropdown.contains(e.target) && !userBtn.contains(e.target)) userDropdown.classList.remove("show"); });
+userBtn.addEventListener("click", e => { e.stopPropagation(); userDropdown.classList.toggle("open"); });
+document.addEventListener("click", e => { if (!userDropdown.contains(e.target) && !userBtn.contains(e.target)) userDropdown.classList.remove("open"); });
 
 document.addEventListener("keydown", e => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
