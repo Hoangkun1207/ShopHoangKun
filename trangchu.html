@@ -45,15 +45,17 @@
         .sidebar {
             position: fixed; left: 0; top: 0; bottom: 0; width: var(--sidebar);
             background: linear-gradient(180deg, #0c1627, #101b2d);
-            color: #fff; z-index: 1000; display: flex; flex-direction: column;
+            color: #fff; z-index: 2000; display: flex; flex-direction: column;
         }
         .sidebar.open {
             transform: translateX(0) !important;
-            transition: 0.3s;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 40px rgba(0,0,0,0.6);
         }
         .brand {
             height: 76px; display: flex; align-items: center; padding: 0 25px;
             font-size: 18px; font-weight: 800; letter-spacing: .5px; border-bottom: 1px solid rgba(255,255,255,.04);
+            flex-shrink: 0;
         }
         .brand span { color: #fff; }
         
@@ -90,7 +92,7 @@
             margin-left: auto; background: #0fc58a; color: #fff; padding: 2px 6px;
             border-radius: 5px; font-size: 8px; font-weight: 800;
         }
-        .sidebar-footer { padding: 10px 0; border-top: 1px solid rgba(255,255,255,.05); }
+        .sidebar-footer { padding: 10px 0; border-top: 1px solid rgba(255,255,255,.05); flex-shrink: 0; }
 
         /* ========================= MAIN ========================= */
         .main { margin-left: var(--sidebar); min-height: 100vh; }
@@ -115,7 +117,7 @@
             border: 1px solid #e8edf5; border-radius: 5px; padding: 3px 6px; white-space: nowrap;
         }
         
-        .mobile-menu { display: none; border: none; cursor: pointer; }
+        .mobile-menu { display: none; border: none; cursor: pointer; flex-shrink: 0; }
         .icon-btn {
             width: 40px; height: 40px; border: 1px solid var(--border);
             background: #fff; border-radius: 50%; color: #526074; font-size: 15px; position: relative;
@@ -196,6 +198,7 @@
             width: 78px; height: 78px; border-radius: 50%; display: grid; place-items: center;
             background: linear-gradient(145deg, #d8edff, #b9dcff); color: #2475bc;
             font-size: 30px; font-weight: 800; border: 5px solid #edf7ff;
+            flex-shrink: 0;
         }
         .profile-info { min-width: 0; }
         .profile-name {
@@ -204,6 +207,7 @@
         .verified { color: #1677ff; font-size: 14px; }
         .profile-email {
             margin-top: 5px; color: #8c99ad; font-size: 13px; display: flex; align-items: center; gap: 6px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .verify {
             display: inline-block; margin-top: 7px; background: #fff2cf; color: #d18a00;
@@ -347,7 +351,7 @@
         }
         .support i { font-size: 20px; margin-bottom: 2px; }
 
-        /* RESPONSIVE */
+        /* ========================= RESPONSIVE ========================= */
         @media(max-width: 1200px){
             :root { --sidebar: 245px; }
             .dashboard { grid-template-columns: 1fr; }
@@ -361,36 +365,43 @@
         }
         @media(max-width: 800px){
             :root { --sidebar: 0px; }
-            .sidebar { transform: translateX(-100%); transition: .3s; }
-            .main { margin-left: 0; }
+            /* Cấu hình sidebar trượt vào trên mobile */
+            .sidebar { 
+                width: 260px !important; /* Fix lỗi bề ngang bằng 0 */
+                transform: translateX(-100%); 
+                transition: transform 0.3s ease; 
+            }
+            .main { margin-left: 0; width: 100%; }
             .topbar { padding: 0 15px; }
             .top-left .crumb { display: none; }
-            .search { width: 200px; }
+            .search { width: 190px; }
             .lang { display: none; }
             .user-name { display: none; }
             .content { padding: 12px; }
             .dashboard { padding: 10px; border-radius: 17px; }
             .news-grid { grid-template-columns: 1fr; }
             
-            /* CSS nút 3 gạch mobile */
+            /* Giao diện nút 3 gạch trên mobile */
             .mobile-menu {
-                display: grid;
-                place-items: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 width: 40px;
                 height: 40px;
                 border-radius: 10px;
                 background: #eef5ff;
                 color: #1677ff;
-                margin-right: 15px;
+                margin-right: 10px;
                 font-size: 18px;
             }
         }
         @media(max-width: 520px){
-            .search { display: none; }
-            .topbar { height: 65px; }
+            .search { display: none; } /* Ẩn tìm kiếm cho gọn */
+            .topbar { height: 65px; padding: 0 12px; }
             .quick-grid { grid-template-columns: repeat(2, 1fr); }
             .profile-name { font-size: 16px; }
             .profile-avatar { width: 65px; height: 65px; }
+            .dashboard-grid { gap: 15px; }
         }
     </style>
 </head>
@@ -790,10 +801,19 @@
             return Number(value || 0).toLocaleString("vi-VN") + "đ";
         }
 
-        // Hàm mở/tắt sidebar trên điện thoại
+        // Mở menu Mobile
         function toggleSidebar() {
             document.querySelector('.sidebar').classList.toggle('open');
         }
+
+        // Đóng menu Mobile khi click ra ngoài
+        document.addEventListener("click", e => {
+            const sidebar = document.querySelector('.sidebar');
+            const mobileBtn = document.querySelector('.mobile-menu');
+            if (window.innerWidth <= 800 && !sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
 
         auth.onAuthStateChanged(user => {
             if (user) {
@@ -810,7 +830,7 @@
                 document.getElementById("menuUserName").textContent = name;
                 document.getElementById("menuAvatar").textContent = letter;
                 
-              // =====================================================
+                // =====================================================
                 // POPUP THÔNG BÁO KHAI TRƯƠNG + HIỆU ỨNG PHÁO HOA
                 // (CỨ LOAD LẠI TRANG LÀ HIỆN)
                 // =====================================================
