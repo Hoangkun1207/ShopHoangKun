@@ -820,7 +820,7 @@ a{
 
 <script>
 const firebaseConfig={
-    apiKey:"AIzaSyAaIOO-6LQs2vZTDBAeXJ8piKX4pjfyCbM",
+    apiKey:"AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbK4",
     authDomain:"shophoangkun.firebaseapp.com",
     databaseURL:"https://shophoangkun-default-rtdb.firebaseio.com",
     projectId:"shophoangkun",
@@ -829,58 +829,66 @@ const firebaseConfig={
     appId:"1:364993334554:web:800c66509b355ebf5370a3"
 };
 
-if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+if(!firebase.apps.length){
+    firebase.initializeApp(firebaseConfig);
+}
 
 const auth=firebase.auth();
 const db=firebase.database();
-
 let currentUser=null;
 
-auth.onAuthStateChanged(user=>{
-    if(!user){
-        window.location.href="index.html";
-        return;
-    }
-
-    currentUser=user;
-
-    const name=user.displayName||"Thành viên";
-    const first=name.charAt(0).toUpperCase();
-
-    document.getElementById("userName").innerText=name;
-    document.getElementById("profileName").innerText=name;
-    document.getElementById("profileEmail").innerText=user.email||"";
-    document.getElementById("avatar").innerText=first;
-    document.getElementById("profileAvatar").innerText=first;
-    document.getElementById("emailInput").value=user.email||"";
-    document.getElementById("emailText").innerText=user.email||"...";
-    document.getElementById("uidText").innerText=user.uid;
-
-    if(user.metadata&&user.metadata.creationTime){
-        document.getElementById("createdText").innerText=
-            new Date(user.metadata.creationTime).toLocaleDateString("vi-VN");
-    }
-
-    db.ref("users/"+user.uid).on("value",snapshot=>{
-        const data=snapshot.val()||{};
-        const phone=data.so_dien_thoai||data.phone||"";
-
-        document.getElementById("nameInput").value=data.ho_ten||name;
-        document.getElementById("phoneInput").value=phone;
-        document.getElementById("phoneText").innerText=phone||"Chưa cập nhật";
-
-        const phoneStatus=document.getElementById("phoneStatus");
-
-        if(phone){
-            phoneStatus.innerText="Đã thêm";
-            phoneStatus.style.background="#d1fae5";
-            phoneStatus.style.color="#047857";
-        }else{
-            phoneStatus.innerText="Chưa có";
-            phoneStatus.style.background="#fef3c7";
-            phoneStatus.style.color="#b45309";
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+.then(()=>{
+    auth.onAuthStateChanged(user=>{
+        if(!user){
+            console.log("Chưa có phiên đăng nhập Firebase.");
+            window.location.href="index.html";
+            return;
         }
+
+        currentUser=user;
+
+        const name=user.displayName||"Thành viên";
+        const first=name.charAt(0).toUpperCase();
+
+        document.getElementById("userName").innerText=name;
+        document.getElementById("profileName").innerText=name;
+        document.getElementById("profileEmail").innerText=user.email||"";
+        document.getElementById("avatar").innerText=first;
+        document.getElementById("profileAvatar").innerText=first;
+        document.getElementById("emailInput").value=user.email||"";
+        document.getElementById("emailText").innerText=user.email||"...";
+        document.getElementById("uidText").innerText=user.uid;
+
+        if(user.metadata?.creationTime){
+            document.getElementById("createdText").innerText=
+                new Date(user.metadata.creationTime).toLocaleDateString("vi-VN");
+        }
+
+        db.ref("users/"+user.uid).on("value",snapshot=>{
+            const data=snapshot.val()||{};
+            const phone=data.so_dien_thoai||data.phone||"";
+
+            document.getElementById("nameInput").value=data.ho_ten||name;
+            document.getElementById("phoneInput").value=phone;
+            document.getElementById("phoneText").innerText=phone||"Chưa cập nhật";
+
+            const phoneStatus=document.getElementById("phoneStatus");
+
+            if(phone){
+                phoneStatus.innerText="Đã thêm";
+                phoneStatus.style.background="#d1fae5";
+                phoneStatus.style.color="#047857";
+            }else{
+                phoneStatus.innerText="Chưa có";
+                phoneStatus.style.background="#fef3c7";
+                phoneStatus.style.color="#b45309";
+            }
+        });
     });
+})
+.catch(error=>{
+    console.error("Firebase Auth Error:",error);
 });
 
 async function saveProfile(){
@@ -972,7 +980,7 @@ async function changePassword(){
         let message=error.message;
 
         if(error.code==="auth/requires-recent-login"){
-            message="Vì lý do bảo mật, bạn cần đăng nhập lại trước khi đổi mật khẩu.";
+            message="Bạn cần đăng nhập lại trước khi đổi mật khẩu.";
         }
 
         Swal.fire({
@@ -996,7 +1004,9 @@ function logout(){
         cancelButtonText:"Hủy"
     }).then(result=>{
         if(result.isConfirmed){
-            auth.signOut();
+            auth.signOut().then(()=>{
+                window.location.href="index.html";
+            });
         }
     });
 }
