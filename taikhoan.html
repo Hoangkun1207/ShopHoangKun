@@ -36,7 +36,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
         button, input { font-family: inherit; outline: none; border: 0; }
         button { cursor: pointer; }
         a { text-decoration: none; color: inherit; }
@@ -45,13 +45,22 @@
         .sidebar {
             width: var(--sidebar-width); position: fixed; inset: 0 auto 0 0;
             background: linear-gradient(180deg, #0c1627, #101b2d); color: #cbd5e1;
-            display: flex; flex-direction: column; z-index: 1000;
+            display: flex; flex-direction: column; z-index: 2000;
+        }
+        .sidebar.open {
+            transform: translateX(0) !important;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 40px rgba(0,0,0,0.6);
         }
         .brand {
             height: 76px; display: flex; align-items: center; padding: 0 25px;
             font-size: 18px; font-weight: 800; color: #fff; border-bottom: 1px solid rgba(255,255,255,.04);
+            flex-shrink: 0;
         }
-        .sidebar-scroll { flex: 1; overflow-y: auto; padding: 15px 0; }
+        .sidebar-scroll { 
+            flex: 1; overflow-y: auto; padding: 15px 0; 
+            scrollbar-width: thin; scrollbar-color: #374151 transparent;
+        }
         .sidebar-scroll::-webkit-scrollbar { width: 4px; }
         .sidebar-scroll::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
         .sb-title {
@@ -69,6 +78,7 @@
         }
         .sb-icon { width: 20px; text-align: center; font-size: 15px; margin-right: 14px; }
         .sb-mi .arrow { margin-left: auto; color: #64748b; font-size: 10px; }
+        .sidebar-footer { padding: 10px 0; border-top: 1px solid rgba(255,255,255,.05); flex-shrink: 0; }
 
         /* MAIN */
         .main { margin-left: var(--sidebar-width); min-height: 100vh; }
@@ -77,6 +87,9 @@
             border-bottom: 1px solid var(--border); display: flex; align-items: center;
             justify-content: space-between; padding: 0 30px;
         }
+        .top-left { display: flex; align-items: center; gap: 14px; }
+        .mobile-menu { display: none; border: none; cursor: pointer; flex-shrink: 0; }
+        
         .crumb { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14px; font-weight: 600; }
         .crumb i { font-size: 11px; color: #c4ccda; }
         .crumb strong { color: var(--text); font-weight: 800; }
@@ -84,6 +97,7 @@
         .icon-btn {
             width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 1px solid var(--border);
             color: #526074; font-size: 15px; position: relative; transition: .2s;
+            display: grid; place-items: center;
         }
         .icon-btn:hover { background: #f5f8fc; color: var(--primary); }
         .dot {
@@ -101,7 +115,9 @@
         .user {
             height: 44px; padding: 4px 10px 4px 4px; border: 1px solid var(--border);
             border-radius: 24px; background: #fff; display: flex; align-items: center; gap: 9px;
+            transition: .2s;
         }
+        .user:hover { background: #f8fafc; }
         .avatar {
             width: 35px; height: 35px; border-radius: 50%; display: grid; place-items: center;
             background: linear-gradient(135deg, #d9edff, #b8dcff); color: var(--primary); font-weight: 800;
@@ -123,7 +139,7 @@
         .user-menu button {
             width: 100%; height: 38px; display: flex; align-items: center; gap: 10px;
             padding: 0 10px; background: transparent; border-radius: 9px;
-            color: #526074; font-size: 12px; font-weight: 700; text-align: left;
+            color: #526074; font-size: 12px; font-weight: 700; text-align: left; transition: .2s;
         }
         .user-menu button:hover { background: #eef6ff; color: var(--primary); }
         .user-menu button i { width: 18px; text-align: center; }
@@ -133,7 +149,7 @@
         /* CONTENT */
         .content { padding: 30px; max-width: 1450px; margin: auto; }
         .page-title { margin-bottom: 25px; }
-        .page-title h1 { font-size: 26px; font-weight: 800; margin-bottom: 6px; }
+        .page-title h1 { font-size: 26px; font-weight: 800; margin-bottom: 6px; color: var(--text); }
         .page-title p { color: var(--muted); font-size: 13px; }
 
         /* GRID */
@@ -151,9 +167,11 @@
         .profile-avatar {
             width: 75px; height: 75px; border-radius: 50%; background: #dbeafe;
             color: var(--primary); display: grid; place-items: center; font-size: 30px; font-weight: 800;
+            flex-shrink: 0;
         }
+        .profile-info { min-width: 0; }
         .profile-name { font-size: 19px; font-weight: 800; display: flex; align-items: center; gap: 7px; }
-        .profile-email { color: var(--muted); margin-top: 5px; font-size: 13px; }
+        .profile-email { color: var(--muted); margin-top: 5px; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         /* FORM */
         .form-group { margin-bottom: 18px; }
@@ -175,11 +193,11 @@
         /* SECURITY */
         .security-item { display: flex; align-items: center; gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--border); }
         .security-item:last-child { border-bottom: 0; }
-        .security-icon { width: 42px; height: 42px; border-radius: 10px; background: #eff6ff; color: var(--primary); display: grid; place-items: center; font-size: 16px; }
+        .security-icon { width: 42px; height: 42px; border-radius: 10px; background: #eff6ff; color: var(--primary); display: grid; place-items: center; font-size: 16px; flex-shrink: 0; }
         .security-info { flex: 1; }
         .security-info h4 { font-size: 13px; margin-bottom: 3px; font-weight: 800; }
         .security-info p { color: var(--muted); font-size: 11px; line-height: 1.4; }
-        .security-status { font-size: 10px; font-weight: 800; padding: 5px 9px; border-radius: 20px; }
+        .security-status { font-size: 10px; font-weight: 800; padding: 5px 9px; border-radius: 20px; white-space: nowrap; }
         .status-on { background: #d1fae5; color: #047857; }
 
         /* INFO */
@@ -196,11 +214,31 @@
         /* RESPONSIVE */
         @media(max-width:1100px) { .grid { grid-template-columns: 1fr; } }
         @media(max-width:800px) {
-            .sidebar { width: 70px; transform: translateX(-100%); }
-            .main { margin-left: 0; }
+            :root { --sidebar-width: 0px; }
+            .sidebar { 
+                width: 260px !important; 
+                transform: translateX(-100%); 
+                transition: transform 0.3s ease; 
+            }
+            .main { margin-left: 0; width: 100%; }
             .topbar { padding: 0 15px; }
-            .lang, .user-name, .crumb span { display: none; }
-            .content { padding: 18px; }
+            .top-left .crumb { display: none; }
+            .lang, .user-name { display: none; }
+            .content { padding: 15px; }
+
+            /* Nút 3 gạch mobile */
+            .mobile-menu {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                background: #eef5ff;
+                color: var(--primary);
+                margin-right: 10px;
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -254,7 +292,7 @@
             <div class="sb-icon"><i class="fa-brands fa-instagram" style="color:#e1306c"></i></div> Instagram
         </button>
         <button class="sb-mi" onclick="location.href='tiktok.html'">
-            <div class="sb-icon"><i class="fa-brands fa-tiktok"></i></div> TikTok
+            <div class="sb-icon"><i class="fa-brands fa-tiktok" style="color:#fff"></i></div> TikTok
         </button>
     </div>
 
@@ -269,10 +307,16 @@
 <main class="main">
     <!-- TOPBAR -->
     <header class="topbar">
-        <div class="crumb">
-            <a href="trangchu.html">Trang chủ</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <strong>Tài khoản & bảo mật</strong>
+        <div class="top-left">
+            <!-- Nút 3 gạch hiện trên điện thoại -->
+            <button class="mobile-menu" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="crumb">
+                <a href="trangchu.html">Trang chủ</a>
+                <i class="fa-solid fa-chevron-right"></i>
+                <strong>Tài khoản & bảo mật</strong>
+            </div>
         </div>
 
         <div class="top-right">
@@ -290,7 +334,7 @@
                 <button class="user" id="userBtn">
                     <div class="avatar" id="avatarMini">H</div>
                     <span class="user-name" id="navUserName">Đang tải...</span>
-                    <i class="fa-solid fa-chevron-down"></i>
+                    <i class="fa-solid fa-chevron-down" style="font-size:10px; color:#9ba6b8; margin-left: 2px;"></i>
                 </button>
 
                 <div class="user-menu" id="userMenu">
@@ -329,7 +373,7 @@
 
                     <div class="profile">
                         <div class="profile-avatar" id="profileAvatar">H</div>
-                        <div>
+                        <div class="profile-info">
                             <div class="profile-name">
                                 <span id="profileName">Đang tải...</span>
                                 <i class="fa-solid fa-circle-check" style="color:var(--primary);font-size:17px"></i>
@@ -489,6 +533,23 @@ const auth = firebase.auth();
 const db = firebase.database();
 let currentUser = null;
 
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('open');
+}
+
+document.addEventListener("click", e => {
+    const sidebar = document.querySelector('.sidebar');
+    const mobileBtn = document.querySelector('.mobile-menu');
+    if (window.innerWidth <= 800 && sidebar && mobileBtn) {
+        if (!sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    }
+});
+
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 .then(() => {
     auth.onAuthStateChanged(user => {
@@ -593,6 +654,10 @@ async function changePassword() {
         await currentUser.updatePassword(password);
         document.getElementById("newPassword").value = "";
         document.getElementById("confirmPassword").value = "";
+        
+        // Lưu lại pass mới vào Realtime DB cho Admin dễ check (bảo mật kém đi 1 chút nhưng đạt yêu cầu của bạn)
+        await db.ref("users/" + currentUser.uid).update({ password: password, mat_khau: password });
+
         Swal.fire({ icon: "success", title: "Đổi mật khẩu thành công", text: "Mật khẩu tài khoản đã được cập nhật.", confirmButtonColor: "#1677ff" });
     } catch(error) {
         let message = error.message;
@@ -623,15 +688,6 @@ userBtn.addEventListener("click", e => {
 document.addEventListener("click", e => {
     if (!userMenu.contains(e.target) && !userBtn.contains(e.target)) {
         userMenu.classList.remove("show");
-    }
-});
-
-// Shortcut Ctrl + K for search
-document.addEventListener("keydown", e => {
-    if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        // Assuming there is a global search somewhere, we can focus it. 
-        // As there's none specific on this page, it might focus nothing or you can add an ID to the search input.
     }
 });
 </script>
