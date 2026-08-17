@@ -1,697 +1,840 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0f172a">
+
     <title>Facebook | HoangKun Store</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
         :root {
-            --primary:#1677ff;
-            --dark:#0d1728;
-            --bg:#f3f6fc;
-            --card:#fff;
-            --text:#172033;
-            --muted:#8a96aa;
-            --border:#e7edf6;
-            --sidebar:280px;
+            --primary: #1677ff;
+            --dark: #0d1728;
+            --bg: #f3f6fc;
+            --card: #fff;
+            --text: #172033;
+            --muted: #8a96aa;
+            --border: #e7edf6;
+            --success: #16b978;
+            --danger: #ef4444;
+            --sidebar: 280px;
         }
 
         * {
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:'Quicksand',sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Quicksand", sans-serif;
         }
 
         body {
-            background:var(--bg);
-            color:var(--text);
-            min-height:100vh;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
         }
 
         button,
         input,
         select {
-            font-family:inherit;
-            outline:none;
-            border:0;
+            font-family: inherit;
+            outline: none;
         }
 
         button {
-            cursor:pointer;
+            cursor: pointer;
+            border: 0;
         }
 
-        /* SIDEBAR */
+        /* =========================
+           SIDEBAR
+        ========================= */
 
         .sidebar {
-            position:fixed;
-            left:0;
-            top:0;
-            bottom:0;
-            width:var(--sidebar);
-            background:linear-gradient(180deg,#0c1627,#101b2d);
-            color:#fff;
-            z-index:1000;
-            display:flex;
-            flex-direction:column;
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: var(--sidebar);
+            background: linear-gradient(180deg, #0c1627, #101b2d);
+            color: #fff;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
         }
 
         .brand {
-            height:76px;
-            display:flex;
-            align-items:center;
-            padding:0 25px;
-            font-size:18px;
-            font-weight:800;
-            border-bottom:1px solid rgba(255,255,255,.04);
+            height: 76px;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            font-size: 18px;
+            font-weight: 800;
+            border-bottom: 1px solid rgba(255,255,255,.04);
         }
 
         .sidebar-scroll {
-            flex:1;
-            overflow-y:auto;
-            padding:15px 0;
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 0;
         }
 
         .sb-title {
-            padding:13px 22px 9px;
-            color:#60708b;
-            font-size:10px;
-            font-weight:800;
-            text-transform:uppercase;
-            letter-spacing:1px;
+            padding: 13px 22px 9px;
+            color: #60708b;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .sb-mi {
-            position:relative;
-            width:calc(100% - 20px);
-            margin:0 10px 4px;
-            height:42px;
-            padding:0 15px;
-            border-radius:9px;
-            background:transparent;
-            color:#b9c4d6;
-            display:flex;
-            align-items:center;
-            gap:14px;
-            font-size:14px;
-            font-weight:700;
-            text-align:left;
-            transition:.2s;
+            width: calc(100% - 20px);
+            height: 42px;
+            margin: 0 10px 4px;
+            padding: 0 15px;
+            border-radius: 9px;
+            background: transparent;
+            color: #b9c4d6;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: left;
+            transition: .2s;
         }
 
         .sb-mi:hover {
-            background:#17253b;
-            color:#fff;
+            background: #17253b;
+            color: #fff;
         }
 
         .sb-mi.active {
-            background:linear-gradient(90deg,#193e72,#18365f);
-            color:#fff;
-            box-shadow:inset 3px 0 #1681ff;
+            background: linear-gradient(90deg,#193e72,#18365f);
+            color: #fff;
+            box-shadow: inset 3px 0 #1681ff;
         }
 
         .sb-icon {
-            width:20px;
-            text-align:center;
-            font-size:15px;
+            width: 20px;
+            text-align: center;
+            font-size: 15px;
         }
 
         .arrow {
-            margin-left:auto;
-            color:#64748b;
-            font-size:10px;
+            margin-left: auto;
+            color: #64748b;
+            font-size: 10px;
         }
 
         .badge {
-            margin-left:auto;
-            background:#0fc58a;
-            color:#fff;
-            padding:2px 6px;
-            border-radius:5px;
-            font-size:8px;
-            font-weight:800;
+            margin-left: auto;
+            padding: 2px 6px;
+            border-radius: 5px;
+            background: #0fc58a;
+            color: #fff;
+            font-size: 8px;
+            font-weight: 800;
         }
 
         .sidebar-footer {
-            padding:10px 0;
-            border-top:1px solid rgba(255,255,255,.05);
+            padding: 10px 0;
+            border-top: 1px solid rgba(255,255,255,.05);
         }
 
-        /* MAIN */
+        /* =========================
+           MAIN
+        ========================= */
 
         .main {
-            margin-left:var(--sidebar);
-            min-height:100vh;
+            margin-left: var(--sidebar);
+            min-height: 100vh;
         }
 
         .topbar {
-            height:76px;
-            background:#fff;
-            border-bottom:1px solid var(--border);
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            padding:0 30px;
-            position:sticky;
-            top:0;
-            z-index:900;
+            height: 76px;
+            padding: 0 30px;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 900;
         }
 
         .top-left,
         .top-right {
-            display:flex;
-            align-items:center;
-            gap:14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
         .crumb {
-            display:flex;
-            align-items:center;
-            gap:10px;
-            color:#99a4b7;
-            font-size:14px;
-            font-weight:600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #99a4b7;
+            font-size: 14px;
+            font-weight: 600;
         }
 
         .crumb i {
-            font-size:11px;
-            color:#c4ccda;
-        }
-
-        .crumb .current {
-            color:#172033;
-            font-weight:800;
+            color: #c4ccda;
+            font-size: 11px;
         }
 
         .search {
-            width:285px;
-            height:42px;
-            border:1px solid var(--border);
-            border-radius:12px;
-            display:flex;
-            align-items:center;
-            gap:10px;
-            padding:0 12px;
-            color:#9aa6b8;
+            width: 285px;
+            height: 42px;
+            padding: 0 12px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #9aa6b8;
         }
 
         .search input {
-            width:100%;
-            background:transparent;
-            font-size:13px;
+            width: 100%;
+            border: 0;
+            background: transparent;
+            font-size: 13px;
         }
 
         .shortcut {
-            font-size:10px;
-            color:#9aa6b8;
-            background:#f5f7fb;
-            border:1px solid #e8edf5;
-            border-radius:5px;
-            padding:3px 6px;
-            white-space:nowrap;
+            padding: 3px 6px;
+            border: 1px solid #e8edf5;
+            border-radius: 5px;
+            background: #f5f7fb;
+            color: #9aa6b8;
+            font-size: 10px;
+            white-space: nowrap;
         }
 
         .icon-btn {
-            width:40px;
-            height:40px;
-            border:1px solid var(--border);
-            background:#fff;
-            border-radius:50%;
-            color:#526074;
-            position:relative;
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: #fff;
+            color: #526074;
         }
 
         .dot {
-            position:absolute;
-            right:7px;
-            top:7px;
-            width:7px;
-            height:7px;
-            border-radius:50%;
-            background:#1677ff;
-            border:2px solid #fff;
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            width: 7px;
+            height: 7px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            background: var(--primary);
         }
 
         .lang {
-            height:40px;
-            padding:0 12px;
-            border:1px solid var(--border);
-            border-radius:11px;
-            display:flex;
-            align-items:center;
-            gap:8px;
-            font-size:13px;
-            font-weight:600;
-            color:#526074;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #526074;
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .lang img {
-            width:21px;
+            width: 21px;
         }
 
-        /* USER */
+        /* =========================
+           USER
+        ========================= */
 
         .user-dropdown {
-            position:relative;
+            position: relative;
         }
 
         .user {
-            height:44px;
-            padding:4px 10px 4px 4px;
-            border:1px solid var(--border);
-            background:#fff;
-            border-radius:24px;
-            display:flex;
-            align-items:center;
-            gap:9px;
+            height: 44px;
+            padding: 4px 10px 4px 4px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            gap: 9px;
         }
 
         .avatar {
-            width:35px;
-            height:35px;
-            border-radius:50%;
-            display:grid;
-            place-items:center;
-            background:linear-gradient(135deg,#d9edff,#b8dcff);
-            color:#1677ff;
-            font-weight:800;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg,#d9edff,#b8dcff);
+            color: var(--primary);
+            font-weight: 800;
         }
 
         .user-name {
-            font-size:13px;
-            font-weight:800;
+            font-size: 13px;
+            font-weight: 800;
         }
 
         .user-menu {
-            position:absolute;
-            right:0;
-            top:52px;
-            width:235px;
-            background:#fff;
-            border:1px solid var(--border);
-            border-radius:15px;
-            padding:9px;
-            box-shadow:0 15px 40px rgba(20,40,80,.15);
-            opacity:0;
-            visibility:hidden;
-            transform:translateY(-8px);
-            transition:.2s;
-            z-index:2000;
+            position: absolute;
+            top: 52px;
+            right: 0;
+            width: 235px;
+            padding: 9px;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 15px 40px rgba(20,40,80,.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: .2s;
+            z-index: 2000;
         }
 
         .user-dropdown.open .user-menu {
-            opacity:1;
-            visibility:visible;
-            transform:translateY(0);
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
         .user-menu-header {
-            display:flex;
-            align-items:center;
-            gap:10px;
-            padding:8px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .user-menu-header strong {
-            display:block;
-            font-size:13px;
+            display: block;
+            font-size: 13px;
         }
 
         .user-menu-header span {
-            display:block;
-            margin-top:3px;
-            color:#94a0b2;
-            font-size:10px;
+            display: block;
+            margin-top: 3px;
+            color: #94a0b2;
+            font-size: 10px;
         }
 
         .user-menu-line {
-            height:1px;
-            background:#edf1f6;
-            margin:5px 0;
+            height: 1px;
+            margin: 5px 0;
+            background: #edf1f6;
         }
 
         .user-menu button {
-            width:100%;
-            height:39px;
-            display:flex;
-            align-items:center;
-            gap:10px;
-            padding:0 10px;
-            background:transparent;
-            border-radius:9px;
-            color:#526074;
-            font-size:12px;
-            font-weight:700;
-            text-align:left;
+            width: 100%;
+            height: 39px;
+            padding: 0 10px;
+            border-radius: 9px;
+            background: transparent;
+            color: #526074;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: left;
         }
 
         .user-menu button:hover {
-            background:#eef6ff;
-            color:#1677ff;
+            background: #eef6ff;
+            color: var(--primary);
         }
 
         .user-menu .logout-item {
-            color:#ef4444;
+            color: var(--danger);
         }
 
-        /* CONTENT */
+        /* =========================
+           CONTENT
+        ========================= */
 
         .content {
-            padding:28px;
-            max-width:1500px;
-            margin:auto;
+            max-width: 1500px;
+            margin: auto;
+            padding: 28px;
         }
 
         .page-title {
-            margin-bottom:20px;
+            margin-bottom: 20px;
         }
 
         .page-title h1 {
-            font-size:25px;
-            font-weight:800;
+            font-size: 25px;
+            font-weight: 800;
         }
 
         .page-title p {
-            margin-top:5px;
-            color:#8a96aa;
-            font-size:13px;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 13px;
         }
 
         .layout {
-            display:grid;
-            grid-template-columns:minmax(0,1fr) 320px;
-            gap:20px;
+            display: grid;
+            grid-template-columns: minmax(0,1fr) 320px;
+            gap: 20px;
         }
 
         .card {
-            background:#fff;
-            border:1px solid #e8eef7;
-            border-radius:18px;
-            box-shadow:0 5px 20px rgba(31,51,73,.045);
-            padding:22px;
+            padding: 22px;
+            border: 1px solid #e8eef7;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(31,51,73,.045);
         }
 
         .card-title {
-            display:flex;
-            align-items:center;
-            gap:10px;
-            font-size:16px;
-            font-weight:800;
-            margin-bottom:20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 800;
         }
 
         .fb-icon {
-            width:42px;
-            height:42px;
-            border-radius:12px;
-            display:grid;
-            place-items:center;
-            background:#eaf3ff;
-            color:#1877f2;
-            font-size:21px;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: #eaf3ff;
+            color: #1877f2;
+            font-size: 21px;
         }
 
-        /* SERVICE */
+        /* =========================
+           BALANCE
+        ========================= */
+
+        .balance-box {
+            margin-bottom: 18px;
+            padding: 15px 17px;
+            border: 1px solid #dceaff;
+            border-radius: 14px;
+            background: linear-gradient(135deg,#eef6ff,#f8fbff);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .balance-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .balance-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: #dceeff;
+            color: var(--primary);
+            display: grid;
+            place-items: center;
+        }
+
+        .balance-label {
+            color: #758299;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .balance-value {
+            margin-top: 2px;
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .refresh-balance {
+            width: 35px;
+            height: 35px;
+            border-radius: 9px;
+            background: #fff;
+            color: var(--primary);
+            border: 1px solid #dceaff;
+        }
+
+        /* =========================
+           SERVICE
+        ========================= */
 
         .service-box {
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            gap:16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
 
         .field {
-            display:flex;
-            flex-direction:column;
-            gap:7px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
         }
 
         .field.full {
-            grid-column:1/-1;
+            grid-column: 1/-1;
         }
 
         .field label {
-            color:#526074;
-            font-size:12px;
-            font-weight:800;
+            color: #526074;
+            font-size: 12px;
+            font-weight: 800;
         }
 
         .field input,
         .field select {
-            height:46px;
-            width:100%;
-            border:1px solid #dfe7f2;
-            border-radius:11px;
-            padding:0 13px;
-            color:#334155;
-            background:#fff;
-            font-size:13px;
+            width: 100%;
+            height: 46px;
+            padding: 0 13px;
+            border: 1px solid #dfe7f2;
+            border-radius: 11px;
+            color: #334155;
+            background: #fff;
+            font-size: 13px;
         }
 
         .field input:focus,
         .field select:focus {
-            border-color:#7eb8ff;
-            box-shadow:0 0 0 3px rgba(22,119,255,.08);
+            border-color: #7eb8ff;
+            box-shadow: 0 0 0 3px rgba(22,119,255,.08);
         }
 
         .field small {
-            color:#8a96aa;
-            font-size:10px;
-            margin-top:-2px;
+            margin-top: -2px;
+            color: #8a96aa;
+            font-size: 10px;
         }
 
+        .link-error {
+            display: none;
+            margin-top: -2px;
+            color: var(--danger);
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           QUANTITY
+        ========================= */
+
+        .quantity-control {
+            height: 46px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #dfe7f2;
+            border-radius: 11px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .quantity-control button {
+            width: 46px;
+            height: 100%;
+            background: #f5f8fc;
+            color: #526074;
+            font-size: 15px;
+            transition: .2s;
+        }
+
+        .quantity-control button:hover {
+            background: #eaf3ff;
+            color: var(--primary);
+        }
+
+        .quantity-control input {
+            height: 100%;
+            border: 0;
+            border-radius: 0;
+            text-align: center;
+            box-shadow: none !important;
+        }
+
+        /* =========================
+           PRICE
+        ========================= */
+
         .price {
-            margin-top:18px;
-            padding:16px;
-            border-radius:13px;
-            background:#eef6ff;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 13px;
+            background: #eef6ff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .price span {
-            color:#738096;
-            font-size:12px;
-            font-weight:700;
+            color: #738096;
+            font-size: 12px;
+            font-weight: 700;
         }
 
         .price strong {
-            color:#1677ff;
-            font-size:18px;
+            color: var(--primary);
+            font-size: 18px;
         }
 
+        .price-note {
+            margin-top: 7px;
+            color: #8a96aa;
+            font-size: 10px;
+            text-align: right;
+        }
+
+        /* =========================
+           ORDER BUTTON
+        ========================= */
+
         .btn-order {
-            width:100%;
-            height:48px;
-            margin-top:16px;
-            border-radius:12px;
-            background:linear-gradient(100deg,#0878ff,#3099ff);
-            color:#fff;
-            font-size:14px;
-            font-weight:800;
-            box-shadow:0 8px 18px rgba(22,119,255,.18);
+            width: 100%;
+            height: 48px;
+            margin-top: 16px;
+            border-radius: 12px;
+            background: linear-gradient(100deg,#0878ff,#3099ff);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            box-shadow: 0 8px 18px rgba(22,119,255,.18);
+            transition: .2s;
         }
 
         .btn-order:hover {
-            transform:translateY(-1px);
+            transform: translateY(-1px);
         }
 
-        /* INFO */
+        .btn-order:disabled {
+            cursor: not-allowed;
+            opacity: .65;
+            transform: none;
+        }
+
+        /* =========================
+           INFO
+        ========================= */
 
         .info-list {
-            display:flex;
-            flex-direction:column;
-            gap:12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .info-item {
-            display:flex;
-            gap:12px;
-            padding:12px;
-            border:1px solid #edf1f6;
-            border-radius:12px;
+            padding: 12px;
+            border: 1px solid #edf1f6;
+            border-radius: 12px;
+            display: flex;
+            gap: 12px;
         }
 
         .info-item i {
-            color:#1677ff;
-            width:20px;
-            text-align:center;
-            margin-top:2px;
+            width: 20px;
+            margin-top: 2px;
+            color: var(--primary);
+            text-align: center;
         }
 
         .info-item div {
-            font-size:12px;
-            color:#68758a;
-            line-height:1.5;
+            color: #68758a;
+            font-size: 12px;
+            line-height: 1.5;
         }
 
         .info-item strong {
-            display:block;
-            color:#26344a;
-            margin-bottom:2px;
+            display: block;
+            margin-bottom: 2px;
+            color: #26344a;
         }
 
         .server-box {
-            margin-top:18px;
-            padding:15px;
-            border-radius:13px;
-            background:#f5f8fc;
+            margin-top: 18px;
+            padding: 15px;
+            border-radius: 13px;
+            background: #f5f8fc;
         }
 
         .server-box strong {
-            font-size:13px;
+            font-size: 13px;
         }
 
         .online {
-            float:right;
-            color:#16b978;
-            font-size:11px;
-            font-weight:800;
+            float: right;
+            color: #16b978;
+            font-size: 11px;
+            font-weight: 800;
         }
 
-        .online:before {
-            content:"";
-            display:inline-block;
-            width:7px;
-            height:7px;
-            background:#16b978;
-            border-radius:50%;
-            margin-right:5px;
+        .online::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            margin-right: 5px;
+            display: inline-block;
+            border-radius: 50%;
+            background: #16b978;
         }
 
-        /* TABLE */
+        /* =========================
+           TABLE
+        ========================= */
 
         .table-card {
-            margin-top:20px;
+            margin-top: 20px;
         }
 
         .table-wrap {
-            overflow-x:auto;
+            overflow-x: auto;
         }
 
         table {
-            width:100%;
-            border-collapse:collapse;
-            min-width:650px;
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
         }
 
         th {
-            background:#f7f9fc;
-            color:#7d899c;
-            font-size:11px;
-            text-align:left;
-            padding:12px;
+            padding: 12px;
+            background: #f7f9fc;
+            color: #7d899c;
+            font-size: 11px;
+            text-align: left;
         }
 
         td {
-            border-top:1px solid #edf1f6;
-            padding:13px 12px;
-            font-size:12px;
-            color:#526074;
+            padding: 13px 12px;
+            border-top: 1px solid #edf1f6;
+            color: #526074;
+            font-size: 12px;
         }
 
         .status {
-            display:inline-flex;
-            padding:4px 8px;
-            border-radius:7px;
-            background:#e9faf3;
-            color:#16a76f;
-            font-size:10px;
-            font-weight:800;
+            padding: 4px 8px;
+            border-radius: 7px;
+            background: #eef6ff;
+            color: var(--primary);
+            display: inline-flex;
+            font-size: 10px;
+            font-weight: 800;
         }
 
-        /* SUPPORT */
+        /* =========================
+           SUPPORT
+        ========================= */
 
         .support {
-            position:fixed;
-            right:25px;
-            bottom:25px;
-            width:64px;
-            height:64px;
-            border-radius:50%;
-            background:linear-gradient(145deg,#3568ee,#244bd5);
-            color:#fff;
-            z-index:1100;
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            justify-content:center;
-            box-shadow:0 8px 25px rgba(37,83,220,.35);
-            font-size:10px;
-            font-weight:800;
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(145deg,#3568ee,#244bd5);
+            color: #fff;
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(37,83,220,.35);
+            font-size: 10px;
+            font-weight: 800;
         }
 
         .support i {
-            font-size:19px;
-            margin-bottom:2px;
+            margin-bottom: 2px;
+            font-size: 19px;
         }
 
-        /* RESPONSIVE */
+        /* =========================
+           RESPONSIVE
+        ========================= */
 
         @media(max-width:1100px) {
             .layout {
-                grid-template-columns:1fr;
+                grid-template-columns: 1fr;
             }
         }
 
         @media(max-width:760px) {
             :root {
-                --sidebar:0px;
+                --sidebar: 0px;
             }
 
             .sidebar {
-                transform:translateX(-100%);
+                transform: translateX(-100%);
             }
 
             .main {
-                margin-left:0;
+                margin-left: 0;
             }
 
             .topbar {
-                padding:0 15px;
+                padding: 0 15px;
             }
 
             .crumb,
             .lang {
-                display:none;
+                display: none;
             }
 
             .search {
-                width:200px;
+                width: 200px;
             }
 
             .content {
-                padding:15px;
+                padding: 15px;
             }
         }
 
         @media(max-width:560px) {
             .search {
-                display:none;
+                display: none;
             }
 
             .service-box {
-                grid-template-columns:1fr;
+                grid-template-columns: 1fr;
             }
 
             .field.full {
-                grid-column:auto;
+                grid-column: auto;
             }
 
             .user-name {
-                display:none;
+                display: none;
             }
         }
     </style>
@@ -699,106 +842,161 @@
 
 <body>
 
-<!-- SIDEBAR -->
+<!-- =========================
+     SIDEBAR
+========================= -->
+
 <aside class="sidebar">
 
-    <div class="brand">HOANGKUN</div>
+    <div class="brand">
+        HOANGKUN
+    </div>
 
     <div class="sidebar-scroll">
 
         <div class="sb-title">Quản lý chung</div>
 
         <button class="sb-mi" onclick="go('trangchu.html')">
-            <span class="sb-icon"><i class="fa-solid fa-house"></i></span>
+            <span class="sb-icon">
+                <i class="fa-solid fa-house"></i>
+            </span>
             Trang chủ
         </button>
 
         <button class="sb-mi" onclick="go('website-api.html')">
-            <span class="sb-icon"><i class="fa-solid fa-display"></i></span>
+            <span class="sb-icon">
+                <i class="fa-solid fa-display"></i>
+            </span>
             Website & API
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="arrow">
+                <i class="fa-solid fa-chevron-right"></i>
+            </span>
         </button>
 
         <button class="sb-mi" onclick="go('banggia.html')">
-            <span class="sb-icon"><i class="fa-solid fa-chart-simple"></i></span>
+            <span class="sb-icon">
+                <i class="fa-solid fa-chart-simple"></i>
+            </span>
             Bảng giá & Cấp bậc
         </button>
 
         <button class="sb-mi" onclick="go('kiemtien.html')">
-            <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span>
+            <span class="sb-icon">
+                <i class="fa-solid fa-circle-dollar-to-slot"></i>
+            </span>
             Kiếm tiền
         </button>
 
         <button class="sb-mi" onclick="openZalo()">
-            <span class="sb-icon"><i class="fa-solid fa-headset"></i></span>
+            <span class="sb-icon">
+                <i class="fa-solid fa-headset"></i>
+            </span>
             Liên hệ CSKH
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="arrow">
+                <i class="fa-solid fa-chevron-right"></i>
+            </span>
         </button>
 
         <div class="sb-title">Tài khoản</div>
 
         <button class="sb-mi" onclick="go('taikhoan.html')">
-            <span class="sb-icon"><i class="fa-regular fa-user"></i></span>
+            <span class="sb-icon">
+                <i class="fa-regular fa-user"></i>
+            </span>
             Tài khoản & bảo mật
         </button>
 
         <button class="sb-mi" onclick="go('naptien.html')">
-            <span class="sb-icon"><i class="fa-regular fa-credit-card"></i></span>
+            <span class="sb-icon">
+                <i class="fa-regular fa-credit-card"></i>
+            </span>
             Nạp tiền
         </button>
 
         <button class="sb-mi" onclick="go('lichsu.html')">
-            <span class="sb-icon"><i class="fa-regular fa-clock"></i></span>
+            <span class="sb-icon">
+                <i class="fa-regular fa-clock"></i>
+            </span>
             Nhật ký hoạt động
         </button>
 
         <div class="sb-title">Danh sách dịch vụ</div>
 
         <button class="sb-mi">
-            <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span>
+            <span class="sb-icon">
+                <i class="fa-solid fa-circle-dollar-to-slot"></i>
+            </span>
             Dịch vụ khác
             <span class="badge">MỚI</span>
         </button>
 
         <button class="sb-mi active" onclick="go('facebook.html')">
-            <span class="sb-icon"><i class="fa-brands fa-facebook"></i></span>
+            <span class="sb-icon">
+                <i class="fa-brands fa-facebook"></i>
+            </span>
             Facebook
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="arrow">
+                <i class="fa-solid fa-chevron-right"></i>
+            </span>
         </button>
 
         <button class="sb-mi" onclick="go('instagram.html')">
-            <span class="sb-icon"><i class="fa-brands fa-instagram"></i></span>
+            <span class="sb-icon">
+                <i class="fa-brands fa-instagram"></i>
+            </span>
             Instagram
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="arrow">
+                <i class="fa-solid fa-chevron-right"></i>
+            </span>
         </button>
 
         <button class="sb-mi" onclick="go('tiktok.html')">
-            <span class="sb-icon"><i class="fa-brands fa-tiktok"></i></span>
+            <span class="sb-icon">
+                <i class="fa-brands fa-tiktok"></i>
+            </span>
             TikTok
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="arrow">
+                <i class="fa-solid fa-chevron-right"></i>
+            </span>
         </button>
 
         <button class="sb-mi" onclick="go('youtube.html')">
-            <span class="sb-icon"><i class="fa-brands fa-youtube"></i></span>
+            <span class="sb-icon">
+                <i class="fa-brands fa-youtube"></i>
+            </span>
             YouTube
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="arrow">
+                <i class="fa-solid fa-chevron-right"></i>
+            </span>
         </button>
 
     </div>
 
     <div class="sidebar-footer">
-        <button class="sb-mi" onclick="logout()" style="color:#ff6670">
+
+        <button
+            class="sb-mi"
+            onclick="logout()"
+            style="color:#ff6670"
+        >
             <span class="sb-icon">
                 <i class="fa-solid fa-right-from-bracket"></i>
             </span>
             Đăng xuất
         </button>
+
     </div>
 
 </aside>
 
-<!-- MAIN -->
+
+<!-- =========================
+     MAIN
+========================= -->
+
 <main class="main">
+
+    <!-- TOPBAR -->
 
     <header class="topbar">
 
@@ -811,48 +1009,101 @@
             </div>
 
             <div class="search">
+
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input id="serviceSearch" type="text" placeholder="Tìm dịch vụ">
-                <span class="shortcut">Ctrl K</span>
+
+                <input
+                    id="serviceSearch"
+                    type="text"
+                    placeholder="Tìm dịch vụ"
+                >
+
+                <span class="shortcut">
+                    Ctrl K
+                </span>
+
             </div>
 
         </div>
 
         <div class="top-right">
 
-            <button class="icon-btn" onclick="go('taikhoan.html')">
+            <button
+                class="icon-btn"
+                onclick="go('taikhoan.html')"
+            >
                 <i class="fa-solid fa-gear"></i>
             </button>
 
-            <button class="icon-btn" onclick="go('thongbao.html')">
+            <button
+                class="icon-btn"
+                onclick="go('thongbao.html')"
+            >
                 <i class="fa-regular fa-bell"></i>
+
                 <span class="dot"></span>
             </button>
 
             <div class="lang">
+
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg">
+
                 <span>VN</span>
                 Tiếng Việt
-                <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
+
+                <i
+                    class="fa-solid fa-chevron-down"
+                    style="font-size:9px"
+                ></i>
+
             </div>
 
             <div class="user-dropdown">
 
                 <button class="user" id="userBtn">
-                    <div class="avatar" id="avatarMini">H</div>
-                    <span class="user-name" id="navUserName">Đang tải...</span>
+
+                    <div
+                        class="avatar"
+                        id="avatarMini"
+                    >
+                        H
+                    </div>
+
+                    <span
+                        class="user-name"
+                        id="navUserName"
+                    >
+                        Đang tải...
+                    </span>
+
                     <i class="fa-solid fa-chevron-down"></i>
+
                 </button>
 
-                <div class="user-menu" id="userMenu">
+                <div
+                    class="user-menu"
+                    id="userMenu"
+                >
 
                     <div class="user-menu-header">
-                        <div class="avatar" id="menuAvatar">H</div>
+
+                        <div
+                            class="avatar"
+                            id="menuAvatar"
+                        >
+                            H
+                        </div>
 
                         <div>
-                            <strong id="menuUserName">Đang tải...</strong>
-                            <span>Thành viên</span>
+                            <strong id="menuUserName">
+                                Đang tải...
+                            </strong>
+
+                            <span>
+                                Thành viên
+                            </span>
                         </div>
+
                     </div>
 
                     <div class="user-menu-line"></div>
@@ -874,7 +1125,10 @@
 
                     <div class="user-menu-line"></div>
 
-                    <button class="logout-item" onclick="logout()">
+                    <button
+                        class="logout-item"
+                        onclick="logout()"
+                    >
                         <i class="fa-solid fa-right-from-bracket"></i>
                         Đăng xuất
                     </button>
@@ -887,33 +1141,92 @@
 
     </header>
 
-    <!-- CONTENT -->
+
+    <!-- =========================
+         CONTENT
+    ========================= -->
+
     <div class="content">
 
         <div class="page-title">
+
             <h1>Facebook</h1>
-            <p>Dịch vụ Facebook chất lượng cao tại HoangKun Store.</p>
+
+            <p>
+                Dịch vụ Facebook chất lượng cao tại HoangKun Store.
+            </p>
+
         </div>
+
 
         <div class="layout">
 
-            <!-- ORDER -->
+            <!-- =========================
+                 LEFT
+            ========================= -->
+
             <div>
 
                 <div class="card">
 
                     <div class="card-title">
+
                         <div class="fb-icon">
                             <i class="fa-brands fa-facebook"></i>
                         </div>
 
                         Dịch vụ Facebook
+
                     </div>
+
+
+                    <!-- SỐ DƯ -->
+
+                    <div class="balance-box">
+
+                        <div class="balance-left">
+
+                            <div class="balance-icon">
+                                <i class="fa-solid fa-coins"></i>
+                            </div>
+
+                            <div>
+
+                                <div class="balance-label">
+                                    Số dư hiện tại
+                                </div>
+
+                                <div
+                                    class="balance-value"
+                                    id="balanceValue"
+                                >
+                                    Đang tải...
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <button
+                            class="refresh-balance"
+                            onclick="loadBalance()"
+                            title="Làm mới số dư"
+                        >
+                            <i class="fa-solid fa-rotate"></i>
+                        </button>
+
+                    </div>
+
+
+                    <!-- FORM -->
 
                     <div class="service-box">
 
                         <div class="field full">
-                            <label>Chọn dịch vụ</label>
+
+                            <label>
+                                Chọn dịch vụ
+                            </label>
 
                             <select id="service">
 
@@ -929,73 +1242,163 @@
                                     Like Comment — 1.300 xu / 1
                                 </option>
 
-                                <option value="postview">
+                                <option value="post_view">
                                     View bài viết — 300 xu / 1
                                 </option>
 
-                                <option value="pagelike">
+                                <option value="page_like">
                                     Like Page — 2.300 xu / 1
                                 </option>
 
-                                <option value="storyview">
+                                <option value="story_view">
                                     View Story — 300 xu / 1
                                 </option>
 
                             </select>
+
                         </div>
 
+
+                        <!-- LINK -->
+
                         <div class="field">
-                            <label>Link Facebook</label>
+
+                            <label>
+                                Link Facebook
+                            </label>
 
                             <input
                                 id="link"
                                 type="text"
-                                placeholder="https://facebook.com/...">
+                                autocomplete="off"
+                                placeholder="https://facebook.com/..."
+                            >
+
+                            <small>
+                                Ví dụ: https://facebook.com/ten-trang
+                            </small>
+
+                            <span
+                                class="link-error"
+                                id="linkError"
+                            ></span>
+
                         </div>
+
+
+                        <!-- QUANTITY -->
 
                         <div class="field">
-                            <label>Số lượng</label>
 
-                            <input
-                                id="quantity"
-                                type="number"
-                                value="50"
-                                min="50"
-                                step="1"
-                                placeholder="Nhập số lượng">
+                            <label>
+                                Số lượng
+                            </label>
 
-                            <small>Số lượng tối thiểu: 50</small>
+                            <div class="quantity-control">
+
+                                <button
+                                    type="button"
+                                    onclick="changeQuantity(-1)"
+                                >
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+
+                                <input
+                                    id="quantity"
+                                    type="number"
+                                    value="50"
+                                    min="50"
+                                    step="1"
+                                    inputmode="numeric"
+                                >
+
+                                <button
+                                    type="button"
+                                    onclick="changeQuantity(1)"
+                                >
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+
+                            </div>
+
+                            <small>
+                                Số lượng tối thiểu: 50
+                            </small>
+
                         </div>
 
+
+                        <!-- NOTE -->
+
                         <div class="field full">
-                            <label>Ghi chú</label>
+
+                            <label>
+                                Ghi chú
+                            </label>
 
                             <input
                                 id="note"
                                 type="text"
-                                placeholder="Nhập ghi chú nếu cần...">
+                                maxlength="300"
+                                placeholder="Nhập ghi chú nếu cần..."
+                            >
+
                         </div>
 
                     </div>
 
+
+                    <!-- PRICE -->
+
                     <div class="price">
-                        <span>Tạm tính</span>
-                        <strong id="totalPrice">35.000 xu</strong>
+
+                        <span>
+                            Tạm tính
+                        </span>
+
+                        <strong id="totalPrice">
+                            35.000 xu
+                        </strong>
+
                     </div>
 
-                    <button class="btn-order" onclick="createOrder()">
+                    <div
+                        class="price-note"
+                        id="priceNote"
+                    >
+                        Đơn giá: 700 xu / 1
+                    </div>
+
+
+                    <!-- ORDER -->
+
+                    <button
+                        class="btn-order"
+                        id="orderButton"
+                        onclick="createOrder()"
+                    >
                         <i class="fa-solid fa-cart-shopping"></i>
                         &nbsp; Đặt dịch vụ
                     </button>
 
                 </div>
 
-                <!-- HISTORY -->
+
+                <!-- =========================
+                     HISTORY
+                ========================= -->
+
                 <div class="card table-card">
 
                     <div class="card-title">
-                        <i class="fa-solid fa-clock-rotate-left" style="color:#1677ff"></i>
+
+                        <i
+                            class="fa-solid fa-clock-rotate-left"
+                            style="color:#1677ff"
+                        ></i>
+
                         Đơn hàng Facebook gần đây
+
                     </div>
 
                     <div class="table-wrap">
@@ -1003,21 +1406,33 @@
                         <table>
 
                             <thead>
+
                                 <tr>
                                     <th>Mã đơn</th>
                                     <th>Dịch vụ</th>
                                     <th>Số lượng</th>
+                                    <th>Chi phí</th>
                                     <th>Trạng thái</th>
                                     <th>Thời gian</th>
                                 </tr>
+
                             </thead>
 
                             <tbody id="orderTable">
 
                                 <tr>
-                                    <td colspan="5" style="text-align:center;color:#9aa6b8">
+
+                                    <td
+                                        colspan="6"
+                                        style="
+                                            text-align:center;
+                                            color:#9aa6b8;
+                                            padding:25px
+                                        "
+                                    >
                                         Chưa có đơn hàng
                                     </td>
+
                                 </tr>
 
                             </tbody>
@@ -1030,63 +1445,126 @@
 
             </div>
 
-            <!-- RIGHT -->
+
+            <!-- =========================
+                 RIGHT
+            ========================= -->
+
             <div>
 
                 <div class="card">
 
                     <div class="card-title">
-                        <i class="fa-solid fa-circle-info" style="color:#1677ff"></i>
+
+                        <i
+                            class="fa-solid fa-circle-info"
+                            style="color:#1677ff"
+                        ></i>
+
                         Thông tin dịch vụ
+
                     </div>
+
 
                     <div class="info-list">
 
                         <div class="info-item">
+
                             <i class="fa-solid fa-bolt"></i>
+
                             <div>
-                                <strong>Tốc độ xử lý</strong>
+
+                                <strong>
+                                    Tốc độ xử lý
+                                </strong>
+
                                 Hệ thống tự động xử lý đơn sau khi đặt.
+
                             </div>
+
                         </div>
 
+
                         <div class="info-item">
+
                             <i class="fa-solid fa-coins"></i>
+
                             <div>
-                                <strong>Bảng giá</strong>
+
+                                <strong>
+                                    Bảng giá
+                                </strong>
+
                                 Giá dịch vụ được tính theo số xu trên mỗi đơn vị.
+
                             </div>
+
                         </div>
 
+
                         <div class="info-item">
+
                             <i class="fa-solid fa-shield-halved"></i>
+
                             <div>
-                                <strong>An toàn</strong>
+
+                                <strong>
+                                    An toàn
+                                </strong>
+
                                 Không yêu cầu mật khẩu tài khoản Facebook.
+
                             </div>
+
                         </div>
 
+
                         <div class="info-item">
+
                             <i class="fa-solid fa-rotate"></i>
+
                             <div>
-                                <strong>Bảo hành</strong>
+
+                                <strong>
+                                    Bảo hành
+                                </strong>
+
                                 Hỗ trợ xử lý khi đơn gặp vấn đề.
+
                             </div>
+
                         </div>
 
+
                         <div class="info-item">
+
                             <i class="fa-solid fa-headset"></i>
+
                             <div>
-                                <strong>Hỗ trợ</strong>
+
+                                <strong>
+                                    Hỗ trợ
+                                </strong>
+
                                 Liên hệ CSKH nếu cần hỗ trợ đơn hàng.
+
                             </div>
+
                         </div>
 
                     </div>
 
+
                     <div class="server-box">
-                        <strong>Trạng thái hệ thống</strong>
-                        <span class="online">ONLINE</span>
+
+                        <strong>
+                            Trạng thái hệ thống
+                        </strong>
+
+                        <span class="online">
+                            ONLINE
+                        </span>
+
                     </div>
 
                 </div>
@@ -1099,22 +1577,32 @@
 
 </main>
 
+
 <!-- SUPPORT -->
-<button class="support" onclick="openZalo()">
+
+<button
+    class="support"
+    onclick="openZalo()"
+>
     <i class="fa-solid fa-headset"></i>
     <span>Liên hệ</span>
 </button>
 
+
 <script>
 
+/* =====================================================
+   FIREBASE
+===================================================== */
+
 const firebaseConfig = {
-    apiKey:"AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
-    authDomain:"shophoangkun.firebaseapp.com",
-    databaseURL:"https://shophoangkun-default-rtdb.firebaseio.com",
-    projectId:"shophoangkun",
-    storageBucket:"shophoangkun.firebasestorage.app",
-    messagingSenderId:"364993334554",
-    appId:"1:364993334554:web:800c66509b355ebf5370a3"
+    apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
+    authDomain: "shophoangkun.firebaseapp.com",
+    databaseURL: "https://shophoangkun-default-rtdb.firebaseio.com",
+    projectId: "shophoangkun",
+    storageBucket: "shophoangkun.firebasestorage.app",
+    messagingSenderId: "364993334554",
+    appId: "1:364993334554:web:800c66509b355ebf5370a3"
 };
 
 if (!firebase.apps.length) {
@@ -1124,30 +1612,36 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 const db = firebase.database();
 
-/* =========================
+
+/* =====================================================
    ĐIỀU HƯỚNG
-========================= */
+===================================================== */
 
 function go(file) {
     window.location.href = file;
 }
 
 function openZalo() {
-    window.open("https://zalo.me/0788265513", "_blank");
+    window.open(
+        "https://zalo.me/0788265513",
+        "_blank"
+    );
 }
 
-/* =========================
-   FORMAT XU
-========================= */
 
-function formatXu(value) {
-    return Number(value || 0).toLocaleString("vi-VN") + " xu";
-}
+/* =====================================================
+   BIẾN
+===================================================== */
 
-/* =========================
-   DỊCH VỤ FACEBOOK
-   Đơn giá / 1 đơn vị
-========================= */
+let currentUser = null;
+let currentBalance = 0;
+let balanceField = "xu";
+let isOrdering = false;
+
+
+/* =====================================================
+   GIÁ DỊCH VỤ
+===================================================== */
 
 const prices = {
     reaction: 700,
@@ -1158,9 +1652,10 @@ const prices = {
     story_view: 300
 };
 
-/* =========================
+
+/* =====================================================
    TÊN DỊCH VỤ
-========================= */
+===================================================== */
 
 const serviceNames = {
     reaction: "Tăng thả cảm xúc",
@@ -1171,41 +1666,113 @@ const serviceNames = {
     story_view: "Tăng View Story"
 };
 
-/* =========================
-   USER
-========================= */
 
-let currentUser = null;
+/* =====================================================
+   ELEMENT
+===================================================== */
+
+const service = document.getElementById("service");
+const quantity = document.getElementById("quantity");
+const linkInput = document.getElementById("link");
+const noteInput = document.getElementById("note");
+
+const totalPrice = document.getElementById("totalPrice");
+const priceNote = document.getElementById("priceNote");
+
+const linkError = document.getElementById("linkError");
+const orderButton = document.getElementById("orderButton");
+
+const balanceValue = document.getElementById("balanceValue");
+const orderTable = document.getElementById("orderTable");
+
+
+/* =====================================================
+   FORMAT XU
+===================================================== */
+
+function formatXu(value) {
+    return Number(value || 0)
+        .toLocaleString("vi-VN") + " xu";
+}
+
+
+/* =====================================================
+   FORMAT THỜI GIAN
+===================================================== */
+
+function formatDate(timestamp) {
+
+    if (!timestamp) {
+        return "---";
+    }
+
+    return new Date(timestamp).toLocaleString(
+        "vi-VN",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+}
+
+
+/* =====================================================
+   USER LOGIN
+===================================================== */
 
 auth.onAuthStateChanged(user => {
 
     if (!user) {
+
         window.location.href = "index.html";
+
         return;
     }
 
     currentUser = user;
 
-    const name = user.displayName || "Thành viên";
-    const letter = name.charAt(0).toUpperCase();
+    const name =
+        user.displayName ||
+        user.email?.split("@")[0] ||
+        "Thành viên";
 
-    document.getElementById("navUserName").textContent = name;
-    document.getElementById("menuUserName").textContent = name;
+    const letter =
+        name.charAt(0).toUpperCase();
 
-    document.getElementById("avatarMini").textContent = letter;
-    document.getElementById("menuAvatar").textContent = letter;
+    document.getElementById(
+        "navUserName"
+    ).textContent = name;
 
-    /* Load lịch sử đơn Facebook */
+    document.getElementById(
+        "menuUserName"
+    ).textContent = name;
+
+    document.getElementById(
+        "avatarMini"
+    ).textContent = letter;
+
+    document.getElementById(
+        "menuAvatar"
+    ).textContent = letter;
+
+    loadBalance();
     loadOrders();
 
 });
 
-/* =========================
-   DROPDOWN
-========================= */
 
-const userBtn = document.getElementById("userBtn");
-const userDropdown = document.querySelector(".user-dropdown");
+/* =====================================================
+   DROPDOWN
+===================================================== */
+
+const userBtn =
+    document.getElementById("userBtn");
+
+const userDropdown =
+    document.querySelector(".user-dropdown");
 
 userBtn.addEventListener("click", e => {
 
@@ -1223,9 +1790,10 @@ document.addEventListener("click", e => {
 
 });
 
-/* =========================
-   SEARCH CTRL + K
-========================= */
+
+/* =====================================================
+   CTRL + K
+===================================================== */
 
 document.addEventListener("keydown", e => {
 
@@ -1236,25 +1804,102 @@ document.addEventListener("keydown", e => {
 
         e.preventDefault();
 
-        document.getElementById("serviceSearch").focus();
+        document
+            .getElementById("serviceSearch")
+            .focus();
 
     }
 
 });
 
-/* =========================
-   ELEMENT
-========================= */
 
-const service = document.getElementById("service");
-const quantity = document.getElementById("quantity");
-const linkInput = document.getElementById("link");
-const totalPrice = document.getElementById("totalPrice");
-const linkError = document.getElementById("linkError");
+/* =====================================================
+   SỐ DƯ
+===================================================== */
 
-/* =========================
-   KIỂM TRA LINK FACEBOOK
-========================= */
+async function loadBalance() {
+
+    if (!currentUser) {
+        return;
+    }
+
+    balanceValue.textContent = "Đang tải...";
+
+    try {
+
+        const snapshot = await db
+            .ref("users")
+            .child(currentUser.uid)
+            .once("value");
+
+        const data = snapshot.val() || {};
+
+        /*
+         * Ưu tiên xu.
+         * Hỗ trợ thêm balance / coins / credit
+         */
+
+        const fields = [
+            "xu",
+            "balance",
+            "coins",
+            "credit"
+        ];
+
+        let found = false;
+
+        for (const field of fields) {
+
+            if (
+                data[field] !== undefined &&
+                data[field] !== null &&
+                !isNaN(Number(data[field]))
+            ) {
+
+                balanceField = field;
+                currentBalance = Number(data[field]);
+
+                found = true;
+
+                break;
+            }
+        }
+
+        if (!found) {
+
+            balanceField = "xu";
+            currentBalance = 0;
+
+        }
+
+        balanceValue.textContent =
+            formatXu(currentBalance);
+
+    } catch (error) {
+
+        console.error(
+            "Lỗi tải số dư:",
+            error
+        );
+
+        balanceValue.textContent =
+            "Không tải được";
+
+        Swal.fire({
+            icon: "error",
+            title: "Không thể tải số dư",
+            text: "Vui lòng kiểm tra kết nối Firebase.",
+            confirmButtonColor: "#1677ff"
+        });
+
+    }
+
+}
+
+
+/* =====================================================
+   LINK FACEBOOK
+===================================================== */
 
 function isValidFacebookUrl(value) {
 
@@ -1262,17 +1907,30 @@ function isValidFacebookUrl(value) {
         return false;
     }
 
+    value = value.trim();
+
     let url;
 
     try {
         url = new URL(value);
-    } catch (error) {
+    } catch {
         return false;
     }
 
-    const host = url.hostname
-        .toLowerCase()
-        .replace(/^www\./, "");
+    const protocol =
+        url.protocol.toLowerCase();
+
+    if (
+        protocol !== "https:" &&
+        protocol !== "http:"
+    ) {
+        return false;
+    }
+
+    const host =
+        url.hostname
+            .toLowerCase()
+            .replace(/^www\./, "");
 
     const allowedHosts = [
         "facebook.com",
@@ -1283,152 +1941,428 @@ function isValidFacebookUrl(value) {
 
     return allowedHosts.some(domain => {
 
-        return host === domain ||
-               host.endsWith("." + domain);
+        return (
+            host === domain ||
+            host.endsWith("." + domain)
+        );
 
     });
 
 }
 
-/* =========================
-   VALIDATE LINK KHI NHẬP
-========================= */
 
-linkInput.addEventListener("input", () => {
+/* =====================================================
+   HIỂN THỊ LỖI LINK
+===================================================== */
 
-    const value = linkInput.value.trim();
+function showLinkError(message) {
 
-    if (!value) {
+    linkInput.style.borderColor =
+        "#ef4444";
 
-        linkInput.style.borderColor = "#dfe7f2";
+    linkError.textContent = message;
+    linkError.style.display = "block";
 
-        if (linkError) {
-            linkError.style.display = "none";
+}
+
+
+/* =====================================================
+   XÓA LỖI LINK
+===================================================== */
+
+function clearLinkError() {
+
+    linkInput.style.borderColor =
+        "#dfe7f2";
+
+    linkError.textContent = "";
+    linkError.style.display = "none";
+
+}
+
+
+/* =====================================================
+   KIỂM TRA LINK KHI NHẬP
+===================================================== */
+
+linkInput.addEventListener(
+    "input",
+    () => {
+
+        const value =
+            linkInput.value.trim();
+
+        if (!value) {
+
+            clearLinkError();
+
+            return;
         }
 
-        return;
+        if (isValidFacebookUrl(value)) {
+
+            linkInput.style.borderColor =
+                "#16b978";
+
+            linkError.style.display =
+                "none";
+
+        } else {
+
+            showLinkError(
+                "Link Facebook không hợp lệ."
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   TĂNG / GIẢM SỐ LƯỢNG
+===================================================== */
+
+function changeQuantity(amount) {
+
+    let current =
+        Number(quantity.value) || 50;
+
+    current += amount;
+
+    if (current < 50) {
+        current = 50;
     }
 
-    if (isValidFacebookUrl(value)) {
+    current = Math.floor(current);
 
-        linkInput.style.borderColor = "#16b978";
+    quantity.value = current;
 
-        if (linkError) {
-            linkError.style.display = "none";
+    updatePrice();
+
+}
+
+
+/* =====================================================
+   KIỂM TRA SỐ LƯỢNG
+===================================================== */
+
+quantity.addEventListener(
+    "input",
+    () => {
+
+        let value =
+            Number(quantity.value);
+
+        if (!Number.isFinite(value)) {
+            value = 50;
         }
 
-    } else {
+        value = Math.floor(value);
 
-        linkInput.style.borderColor = "#ef4444";
-
-        if (linkError) {
-            linkError.style.display = "block";
+        if (value < 50) {
+            value = 50;
         }
+
+        quantity.value = value;
+
+        updatePrice();
 
     }
+);
 
-});
 
-/* =========================
+/* =====================================================
    TÍNH GIÁ
-========================= */
+===================================================== */
 
 function updatePrice() {
 
-    let amount = Number(quantity.value || 0);
+    let amount =
+        Number(quantity.value || 0);
 
-    if (amount < 0) {
-        amount = 0;
+    if (
+        !Number.isFinite(amount) ||
+        amount < 50
+    ) {
+        amount = 50;
     }
 
-    const unitPrice = prices[service.value] || 0;
+    amount = Math.floor(amount);
 
-    const total = amount * unitPrice;
+    quantity.value = amount;
 
-    totalPrice.textContent = formatXu(total);
+    const unitPrice =
+        Number(prices[service.value] || 0);
+
+    const total =
+        amount * unitPrice;
+
+    totalPrice.textContent =
+        formatXu(total);
+
+    priceNote.textContent =
+        "Đơn giá: " +
+        formatXu(unitPrice) +
+        " / 1";
 
 }
 
-/* =========================
-   EVENT TÍNH GIÁ
-========================= */
 
-service.addEventListener("change", updatePrice);
-quantity.addEventListener("input", updatePrice);
+/* =====================================================
+   EVENT GIÁ
+===================================================== */
 
-/* =========================
-   KHÔNG CHO NHẬP < 50
-========================= */
+service.addEventListener(
+    "change",
+    updatePrice
+);
 
-quantity.addEventListener("blur", () => {
 
-    let amount = Number(quantity.value || 0);
-
-    if (amount < 50) {
-        quantity.value = 50;
-        updatePrice();
-    }
-
-});
-
-/* =========================
+/* =====================================================
    TẠO MÃ ĐƠN
-========================= */
+===================================================== */
 
 function generateOrderId() {
 
-    const now = Date.now();
+    const now =
+        Date.now()
+            .toString()
+            .slice(-9);
 
-    const random = Math.floor(
-        1000 + Math.random() * 9000
+    const random =
+        Math.floor(
+            1000 +
+            Math.random() * 9000
+        );
+
+    return "FB" + now + random;
+
+}
+
+
+/* =====================================================
+   LOCAL STORAGE
+===================================================== */
+
+function getLocalKey() {
+
+    return (
+        "hoangkun_facebook_orders_" +
+        currentUser.uid
     );
 
-    return "FB" + now.toString().slice(-8) + random;
+}
+
+
+function saveLocalOrder(order) {
+
+    try {
+
+        let orders =
+            JSON.parse(
+                localStorage.getItem(
+                    getLocalKey()
+                ) || "[]"
+            );
+
+        orders =
+            orders.filter(
+                item =>
+                    item.orderId !==
+                    order.orderId
+            );
+
+        orders.unshift(order);
+
+        orders =
+            orders.slice(0, 50);
+
+        localStorage.setItem(
+            getLocalKey(),
+            JSON.stringify(orders)
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Lỗi lưu local:",
+            error
+        );
+
+    }
 
 }
 
-/* =========================
-   FORMAT THỜI GIAN
-========================= */
 
-function formatDate(timestamp) {
+function getLocalOrders() {
 
-    const date = new Date(timestamp);
+    try {
 
-    return date.toLocaleString("vi-VN", {
-        day:"2-digit",
-        month:"2-digit",
-        year:"numeric",
-        hour:"2-digit",
-        minute:"2-digit"
-    });
+        return JSON.parse(
+            localStorage.getItem(
+                getLocalKey()
+            ) || "[]"
+        );
+
+    } catch {
+
+        return [];
+
+    }
 
 }
 
-/* =========================
-   ĐẶT DỊCH VỤ
-========================= */
+
+/* =====================================================
+   TRỪ XU BẰNG TRANSACTION
+===================================================== */
+
+async function deductBalance(amount) {
+
+    const balanceRef =
+        db
+            .ref("users")
+            .child(currentUser.uid)
+            .child(balanceField);
+
+    const result =
+        await balanceRef.transaction(
+            currentValue => {
+
+                const balance =
+                    Number(currentValue || 0);
+
+                if (balance < amount) {
+
+                    return;
+
+                }
+
+                return balance - amount;
+
+            }
+        );
+
+    if (!result.committed) {
+
+        throw new Error(
+            "INSUFFICIENT_BALANCE"
+        );
+
+    }
+
+    const newBalance =
+        Number(result.snapshot.val() || 0);
+
+    currentBalance = newBalance;
+
+    balanceValue.textContent =
+        formatXu(newBalance);
+
+    return newBalance;
+
+}
+
+
+/* =====================================================
+   HOÀN XU
+===================================================== */
+
+async function refundBalance(amount) {
+
+    try {
+
+        const balanceRef =
+            db
+                .ref("users")
+                .child(currentUser.uid)
+                .child(balanceField);
+
+        const result =
+            await balanceRef.transaction(
+                currentValue => {
+
+                    return (
+                        Number(currentValue || 0) +
+                        Number(amount || 0)
+                    );
+
+                }
+            );
+
+        if (result.committed) {
+
+            currentBalance =
+                Number(
+                    result.snapshot.val() || 0
+                );
+
+            balanceValue.textContent =
+                formatXu(currentBalance);
+
+            return true;
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Lỗi hoàn xu:",
+            error
+        );
+
+    }
+
+    return false;
+
+}
+
+
+/* =====================================================
+   TẠO ĐƠN
+===================================================== */
 
 async function createOrder() {
+
+    if (isOrdering) {
+        return;
+    }
 
     if (!currentUser) {
 
         Swal.fire({
-            icon:"warning",
-            title:"Chưa đăng nhập",
-            text:"Vui lòng đăng nhập trước khi đặt dịch vụ.",
-            confirmButtonColor:"#1677ff"
+            icon: "warning",
+            title: "Chưa đăng nhập",
+            text: "Vui lòng đăng nhập trước khi đặt dịch vụ.",
+            confirmButtonColor: "#1677ff"
         });
 
         return;
     }
 
-    const link = linkInput.value.trim();
-    const amount = Number(quantity.value || 0);
-    const serviceId = service.value;
-    const serviceName = serviceNames[serviceId];
-    const unitPrice = prices[serviceId];
-    const total = amount * unitPrice;
+
+    /* =========================
+       DỮ LIỆU
+    ========================= */
+
+    const link =
+        linkInput.value.trim();
+
+    const amount =
+        Number(quantity.value);
+
+    const serviceId =
+        service.value;
+
+    const serviceName =
+        serviceNames[serviceId];
+
+    const unitPrice =
+        Number(prices[serviceId] || 0);
+
+    const total =
+        amount * unitPrice;
+
 
     /* =========================
        KIỂM TRA LINK
@@ -1436,177 +2370,289 @@ async function createOrder() {
 
     if (!link) {
 
+        showLinkError(
+            "Vui lòng nhập link Facebook."
+        );
+
         linkInput.focus();
 
-        if (linkError) {
-            linkError.textContent =
-                "Vui lòng nhập link Facebook.";
-            linkError.style.display = "block";
-        }
-
         Swal.fire({
-            icon:"warning",
-            title:"Thiếu link Facebook",
-            text:"Vui lòng nhập link Facebook cần chạy.",
-            confirmButtonColor:"#1677ff"
+            icon: "warning",
+            title: "Thiếu link Facebook",
+            text: "Vui lòng nhập link Facebook cần chạy.",
+            confirmButtonColor: "#1677ff"
         });
 
         return;
     }
+
 
     if (!isValidFacebookUrl(link)) {
 
+        showLinkError(
+            "Link không hợp lệ. Vui lòng nhập link Facebook chính xác."
+        );
+
         linkInput.focus();
 
-        if (linkError) {
-            linkError.textContent =
-                "Link không hợp lệ. Hãy nhập link Facebook bắt đầu bằng https://facebook.com/...";
-            linkError.style.display = "block";
-        }
-
         Swal.fire({
-            icon:"error",
-            title:"Link Facebook không hợp lệ",
+            icon: "error",
+            title: "Link Facebook không hợp lệ",
             html:
-                "Vui lòng nhập link Facebook đúng định dạng.<br><br>" +
+                "Vui lòng nhập đúng link Facebook.<br><br>" +
                 "<b>Ví dụ:</b><br>" +
-                "https://facebook.com/...",
-            confirmButtonColor:"#1677ff"
+                "https://facebook.com/ten-trang",
+            confirmButtonColor: "#1677ff"
         });
 
         return;
     }
+
 
     /* =========================
        KIỂM TRA SỐ LƯỢNG
     ========================= */
 
-    if (!Number.isInteger(amount) || amount < 50) {
+    if (
+        !Number.isInteger(amount) ||
+        amount < 50
+    ) {
 
         quantity.value = 50;
+
         updatePrice();
 
         Swal.fire({
-            icon:"warning",
-            title:"Số lượng không hợp lệ",
-            text:"Số lượng tối thiểu là 50.",
-            confirmButtonColor:"#1677ff"
+            icon: "warning",
+            title: "Số lượng không hợp lệ",
+            text: "Số lượng tối thiểu là 50.",
+            confirmButtonColor: "#1677ff"
         });
 
         return;
     }
 
+
     /* =========================
-       DỮ LIỆU ĐƠN
+       KIỂM TRA GIÁ
     ========================= */
 
-    const orderId = generateOrderId();
-    const createdAt = Date.now();
+    if (
+        !Number.isFinite(total) ||
+        total <= 0
+    ) {
 
-    const orderData = {
+        Swal.fire({
+            icon: "error",
+            title: "Không thể tạo đơn",
+            text: "Giá dịch vụ không hợp lệ.",
+            confirmButtonColor: "#1677ff"
+        });
 
-        orderId: orderId,
+        return;
+    }
 
-        userId: currentUser.uid,
-
-        serviceId: serviceId,
-
-        service: serviceName,
-
-        link: link,
-
-        quantity: amount,
-
-        unitPrice: unitPrice,
-
-        total: total,
-
-        status: "Đã đặt - Vui lòng chờ",
-
-        note:
-            document.getElementById("note").value.trim(),
-
-        createdAt: createdAt,
-
-        platform: "Facebook"
-
-    };
 
     /* =========================
-       HIỆN LOADING
+       KIỂM TRA SỐ DƯ
+    ========================= */
+
+    if (currentBalance < total) {
+
+        const thiếu =
+            total - currentBalance;
+
+        Swal.fire({
+            icon: "warning",
+            title: "Không đủ xu",
+            html:
+                "Số dư hiện tại: <b>" +
+                formatXu(currentBalance) +
+                "</b><br>" +
+
+                "Chi phí đơn: <b>" +
+                formatXu(total) +
+                "</b><br>" +
+
+                "Bạn còn thiếu: <b style='color:#ef4444'>" +
+                formatXu(thiếu) +
+                "</b><br><br>" +
+
+                "Vui lòng nạp thêm xu để tiếp tục.",
+            showCancelButton: true,
+            confirmButtonText: "Nạp tiền",
+            cancelButtonText: "Đóng",
+            confirmButtonColor: "#1677ff"
+        }).then(result => {
+
+            if (result.isConfirmed) {
+                go("naptien.html");
+            }
+
+        });
+
+        return;
+    }
+
+
+    /* =========================
+       KHÓA NÚT
+    ========================= */
+
+    isOrdering = true;
+
+    orderButton.disabled = true;
+
+    orderButton.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> ' +
+        'Đang xử lý...';
+
+
+    /* =========================
+       LOADING
     ========================= */
 
     Swal.fire({
-        title:"Đang tạo đơn...",
-        text:"Vui lòng chờ trong giây lát.",
-        allowOutsideClick:false,
-        allowEscapeKey:false,
-        showConfirmButton:false,
-        didOpen:() => {
+        title: "Đang tạo đơn...",
+        text: "Đang kiểm tra và trừ xu, vui lòng chờ.",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: () => {
             Swal.showLoading();
         }
     });
 
+
+    let deducted = false;
+
+    const orderId =
+        generateOrderId();
+
+    const createdAt =
+        Date.now();
+
+    const orderData = {
+
+        orderId,
+
+        userId:
+            currentUser.uid,
+
+        serviceId,
+
+        service:
+            serviceName,
+
+        platform:
+            "Facebook",
+
+        link,
+
+        quantity:
+            amount,
+
+        unitPrice,
+
+        total,
+
+        status:
+            "Đã đặt - Vui lòng chờ",
+
+        note:
+            noteInput.value.trim(),
+
+        createdAt,
+
+        balanceField,
+
+        balanceBefore:
+            currentBalance,
+
+        balanceAfter:
+            currentBalance - total
+
+    };
+
+
     try {
 
         /* =========================
-           LƯU FIREBASE
+           TRỪ XU THẬT
         ========================= */
 
-        const orderRef = db
-            .ref("users")
-            .child(currentUser.uid)
-            .child("facebookOrders")
-            .child(orderId);
+        await deductBalance(total);
+
+        deducted = true;
+
+
+        /* =========================
+           LƯU ĐƠN FIREBASE
+        ========================= */
+
+        const orderRef =
+            db
+                .ref("users")
+                .child(currentUser.uid)
+                .child("facebookOrders")
+                .child(orderId);
 
         await orderRef.set(orderData);
 
+
         /* =========================
-           LƯU LOCAL DỰ PHÒNG
+           LƯU LOCAL
         ========================= */
 
         saveLocalOrder(orderData);
 
+
         /* =========================
-           CẬP NHẬT BẢNG NGAY
+           HIỆN LỊCH SỬ
         ========================= */
 
-        addOrderToTable(orderData, true);
+        addOrderToTable(
+            orderData,
+            true
+        );
+
 
         /* =========================
-           XÓA FORM
+           RESET FORM
         ========================= */
 
         linkInput.value = "";
-        document.getElementById("note").value = "";
+        noteInput.value = "";
 
         quantity.value = 50;
 
-        linkInput.style.borderColor = "#dfe7f2";
-
-        if (linkError) {
-            linkError.style.display = "none";
-        }
+        clearLinkError();
 
         updatePrice();
 
+
         /* =========================
-           THÔNG BÁO THÀNH CÔNG
+           THÀNH CÔNG
         ========================= */
 
         Swal.fire({
-            icon:"success",
-            title:"Đặt dịch vụ thành công!",
+
+            icon: "success",
+
+            title:
+                "Đặt dịch vụ thành công!",
+
             html:
-                "<div style='line-height:1.8'>" +
+
+                "<div style='line-height:1.9'>" +
 
                 "<b>Mã đơn:</b> " +
-                orderId +
+                escapeHtml(orderId) +
 
                 "<br>" +
 
                 "<b>Dịch vụ:</b> " +
-                serviceName +
+                escapeHtml(serviceName) +
 
                 "<br>" +
 
@@ -1615,252 +2661,338 @@ async function createOrder() {
 
                 "<br>" +
 
-                "<b>Chi phí:</b> " +
+                "<b>Đã trừ:</b> " +
                 formatXu(total) +
+
+                "<br>" +
+
+                "<b>Số dư còn lại:</b> " +
+                formatXu(currentBalance) +
 
                 "<br><br>" +
 
                 "<span style='color:#1677ff;font-weight:800'>" +
-                "Vui lòng chờ hệ thống xử lý đơn hàng." +
+                "Đã đặt thành công, vui lòng chờ hệ thống xử lý." +
                 "</span>" +
 
                 "</div>",
 
-            confirmButtonColor:"#1677ff",
-            confirmButtonText:"Đã hiểu"
+            confirmButtonColor:
+                "#1677ff",
+
+            confirmButtonText:
+                "Đã hiểu"
+
         });
-
-    } catch (error) {
-
-        console.error("Lỗi tạo đơn:", error);
-
-        /* Nếu Firebase lỗi vẫn lưu local */
-        saveLocalOrder(orderData);
-        addOrderToTable(orderData, true);
-
-        Swal.fire({
-            icon:"warning",
-            title:"Đơn đã được ghi nhận",
-            html:
-                "Hệ thống đã lưu đơn trên thiết bị.<br>" +
-                "Vui lòng kiểm tra lại kết nối mạng nếu lịch sử chưa đồng bộ.",
-            confirmButtonColor:"#1677ff"
-        });
-
-    }
-
-}
-
-/* =========================
-   LOCAL STORAGE
-========================= */
-
-function saveLocalOrder(order) {
-
-    try {
-
-        const key =
-            "hoangkun_facebook_orders_" +
-            currentUser.uid;
-
-        let orders =
-            JSON.parse(localStorage.getItem(key) || "[]");
-
-        /* Không lưu trùng */
-        orders =
-            orders.filter(item =>
-                item.orderId !== order.orderId
-            );
-
-        orders.unshift(order);
-
-        /* Giữ tối đa 50 đơn */
-        orders = orders.slice(0, 50);
-
-        localStorage.setItem(
-            key,
-            JSON.stringify(orders)
-        );
 
     } catch (error) {
 
         console.error(
-            "Không thể lưu local:",
+            "Lỗi tạo đơn:",
             error
         );
 
+
+        /* =========================
+           KHÔNG ĐỦ XU
+        ========================= */
+
+        if (
+            error.message ===
+            "INSUFFICIENT_BALANCE"
+        ) {
+
+            await loadBalance();
+
+            Swal.fire({
+                icon: "warning",
+                title: "Không đủ xu",
+                text: "Số dư của bạn không đủ để đặt đơn này.",
+                confirmButtonColor: "#1677ff"
+            });
+
+            return;
+        }
+
+
+        /* =========================
+           LƯU ĐƠN LỖI
+        ========================= */
+
+        if (deducted) {
+
+            const refunded =
+                await refundBalance(total);
+
+            if (refunded) {
+
+                Swal.fire({
+
+                    icon: "error",
+
+                    title:
+                        "Không thể tạo đơn",
+
+                    text:
+                        "Đã hoàn lại số xu vừa trừ. Vui lòng thử lại.",
+
+                    confirmButtonColor:
+                        "#1677ff"
+
+                });
+
+            } else {
+
+                Swal.fire({
+
+                    icon: "error",
+
+                    title:
+                        "Lỗi hệ thống",
+
+                    html:
+                        "Đơn chưa được tạo nhưng hệ thống không thể tự hoàn xu.<br>" +
+                        "Vui lòng liên hệ CSKH để kiểm tra.",
+
+                    confirmButtonColor:
+                        "#1677ff"
+
+                });
+
+            }
+
+        } else {
+
+            Swal.fire({
+
+                icon: "error",
+
+                title:
+                    "Không thể tạo đơn",
+
+                text:
+                    "Vui lòng thử lại sau.",
+
+                confirmButtonColor:
+                    "#1677ff"
+
+            });
+
+        }
+
+    } finally {
+
+        isOrdering = false;
+
+        orderButton.disabled = false;
+
+        orderButton.innerHTML =
+            '<i class="fa-solid fa-cart-shopping"></i>' +
+            '&nbsp; Đặt dịch vụ';
+
     }
 
 }
 
-/* =========================
-   LẤY LOCAL ORDER
-========================= */
 
-function getLocalOrders() {
+/* =====================================================
+   LOAD LỊCH SỬ
+===================================================== */
 
-    if (!currentUser) {
-        return [];
-    }
-
-    try {
-
-        const key =
-            "hoangkun_facebook_orders_" +
-            currentUser.uid;
-
-        return JSON.parse(
-            localStorage.getItem(key) || "[]"
-        );
-
-    } catch (error) {
-
-        return [];
-
-    }
-
-}
-
-/* =========================
-   LOAD LỊCH SỬ FIREBASE
-========================= */
-
-function loadOrders() {
+async function loadOrders() {
 
     if (!currentUser) {
         return;
     }
 
-    const table =
-        document.getElementById("orderTable");
+    orderTable.innerHTML = `
 
-    table.innerHTML = `
         <tr>
-            <td colspan="5"
-                style="text-align:center;color:#9aa6b8;padding:25px">
+
+            <td
+                colspan="6"
+                style="
+                    text-align:center;
+                    color:#9aa6b8;
+                    padding:25px
+                "
+            >
+
                 <i class="fa-solid fa-spinner fa-spin"></i>
-                &nbsp; Đang tải lịch sử...
+
+                &nbsp;
+
+                Đang tải lịch sử...
+
             </td>
+
         </tr>
+
     `;
 
-    db.ref("users")
-        .child(currentUser.uid)
-        .child("facebookOrders")
-        .orderByChild("createdAt")
-        .limitToLast(50)
-        .once("value")
-        .then(snapshot => {
 
-            const orders = [];
+    try {
 
-            snapshot.forEach(child => {
+        const snapshot =
+            await db
+                .ref("users")
+                .child(currentUser.uid)
+                .child("facebookOrders")
+                .orderByChild("createdAt")
+                .limitToLast(50)
+                .once("value");
 
-                orders.push(child.val());
 
-            });
+        const orders = [];
 
-            /* Mới nhất lên đầu */
-            orders.sort((a,b) =>
-                Number(b.createdAt || 0) -
-                Number(a.createdAt || 0)
-            );
+        snapshot.forEach(child => {
 
-            renderOrders(orders);
+            const data =
+                child.val();
 
-        })
-        .catch(error => {
-
-            console.error(
-                "Lỗi tải lịch sử:",
-                error
-            );
-
-            /* Nếu Firebase lỗi thì lấy local */
-            const localOrders =
-                getLocalOrders();
-
-            renderOrders(localOrders);
+            if (data) {
+                orders.push(data);
+            }
 
         });
 
+
+        orders.sort(
+            (a,b) =>
+                Number(b.createdAt || 0) -
+                Number(a.createdAt || 0)
+        );
+
+
+        if (orders.length) {
+
+            renderOrders(orders);
+
+        } else {
+
+            const local =
+                getLocalOrders();
+
+            renderOrders(local);
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Lỗi tải lịch sử:",
+            error
+        );
+
+        renderOrders(
+            getLocalOrders()
+        );
+
+    }
+
 }
 
-/* =========================
-   HIỂN THỊ TOÀN BỘ LỊCH SỬ
-========================= */
+
+/* =====================================================
+   HIỂN THỊ LỊCH SỬ
+===================================================== */
 
 function renderOrders(orders) {
 
-    const table =
-        document.getElementById("orderTable");
+    orderTable.innerHTML = "";
 
-    table.innerHTML = "";
+    if (
+        !orders ||
+        orders.length === 0
+    ) {
 
-    if (!orders || orders.length === 0) {
+        orderTable.innerHTML = `
 
-        table.innerHTML = `
             <tr>
-                <td colspan="5"
-                    style="text-align:center;color:#9aa6b8;padding:25px">
+
+                <td
+                    colspan="6"
+                    style="
+                        text-align:center;
+                        color:#9aa6b8;
+                        padding:25px
+                    "
+                >
                     Chưa có đơn hàng Facebook
                 </td>
+
             </tr>
+
         `;
 
         return;
     }
 
+
     orders.forEach(order => {
 
-        addOrderToTable(order, false);
+        addOrderToTable(
+            order,
+            false
+        );
 
     });
 
 }
 
-/* =========================
-   THÊM 1 ĐƠN VÀO BẢNG
-========================= */
 
-function addOrderToTable(order, prepend = false) {
+/* =====================================================
+   THÊM ĐƠN VÀO BẢNG
+===================================================== */
 
-    const table =
-        document.getElementById("orderTable");
+function addOrderToTable(
+    order,
+    prepend = false
+) {
 
-    /* Nếu đang hiển thị "chưa có đơn" */
+    if (!order || !order.orderId) {
+        return;
+    }
+
+
+    /* Xóa dòng chưa có đơn */
+
     if (
-        table.children.length === 1 &&
-        table.children[0].innerText.includes("Chưa có")
+        orderTable.children.length === 1 &&
+        orderTable.children[0]
+            .innerText
+            .includes("Chưa có")
     ) {
 
-        table.innerHTML = "";
+        orderTable.innerHTML = "";
 
     }
 
+
     /* Không tạo trùng */
+
     const oldRow =
-        document.querySelector(
-            `[data-order-id="${order.orderId}"]`
+        orderTable.querySelector(
+            `[data-order-id="${CSS.escape(order.orderId)}"]`
         );
 
     if (oldRow) {
         oldRow.remove();
     }
 
+
     const row =
         document.createElement("tr");
 
-    row.setAttribute(
-        "data-order-id",
-        order.orderId
-    );
+    row.dataset.orderId =
+        order.orderId;
+
 
     row.innerHTML = `
 
         <td>
             <strong style="color:#1677ff">
-                ${escapeHtml(order.orderId || "---")}
+                ${escapeHtml(order.orderId)}
             </strong>
         </td>
 
@@ -1874,11 +3006,13 @@ function addOrderToTable(order, prepend = false) {
         </td>
 
         <td>
-            <span class="status"
-                  style="
-                    background:#eef6ff;
-                    color:#1677ff;
-                  ">
+            <strong style="color:#1677ff">
+                ${formatXu(order.total || 0)}
+            </strong>
+        </td>
+
+        <td>
+            <span class="status">
                 ${escapeHtml(
                     order.status ||
                     "Đã đặt - Vui lòng chờ"
@@ -1892,25 +3026,27 @@ function addOrderToTable(order, prepend = false) {
 
     `;
 
+
     if (prepend) {
 
-        table.prepend(row);
+        orderTable.prepend(row);
 
     } else {
 
-        table.appendChild(row);
+        orderTable.appendChild(row);
 
     }
 
 }
 
-/* =========================
-   CHỐNG HTML INJECTION
-========================= */
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
 function escapeHtml(value) {
 
-    return String(value || "")
+    return String(value ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -1919,51 +3055,61 @@ function escapeHtml(value) {
 
 }
 
-/* =========================
+
+/* =====================================================
    ĐĂNG XUẤT
-========================= */
+===================================================== */
 
 function logout() {
 
     Swal.fire({
 
-        title:"Đăng xuất?",
+        title:
+            "Đăng xuất?",
 
         text:
             "Bạn có chắc muốn đăng xuất khỏi tài khoản?",
 
-        icon:"warning",
+        icon:
+            "warning",
 
-        showCancelButton:true,
+        showCancelButton:
+            true,
 
-        confirmButtonColor:"#1677ff",
+        confirmButtonColor:
+            "#1677ff",
 
-        cancelButtonColor:"#ef4444",
+        cancelButtonColor:
+            "#ef4444",
 
-        confirmButtonText:"Đăng xuất",
+        confirmButtonText:
+            "Đăng xuất",
 
-        cancelButtonText:"Hủy"
+        cancelButtonText:
+            "Hủy"
 
     }).then(result => {
 
-        if (result.isConfirmed) {
+        if (!result.isConfirmed) {
+            return;
+        }
 
-            auth.signOut().then(() => {
+        auth.signOut()
+            .then(() => {
 
                 window.location.href =
                     "index.html";
 
             });
 
-        }
-
     });
 
 }
 
-/* =========================
-   KHỞI TẠO GIÁ
-========================= */
+
+/* =====================================================
+   KHỞI TẠO
+===================================================== */
 
 updatePrice();
 
