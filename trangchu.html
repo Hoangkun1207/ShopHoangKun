@@ -342,139 +342,6 @@
             .profile-avatar { width: 65px; height: 65px; }
         }
 
-        /* =========================
-   USER DROPDOWN
-========================= */
-
-.user-dropdown {
-    position: relative;
-}
-
-.user {
-    height: 44px;
-    padding: 4px 10px 4px 4px;
-    border: 1px solid var(--border);
-    background: #fff;
-    border-radius: 24px;
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    transition: .2s;
-}
-
-.user:hover {
-    border-color: #b9d5ff;
-    background: #f8fbff;
-    box-shadow: 0 5px 15px rgba(22,119,255,.08);
-}
-
-.user-menu {
-    position: absolute;
-    right: 0;
-    top: calc(100% + 10px);
-    width: 245px;
-    background: #fff;
-    border: 1px solid #e5ebf4;
-    border-radius: 16px;
-    padding: 10px;
-    box-shadow: 0 15px 40px rgba(20,40,80,.15);
-
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px) scale(.98);
-    transition: .2s ease;
-    z-index: 2000;
-}
-
-.user-dropdown.open .user-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0) scale(1);
-}
-
-.user-menu-header {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    padding: 10px 9px 12px;
-}
-
-.user-menu-avatar {
-    width: 42px;
-    height: 42px;
-    flex-shrink: 0;
-}
-
-.user-menu-header strong {
-    display: block;
-    color: #172033;
-    font-size: 14px;
-    font-weight: 800;
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.user-menu-header span {
-    display: block;
-    margin-top: 3px;
-    color: #94a0b3;
-    font-size: 11px;
-    font-weight: 600;
-}
-
-.user-menu-line {
-    height: 1px;
-    background: #edf1f6;
-    margin: 5px 0;
-}
-
-.user-menu > button {
-    width: 100%;
-    height: 42px;
-    padding: 0 11px;
-    background: transparent;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: #526074;
-    font-size: 13px;
-    font-weight: 700;
-    text-align: left;
-    transition: .18s;
-}
-
-.user-menu > button i {
-    width: 18px;
-    text-align: center;
-    color: #8794a8;
-    font-size: 14px;
-}
-
-.user-menu > button:hover {
-    background: #f2f7ff;
-    color: #1677ff;
-}
-
-.user-menu > button:hover i {
-    color: #1677ff;
-}
-
-.user-menu .logout-item {
-    color: #ef4444;
-}
-
-.user-menu .logout-item i {
-    color: #ef4444;
-}
-
-.user-menu .logout-item:hover {
-    background: #fff1f1;
-    color: #ef4444;
-}
-
         /* USER DROPDOWN */
 
 .user-dropdown {
@@ -1037,35 +904,20 @@ document.getElementById("menuAvatar").textContent = letter;
 
     </script>
 
-    <script>
-    
+   <script>
 const userBtn = document.getElementById("userBtn");
 const userDropdown = document.querySelector(".user-dropdown");
 
-userBtn.addEventListener("click", function(e) {
+userBtn.addEventListener("click", e => {
     e.stopPropagation();
     userDropdown.classList.toggle("open");
 });
 
-document.addEventListener("click", function(e) {
+document.addEventListener("click", e => {
     if (!userDropdown.contains(e.target)) {
         userDropdown.classList.remove("open");
     }
 });
-    </script>
-
-    <script>
-        const userBtn = document.getElementById("userBtn");
-const userMenu = document.getElementById("userMenu");
-
-userBtn.addEventListener("click", e => {
-    e.stopPropagation();
-    userMenu.classList.toggle("show");
-});
-
-document.addEventListener("click", () => {
-    userMenu.classList.remove("show");
-});
-    </script>
+</script>
 </body>
 </html>
