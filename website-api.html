@@ -41,14 +41,23 @@ button{cursor:pointer}
 .sidebar{
 position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);
 background:linear-gradient(180deg,#0c1627,#101b2d);
-color:#fff;z-index:1000;display:flex;flex-direction:column
+color:#fff;z-index:2000;display:flex;flex-direction:column
+}
+.sidebar.open {
+    transform: translateX(0) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 10px 0 40px rgba(0,0,0,0.6);
 }
 .brand{
 height:76px;display:flex;align-items:center;padding:0 25px;
-font-size:18px;font-weight:800;letter-spacing:.5px;border-bottom:1px solid rgba(255,255,255,.04)
+font-size:18px;font-weight:800;letter-spacing:.5px;border-bottom:1px solid rgba(255,255,255,.04);
+flex-shrink: 0;
 }
 .brand span{color:#fff}
-.sidebar-scroll{flex:1;overflow-y:auto;padding:15px 0}
+.sidebar-scroll{
+    flex:1;overflow-y:auto;padding:15px 0;
+    scrollbar-width: thin; scrollbar-color: #374151 transparent;
+}
 .sidebar-scroll::-webkit-scrollbar{width:4px}
 .sidebar-scroll::-webkit-scrollbar-thumb{background:#26344a;border-radius:10px}
 .sb-title{
@@ -76,7 +85,7 @@ background:#1681ff;border-radius:0 5px 5px 0
 margin-left:auto;background:#0fc58a;color:#fff;padding:2px 6px;
 border-radius:5px;font-size:8px;font-weight:800
 }
-.sidebar-footer{padding:10px 0;border-top:1px solid rgba(255,255,255,.05)}
+.sidebar-footer{padding:10px 0;border-top:1px solid rgba(255,255,255,.05);flex-shrink: 0;}
 
 /* MAIN */
 .main{margin-left:var(--sidebar);min-height:100vh}
@@ -86,6 +95,7 @@ display:flex;align-items:center;justify-content:space-between;
 padding:0 30px;position:sticky;top:0;z-index:900
 }
 .top-left,.top-right{display:flex;align-items:center;gap:14px}
+.mobile-menu { display: none; border: none; cursor: pointer; flex-shrink: 0; }
 .crumb{display:flex;align-items:center;gap:10px;color:#99a4b7;font-size:14px;font-weight:600}
 .crumb i{font-size:11px;color:#c4ccda}
 .crumb .current{color:#172033;font-weight:800}
@@ -103,6 +113,7 @@ border:1px solid #e8edf5;border-radius:5px;padding:3px 6px;white-space:nowrap
 .icon-btn{
 width:40px;height:40px;border:1px solid var(--border);
 background:#fff;border-radius:50%;color:#526074;font-size:15px;position:relative;transition:.2s;
+display: grid; place-items: center;
 }
 .icon-btn:hover{background:#f5f8fc;color:var(--primary)}
 .dot{
@@ -120,14 +131,16 @@ font-size:13px;font-weight:600;color:#526074
 .user-dropdown { position: relative; }
 .user{
 height:44px;padding:4px 10px 4px 4px;border:1px solid var(--border);
-background:#fff;border-radius:24px;display:flex;align-items:center;gap:9px
+background:#fff;border-radius:24px;display:flex;align-items:center;gap:9px;
+transition: .2s;
 }
+.user:hover { background: #f8fafc; }
 .avatar{
 width:35px;height:35px;border-radius:50%;display:grid;place-items:center;
 background:linear-gradient(135deg,#d9edff,#b8dcff);color:#1677ff;font-weight:800
 }
 .user-name{font-size:13px;font-weight:800;color:#253047}
-.user i{font-size:10px;color:#9ba6b8}
+.user i{font-size:10px;color:#9ba6b8;margin-left: 2px;}
 
 .user-menu {
     position: absolute; right: 0; top: 52px; width: 230px; background: #fff;
@@ -143,7 +156,7 @@ background:linear-gradient(135deg,#d9edff,#b8dcff);color:#1677ff;font-weight:800
 .user-menu button {
     width: 100%; height: 38px; display: flex; align-items: center; gap: 10px;
     padding: 0 10px; background: transparent; border-radius: 9px;
-    color: #526074; font-size: 12px; font-weight: 700; text-align: left;
+    color: #526074; font-size: 12px; font-weight: 700; text-align: left; transition: .2s;
 }
 .user-menu button:hover { background: #eef6ff; color: var(--primary); }
 .user-menu button i { width: 18px; text-align: center; }
@@ -282,24 +295,40 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
 }
 @media(max-width:800px){
 :root{--sidebar:0px}
-.sidebar{transform:translateX(-100%);transition:.3s}
-.main{margin-left:0}
+.sidebar { 
+    width: 260px !important; 
+    transform: translateX(-100%); 
+    transition: transform 0.3s ease; 
+}
+.main{margin-left:0; width: 100%;}
 .topbar{padding:0 15px}
 .crumb{display:none}
 .search{margin:0;width:200px}
-.lang{display:none}
-.content{padding:18px}
+.lang, .user-name {display:none}
+.content{padding:15px}
 .page-head{flex-direction:column;align-items:flex-start;gap:12px}
 .balance{width:100%;display:flex;justify-content:space-between;align-items:center}
 .service-grid{grid-template-columns:1fr}
 .stats{grid-template-columns:1fr}
+
+/* Nút 3 gạch mobile */
+.mobile-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #eef5ff;
+    color: var(--primary);
+    margin-right: 10px;
+    font-size: 18px;
+}
 }
 @media(max-width:500px){
 .topbar{height:65px}
-.search{width:160px}
-.shortcut{display:none}
+.search{display:none}
 .top-right{gap:6px}
-.user-name{display:none}
 .page-title{font-size:21px}
 .quick{grid-template-columns:1fr}
 }
@@ -327,7 +356,7 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
         </button>
 
         <button class="sb-mi" onclick="go('kiemtien.html')">
-            <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span>Kiếm tiền
+            <span class="sb-icon"><i class="fa-solid fa-sack-dollar"></i></span>Kiếm tiền
         </button>
 
         <button class="sb-mi" onclick="openZalo()">
@@ -383,6 +412,10 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
 <main class="main">
     <header class="topbar">
         <div class="top-left">
+            <!-- Nút 3 gạch hiện trên điện thoại -->
+            <button class="mobile-menu" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
             <div class="crumb">
                 <a href="trangchu.html">Trang chủ</a>
                 <i class="fa-solid fa-chevron-right" style="font-size:10px"></i>
@@ -405,7 +438,6 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
             <div class="lang">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="VN Flag">
                 <span>VN</span> Tiếng Việt
-                <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
             </div>
 
             <div class="user-dropdown">
@@ -578,6 +610,23 @@ function openZalo() {
     window.open("https://zalo.me/0788265513", "_blank");
 }
 
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('open');
+}
+
+document.addEventListener("click", e => {
+    const sidebar = document.querySelector('.sidebar');
+    const mobileBtn = document.querySelector('.mobile-menu');
+    if (window.innerWidth <= 800 && sidebar && mobileBtn) {
+        if (!sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    }
+});
+
 auth.onAuthStateChanged(user => {
     if (!user) {
         setTimeout(() => { if (!auth.currentUser) location.href = "index.html"; }, 800);
@@ -689,7 +738,8 @@ document.addEventListener("click", e => {
 document.addEventListener("keydown", e => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        document.getElementById("searchInput").focus();
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) searchInput.focus();
     }
 });
 </script>
