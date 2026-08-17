@@ -343,96 +343,28 @@
         }
 
         /* USER DROPDOWN */
-
-.user-dropdown {
-    position: relative;
-}
-
-.user-menu {
-    position: absolute;
-    top: 52px;
-    right: 0;
-    width: 230px;
-    background: #fff;
-    border: 1px solid #e7edf6;
-    border-radius: 14px;
-    padding: 8px;
-    box-shadow: 0 12px 35px rgba(0,0,0,.12);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px);
-    transition: .2s;
-    z-index: 2000;
-}
-
-.user-menu.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.user-menu-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px;
-}
-
-.user-menu-header > div:last-child {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.user-menu-header strong {
-    font-size: 13px;
-    color: #172033;
-}
-
-.user-menu-header span {
-    font-size: 10px;
-    color: #94a0b2;
-}
-
-.user-menu-line {
-    height: 1px;
-    background: #edf1f6;
-    margin: 5px 0;
-}
-
-.user-menu button {
-    width: 100%;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 10px;
-    background: transparent;
-    border-radius: 9px;
-    color: #526074;
-    font-size: 12px;
-    font-weight: 700;
-    text-align: left;
-}
-
-.user-menu button:hover {
-    background: #eef6ff;
-    color: #1677ff;
-}
-
-.user-menu button i {
-    width: 18px;
-    text-align: center;
-}
-
-.user-menu .logout-item {
-    color: #ef4444;
-}
-
-.user-menu .logout-item:hover {
-    background: #fff1f1;
-    color: #ef4444;
-}
+        .user-dropdown { position: relative; }
+        .user-menu {
+            position: absolute; top: 52px; right: 0; width: 230px; background: #fff;
+            border: 1px solid #e7edf6; border-radius: 14px; padding: 8px;
+            box-shadow: 0 12px 35px rgba(0,0,0,.12); opacity: 0; visibility: hidden;
+            transform: translateY(-8px); transition: .2s; z-index: 2000;
+        }
+        .user-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .user-menu-header { display: flex; align-items: center; gap: 10px; padding: 8px; }
+        .user-menu-header > div:last-child { display: flex; flex-direction: column; gap: 2px; }
+        .user-menu-header strong { font-size: 13px; color: #172033; }
+        .user-menu-header span { font-size: 10px; color: #94a0b2; }
+        .user-menu-line { height: 1px; background: #edf1f6; margin: 5px 0; }
+        .user-menu button {
+            width: 100%; height: 38px; display: flex; align-items: center; gap: 10px;
+            padding: 0 10px; background: transparent; border-radius: 9px;
+            color: #526074; font-size: 12px; font-weight: 700; text-align: left;
+        }
+        .user-menu button:hover { background: #eef6ff; color: #1677ff; }
+        .user-menu button i { width: 18px; text-align: center; }
+        .user-menu .logout-item { color: #ef4444; }
+        .user-menu .logout-item:hover { background: #fff1f1; color: #ef4444; }
     </style>
 </head>
 
@@ -622,12 +554,12 @@
 
                             <div class="money-box">
                                 <div class="money-top">
-                                    <div class="money-icon"><i class="fa-regular fa-credit-card"></i></div>
+                                    <div class="money-icon"><i class="fa-solid fa-coins"></i></div>
                                     <span>Số dư</span>
                                 </div>
                                 <div class="money-value">
-                                    <span id="statBalance">0đ</span>
-                                    <small>VN VND⌄</small>
+                                    <span id="statBalance">0</span>
+                                    <small>XU ⌄</small>
                                 </div>
                             </div>
 
@@ -838,23 +770,27 @@
                 const name = user.displayName || "Thành viên";
                 const letter = name.charAt(0).toUpperCase();
 
-               document.getElementById("navUserName").textContent = name;
-document.getElementById("mainName").textContent = name;
-document.getElementById("mainEmail").textContent = user.email || "Chưa cập nhật email";
+                document.getElementById("navUserName").textContent = name;
+                document.getElementById("mainName").textContent = name;
+                document.getElementById("mainEmail").textContent = user.email || "Chưa cập nhật email";
 
-document.getElementById("avatarMini").textContent = letter;
-document.getElementById("mainAvatar").textContent = letter;
+                document.getElementById("avatarMini").textContent = letter;
+                document.getElementById("mainAvatar").textContent = letter;
 
-document.getElementById("menuUserName").textContent = name;
-document.getElementById("menuAvatar").textContent = letter;
+                document.getElementById("menuUserName").textContent = name;
+                document.getElementById("menuAvatar").textContent = letter;
                 
                 db.ref("users/" + user.uid).on("value", snapshot => {
                     const data = snapshot.val() || {};
 
-                    const balance = Number(data.so_du || 0);
-                    const deposit = Number(data.tong_nap_thang || 0);
+                    let xu = 0;
+                    if(data.xu !== undefined) xu = Number(data.xu);
+                    else if(data.balance !== undefined) xu = Number(data.balance);
+                    else if(data.coins !== undefined) xu = Number(data.coins);
 
-                    document.getElementById("statBalance").textContent = formatMoney(balance);
+                    const deposit = Number(data.tong_nap || data.tong_nap_thang || 0);
+
+                    document.getElementById("statBalance").textContent = Number(xu).toLocaleString('vi-VN');
                     document.getElementById("statDeposit").textContent = formatMoney(deposit);
 
                     const mocCTV = 1000000;
@@ -869,7 +805,7 @@ document.getElementById("menuAvatar").textContent = letter;
                     } else {
                         document.getElementById("tierCurrent").textContent = "Thành viên";
                         document.getElementById("tierRemain").textContent =
-                            "Còn " + formatMoney(mocCTV - deposit) + " để lên Cộng tác viên";
+                            "Còn " + formatMoney(mocCTV - deposit) + " nạp để lên CTV";
                     }
                 });
             } else {
@@ -902,22 +838,19 @@ document.getElementById("menuAvatar").textContent = letter;
             }
         });
 
+        const userBtn = document.getElementById("userBtn");
+        const userDropdown = document.querySelector(".user-dropdown");
+
+        userBtn.addEventListener("click", e => {
+            e.stopPropagation();
+            userDropdown.classList.toggle("open");
+        });
+
+        document.addEventListener("click", e => {
+            if (!userDropdown.contains(e.target)) {
+                userDropdown.classList.remove("open");
+            }
+        });
     </script>
-
-   <script>
-const userBtn = document.getElementById("userBtn");
-const userDropdown = document.querySelector(".user-dropdown");
-
-userBtn.addEventListener("click", e => {
-    e.stopPropagation();
-    userDropdown.classList.toggle("open");
-});
-
-document.addEventListener("click", e => {
-    if (!userDropdown.contains(e.target)) {
-        userDropdown.classList.remove("open");
-    }
-});
-</script>
 </body>
 </html>
