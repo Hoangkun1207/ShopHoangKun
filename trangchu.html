@@ -44,7 +44,7 @@
         a { text-decoration: none; color: inherit; }
         button, input, select, textarea { outline: none; font-family: 'Quicksand', sans-serif; cursor: pointer; border: none; }
 
-        /* ================= SIDEBAR CHUẨN (GIỐNG BANGGIA.HTML) ================= */
+        /* ================= SIDEBAR CHUẨN ================= */
         .sidebar { width: var(--sidebar); position: fixed; left: 0; top: 0; bottom: 0; background: var(--sidebar-bg); color: #cbd5e1; display: flex; flex-direction: column; z-index: 1000; }
         .brand { height: 76px; display: flex; align-items: center; padding: 0 22px; border-bottom: 1px solid #263244; font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 1px; }
         .brand span { color: #60a5fa; }
@@ -164,53 +164,73 @@
         <div class="brand">HOANG<span>KUN</span></div>
         <div class="sidebar-scroll">
             <div class="menu-title">Quản lý chung</div>
-            <!-- Bật sáng nút Tổng quan -->
             <button class="menu active" onclick="window.location.href='trangchu.html'">
-                <i><i class="fa-solid fa-house"></i></i> Trang tổng quan
+                <i class="fa-solid fa-house"></i> Trang tổng quan
             </button>
             <button class="menu">
-                <i><i class="fa-solid fa-globe"></i></i> Website & API
+                <i class="fa-solid fa-globe"></i> Website & API
             </button>
-            <!-- Nút Bảng giá chuyển trang -->
             <button class="menu" onclick="window.location.href='banggia.html'">
-                <i><i class="fa-solid fa-tags"></i></i> Bảng giá & Cấp bậc
+                <i class="fa-solid fa-tags"></i> Bảng giá & Cấp bậc
             </button>
-            <button class="menu">
-                <i><i class="fa-solid fa-sack-dollar"></i></i> Kiếm tiền
+            <button class="menu" onclick="window.open('https://zalo.me/0788265513', '_blank')">
+                <i class="fa-solid fa-headset"></i> Liên hệ CSKH
             </button>
 
             <div class="menu-title">Tài chính</div>
             <button class="menu">
-                <i><i class="fa-solid fa-wallet"></i></i> Nạp tiền
+                <i class="fa-solid fa-wallet"></i> Nạp tiền
             </button>
             <button class="menu">
-                <i><i class="fa-solid fa-money-bill-transfer"></i></i> Giao dịch
+                <i class="fa-solid fa-money-bill-transfer"></i> Giao dịch
             </button>
             <button class="menu">
-                <i><i class="fa-solid fa-box"></i></i> Ví & số dư
+                <i class="fa-solid fa-box"></i> Ví & số dư
             </button>
 
             <div class="menu-title">Tài khoản</div>
             <button class="menu">
-                <i><i class="fa-solid fa-user-shield"></i></i> Tài khoản
+                <i class="fa-solid fa-user-shield"></i> Tài khoản & bảo mật
             </button>
             <button class="menu">
-                <i><i class="fa-solid fa-bell"></i></i> Thông báo <span class="badge">3</span>
+                <i class="fa-solid fa-clock-rotate-left"></i> Nhật ký hoạt động
+            </button>
+            
+            <!-- ĐÃ BỔ SUNG ĐẦY ĐỦ KHU VỰC DANH SÁCH DỊCH VỤ -->
+            <div class="menu-title">Danh sách dịch vụ</div>
+            <button class="menu">
+                <i class="fa-solid fa-layer-group"></i> Dịch vụ khác <span class="badge">MỚI</span>
             </button>
             <button class="menu">
-                <i><i class="fa-solid fa-gear"></i></i> Cài đặt
+                <i class="fa-brands fa-facebook" style="color: #60a5fa;"></i> Facebook
             </button>
+            <button class="menu">
+                <i class="fa-brands fa-instagram" style="color: #f472b6;"></i> Instagram
+            </button>
+            <button class="menu">
+                <i class="fa-brands fa-tiktok" style="color: #fff;"></i> TikTok
+            </button>
+            <button class="menu">
+                <i class="fa-solid fa-cart-shopping" style="color: #fb923c;"></i> Shopee
+            </button>
+            <button class="menu">
+                <i class="fa-brands fa-youtube" style="color: #f87171;"></i> Youtube
+            </button>
+            <button class="menu">
+                <i class="fa-brands fa-x-twitter" style="color: #38bdf8;"></i> Twitter
+            </button>
+
         </div>
         <div class="sidebar-footer">
             <button class="menu" onclick="logout()" style="color: var(--danger);">
-                <i><i class="fa-solid fa-right-from-bracket"></i></i> Đăng xuất
+                <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
             </button>
         </div>
     </aside>
 
     <!-- ================= MAIN CONTENT ================= -->
     <main class="main">
-        <!-- TOPBAR CHUẨN ĐỒNG BỘ -->
+        <!-- TOPBAR -->
         <header class="topbar">
             <div class="top-left">
                 <nav class="tb-crumb">
