@@ -10,6 +10,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
         :root {
@@ -20,40 +25,34 @@
             --text: #172033;
             --muted: #8a96aa;
             --border: #e7edf6;
+            --success: #16b978;
+            --danger: #ef4444;
             --sidebar: 280px;
+            --ig-gradient: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Quicksand', sans-serif;
+            font-family: "Quicksand", sans-serif;
         }
-
         body {
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
         }
-
-        button,
-        input {
+        button, input, select {
             font-family: inherit;
-            border: 0;
-            outline: 0;
+            outline: none;
         }
-
         button {
             cursor: pointer;
+            border: 0;
         }
-
-        /* SIDEBAR */
-
+        /* ========================= SIDEBAR ========================= */
         .sidebar {
             position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
+            inset: 0 auto 0 0;
             width: var(--sidebar);
             background: linear-gradient(180deg, #0c1627, #101b2d);
             color: #fff;
@@ -61,7 +60,6 @@
             display: flex;
             flex-direction: column;
         }
-
         .brand {
             height: 76px;
             display: flex;
@@ -71,13 +69,11 @@
             font-weight: 800;
             border-bottom: 1px solid rgba(255,255,255,.04);
         }
-
         .sidebar-scroll {
             flex: 1;
             overflow-y: auto;
             padding: 15px 0;
         }
-
         .sb-title {
             padding: 13px 22px 9px;
             color: #60708b;
@@ -86,12 +82,10 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .sb-mi {
-            position: relative;
             width: calc(100% - 20px);
-            margin: 0 10px 4px;
             height: 42px;
+            margin: 0 10px 4px;
             padding: 0 15px;
             border-radius: 9px;
             background: transparent;
@@ -104,72 +98,60 @@
             text-align: left;
             transition: .2s;
         }
-
         .sb-mi:hover {
             background: #17253b;
             color: #fff;
         }
-
         .sb-mi.active {
-            background: linear-gradient(90deg, #193e72, #18365f);
+            background: linear-gradient(90deg,#193e72,#18365f);
             color: #fff;
             box-shadow: inset 3px 0 #1681ff;
         }
-
         .sb-icon {
             width: 20px;
             text-align: center;
             font-size: 15px;
         }
-
         .arrow {
             margin-left: auto;
             color: #64748b;
             font-size: 10px;
         }
-
         .badge {
             margin-left: auto;
-            background: #0fc58a;
-            color: #fff;
             padding: 2px 6px;
             border-radius: 5px;
+            background: #0fc58a;
+            color: #fff;
             font-size: 8px;
             font-weight: 800;
         }
-
         .sidebar-footer {
             padding: 10px 0;
             border-top: 1px solid rgba(255,255,255,.05);
         }
-
-        /* MAIN */
-
+        /* ========================= MAIN ========================= */
         .main {
             margin-left: var(--sidebar);
             min-height: 100vh;
         }
-
         .topbar {
             height: 76px;
+            padding: 0 30px;
             background: #fff;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 30px;
             position: sticky;
             top: 0;
             z-index: 900;
         }
-
-        .top-left,
-        .top-right {
+        .top-left, .top-right {
             display: flex;
             align-items: center;
             gap: 14px;
         }
-
         .crumb {
             display: flex;
             align-items: center;
@@ -178,55 +160,55 @@
             font-size: 14px;
             font-weight: 600;
         }
-
         .crumb i {
-            font-size: 11px;
             color: #c4ccda;
+            font-size: 11px;
         }
-
-        .crumb .current {
-            color: #172033;
-            font-weight: 800;
-        }
-
         .search {
             width: 285px;
             height: 42px;
+            padding: 0 12px;
             border: 1px solid var(--border);
             border-radius: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 0 12px;
             color: #9aa6b8;
         }
-
         .search input {
             width: 100%;
-            font-size: 13px;
+            border: 0;
             background: transparent;
+            font-size: 13px;
         }
-
         .shortcut {
-            font-size: 10px;
-            color: #9aa6b8;
-            background: #f5f7fb;
+            padding: 3px 6px;
             border: 1px solid #e8edf5;
             border-radius: 5px;
-            padding: 3px 6px;
+            background: #f5f7fb;
+            color: #9aa6b8;
+            font-size: 10px;
             white-space: nowrap;
         }
-
         .icon-btn {
+            position: relative;
             width: 40px;
             height: 40px;
             border: 1px solid var(--border);
-            background: #fff;
             border-radius: 50%;
+            background: #fff;
             color: #526074;
-            font-size: 15px;
         }
-
+        .dot {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            width: 7px;
+            height: 7px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            background: var(--primary);
+        }
         .lang {
             height: 40px;
             padding: 0 12px;
@@ -235,32 +217,25 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            color: #526074;
             font-size: 13px;
             font-weight: 600;
-            color: #526074;
         }
-
         .lang img {
             width: 21px;
         }
-
-        /* USER */
-
-        .user-dropdown {
-            position: relative;
-        }
-
+        /* ========================= USER ========================= */
+        .user-dropdown { position: relative; }
         .user {
             height: 44px;
             padding: 4px 10px 4px 4px;
             border: 1px solid var(--border);
-            background: #fff;
             border-radius: 24px;
+            background: #fff;
             display: flex;
             align-items: center;
             gap: 9px;
         }
-
         .avatar {
             width: 35px;
             height: 35px;
@@ -268,29 +243,22 @@
             display: grid;
             place-items: center;
             background: linear-gradient(135deg,#d9edff,#b8dcff);
-            color: #1677ff;
+            color: var(--primary);
             font-weight: 800;
         }
-
         .user-name {
             font-size: 13px;
             font-weight: 800;
         }
-
-        .user i {
-            font-size: 10px;
-            color: #9ba6b8;
-        }
-
         .user-menu {
             position: absolute;
-            right: 0;
             top: 52px;
+            right: 0;
             width: 235px;
-            background: #fff;
+            padding: 9px;
             border: 1px solid var(--border);
             border-radius: 15px;
-            padding: 8px;
+            background: #fff;
             box-shadow: 0 15px 40px rgba(20,40,80,.15);
             opacity: 0;
             visibility: hidden;
@@ -298,196 +266,339 @@
             transition: .2s;
             z-index: 2000;
         }
-
-        .user-menu.show {
+        .user-dropdown.open .user-menu {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
         }
-
         .user-menu-header {
+            padding: 8px;
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 8px;
         }
-
         .user-menu-header strong {
             display: block;
             font-size: 13px;
         }
-
         .user-menu-header span {
-            font-size: 10px;
+            display: block;
+            margin-top: 3px;
             color: #94a0b2;
+            font-size: 10px;
         }
-
         .user-menu-line {
             height: 1px;
-            background: #edf1f6;
             margin: 5px 0;
+            background: #edf1f6;
         }
-
         .user-menu button {
             width: 100%;
-            height: 38px;
+            height: 39px;
+            padding: 0 10px;
+            border-radius: 9px;
+            background: transparent;
+            color: #526074;
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 0 10px;
-            background: transparent;
-            border-radius: 9px;
-            color: #526074;
             font-size: 12px;
             font-weight: 700;
             text-align: left;
         }
-
         .user-menu button:hover {
             background: #eef6ff;
-            color: #1677ff;
+            color: var(--primary);
         }
-
-        .logout-item {
-            color: #ef4444 !important;
-        }
-
-        /* CONTENT */
-
+        .user-menu .logout-item { color: var(--danger); }
+        /* ========================= CONTENT ========================= */
         .content {
-            padding: 30px;
-            max-width: 1450px;
+            max-width: 1500px;
             margin: auto;
+            padding: 28px;
         }
-
-        .page-title {
-            margin-bottom: 22px;
-        }
-
+        .page-title { margin-bottom: 20px; }
         .page-title h1 {
-            font-size: 28px;
+            font-size: 25px;
             font-weight: 800;
         }
-
         .page-title p {
             margin-top: 5px;
             color: var(--muted);
             font-size: 13px;
         }
-
-        .service-card {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 7px 25px rgba(31,51,73,.05);
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0,1fr) 320px;
+            gap: 20px;
         }
-
-        .instagram-head {
+        .card {
+            padding: 22px;
+            border: 1px solid #e8eef7;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(31,51,73,.045);
+        }
+        .card-title {
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #edf1f6;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 800;
         }
-
-        .instagram-icon {
-            width: 58px;
-            height: 58px;
-            border-radius: 17px;
-            display: grid;
-            place-items: center;
-            color: #fff;
-            font-size: 28px;
-            background: linear-gradient(
-                135deg,
-                #833ab4,
-                #fd1d1d,
-                #fcb045
-            );
-            box-shadow: 0 8px 20px rgba(225,48,108,.22);
-        }
-
-        .instagram-head h2 {
-            font-size: 19px;
-        }
-
-        .instagram-head p {
-            margin-top: 4px;
-            color: var(--muted);
-            font-size: 12px;
-        }
-
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(3,1fr);
-            gap: 17px;
-            margin-top: 22px;
-        }
-
-        .service-item {
-            border: 1px solid #e6ebf3;
-            border-radius: 15px;
-            padding: 20px;
-            transition: .25s;
-            background: #fff;
-        }
-
-        .service-item:hover {
-            transform: translateY(-4px);
-            border-color: #c7dcff;
-            box-shadow: 0 12px 25px rgba(22,119,255,.08);
-        }
-
-        .service-item-icon {
+        .ig-icon {
             width: 42px;
             height: 42px;
             border-radius: 12px;
-            background: #f0f6ff;
-            color: #1677ff;
             display: grid;
             place-items: center;
+            background: var(--ig-gradient);
+            color: #fff;
+            font-size: 21px;
+            box-shadow: 0 8px 20px rgba(225,48,108,.22);
+        }
+        /* ========================= BALANCE ========================= */
+        .balance-box {
+            margin-bottom: 18px;
+            padding: 15px 17px;
+            border: 1px solid #dceaff;
+            border-radius: 14px;
+            background: linear-gradient(135deg,#eef6ff,#f8fbff);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .balance-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .balance-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: #dceeff;
+            color: var(--primary);
+            display: grid;
+            place-items: center;
+        }
+        .balance-label {
+            color: #758299;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .balance-value {
+            margin-top: 2px;
+            color: var(--primary);
             font-size: 18px;
-            margin-bottom: 13px;
-        }
-
-        .service-item h3 {
-            font-size: 14px;
-            margin-bottom: 6px;
-        }
-
-        .service-item p {
-            color: #8a96aa;
-            font-size: 11px;
-            line-height: 1.6;
-        }
-
-        .price {
-            margin-top: 13px;
-            color: #1677ff;
-            font-size: 13px;
             font-weight: 800;
         }
-
-        .btn {
-            margin-top: 13px;
-            width: 100%;
-            height: 38px;
+        .refresh-balance {
+            width: 35px;
+            height: 35px;
             border-radius: 9px;
-            background: #eef5ff;
-            color: #1677ff;
+            background: #fff;
+            color: var(--primary);
+            border: 1px solid #dceaff;
+        }
+        /* ========================= SERVICE FORM ========================= */
+        .service-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .field.full { grid-column: 1/-1; }
+        .field label {
+            color: #526074;
+            font-size: 12px;
             font-weight: 800;
-            font-size: 11px;
+        }
+        .field input, .field select {
+            width: 100%;
+            height: 46px;
+            padding: 0 13px;
+            border: 1px solid #dfe7f2;
+            border-radius: 11px;
+            color: #334155;
+            background: #fff;
+            font-size: 13px;
+        }
+        .field input:focus, .field select:focus {
+            border-color: #7eb8ff;
+            box-shadow: 0 0 0 3px rgba(22,119,255,.08);
+        }
+        .field small {
+            margin-top: -2px;
+            color: #8a96aa;
+            font-size: 10px;
+        }
+        .link-error {
+            display: none;
+            margin-top: -2px;
+            color: var(--danger);
+            font-size: 10px;
+            font-weight: 700;
+        }
+        /* QUANTITY */
+        .quantity-control {
+            height: 46px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #dfe7f2;
+            border-radius: 11px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .quantity-control button {
+            width: 46px;
+            height: 100%;
+            background: #f5f8fc;
+            color: #526074;
+            font-size: 15px;
             transition: .2s;
         }
-
-        .btn:hover {
-            background: #1677ff;
-            color: #fff;
+        .quantity-control button:hover {
+            background: #eaf3ff;
+            color: var(--primary);
         }
-
+        .quantity-control input {
+            height: 100%;
+            border: 0;
+            border-radius: 0;
+            text-align: center;
+            box-shadow: none !important;
+        }
+        /* PRICE */
+        .price {
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 13px;
+            background: #eef6ff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .price span {
+            color: #738096;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .price strong {
+            color: var(--primary);
+            font-size: 18px;
+        }
+        .price-note {
+            margin-top: 7px;
+            color: #8a96aa;
+            font-size: 10px;
+            text-align: right;
+        }
+        .btn-order {
+            width: 100%;
+            height: 48px;
+            margin-top: 16px;
+            border-radius: 12px;
+            background: var(--ig-gradient);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            box-shadow: 0 8px 18px rgba(225,48,108,.22);
+            transition: .2s;
+        }
+        .btn-order:hover { transform: translateY(-1px); }
+        .btn-order:disabled {
+            cursor: not-allowed;
+            opacity: .65;
+            transform: none;
+        }
+        /* INFO LIST */
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .info-item {
+            padding: 12px;
+            border: 1px solid #edf1f6;
+            border-radius: 12px;
+            display: flex;
+            gap: 12px;
+        }
+        .info-item i {
+            width: 20px;
+            margin-top: 2px;
+            color: var(--primary);
+            text-align: center;
+        }
+        .info-item div {
+            color: #68758a;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .info-item strong {
+            display: block;
+            margin-bottom: 2px;
+            color: #26344a;
+        }
+        .server-box {
+            margin-top: 18px;
+            padding: 15px;
+            border-radius: 13px;
+            background: #f5f8fc;
+        }
+        .server-box strong { font-size: 13px; }
+        .online {
+            float: right;
+            color: #16b978;
+            font-size: 11px;
+            font-weight: 800;
+        }
+        .online::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            margin-right: 5px;
+            display: inline-block;
+            border-radius: 50%;
+            background: #16b978;
+        }
+        /* TABLE */
+        .table-card { margin-top: 20px; }
+        .table-wrap { overflow-x: auto; }
+        table {
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
+        }
+        th {
+            padding: 12px;
+            background: #f7f9fc;
+            color: #7d899c;
+            font-size: 11px;
+            text-align: left;
+        }
+        td {
+            padding: 13px 12px;
+            border-top: 1px solid #edf1f6;
+            color: #526074;
+            font-size: 12px;
+        }
+        .status {
+            padding: 4px 8px;
+            border-radius: 7px;
+            background: #eef6ff;
+            color: var(--primary);
+            display: inline-flex;
+            font-size: 10px;
+            font-weight: 800;
+        }
         /* SUPPORT */
-
         .support {
             position: fixed;
             right: 25px;
@@ -495,232 +606,137 @@
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: linear-gradient(145deg,#3568ee,#244bd5);
+            background: var(--ig-gradient);
             color: #fff;
             z-index: 1100;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 25px rgba(37,83,220,.35);
+            box-shadow: 0 8px 25px rgba(225,48,108,.35);
             font-size: 10px;
             font-weight: 800;
         }
-
         .support i {
-            font-size: 20px;
             margin-bottom: 2px;
+            font-size: 19px;
         }
-
-        @media(max-width:1000px) {
-            .service-grid {
-                grid-template-columns: repeat(2,1fr);
-            }
+        /* RESPONSIVE */
+        @media(max-width:1100px) {
+            .layout { grid-template-columns: 1fr; }
         }
-
         @media(max-width:760px) {
-            :root {
-                --sidebar: 0px;
-            }
-
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .main {
-                margin-left: 0;
-            }
-
-            .topbar {
-                padding: 0 15px;
-            }
-
-            .crumb {
-                display: none;
-            }
-
-            .search {
-                width: 200px;
-            }
-
-            .lang {
-                display: none;
-            }
-
-            .user-name {
-                display: none;
-            }
-
-            .content {
-                padding: 15px;
-            }
-
-            .service-grid {
-                grid-template-columns: 1fr;
-            }
+            :root { --sidebar: 0px; }
+            .sidebar { transform: translateX(-100%); }
+            .main { margin-left: 0; }
+            .topbar { padding: 0 15px; }
+            .crumb, .lang { display: none; }
+            .search { width: 200px; }
+            .content { padding: 15px; }
         }
-
-        @media(max-width:520px) {
-            .search {
-                display: none;
-            }
-
-            .page-title h1 {
-                font-size: 23px;
-            }
+        @media(max-width:560px) {
+            .search { display: none; }
+            .service-box { grid-template-columns: 1fr; }
+            .field.full { grid-column: auto; }
+            .user-name { display: none; }
         }
     </style>
 </head>
-
 <body>
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-
     <div class="brand">HOANGKUN</div>
-
     <div class="sidebar-scroll">
-
         <div class="sb-title">Quản lý chung</div>
-
         <button class="sb-mi" onclick="go('trangchu.html')">
-            <span class="sb-icon"><i class="fa-solid fa-house"></i></span>
-            Trang chủ
+            <span class="sb-icon"><i class="fa-solid fa-house"></i></span> Trang chủ
         </button>
-
         <button class="sb-mi" onclick="go('website-api.html')">
-            <span class="sb-icon"><i class="fa-solid fa-display"></i></span>
-            Website & API
+            <span class="sb-icon"><i class="fa-solid fa-display"></i></span> Website & API
             <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
-
         <button class="sb-mi" onclick="go('banggia.html')">
-            <span class="sb-icon"><i class="fa-solid fa-chart-simple"></i></span>
-            Bảng giá & Cấp bậc
+            <span class="sb-icon"><i class="fa-solid fa-chart-simple"></i></span> Bảng giá & Cấp bậc
         </button>
-
         <button class="sb-mi" onclick="go('kiemtien.html')">
-            <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span>
-            Kiếm tiền
+            <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span> Kiếm tiền
         </button>
-
         <button class="sb-mi" onclick="openZalo()">
-            <span class="sb-icon"><i class="fa-solid fa-headset"></i></span>
-            Liên hệ CSKH
+            <span class="sb-icon"><i class="fa-solid fa-headset"></i></span> Liên hệ CSKH
             <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
 
         <div class="sb-title">Tài khoản</div>
-
         <button class="sb-mi" onclick="go('taikhoan.html')">
-            <span class="sb-icon"><i class="fa-regular fa-user"></i></span>
-            Tài khoản & bảo mật
+            <span class="sb-icon"><i class="fa-regular fa-user"></i></span> Tài khoản & bảo mật
         </button>
-
         <button class="sb-mi" onclick="go('naptien.html')">
-            <span class="sb-icon"><i class="fa-regular fa-credit-card"></i></span>
-            Nạp tiền
+            <span class="sb-icon"><i class="fa-regular fa-credit-card"></i></span> Nạp tiền
         </button>
-
         <button class="sb-mi" onclick="go('lichsu.html')">
-            <span class="sb-icon"><i class="fa-regular fa-clock"></i></span>
-            Nhật ký hoạt động
+            <span class="sb-icon"><i class="fa-regular fa-clock"></i></span> Nhật ký hoạt động
         </button>
 
         <div class="sb-title">Danh sách dịch vụ</div>
-
-        <button class="sb-mi" onclick="go('dichvu.html')">
-            <span class="sb-icon"><i class="fa-solid fa-layer-group"></i></span>
-            Dịch vụ khác
+        <button class="sb-mi">
+            <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span> Dịch vụ khác
             <span class="badge">MỚI</span>
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
-
         <button class="sb-mi" onclick="go('facebook.html')">
-            <span class="sb-icon"><i class="fa-brands fa-facebook"></i></span>
-            Facebook
+            <span class="sb-icon"><i class="fa-brands fa-facebook"></i></span> Facebook
             <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
-
         <button class="sb-mi active">
-            <span class="sb-icon"><i class="fa-brands fa-instagram"></i></span>
-            Instagram
+            <span class="sb-icon"><i class="fa-brands fa-instagram"></i></span> Instagram
             <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
-
         <button class="sb-mi" onclick="go('tiktok.html')">
-            <span class="sb-icon"><i class="fa-brands fa-tiktok"></i></span>
-            TikTok
+            <span class="sb-icon"><i class="fa-brands fa-tiktok"></i></span> TikTok
             <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
-
         <button class="sb-mi" onclick="go('youtube.html')">
-            <span class="sb-icon"><i class="fa-brands fa-youtube"></i></span>
-            YouTube
+            <span class="sb-icon"><i class="fa-brands fa-youtube"></i></span> YouTube
             <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
-
     </div>
-
     <div class="sidebar-footer">
         <button class="sb-mi" onclick="logout()" style="color:#ff6670">
-            <span class="sb-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
-            Đăng xuất
+            <span class="sb-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Đăng xuất
         </button>
     </div>
-
 </aside>
-
 
 <!-- MAIN -->
 <main class="main">
-
     <!-- TOPBAR -->
     <header class="topbar">
-
         <div class="top-left">
-
             <div class="crumb">
-                <span>Trang chủ</span>
-                <i class="fa-solid fa-chevron-right"></i>
-                <span class="current">Instagram</span>
+                <span>Trang chủ</span> <i class="fa-solid fa-chevron-right"></i> <span>Instagram</span>
             </div>
-
             <div class="search">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Tìm dịch vụ">
+                <input id="serviceSearch" type="text" placeholder="Tìm dịch vụ">
                 <span class="shortcut">Ctrl K</span>
             </div>
-
         </div>
-
         <div class="top-right">
-
-            <button class="icon-btn" onclick="go('taikhoan.html')">
-                <i class="fa-solid fa-gear"></i>
-            </button>
-
+            <button class="icon-btn" onclick="go('taikhoan.html')"><i class="fa-solid fa-gear"></i></button>
             <button class="icon-btn" onclick="go('thongbao.html')">
-                <i class="fa-regular fa-bell"></i>
+                <i class="fa-regular fa-bell"></i><span class="dot"></span>
             </button>
-
             <div class="lang">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg">
-                <span>VN</span>
-                Tiếng Việt
-                <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
+                <span>VN</span> Tiếng Việt <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
             </div>
-
             <div class="user-dropdown">
-
                 <button class="user" id="userBtn">
                     <div class="avatar" id="avatarMini">H</div>
                     <span class="user-name" id="navUserName">Đang tải...</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
-
                 <div class="user-menu" id="userMenu">
-
                     <div class="user-menu-header">
                         <div class="avatar" id="menuAvatar">H</div>
                         <div>
@@ -728,302 +744,527 @@
                             <span>Thành viên</span>
                         </div>
                     </div>
-
                     <div class="user-menu-line"></div>
-
-                    <button onclick="go('taikhoan.html')">
-                        <i class="fa-regular fa-user"></i>
-                        Tài khoản của tôi
-                    </button>
-
-                    <button onclick="go('naptien.html')">
-                        <i class="fa-regular fa-credit-card"></i>
-                        Nạp tiền
-                    </button>
-
-                    <button onclick="go('lichsu.html')">
-                        <i class="fa-regular fa-clock"></i>
-                        Nhật ký hoạt động
-                    </button>
-
+                    <button onclick="go('taikhoan.html')"><i class="fa-regular fa-user"></i> Tài khoản của tôi</button>
+                    <button onclick="go('naptien.html')"><i class="fa-regular fa-credit-card"></i> Nạp tiền</button>
+                    <button onclick="go('lichsu.html')"><i class="fa-regular fa-clock"></i> Nhật ký hoạt động</button>
                     <div class="user-menu-line"></div>
-
-                    <button class="logout-item" onclick="logout()">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        Đăng xuất
-                    </button>
-
+                    <button class="logout-item" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</button>
                 </div>
-
             </div>
-
         </div>
-
     </header>
-
 
     <!-- CONTENT -->
     <div class="content">
-
         <div class="page-title">
-            <h1>Dịch vụ Instagram</h1>
-            <p>Các dịch vụ hỗ trợ tăng trưởng và phát triển tài khoản Instagram.</p>
+            <h1>Instagram</h1>
+            <p>Dịch vụ Instagram chất lượng cao tại HoangKun Store.</p>
         </div>
 
+        <div class="layout">
+            <!-- LEFT -->
+            <div>
+                <div class="card">
+                    <div class="card-title">
+                        <div class="ig-icon"><i class="fa-brands fa-instagram"></i></div>
+                        Dịch vụ Instagram
+                    </div>
 
-        <div class="service-card">
+                    <!-- BALANCE -->
+                    <div class="balance-box">
+                        <div class="balance-left">
+                            <div class="balance-icon"><i class="fa-solid fa-coins"></i></div>
+                            <div>
+                                <div class="balance-label">Số dư hiện tại</div>
+                                <div class="balance-value" id="balanceValue">Đang tải...</div>
+                            </div>
+                        </div>
+                        <button class="refresh-balance" onclick="loadBalance()" title="Làm mới số dư"><i class="fa-solid fa-rotate"></i></button>
+                    </div>
 
-            <div class="instagram-head">
+                    <!-- FORM -->
+                    <div class="service-box">
+                        <div class="field full">
+                            <label>Chọn dịch vụ</label>
+                            <select id="service">
+                                <option value="like">Tăng Like Instagram — 700 xu / 1</option>
+                                <option value="follow">Tăng Theo dõi Instagram — 1.700 xu / 1</option>
+                            </select>
+                        </div>
 
-                <div class="instagram-icon">
-                    <i class="fa-brands fa-instagram"></i>
+                        <div class="field">
+                            <label>Link Instagram</label>
+                            <input id="link" type="text" autocomplete="off" placeholder="https://instagram.com/...">
+                            <small>Ví dụ: https://instagram.com/hoangkun</small>
+                            <span class="link-error" id="linkError"></span>
+                        </div>
+
+                        <div class="field">
+                            <label>Số lượng</label>
+                            <div class="quantity-control">
+                                <button type="button" onclick="changeQuantity(-1)"><i class="fa-solid fa-minus"></i></button>
+                                <input id="quantity" type="number" value="50" min="50" step="1" inputmode="numeric">
+                                <button type="button" onclick="changeQuantity(1)"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <small>Số lượng tối thiểu: 50</small>
+                        </div>
+
+                        <div class="field full">
+                            <label>Ghi chú</label>
+                            <input id="note" type="text" maxlength="300" placeholder="Nhập ghi chú nếu cần...">
+                        </div>
+                    </div>
+
+                    <!-- PRICE -->
+                    <div class="price">
+                        <span>Tạm tính</span>
+                        <strong id="totalPrice">35.000 xu</strong>
+                    </div>
+                    <div class="price-note" id="priceNote">Đơn giá: 700 xu / 1</div>
+
+                    <!-- ORDER BUTTON -->
+                    <button class="btn-order" id="orderButton" onclick="createOrder()">
+                        <i class="fa-solid fa-cart-shopping"></i> &nbsp; Đặt dịch vụ
+                    </button>
                 </div>
 
-                <div>
-                    <h2>Dịch vụ Instagram</h2>
-                    <p>Chọn dịch vụ bạn cần hoặc liên hệ CSKH để được tư vấn.</p>
+                <!-- HISTORY -->
+                <div class="card table-card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-clock-rotate-left" style="color:#1677ff"></i> Đơn hàng Instagram gần đây
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Mã đơn</th>
+                                    <th>Dịch vụ</th>
+                                    <th>Số lượng</th>
+                                    <th>Chi phí</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thời gian</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderTable">
+                                <tr>
+                                    <td colspan="6" style="text-align:center;color:#9aa6b8;padding:25px">Chưa có đơn hàng</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-
             </div>
 
-
-            <div class="service-grid">
-
-                <div class="service-item">
-
-                    <div class="service-item-icon">
-                        <i class="fa-solid fa-user-plus"></i>
+            <!-- RIGHT INFO -->
+            <div>
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-circle-info" style="color:#1677ff"></i> Thông tin dịch vụ
                     </div>
-
-                    <h3>Tăng Followers Instagram</h3>
-
-                    <p>
-                        Hỗ trợ tăng lượt theo dõi cho tài khoản Instagram
-                        theo nhu cầu.
-                    </p>
-
-                    <div class="price">
-                        Liên hệ báo giá
+                    <div class="info-list">
+                        <div class="info-item">
+                            <i class="fa-solid fa-bolt"></i>
+                            <div><strong>Tốc độ xử lý</strong> Hệ thống tự động xử lý đơn sau khi đặt.</div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-coins"></i>
+                            <div><strong>Bảng giá</strong> Giá dịch vụ được tính theo số xu trên mỗi đơn vị.</div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div><strong>An toàn</strong> Không yêu cầu mật khẩu tài khoản Instagram.</div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-rotate"></i>
+                            <div><strong>Bảo hành</strong> Hỗ trợ xử lý khi đơn gặp vấn đề.</div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-headset"></i>
+                            <div><strong>Hỗ trợ</strong> Liên hệ CSKH nếu cần hỗ trợ đơn hàng.</div>
+                        </div>
                     </div>
-
-                    <button class="btn" onclick="openZalo()">
-                        <i class="fa-solid fa-headset"></i>
-                        Liên hệ CSKH
-                    </button>
-
+                    <div class="server-box">
+                        <strong>Trạng thái hệ thống</strong>
+                        <span class="online">ONLINE</span>
+                    </div>
                 </div>
-
-
-                <div class="service-item">
-
-                    <div class="service-item-icon">
-                        <i class="fa-solid fa-heart"></i>
-                    </div>
-
-                    <h3>Tăng Like Instagram</h3>
-
-                    <p>
-                        Hỗ trợ tăng tương tác cho bài viết Instagram
-                        nhanh chóng.
-                    </p>
-
-                    <div class="price">
-                        Liên hệ báo giá
-                    </div>
-
-                    <button class="btn" onclick="openZalo()">
-                        <i class="fa-solid fa-headset"></i>
-                        Liên hệ CSKH
-                    </button>
-
-                </div>
-
-
-                <div class="service-item">
-
-                    <div class="service-item-icon">
-                        <i class="fa-solid fa-eye"></i>
-                    </div>
-
-                    <h3>Tăng View Instagram</h3>
-
-                    <p>
-                        Hỗ trợ tăng lượt xem cho nội dung Instagram
-                        theo yêu cầu.
-                    </p>
-
-                    <div class="price">
-                        Liên hệ báo giá
-                    </div>
-
-                    <button class="btn" onclick="openZalo()">
-                        <i class="fa-solid fa-headset"></i>
-                        Liên hệ CSKH
-                    </button>
-
-                </div>
-
-
-                <div class="service-item">
-
-                    <div class="service-item-icon">
-                        <i class="fa-solid fa-comment"></i>
-                    </div>
-
-                    <h3>Tăng Comment</h3>
-
-                    <p>
-                        Hỗ trợ tăng bình luận và tương tác cho
-                        bài viết Instagram.
-                    </p>
-
-                    <div class="price">
-                        Liên hệ báo giá
-                    </div>
-
-                    <button class="btn" onclick="openZalo()">
-                        <i class="fa-solid fa-headset"></i>
-                        Liên hệ CSKH
-                    </button>
-
-                </div>
-
-
-                <div class="service-item">
-
-                    <div class="service-item-icon">
-                        <i class="fa-solid fa-share"></i>
-                    </div>
-
-                    <h3>Tăng Share</h3>
-
-                    <p>
-                        Hỗ trợ tăng lượt chia sẻ nội dung
-                        trên Instagram.
-                    </p>
-
-                    <div class="price">
-                        Liên hệ báo giá
-                    </div>
-
-                    <button class="btn" onclick="openZalo()">
-                        <i class="fa-solid fa-headset"></i>
-                        Liên hệ CSKH
-                    </button>
-
-                </div>
-
-
-                <div class="service-item">
-
-                    <div class="service-item-icon">
-                        <i class="fa-solid fa-layer-group"></i>
-                    </div>
-
-                    <h3>Dịch vụ Instagram khác</h3>
-
-                    <p>
-                        Có nhu cầu dịch vụ khác? Hãy liên hệ để
-                        được tư vấn và báo giá.
-                    </p>
-
-                    <div class="price">
-                        Theo yêu cầu
-                    </div>
-
-                    <button class="btn" onclick="openZalo()">
-                        <i class="fa-solid fa-headset"></i>
-                        Liên hệ CSKH
-                    </button>
-
-                </div>
-
             </div>
-
         </div>
-
     </div>
-
 </main>
-
 
 <!-- SUPPORT -->
 <button class="support" onclick="openZalo()">
-    <i class="fa-solid fa-headset"></i>
-    <span>Liên hệ</span>
+    <i class="fa-solid fa-headset"></i><span>Liên hệ</span>
 </button>
 
-
 <script>
+/* =====================================================
+   FIREBASE
+===================================================== */
+const firebaseConfig = {
+    apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
+    authDomain: "shophoangkun.firebaseapp.com",
+    databaseURL: "https://shophoangkun-default-rtdb.firebaseio.com",
+    projectId: "shophoangkun",
+    storageBucket: "shophoangkun.firebasestorage.app",
+    messagingSenderId: "364993334554",
+    appId: "1:364993334554:web:800c66509b355ebf5370a3"
+};
 
-function go(file) {
-    window.location.href = file;
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+function go(file) { window.location.href = file; }
+function openZalo() { window.open("https://zalo.me/0788265513", "_blank"); }
+
+/* =====================================================
+   BIẾN DỮ LIỆU
+===================================================== */
+let currentUser = null;
+let currentBalance = 0;
+let balanceField = "xu";
+let isOrdering = false;
+
+const prices = { like: 700, follow: 1700 };
+const serviceNames = { like: "Tăng Like Instagram", follow: "Tăng Theo dõi Instagram" };
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+const service = document.getElementById("service");
+const quantity = document.getElementById("quantity");
+const linkInput = document.getElementById("link");
+const noteInput = document.getElementById("note");
+const totalPrice = document.getElementById("totalPrice");
+const priceNote = document.getElementById("priceNote");
+const linkError = document.getElementById("linkError");
+const orderButton = document.getElementById("orderButton");
+const balanceValue = document.getElementById("balanceValue");
+const orderTable = document.getElementById("orderTable");
+
+/* =====================================================
+   FORMATTERS
+===================================================== */
+function formatXu(value) { return Number(value || 0).toLocaleString("vi-VN") + " xu"; }
+function formatDate(timestamp) {
+    if (!timestamp) return "---";
+    return new Date(timestamp).toLocaleString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+}
+function escapeHtml(value) {
+    return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
-function openZalo() {
-    window.open("https://zalo.me/0788265513", "_blank");
-}
+/* =====================================================
+   AUTH LISTENER
+===================================================== */
+auth.onAuthStateChanged(user => {
+    if (!user) { window.location.href = "index.html"; return; }
+    currentUser = user;
+    const name = user.displayName || user.email?.split("@")[0] || "Thành viên";
+    const letter = name.charAt(0).toUpperCase();
 
+    document.getElementById("navUserName").textContent = name;
+    document.getElementById("menuUserName").textContent = name;
+    document.getElementById("avatarMini").textContent = letter;
+    document.getElementById("menuAvatar").textContent = letter;
 
-/* USER */
+    loadBalance();
+    loadOrders();
+});
 
+/* =====================================================
+   DROPDOWN & SHORTCUTS
+===================================================== */
 const userBtn = document.getElementById("userBtn");
-const userMenu = document.getElementById("userMenu");
+const userDropdown = document.querySelector(".user-dropdown");
+userBtn.addEventListener("click", e => { e.stopPropagation(); userDropdown.classList.toggle("open"); });
+document.addEventListener("click", e => { if (!userDropdown.contains(e.target)) userDropdown.classList.remove("open"); });
 
-userBtn.addEventListener("click", function(e) {
-    e.stopPropagation();
-    userMenu.classList.toggle("show");
+document.addEventListener("keydown", e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        document.getElementById("serviceSearch").focus();
+    }
 });
 
-document.addEventListener("click", function() {
-    userMenu.classList.remove("show");
+/* =====================================================
+   SỐ DƯ
+===================================================== */
+async function loadBalance() {
+    if (!currentUser) return;
+    balanceValue.textContent = "Đang tải...";
+    try {
+        const snapshot = await db.ref("users").child(currentUser.uid).once("value");
+        const data = snapshot.val() || {};
+        const fields = ["xu", "balance", "coins", "credit"];
+        let found = false;
+        for (const field of fields) {
+            if (data[field] !== undefined && data[field] !== null && !isNaN(Number(data[field]))) {
+                balanceField = field;
+                currentBalance = Number(data[field]);
+                found = true;
+                break;
+            }
+        }
+        if (!found) { balanceField = "xu"; currentBalance = 0; }
+        balanceValue.textContent = formatXu(currentBalance);
+    } catch (error) {
+        console.error("Lỗi tải số dư:", error);
+        balanceValue.textContent = "Không tải được";
+    }
+}
+
+/* =====================================================
+   VALIDATE LINK INSTAGRAM
+===================================================== */
+function isValidInstagramUrl(value) {
+    if (!value) return false;
+    value = value.trim();
+    let url;
+    try { url = new URL(value); } catch { return false; }
+    const protocol = url.protocol.toLowerCase();
+    if (protocol !== "https:" && protocol !== "http:") return false;
+    const host = url.hostname.toLowerCase().replace(/^www\./, "");
+    return host === "instagram.com";
+}
+
+function showLinkError(message) {
+    linkInput.style.borderColor = "#ef4444";
+    linkError.textContent = message;
+    linkError.style.display = "block";
+}
+function clearLinkError() {
+    linkInput.style.borderColor = "#dfe7f2";
+    linkError.textContent = "";
+    linkError.style.display = "none";
+}
+
+linkInput.addEventListener("input", () => {
+    const value = linkInput.value.trim();
+    if (!value) { clearLinkError(); return; }
+    if (isValidInstagramUrl(value)) {
+        linkInput.style.borderColor = "#16b978";
+        linkError.style.display = "none";
+    } else {
+        showLinkError("Link Instagram không hợp lệ.");
+    }
 });
 
+/* =====================================================
+   QUANTITY & PRICE
+===================================================== */
+function changeQuantity(amount) {
+    let current = Number(quantity.value) || 50;
+    current += amount;
+    if (current < 50) current = 50;
+    quantity.value = Math.floor(current);
+    updatePrice();
+}
 
-/* USER DEMO */
+quantity.addEventListener("input", () => {
+    let value = Number(quantity.value);
+    if (!Number.isFinite(value) || value < 50) value = 50;
+    quantity.value = Math.floor(value);
+    updatePrice();
+});
 
-const savedName = localStorage.getItem("userName") || "Hoangny2006";
+function updatePrice() {
+    let amount = Math.floor(Number(quantity.value || 0));
+    if (amount < 50) amount = 50;
+    quantity.value = amount;
+    
+    const unitPrice = Number(prices[service.value] || 0);
+    const total = amount * unitPrice;
+    
+    totalPrice.textContent = formatXu(total);
+    priceNote.textContent = "Đơn giá: " + formatXu(unitPrice) + " / 1";
+}
+service.addEventListener("change", updatePrice);
 
-document.getElementById("navUserName").textContent = savedName;
-document.getElementById("menuUserName").textContent = savedName;
+/* =====================================================
+   TẠO ĐƠN & LƯU FIREBASE
+===================================================== */
+function generateOrderId() {
+    return "IG" + Date.now().toString().slice(-9) + Math.floor(1000 + Math.random() * 9000);
+}
 
-const letter = savedName.charAt(0).toUpperCase();
+function getLocalKey() { return "hoangkun_instagram_orders_" + currentUser.uid; }
+function saveLocalOrder(order) {
+    try {
+        let orders = JSON.parse(localStorage.getItem(getLocalKey()) || "[]");
+        orders = orders.filter(item => item.orderId !== order.orderId);
+        orders.unshift(order);
+        localStorage.setItem(getLocalKey(), JSON.stringify(orders.slice(0, 50)));
+    } catch (e) { console.error(e); }
+}
+function getLocalOrders() {
+    try { return JSON.parse(localStorage.getItem(getLocalKey()) || "[]"); } catch { return []; }
+}
 
-document.getElementById("avatarMini").textContent = letter;
-document.getElementById("menuAvatar").textContent = letter;
+async function deductBalance(amount) {
+    const balanceRef = db.ref("users").child(currentUser.uid).child(balanceField);
+    const result = await balanceRef.transaction(currentValue => {
+        const balance = Number(currentValue || 0);
+        if (balance < amount) return; 
+        return balance - amount;
+    });
+    if (!result.committed) throw new Error("INSUFFICIENT_BALANCE");
+    currentBalance = Number(result.snapshot.val() || 0);
+    balanceValue.textContent = formatXu(currentBalance);
+    return currentBalance;
+}
 
+async function refundBalance(amount) {
+    try {
+        const balanceRef = db.ref("users").child(currentUser.uid).child(balanceField);
+        const result = await balanceRef.transaction(curr => Number(curr || 0) + Number(amount || 0));
+        if (result.committed) {
+            currentBalance = Number(result.snapshot.val() || 0);
+            balanceValue.textContent = formatXu(currentBalance);
+            return true;
+        }
+    } catch (e) { console.error(e); }
+    return false;
+}
 
-/* LOGOUT */
+async function createOrder() {
+    if (isOrdering) return;
+    if (!currentUser) return Swal.fire({ icon: "warning", title: "Chưa đăng nhập", text: "Vui lòng đăng nhập trước khi đặt dịch vụ.", confirmButtonColor: "#1677ff" });
+
+    const link = linkInput.value.trim();
+    const amount = Number(quantity.value);
+    const serviceId = service.value;
+    const serviceName = serviceNames[serviceId];
+    const unitPrice = Number(prices[serviceId] || 0);
+    const total = amount * unitPrice;
+
+    if (!link) { linkInput.focus(); return Swal.fire({ icon: "warning", title: "Thiếu link", text: "Vui lòng nhập link Instagram.", confirmButtonColor: "#1677ff" }); }
+    if (!isValidInstagramUrl(link)) { linkInput.focus(); return Swal.fire({ icon: "error", title: "Link không hợp lệ", text: "Ví dụ: https://instagram.com/hoangkun", confirmButtonColor: "#1677ff" }); }
+    if (amount < 50) return Swal.fire({ icon: "warning", title: "Lỗi số lượng", text: "Số lượng tối thiểu là 50.", confirmButtonColor: "#1677ff" });
+    if (total <= 0) return Swal.fire({ icon: "error", title: "Lỗi giá", text: "Giá dịch vụ không hợp lệ.", confirmButtonColor: "#1677ff" });
+
+    if (currentBalance < total) {
+        return Swal.fire({
+            icon: "warning",
+            title: "Không đủ xu",
+            html: `Số dư hiện tại: <b>${formatXu(currentBalance)}</b><br>Chi phí đơn: <b>${formatXu(total)}</b><br>Bạn còn thiếu: <b style='color:#ef4444'>${formatXu(total - currentBalance)}</b><br><br>Vui lòng nạp thêm xu.`,
+            showCancelButton: true, confirmButtonText: "Nạp tiền", cancelButtonText: "Đóng", confirmButtonColor: "#1677ff"
+        }).then(res => { if (res.isConfirmed) go("naptien.html"); });
+    }
+
+    isOrdering = true;
+    orderButton.disabled = true;
+    orderButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
+
+    Swal.fire({ title: "Đang tạo đơn...", text: "Đang kiểm tra và trừ xu, vui lòng chờ.", allowOutsideClick: false, allowEscapeKey: false, showConfirmButton: false, didOpen: () => Swal.showLoading() });
+
+    let deducted = false;
+    const orderId = generateOrderId();
+    const orderData = {
+        orderId, userId: currentUser.uid, serviceId, service: serviceName, platform: "Instagram", link,
+        quantity: amount, unitPrice, total, status: "Đã đặt - Vui lòng chờ", note: noteInput.value.trim(),
+        createdAt: Date.now(), balanceField, balanceBefore: currentBalance, balanceAfter: currentBalance - total
+    };
+
+    try {
+        await deductBalance(total);
+        deducted = true;
+        
+        // Push lên database theo nhánh instagramOrders
+        await db.ref("users").child(currentUser.uid).child("instagramOrders").child(orderId).set(orderData);
+        saveLocalOrder(orderData);
+        addOrderToTable(orderData, true);
+
+        linkInput.value = ""; noteInput.value = ""; quantity.value = 50; clearLinkError(); updatePrice();
+
+        Swal.fire({
+            icon: "success", title: "Đặt dịch vụ thành công!",
+            html: `<div style='line-height:1.9'><b>Mã đơn:</b> ${escapeHtml(orderId)}<br><b>Dịch vụ:</b> ${escapeHtml(serviceName)}<br><b>Số lượng:</b> ${amount.toLocaleString("vi-VN")}<br><b>Đã trừ:</b> ${formatXu(total)}<br><b>Số dư còn lại:</b> ${formatXu(currentBalance)}<br><br><span style='color:#1677ff;font-weight:800'>Đã đặt thành công, vui lòng chờ hệ thống xử lý.</span></div>`,
+            confirmButtonColor: "#1677ff", confirmButtonText: "Đã hiểu"
+        });
+    } catch (error) {
+        if (error.message === "INSUFFICIENT_BALANCE") {
+            await loadBalance();
+            return Swal.fire({ icon: "warning", title: "Không đủ xu", text: "Số dư của bạn không đủ để đặt đơn này.", confirmButtonColor: "#1677ff" });
+        }
+        if (deducted) {
+            const refunded = await refundBalance(total);
+            if (refunded) Swal.fire({ icon: "error", title: "Lỗi tạo đơn", text: "Đã hoàn lại xu. Vui lòng thử lại.", confirmButtonColor: "#1677ff" });
+            else Swal.fire({ icon: "error", title: "Lỗi hệ thống", html: "Vui lòng liên hệ CSKH để kiểm tra.", confirmButtonColor: "#1677ff" });
+        } else {
+            Swal.fire({ icon: "error", title: "Không thể tạo đơn", text: "Vui lòng thử lại sau.", confirmButtonColor: "#1677ff" });
+        }
+    } finally {
+        isOrdering = false;
+        orderButton.disabled = false;
+        orderButton.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> &nbsp; Đặt dịch vụ';
+    }
+}
+
+/* =====================================================
+   HIỂN THỊ LỊCH SỬ
+===================================================== */
+async function loadOrders() {
+    if (!currentUser) return;
+    orderTable.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#9aa6b8;padding:25px"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải lịch sử...</td></tr>`;
+    try {
+        const snapshot = await db.ref("users").child(currentUser.uid).child("instagramOrders").orderByChild("createdAt").limitToLast(50).once("value");
+        const orders = [];
+        snapshot.forEach(child => { if (child.val()) orders.push(child.val()); });
+        orders.sort((a,b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+        
+        if (orders.length) renderHistoryTable(orders);
+        else renderHistoryTable(getLocalOrders());
+    } catch (e) {
+        renderHistoryTable(getLocalOrders());
+    }
+}
+
+function renderHistoryTable(orders) {
+    orderTable.innerHTML = "";
+    if (!orders || orders.length === 0) {
+        orderTable.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#9aa6b8;padding:25px">Chưa có đơn hàng Instagram</td></tr>`;
+        return;
+    }
+    orders.forEach(o => addOrderToTable(o, false));
+}
+
+function addOrderToTable(order, prepend = false) {
+    if (!order || !order.orderId) return;
+    if (orderTable.children.length === 1 && orderTable.children[0].innerText.includes("Chưa có")) orderTable.innerHTML = "";
+    
+    const oldRow = orderTable.querySelector(`[data-order-id="${CSS.escape(order.orderId)}"]`);
+    if (oldRow) oldRow.remove();
+
+    const row = document.createElement("tr");
+    row.dataset.orderId = order.orderId;
+    row.innerHTML = `
+        <td><strong style="color:#1677ff">${escapeHtml(order.orderId)}</strong></td>
+        <td>${escapeHtml(order.service || "---")}</td>
+        <td>${Number(order.quantity || 0).toLocaleString("vi-VN")}</td>
+        <td><strong style="color:#1677ff">${formatXu(order.total || 0)}</strong></td>
+        <td><span class="status">${escapeHtml(order.status || "Đã đặt - Vui lòng chờ")}</span></td>
+        <td>${formatDate(order.createdAt)}</td>
+    `;
+    if (prepend) orderTable.prepend(row); else orderTable.appendChild(row);
+}
 
 function logout() {
-
-    if (confirm("Bạn có chắc muốn đăng xuất không?")) {
-
-        localStorage.removeItem("userName");
-
-        window.location.href = "index.html";
-
-    }
-
+    Swal.fire({
+        title: "Đăng xuất?", text: "Bạn có chắc muốn đăng xuất khỏi tài khoản?", icon: "warning",
+        showCancelButton: true, confirmButtonColor: "#1677ff", cancelButtonColor: "#ef4444", confirmButtonText: "Đăng xuất", cancelButtonText: "Hủy"
+    }).then(res => {
+        if (res.isConfirmed) auth.signOut().then(() => { window.location.href = "index.html"; });
+    });
 }
 
-
-/* CTRL K */
-
-document.addEventListener("keydown", function(e) {
-
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-
-        e.preventDefault();
-
-        const input = document.querySelector(".search input");
-
-        if (input) input.focus();
-
-    }
-
-});
-
+updatePrice();
 </script>
 
 </body>
