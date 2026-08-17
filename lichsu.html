@@ -1133,7 +1133,7 @@ a{text-decoration:none;color:inherit}
                 <select class="type-select" id="typeFilter">
                     <option value="all">Loại: Tất cả</option>
                     <option value="order">Đơn hàng</option>
-                    <option value="payment">Nạp tiền</option>
+                    <option value="payment">Biến động số dư</option>
                     <option value="website">Website</option>
                     <option value="api">API</option>
                     <option value="login">Tài khoản</option>
@@ -1167,7 +1167,7 @@ a{text-decoration:none;color:inherit}
                     <thead>
                         <tr>
                             <th>STT <i class="fa-solid fa-arrow-down-up-across-line"></i></th>
-                            <th>UID <i class="fa-solid fa-arrow-down-up-across-line"></i></th>
+                            <th>UID / MÃ ĐƠN <i class="fa-solid fa-arrow-down-up-across-line"></i></th>
                             <th>LOẠI <i class="fa-solid fa-arrow-down-up-across-line"></i></th>
                             <th>NỘI DUNG <i class="fa-solid fa-arrow-down-up-across-line"></i></th>
                             <th>SỐ LƯỢNG <i class="fa-solid fa-arrow-down-up-across-line"></i></th>
@@ -1298,19 +1298,12 @@ function formatMoney(value){
 }
 
 function formatDate(timestamp){
-
     if(!timestamp) return "--";
-
     const date = new Date(Number(timestamp));
-
     if(isNaN(date.getTime())) return "--";
-
     return date.toLocaleString("vi-VN",{
-        day:"2-digit",
-        month:"2-digit",
-        year:"numeric",
-        hour:"2-digit",
-        minute:"2-digit"
+        day:"2-digit", month:"2-digit", year:"numeric",
+        hour:"2-digit", minute:"2-digit"
     });
 }
 
@@ -1329,10 +1322,9 @@ function escapeHtml(value){
 ========================= */
 
 function getTypeLabel(type){
-
     const labels = {
         order:"Đơn hàng",
-        payment:"Nạp tiền",
+        payment:"Biến động",
         website:"Website",
         api:"API",
         login:"Tài khoản",
@@ -1343,29 +1335,16 @@ function getTypeLabel(type){
         follow_youtube:"YouTube",
         service:"Dịch vụ"
     };
-
     return labels[type] || type || "Khác";
 }
 
 function getTypeClass(type){
-
     type = String(type || "");
-
-    if(type === "payment")
-        return "type-payment";
-
-    if(type === "order" || type.includes("follow"))
-        return "type-follow";
-
-    if(type === "website")
-        return "type-website";
-
-    if(type === "api")
-        return "type-api";
-
-    if(type === "login" || type === "account")
-        return "type-login";
-
+    if(type === "payment") return "type-payment";
+    if(type === "order" || type.includes("follow")) return "type-follow";
+    if(type === "website") return "type-website";
+    if(type === "api") return "type-api";
+    if(type === "login" || type === "account") return "type-login";
     return "type-account";
 }
 
@@ -1375,60 +1354,92 @@ function getTypeClass(type){
 ========================= */
 
 auth.onAuthStateChanged(user => {
-
     if(!user){
-
         setTimeout(() => {
-            if(!auth.currentUser){
-                location.href = "index.html";
-            }
+            if(!auth.currentUser){ location.href = "index.html"; }
         },800);
-
         return;
     }
-
     currentUser = user;
-
     const name = user.displayName || "Thành viên";
-
     document.getElementById("userName").textContent = name;
-    document.getElementById("avatar").textContent =
-        name.charAt(0).toUpperCase();
+    document.getElementById("avatar").textContent = name.charAt(0).toUpperCase();
 
     loadHistory(user.uid);
 });
 
 
 /* =========================
-   LOAD HISTORY
+   LOAD HISTORY (COMBINE TẤT CẢ)
 ========================= */
 
 function loadHistory(uid){
-
-    db.ref("history/" + uid).on("value", snapshot => {
-
+    // Quét tổng quát dữ liệu của User để gom lịch sử
+    db.ref("users/" + uid).on("value", snapshot => {
         allHistory = [];
+        const data = snapshot.val() || {};
 
-        snapshot.forEach(child => {
-
-            allHistory.push({
-                id:child.key,
-                ...(child.val() || {})
+        // 1. Lấy Đơn hàng Facebook
+        if (data.facebookOrders) {
+            Object.keys(data.facebookOrders).forEach(key => {
+                const order = data.facebookOrders[key];
+                allHistory.push({
+                    id: key,
+                    uid: uid,
+                    type: "follow_facebook",
+                    title: order.service || "Dịch vụ Facebook",
+                    quantity: order.quantity || 0,
+                    completed: 0,
+                    amount: -(order.total || order.coins || 0), // Lịch sử mua hàng (Trừ tiền)
+                    createdAt: order.createdAt || 0,
+                    nodePath: `users/${uid}/facebookOrders/${key}`
+                });
             });
+        }
 
-        });
+        // 2. Lấy Đơn hàng Instagram
+        if (data.instagramOrders) {
+            Object.keys(data.instagramOrders).forEach(key => {
+                const order = data.instagramOrders[key];
+                allHistory.push({
+                    id: key,
+                    uid: uid,
+                    type: "follow_instagram",
+                    title: order.service || "Dịch vụ Instagram",
+                    quantity: order.quantity || 0,
+                    completed: 0,
+                    amount: -(order.total || order.coins || 0), // Trừ tiền
+                    createdAt: order.createdAt || 0,
+                    nodePath: `users/${uid}/instagramOrders/${key}`
+                });
+            });
+        }
 
-        allHistory.sort((a,b) =>
-            Number(b.createdAt || 0) -
-            Number(a.createdAt || 0)
-        );
+        // 3. Lấy Lịch sử Hoa hồng (Biến động tiền)
+        if (data.lich_su_hoa_hong) {
+            Object.keys(data.lich_su_hoa_hong).forEach(key => {
+                const hh = data.lich_su_hoa_hong[key];
+                allHistory.push({
+                    id: key,
+                    uid: uid,
+                    type: "payment",
+                    title: hh.content || "Hoa hồng / Rút tiền",
+                    quantity: 0,
+                    completed: 0,
+                    amount: hh.amount || 0, // Dữ liệu đã có sẵn dấu + -
+                    createdAt: hh.time || hh.createdAt || 0,
+                    nodePath: `users/${uid}/lich_su_hoa_hong/${key}`
+                });
+            });
+        }
+        
+        // Sắp xếp giảm dần theo thời gian tạo
+        allHistory.sort((a,b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
 
         applyFilters();
 
-    },error => {
-
-        console.error("History error:",error);
-
+    }, error => {
+        console.error("Lỗi khi tải lịch sử:", error);
         allHistory = [];
         applyFilters();
     });
@@ -1440,49 +1451,19 @@ function loadHistory(uid){
 ========================= */
 
 function applyFilters(){
-
-    const search = document
-        .getElementById("historySearch")
-        .value
-        .trim()
-        .toLowerCase();
-
-    const type = document
-        .getElementById("typeFilter")
-        .value;
+    const search = document.getElementById("historySearch").value.trim().toLowerCase();
+    const type = document.getElementById("typeFilter").value;
 
     filteredHistory = allHistory.filter(item => {
+        const uid = String(item.id || item.uid || currentUser?.uid || "").toLowerCase();
+        const content = String(item.title || item.description || "").toLowerCase();
+        const itemType = String(item.type || "").toLowerCase();
 
-        const uid = String(
-            item.uid || currentUser?.uid || ""
-        ).toLowerCase();
-
-        const content = String(
-            item.description ||
-            item.content ||
-            item.title ||
-            item.name ||
-            ""
-        ).toLowerCase();
-
-        const itemType = String(
-            item.type || ""
-        ).toLowerCase();
-
-        const matchSearch =
-            !search ||
-            uid.includes(search) ||
-            content.includes(search) ||
-            itemType.includes(search);
+        const matchSearch = !search || uid.includes(search) || content.includes(search) || itemType.includes(search);
 
         let matchType = true;
-
         if(type !== "all"){
-
-            matchType =
-                type === "order"
-                    ? itemType === "order" || itemType.includes("follow")
-                    : itemType === type;
+            matchType = type === "order" ? (itemType === "order" || itemType.includes("follow")) : itemType === type;
         }
 
         return matchSearch && matchType;
@@ -1498,7 +1479,6 @@ function applyFilters(){
 ========================= */
 
 function renderTable(){
-
     const body = document.getElementById("historyBody");
     const empty = document.getElementById("emptyState");
     const wrapper = document.getElementById("tableWrapper");
@@ -1506,15 +1486,10 @@ function renderTable(){
     body.innerHTML = "";
 
     if(!filteredHistory.length){
-
         wrapper.style.display = "none";
         empty.classList.add("show");
-
-        document.getElementById("totalText").textContent =
-            "Không có dữ liệu";
-
+        document.getElementById("totalText").textContent = "Không có dữ liệu";
         document.getElementById("pagination").innerHTML = "";
-
         return;
     }
 
@@ -1522,144 +1497,68 @@ function renderTable(){
     empty.classList.remove("show");
 
     const start = (currentPage - 1) * perPage;
-    const end = Math.min(
-        start + perPage,
-        filteredHistory.length
-    );
+    const end = Math.min(start + perPage, filteredHistory.length);
 
-    filteredHistory
-        .slice(start,end)
-        .forEach((item,index) => {
+    filteredHistory.slice(start,end).forEach((item,index) => {
+        const displayId = item.id.length > 22 ? item.id.substring(0,22) + "..." : item.id;
+        const type = item.type || "other";
+        const title = item.title || "Hoạt động hệ thống";
+        const quantity = Number(item.quantity || 0);
+        const ran = Number(item.completed || 0);
+        const amount = Number(item.amount || 0);
 
-            const uid =
-                item.uid ||
-                currentUser?.uid ||
-                "—";
+        // Render tiền
+        let moneyHTML = '<span style="color:#94a0b3;font-weight:700">0đ</span>';
+        if(amount < 0){
+            moneyHTML = `<span class="money-minus">${formatMoney(amount)}</span>`;
+        } else if (amount > 0){
+            moneyHTML = `<span class="money-plus">+${formatMoney(amount)}</span>`;
+        }
 
-            const type = item.type || "other";
+        const row = document.createElement("tr");
 
-            const title =
-                item.description ||
-                item.content ||
-                item.title ||
-                item.name ||
-                "Hoạt động hệ thống";
+        row.innerHTML = `
+            <td>
+                <div class="check-cell">
+                    <input type="checkbox" class="row-check" data-id="${escapeHtml(item.id)}">
+                    <span>${start + index + 1}</span>
+                </div>
+            </td>
+            <td>
+                <div class="uid" title="${escapeHtml(item.id)}">
+                    <i class="fa-solid fa-hashtag"></i>
+                    ${escapeHtml(displayId)}
+                </div>
+            </td>
+            <td>
+                <span class="type-badge ${getTypeClass(type)}">
+                    ${escapeHtml(getTypeLabel(type))}
+                </span>
+            </td>
+            <td>
+                <div class="content-text" title="${escapeHtml(title)}">
+                    ${escapeHtml(title)}
+                </div>
+            </td>
+            <td>
+                <span class="qty">${quantity.toLocaleString("vi-VN")}</span>
+            </td>
+            <td>
+                <span class="ran">${ran.toLocaleString("vi-VN")}</span>
+            </td>
+            <td>
+                <div class="money">${moneyHTML}</div>
+            </td>
+            <td>
+                <button class="detail-btn" onclick="showDetail('${escapeHtml(item.id)}')" title="Xem chi tiết">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </td>
+        `;
+        body.appendChild(row);
+    });
 
-            const quantity = Number(
-                item.quantity ||
-                item.qty ||
-                item.amountQuantity ||
-                0
-            );
-
-            const ran = Number(
-                item.completed ||
-                item.ran ||
-                item.processed ||
-                item.successQuantity ||
-                0
-            );
-
-            const amount = Number(
-                item.amount ||
-                item.price ||
-                item.money ||
-                0
-            );
-
-            let moneyHTML =
-                '<span class="money-neutral">0đ</span>';
-
-            if(amount > 0){
-                moneyHTML =
-                    `<span class="money-minus">
-                        ${formatMoney(amount)}
-                    </span>`;
-            }
-
-            if(
-                type === "payment" ||
-                item.direction === "in" ||
-                item.kind === "deposit"
-            ){
-                moneyHTML =
-                    `<span class="money-plus">
-                        +${formatMoney(amount)}
-                    </span>`;
-            }
-
-            const displayUid =
-                uid.length > 22
-                    ? uid.substring(0,22) + "..."
-                    : uid;
-
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-                <td>
-                    <div class="check-cell">
-                        <input
-                            type="checkbox"
-                            class="row-check"
-                            data-id="${escapeHtml(item.id)}"
-                        >
-                        <span>${start + index + 1}</span>
-                    </div>
-                </td>
-
-                <td>
-                    <div class="uid" title="${escapeHtml(uid)}">
-                        <i class="fa-solid fa-copy"></i>
-                        ${escapeHtml(displayUid)}
-                    </div>
-                </td>
-
-                <td>
-                    <span class="type-badge ${getTypeClass(type)}">
-                        ${escapeHtml(getTypeLabel(type))}
-                    </span>
-                </td>
-
-                <td>
-                    <div class="content-text" title="${escapeHtml(title)}">
-                        ${escapeHtml(title)}
-                    </div>
-                </td>
-
-                <td>
-                    <span class="qty">
-                        ${quantity.toLocaleString("vi-VN")}
-                    </span>
-                </td>
-
-                <td>
-                    <span class="ran">
-                        ${ran.toLocaleString("vi-VN")}
-                    </span>
-                </td>
-
-                <td>
-                    <div class="money">
-                        ${moneyHTML}
-                    </div>
-                </td>
-
-                <td>
-                    <button
-                        class="detail-btn"
-                        onclick="showDetail('${escapeHtml(item.id)}')"
-                        title="Xem chi tiết">
-                        <i class="fa-solid fa-eye"></i>
-                    </button>
-                </td>
-            `;
-
-            body.appendChild(row);
-        });
-
-    document.getElementById("totalText").textContent =
-        `Đang xem ${start + 1} đến ${end} trong tổng số ${filteredHistory.length} mục`;
-
+    document.getElementById("totalText").textContent = `Đang xem ${start + 1} đến ${end} trong tổng số ${filteredHistory.length} mục`;
     renderPagination();
 }
 
@@ -1669,103 +1568,49 @@ function renderTable(){
 ========================= */
 
 function renderPagination(){
-
     const pagination = document.getElementById("pagination");
-
     pagination.innerHTML = "";
-
-    const totalPages =
-        Math.ceil(filteredHistory.length / perPage);
+    const totalPages = Math.ceil(filteredHistory.length / perPage);
 
     if(totalPages <= 1) return;
 
     const previous = document.createElement("button");
-
     previous.className = "page-btn";
     previous.textContent = "Trước";
     previous.disabled = currentPage === 1;
-
-    previous.onclick = () => {
-
-        if(currentPage > 1){
-            currentPage--;
-            renderTable();
-        }
-    };
-
+    previous.onclick = () => { if(currentPage > 1){ currentPage--; renderTable(); } };
     pagination.appendChild(previous);
 
     for(let i = 1;i <= totalPages;i++){
-
-        if(
-            totalPages > 7 &&
-            i > 3 &&
-            i < totalPages - 2 &&
-            Math.abs(i - currentPage) > 1
-        ){
-            continue;
-        }
-
+        if(totalPages > 7 && i > 3 && i < totalPages - 2 && Math.abs(i - currentPage) > 1) continue;
         const button = document.createElement("button");
-
-        button.className =
-            "page-btn" +
-            (i === currentPage ? " active" : "");
-
+        button.className = "page-btn" + (i === currentPage ? " active" : "");
         button.textContent = i;
-
-        button.onclick = () => {
-            currentPage = i;
-            renderTable();
-        };
-
+        button.onclick = () => { currentPage = i; renderTable(); };
         pagination.appendChild(button);
     }
 
     const next = document.createElement("button");
-
     next.className = "page-btn";
     next.textContent = "Tiếp";
     next.disabled = currentPage === totalPages;
-
-    next.onclick = () => {
-
-        if(currentPage < totalPages){
-            currentPage++;
-            renderTable();
-        }
-    };
-
+    next.onclick = () => { if(currentPage < totalPages){ currentPage++; renderTable(); } };
     pagination.appendChild(next);
 }
 
 
 /* =========================
-   LIMIT
+   LIMIT & SELECT ALL
 ========================= */
 
 function changeLimit(){
-
-    perPage = Number(
-        document.getElementById("limitSelect").value
-    );
-
+    perPage = Number(document.getElementById("limitSelect").value);
     currentPage = 1;
     renderTable();
 }
 
-
-/* =========================
-   SELECT ALL
-========================= */
-
 function toggleAll(element){
-
-    document
-        .querySelectorAll(".row-check")
-        .forEach(check => {
-            check.checked = element.checked;
-        });
+    document.querySelectorAll(".row-check").forEach(check => { check.checked = element.checked; });
 }
 
 
@@ -1774,88 +1619,27 @@ function toggleAll(element){
 ========================= */
 
 function showDetail(id){
-
     const item = allHistory.find(x => x.id === id);
-
     if(!item){
-
-        Swal.fire({
-            icon:"error",
-            title:"Không tìm thấy",
-            text:"Dữ liệu hoạt động không tồn tại."
-        });
-
+        Swal.fire({ icon:"error", title:"Không tìm thấy", text:"Dữ liệu hoạt động không tồn tại." });
         return;
     }
 
-    const uid =
-        item.uid ||
-        currentUser?.uid ||
-        "—";
-
-    const title =
-        item.description ||
-        item.content ||
-        item.title ||
-        item.name ||
-        "—";
-
-    const amount = Number(
-        item.amount ||
-        item.price ||
-        item.money ||
-        0
-    );
+    const title = item.title || "—";
+    const amount = Number(item.amount || 0);
 
     Swal.fire({
-
         title:"Chi tiết hoạt động",
-
         html:`
-            <div style="
-                text-align:left;
-                background:#f8fafc;
-                border-radius:12px;
-                padding:15px;
-            ">
-
-                ${detailRow("Mã lịch sử",item.id)}
-                ${detailRow("UID",uid)}
-                ${detailRow("Loại",getTypeLabel(item.type))}
-                ${detailRow("Nội dung",title)}
-
-                ${detailRow(
-                    "Số lượng",
-                    Number(
-                        item.quantity ||
-                        item.qty ||
-                        0
-                    ).toLocaleString("vi-VN")
-                )}
-
-                ${detailRow(
-                    "Đã chạy",
-                    Number(
-                        item.completed ||
-                        item.ran ||
-                        item.processed ||
-                        0
-                    ).toLocaleString("vi-VN")
-                )}
-
-                ${detailRow(
-                    "Số tiền",
-                    formatMoney(amount)
-                )}
-
-                ${detailRow(
-                    "Thời gian",
-                    formatDate(item.createdAt)
-                )}
-
+            <div style="text-align:left; background:#f8fafc; border-radius:12px; padding:15px;">
+                ${detailRow("Mã đơn / ID", item.id)}
+                ${detailRow("Phân loại", getTypeLabel(item.type))}
+                ${detailRow("Nội dung", title)}
+                ${detailRow("Số lượng", Number(item.quantity || 0).toLocaleString("vi-VN"))}
+                ${detailRow("Số tiền", formatMoney(amount))}
+                ${detailRow("Thời gian", formatDate(item.createdAt))}
             </div>
         `,
-
         confirmButtonText:"Đóng",
         confirmButtonColor:"#315efb",
         width:500
@@ -1863,30 +1647,10 @@ function showDetail(id){
 }
 
 function detailRow(label,value){
-
     return `
-        <div style="
-            display:flex;
-            justify-content:space-between;
-            gap:15px;
-            padding:10px 0;
-            border-bottom:1px solid #e8edf4;
-            font-size:12px;
-        ">
-            <span style="
-                color:#94a0b3;
-                font-weight:700;
-            ">
-                ${escapeHtml(label)}
-            </span>
-
-            <span style="
-                color:#27344b;
-                font-weight:800;
-                text-align:right;
-            ">
-                ${escapeHtml(value)}
-            </span>
+        <div style="display:flex; justify-content:space-between; gap:15px; padding:10px 0; border-bottom:1px solid #e8edf4; font-size:12px;">
+            <span style="color:#94a0b3; font-weight:700;">${escapeHtml(label)}</span>
+            <span style="color:#27344b; font-weight:800; text-align:right;">${escapeHtml(value)}</span>
         </div>
     `;
 }
@@ -1897,222 +1661,86 @@ function detailRow(label,value){
 ========================= */
 
 function exportExcel(){
-
     if(!filteredHistory.length){
-
-        Swal.fire({
-            icon:"info",
-            title:"Không có dữ liệu",
-            text:"Không có lịch sử để xuất Excel.",
-            confirmButtonColor:"#315efb"
-        });
-
+        Swal.fire({ icon:"info", title:"Không có dữ liệu", text:"Không có lịch sử để xuất Excel.", confirmButtonColor:"#315efb" });
         return;
     }
-
     const rows = filteredHistory.map((item,index) => ({
-
-        "STT":index + 1,
-
-        "UID":
-            item.uid ||
-            currentUser?.uid ||
-            "",
-
-        "Loại":
-            getTypeLabel(item.type),
-
-        "Nội dung":
-            item.description ||
-            item.content ||
-            item.title ||
-            item.name ||
-            "",
-
-        "Số lượng":
-            Number(
-                item.quantity ||
-                item.qty ||
-                0
-            ),
-
-        "Đã chạy":
-            Number(
-                item.completed ||
-                item.ran ||
-                item.processed ||
-                0
-            ),
-
-        "Số tiền":
-            Number(
-                item.amount ||
-                item.price ||
-                item.money ||
-                0
-            ),
-
-        "Thời gian":
-            formatDate(item.createdAt)
+        "STT": index + 1,
+        "Mã lịch sử": item.id || "",
+        "Loại": getTypeLabel(item.type),
+        "Nội dung": item.title || "",
+        "Số lượng": Number(item.quantity || 0),
+        "Đã chạy": Number(item.completed || 0),
+        "Số tiền": Number(item.amount || 0),
+        "Thời gian": formatDate(item.createdAt)
     }));
-
-    const worksheet =
-        XLSX.utils.json_to_sheet(rows);
-
-    const workbook =
-        XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(
-        workbook,
-        worksheet,
-        "LichSu"
-    );
-
-    XLSX.writeFile(
-        workbook,
-        "HoangKun_LichSu.xlsx"
-    );
-
-    Swal.fire({
-        toast:true,
-        position:"top-end",
-        icon:"success",
-        title:"Đã xuất Excel",
-        showConfirmButton:false,
-        timer:1500
-    });
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "LichSu");
+    XLSX.writeFile(workbook, "HoangKun_LichSu.xlsx");
+    Swal.fire({ toast:true, position:"top-end", icon:"success", title:"Đã xuất Excel", showConfirmButton:false, timer:1500 });
 }
 
 
 /* =========================
-   DELETE
+   DELETE 
 ========================= */
 
-document
-    .getElementById("actionSelect")
-    .addEventListener("change",function(){
+document.getElementById("actionSelect").addEventListener("change", function(){
+    if(this.value !== "delete") return;
+    const checked = document.querySelectorAll(".row-check:checked");
 
-        if(this.value !== "delete") return;
+    if(!checked.length){
+        Swal.fire({ icon:"info", title:"Chưa chọn hoạt động", text:"Hãy chọn ít nhất một hoạt động." });
+        this.value = "";
+        return;
+    }
 
-        const checked =
-            document.querySelectorAll(".row-check:checked");
+    Swal.fire({
+        icon:"warning",
+        title:"Xóa lịch sử?",
+        text:`Bạn đã chọn ${checked.length} hoạt động. Bạn có chắc muốn xóa? Lịch sử đơn hàng có thể sẽ biến mất vĩnh viễn.`,
+        showCancelButton:true, confirmButtonText:"Xóa", cancelButtonText:"Hủy", confirmButtonColor:"#ef4444"
+    }).then(result => {
+        if(!result.isConfirmed){ this.value = ""; return; }
+        if(!currentUser) return;
 
-        if(!checked.length){
-
-            Swal.fire({
-                icon:"info",
-                title:"Chưa chọn hoạt động",
-                text:"Hãy chọn ít nhất một hoạt động."
-            });
-
-            this.value = "";
-            return;
-        }
-
-        Swal.fire({
-
-            icon:"warning",
-
-            title:"Xóa lịch sử?",
-
-            text:
-                `Bạn đã chọn ${checked.length} hoạt động. Bạn có chắc muốn xóa?`,
-
-            showCancelButton:true,
-
-            confirmButtonText:"Xóa",
-
-            cancelButtonText:"Hủy",
-
-            confirmButtonColor:"#ef4444"
-
-        }).then(result => {
-
-            if(!result.isConfirmed){
-                this.value = "";
-                return;
+        const updates = {};
+        checked.forEach(check => {
+            const item = allHistory.find(x => x.id === check.dataset.id);
+            if(item && item.nodePath){
+                updates[item.nodePath] = null;
             }
-
-            if(!currentUser) return;
-
-            const updates = {};
-
-            checked.forEach(check => {
-
-                updates[
-                    `history/${currentUser.uid}/${check.dataset.id}`
-                ] = null;
-
-            });
-
-            db.ref()
-                .update(updates)
-                .then(() => {
-
-                    Swal.fire({
-                        icon:"success",
-                        title:"Đã xóa",
-                        text:"Lịch sử đã được xóa.",
-                        confirmButtonColor:"#315efb"
-                    });
-
-                    document.getElementById("selectAll").checked = false;
-                })
-                .catch(error => {
-
-                    console.error(error);
-
-                    Swal.fire({
-                        icon:"error",
-                        title:"Không thể xóa",
-                        text:"Bạn không có quyền thực hiện thao tác này."
-                    });
-                });
-
-            this.value = "";
         });
+
+        db.ref().update(updates).then(() => {
+            Swal.fire({ icon:"success", title:"Đã xóa", text:"Lịch sử đã được xóa khỏi hệ thống.", confirmButtonColor:"#315efb" });
+            document.getElementById("selectAll").checked = false;
+        }).catch(error => {
+            console.error(error);
+            Swal.fire({ icon:"error", title:"Không thể xóa", text:"Có lỗi xảy ra hoặc bạn không có quyền xóa dữ liệu này." });
+        });
+        this.value = "";
     });
+});
 
 
 /* =========================
-   SEARCH
+   SEARCH EVENTS
 ========================= */
 
-document
-    .getElementById("historySearch")
-    .addEventListener("input",applyFilters);
-
-document
-    .getElementById("typeFilter")
-    .addEventListener("change",applyFilters);
-
-document
-    .getElementById("globalSearch")
-    .addEventListener("input",function(){
-
-        document.getElementById("historySearch").value =
-            this.value;
-
-        applyFilters();
-    });
-
-
-/* =========================
-   CTRL + K
-========================= */
+document.getElementById("historySearch").addEventListener("input",applyFilters);
+document.getElementById("typeFilter").addEventListener("change",applyFilters);
+document.getElementById("globalSearch").addEventListener("input",function(){
+    document.getElementById("historySearch").value = this.value;
+    applyFilters();
+});
 
 document.addEventListener("keydown",e => {
-
-    if(
-        (e.ctrlKey || e.metaKey) &&
-        e.key.toLowerCase() === "k"
-    ){
-
+    if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k"){
         e.preventDefault();
-
-        document
-            .getElementById("globalSearch")
-            .focus();
+        document.getElementById("globalSearch").focus();
     }
 });
 
@@ -2122,32 +1750,11 @@ document.addEventListener("keydown",e => {
 ========================= */
 
 function logout(){
-
     Swal.fire({
-
-        title:"Đăng xuất?",
-
-        text:"Bạn có chắc muốn thoát tài khoản?",
-
-        icon:"warning",
-
-        showCancelButton:true,
-
-        confirmButtonColor:"#315efb",
-
-        cancelButtonColor:"#ef4444",
-
-        confirmButtonText:"Đăng xuất",
-
-        cancelButtonText:"Hủy"
-
+        title:"Đăng xuất?", text:"Bạn có chắc muốn thoát tài khoản?", icon:"warning",
+        showCancelButton:true, confirmButtonColor:"#315efb", cancelButtonColor:"#ef4444", confirmButtonText:"Đăng xuất", cancelButtonText:"Hủy"
     }).then(result => {
-
-        if(!result.isConfirmed) return;
-
-        auth.signOut().then(() => {
-            location.href = "index.html";
-        });
+        if(result.isConfirmed) auth.signOut().then(() => { location.href = "index.html"; });
     });
 }
 
