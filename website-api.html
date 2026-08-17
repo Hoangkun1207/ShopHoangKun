@@ -102,9 +102,9 @@ border:1px solid #e8edf5;border-radius:5px;padding:3px 6px;white-space:nowrap
 }
 .icon-btn{
 width:40px;height:40px;border:1px solid var(--border);
-background:#fff;border-radius:50%;color:#526074;font-size:15px;position:relative
+background:#fff;border-radius:50%;color:#526074;font-size:15px;position:relative;transition:.2s;
 }
-.icon-btn:hover{background:#f5f8fc}
+.icon-btn:hover{background:#f5f8fc;color:var(--primary)}
 .dot{
 position:absolute;right:7px;top:7px;width:7px;height:7px;
 border-radius:50%;background:#1677ff;border:2px solid #fff
@@ -115,6 +115,9 @@ border-radius:11px;display:flex;align-items:center;gap:8px;
 font-size:13px;font-weight:600;color:#526074
 }
 .lang img{width:21px}
+
+/* USER DROPDOWN */
+.user-dropdown { position: relative; }
 .user{
 height:44px;padding:4px 10px 4px 4px;border:1px solid var(--border);
 background:#fff;border-radius:24px;display:flex;align-items:center;gap:9px
@@ -126,12 +129,33 @@ background:linear-gradient(135deg,#d9edff,#b8dcff);color:#1677ff;font-weight:800
 .user-name{font-size:13px;font-weight:800;color:#253047}
 .user i{font-size:10px;color:#9ba6b8}
 
+.user-menu {
+    position: absolute; right: 0; top: 52px; width: 230px; background: #fff;
+    border: 1px solid #e7edf6; border-radius: 14px; padding: 8px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.12); opacity: 0; visibility: hidden;
+    transform: translateY(-8px); transition: .2s; z-index: 2000;
+}
+.user-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.user-menu-header { display: flex; align-items: center; gap: 10px; padding: 8px; }
+.user-menu-header strong { display: block; font-size: 13px; color: #172033; }
+.user-menu-header span { display: block; font-size: 10px; color: #94a0b2; margin-top: 2px; }
+.user-menu-line { height: 1px; background: #edf1f6; margin: 5px 0; }
+.user-menu button {
+    width: 100%; height: 38px; display: flex; align-items: center; gap: 10px;
+    padding: 0 10px; background: transparent; border-radius: 9px;
+    color: #526074; font-size: 12px; font-weight: 700; text-align: left;
+}
+.user-menu button:hover { background: #eef6ff; color: var(--primary); }
+.user-menu button i { width: 18px; text-align: center; }
+.user-menu .logout-item { color: var(--danger); }
+.user-menu .logout-item:hover { background: #fff1f1; color: var(--danger); }
+
 /* CONTENT */
 .content{padding:25px 28px 40px;max-width:1450px;margin:auto}
 .page-head{
 display:flex;align-items:center;justify-content:space-between;margin-bottom:25px
 }
-.page-title h1{font-size:25px;font-weight:800;margin-bottom:5px;color:var(--text)}
+.page-title{font-size:25px;font-weight:800;margin-bottom:5px;color:var(--text)}
 .page-desc{color:var(--muted);font-weight:500;font-size:13.5px}
 .balance{
 background:#fff;border:1px solid var(--border);border-radius:12px;
@@ -240,6 +264,16 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
 .quick button i{color:var(--primary)}
 .quick button:hover{border-color:var(--primary);color:var(--primary);background:#f8fafc}
 
+/* SUPPORT FLOAT */
+.support {
+    position: fixed; right: 25px; bottom: 25px; width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(145deg, #3568ee, #244bd5); color: #fff; z-index: 1100;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 8px 25px rgba(37,83,220,.35); font-size: 10px; font-weight: 800; transition: .2s;
+}
+.support i { font-size: 20px; margin-bottom: 2px; }
+.support:hover { transform: translateY(-4px) scale(1.03); }
+
 /* RESPONSIVE */
 @media(max-width:1100px){
 :root{--sidebar:240px}
@@ -255,8 +289,8 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
 .search{margin:0;width:200px}
 .lang{display:none}
 .content{padding:18px}
-.page-head{align-items:flex-start;gap:12px}
-.balance{display:none}
+.page-head{flex-direction:column;align-items:flex-start;gap:12px}
+.balance{width:100%;display:flex;justify-content:space-between;align-items:center}
 .service-grid{grid-template-columns:1fr}
 .stats{grid-template-columns:1fr}
 }
@@ -265,8 +299,8 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
 .search{width:160px}
 .shortcut{display:none}
 .top-right{gap:6px}
-.user span{display:none}
-.page-title h1{font-size:21px}
+.user-name{display:none}
+.page-title{font-size:21px}
 .quick{grid-template-columns:1fr}
 }
 </style>
@@ -289,7 +323,7 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
         </button>
 
         <button class="sb-mi" onclick="go('banggia.html')">
-            <span class="sb-icon"><i class="fa-solid fa-chart-simple"></i></span>Bảng giá & Cấp bậc
+            <span class="sb-icon"><i class="fa-solid fa-tags"></i></span>Bảng giá & Cấp bậc
         </button>
 
         <button class="sb-mi" onclick="go('kiemtien.html')">
@@ -311,13 +345,13 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
         </button>
 
         <button class="sb-mi" onclick="go('lichsu.html')">
-            <span class="sb-icon"><i class="fa-regular fa-clock"></i></span>Nhật ký hoạt động
+            <span class="sb-icon"><i class="fa-solid fa-clock-rotate-left"></i></span>Nhật ký hoạt động
         </button>
 
         <div class="sb-title">Danh sách dịch vụ</div>
 
         <button class="sb-mi" onclick="go('dichvu.html')">
-            <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span>Dịch vụ khác
+            <span class="sb-icon"><i class="fa-solid fa-layer-group"></i></span>Dịch vụ khác
             <span class="badge">MỚI</span>
         </button>
 
@@ -351,7 +385,7 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
         <div class="top-left">
             <div class="crumb">
                 <a href="trangchu.html">Trang chủ</a>
-                <i class="fa-solid fa-chevron-right"></i>
+                <i class="fa-solid fa-chevron-right" style="font-size:10px"></i>
                 <span class="current">Website & API</span>
             </div>
 
@@ -364,7 +398,9 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
 
         <div class="top-right">
             <button class="icon-btn" onclick="go('taikhoan.html')"><i class="fa-solid fa-gear"></i></button>
-            <button class="icon-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+            <button class="icon-btn" onclick="go('thongbao.html')">
+                <i class="fa-regular fa-bell"></i><span class="dot"></span>
+            </button>
 
             <div class="lang">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="VN Flag">
@@ -372,11 +408,28 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
                 <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
             </div>
 
-            <button class="user">
-                <div class="avatar" id="avatar">H</div>
-                <span class="user-name" id="userName">Đang tải...</span>
-                <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
-            </button>
+            <div class="user-dropdown">
+                <button class="user" id="userBtn">
+                    <div class="avatar" id="avatarMini">H</div>
+                    <span class="user-name" id="navUserName">Đang tải...</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
+                </button>
+                <div class="user-menu" id="userMenu">
+                    <div class="user-menu-header">
+                        <div class="avatar" id="menuAvatar">H</div>
+                        <div>
+                            <strong id="menuUserName">Đang tải...</strong>
+                            <span>Thành viên</span>
+                        </div>
+                    </div>
+                    <div class="user-menu-line"></div>
+                    <button onclick="go('taikhoan.html')"><i class="fa-regular fa-user"></i> Tài khoản của tôi</button>
+                    <button onclick="go('naptien.html')"><i class="fa-regular fa-credit-card"></i> Nạp tiền</button>
+                    <button onclick="go('lichsu.html')"><i class="fa-regular fa-clock"></i> Nhật ký hoạt động</button>
+                    <div class="user-menu-line"></div>
+                    <button class="logout-item" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</button>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -388,7 +441,7 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
             </div>
             <div class="balance">
                 <small>Số dư khả dụng</small>
-                <strong id="balance">0đ</strong>
+                <strong id="balance">0 xu</strong>
             </div>
         </div>
 
@@ -451,8 +504,8 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
                     </div>
                     <div class="stats">
                         <div class="mini-stat"><i class="fa-solid fa-paper-plane"></i><small>Tổng request</small><strong id="requests">0</strong></div>
-                        <div class="mini-stat"><i class="fa-solid fa-check-circle"></i><small>Thành công</small><strong id="success">0</strong></div>
-                        <div class="mini-stat"><i class="fa-solid fa-triangle-exclamation"></i><small>Lỗi</small><strong id="errors">0</strong></div>
+                        <div class="mini-stat"><i class="fa-solid fa-check-circle" style="color:#059669"></i><small>Thành công</small><strong id="success" style="color:#059669">0</strong></div>
+                        <div class="mini-stat"><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444"></i><small>Lỗi</small><strong id="errors" style="color:#ef4444">0</strong></div>
                     </div>
                 </div>
             </div>
@@ -492,13 +545,15 @@ display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
 
                 <div class="card">
                     <div class="card-head"><h3 class="card-title"><i class="fa-solid fa-circle-question"></i>Hỗ trợ</h3></div>
-                    <div class="notice">Cần hỗ trợ cài đặt website hoặc kết nối API? Liên hệ đội ngũ CSKH để được hỗ trợ.</div>
+                    <div class="notice" style="background:#fffbeb;color:#b45309">Cần hỗ trợ cài đặt website hoặc kết nối API? Liên hệ đội ngũ CSKH để được hỗ trợ.</div>
                     <button class="btn btn-primary" style="width:100%;margin-top:12px" onclick="openZalo()"><i class="fa-solid fa-headset"></i> Liên hệ CSKH</button>
                 </div>
             </div>
         </div>
     </div>
 </main>
+
+<button class="support" onclick="openZalo()"><i class="fa-solid fa-headset"></i><span>Liên hệ</span></button>
 
 <script>
 const firebaseConfig = {
@@ -523,22 +578,23 @@ function openZalo() {
     window.open("https://zalo.me/0788265513", "_blank");
 }
 
-function formatMoney(n) {
-    return Number(n || 0).toLocaleString("vi-VN") + "đ";
-}
-
 auth.onAuthStateChanged(user => {
     if (!user) {
         setTimeout(() => { if (!auth.currentUser) location.href = "index.html"; }, 800);
         return;
     }
     const name = user.displayName || "Thành viên";
-    document.getElementById("userName").innerText = name;
-    document.getElementById("avatar").innerText = name.charAt(0).toUpperCase();
+    const letter = name.charAt(0).toUpperCase();
+
+    document.getElementById("navUserName").innerText = name;
+    document.getElementById("menuUserName").innerText = name;
+    document.getElementById("avatarMini").innerText = letter;
+    document.getElementById("menuAvatar").innerText = letter;
 
     db.ref("users/" + user.uid).on("value", snap => {
         const data = snap.val() || {};
-        document.getElementById("balance").innerText = formatMoney(data.so_du);
+        let xu = Number(data.xu || data.balance || data.coins || 0);
+        document.getElementById("balance").innerText = xu.toLocaleString("vi-VN") + " xu";
         
         if (data.api_key) {
             document.getElementById("apiKey").innerText = data.api_key;
@@ -563,21 +619,30 @@ function copyText(id) {
 function generateKey() {
     const user = auth.currentUser;
     if (!user) return;
-    const key = "HK_" + user.uid.substring(0, 10).toUpperCase() + "_" + Math.random().toString(36).substring(2, 12).toUpperCase();
-    db.ref("users/" + user.uid + "/api_key").set(key).then(() => {
-        document.getElementById("apiKey").innerText = key;
-        Swal.fire({ icon: "success", title: "Tạo API KEY thành công", text: "API KEY mới đã được cập nhật.", confirmButtonColor: "#2563eb" });
+    Swal.fire({
+        title: "Tạo API KEY mới?",
+        text: "Key cũ sẽ bị vô hiệu hóa ngay lập tức. Đảm bảo bạn cập nhật Key mới vào mã nguồn của mình.",
+        icon: "warning", showCancelButton: true, confirmButtonColor: "#1677ff", cancelButtonColor: "#ef4444",
+        confirmButtonText: "Tạo mới", cancelButtonText: "Hủy"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const key = "HK_" + user.uid.substring(0, 10).toUpperCase() + "_" + Math.random().toString(36).substring(2, 12).toUpperCase();
+            db.ref("users/" + user.uid + "/api_key").set(key).then(() => {
+                document.getElementById("apiKey").innerText = key;
+                Swal.fire({ icon: "success", title: "Tạo API KEY thành công", text: "API KEY mới đã được cập nhật.", confirmButtonColor: "#1677ff" });
+            });
+        }
     });
 }
 
 function createWebsite() {
     Swal.fire({
         title: "Tạo website con",
-        html: '<input id="siteName" class="swal2-input" placeholder="Tên website"><input id="siteDomain" class="swal2-input" placeholder="Tên miền / subdomain">',
+        html: '<input id="siteName" class="swal2-input" placeholder="Tên website (VD: SubReRao)"><input id="siteDomain" class="swal2-input" placeholder="Tên miền (VD: subrerao.com)">',
         showCancelButton: true,
-        confirmButtonText: "Tạo website",
+        confirmButtonText: "Gửi yêu cầu",
         cancelButtonText: "Hủy",
-        confirmButtonColor: "#2563eb",
+        confirmButtonColor: "#1677ff",
         preConfirm: () => {
             const name = document.getElementById("siteName").value.trim();
             const domain = document.getElementById("siteDomain").value.trim();
@@ -588,8 +653,8 @@ function createWebsite() {
         if (result.isConfirmed) {
             const user = auth.currentUser;
             const data = { name: result.value.name, domain: result.value.domain, status: "pending", createdAt: Date.now() };
-            db.ref("websites/" + user.uid).push(data).then(() => {
-                Swal.fire({ icon: "success", title: "Đã gửi yêu cầu", text: "Website của bạn đã được ghi nhận. CSKH sẽ hỗ trợ cấu hình.", confirmButtonColor: "#2563eb" });
+            db.ref("users/" + user.uid + "/websites").push(data).then(() => {
+                Swal.fire({ icon: "success", title: "Đã gửi yêu cầu", text: "Yêu cầu tạo website đã được gửi. Admin sẽ liên hệ bạn để cấp quyền quản trị.", confirmButtonColor: "#1677ff" });
             });
         }
     });
@@ -597,20 +662,30 @@ function createWebsite() {
 
 function logout() {
     Swal.fire({
-        title: "Đăng xuất?",
-        text: "Bạn có chắc muốn thoát tài khoản?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#2563eb",
-        cancelButtonColor: "#ef4444",
-        confirmButtonText: "Đăng xuất",
-        cancelButtonText: "Hủy"
+        title: "Đăng xuất?", text: "Bạn có chắc muốn thoát tài khoản?", icon: "warning",
+        showCancelButton: true, confirmButtonColor: "#1677ff", cancelButtonColor: "#ef4444",
+        confirmButtonText: "Đăng xuất", cancelButtonText: "Hủy"
     }).then(r => {
         if (r.isConfirmed) auth.signOut().then(() => location.href = "index.html");
     });
 }
 
-/* Ctrl + K */
+/* User Dropdown Toggle */
+const userBtn = document.getElementById("userBtn");
+const userMenu = document.getElementById("userMenu");
+
+userBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    userMenu.classList.toggle("show");
+});
+
+document.addEventListener("click", e => {
+    if (!userMenu.contains(e.target) && !userBtn.contains(e.target)) {
+        userMenu.classList.remove("show");
+    }
+});
+
+/* Ctrl + K Search */
 document.addEventListener("keydown", e => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
