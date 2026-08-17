@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -781,10 +782,36 @@
                 document.getElementById("menuAvatar").textContent = letter; 
                 
 // =====================================================
-        // POPUP THÔNG BÁO KHAI TRƯƠNG (CHỈ HIỆN KHI VỪA ĐĂNG NHẬP XONG)
+        // POPUP THÔNG BÁO KHAI TRƯƠNG + HIỆU ỨNG PHÁO HOA
         // =====================================================
         if (sessionStorage.getItem("vua_moi_dang_nhap") === "true") {
             setTimeout(() => {
+                
+                // --- HÀM BẮN PHÁO HOA ---
+                var duration = 3000; // Bắn trong 3 giây
+                var end = Date.now() + duration;
+
+                (function frame() {
+                    confetti({
+                        particleCount: 5,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 },
+                        colors: ['#1677ff', '#ef4444', '#10b981', '#f59e0b']
+                    });
+                    confetti({
+                        particleCount: 5,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 },
+                        colors: ['#1677ff', '#ef4444', '#10b981', '#f59e0b']
+                    });
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                }());
+                // ------------------------
+
                 Swal.fire({
                     title: '🎉 KHAI TRƯƠNG RỰC RỠ 🎉',
                     html: `
