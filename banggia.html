@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bảng Giá & Cấp Bậc - Hoangkun Store</title>
-    
+    <meta name="theme-color" content="#2563eb">
+    <title>Bảng Giá & Cấp Bậc | HoangKun Store</title>
+
     <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- SweetAlert2 & Firebase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -16,188 +19,241 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
-        /* ================= CSS CHUNG TỪ TRANG CHỦ ================= */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
-        body { background-color: #f8fafc; color: #334155; display: flex; height: 100vh; overflow: hidden; }
-        a { text-decoration: none; color: inherit; }
-
-        /* === SIDEBAR === */
-        .sidebar { width: 260px; background-color: #111827; color: #9ca3af; display: flex; flex-direction: column; height: 100%; border-right: 1px solid #1f2937; z-index: 10; flex-shrink: 0; }
-        .sidebar-brand { padding: 20px; font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: 1px; border-bottom: 1px solid #1f2937; text-transform: uppercase; }
-        .sidebar-menu { padding: 15px 10px; overflow-y: auto; flex: 1; }
-        .sidebar-menu::-webkit-scrollbar { width: 4px; }
-        .sidebar-menu::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
-        .menu-category { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; margin: 15px 10px 8px 10px; font-weight: 700; }
-        .menu-item { display: flex; align-items: center; padding: 10px 15px; color: #d1d5db; border-radius: 8px; margin-bottom: 4px; font-size: 0.95rem; font-weight: 600; transition: 0.2s; position: relative; }
-        .menu-item i { margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }
-        .menu-item:hover { background-color: #1f2937; color: #fff; }
-        .menu-item.active { background-color: #2563eb; color: #fff; }
-        .badge-new { position: absolute; right: 10px; background: #059669; color: #fff; font-size: 0.6rem; padding: 2px 6px; border-radius: 10px; font-weight: 800; }
-
-        /* === MAIN CONTENT === */
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; scroll-behavior: smooth; }
-        
-        /* HEADER PHÍA TRÊN */
-        .header { background: #fff; padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 5; }
-        .header-left { display: flex; align-items: center; gap: 20px; }
-        .header-path { font-size: 0.95rem; color: #64748b; font-weight: 600; }
-        .header-path span { color: #0f172a; font-weight: 700; }
-        
-        .search-bar { background: #f1f5f9; border-radius: 8px; padding: 8px 15px; display: flex; align-items: center; width: 350px; border: 1px solid #e2e8f0; }
-        .search-bar i { color: #94a3b8; margin-right: 10px; }
-        .search-bar input { border: none; background: transparent; outline: none; flex: 1; font-size: 0.9rem; font-family: 'Quicksand'; }
-        .search-bar .shortcut { font-size: 0.75rem; background: #fff; border: 1px solid #cbd5e1; padding: 2px 6px; border-radius: 4px; color: #94a3b8; font-weight: 600; }
-
-        .header-right { display: flex; align-items: center; gap: 20px; }
-        .header-icon { width: 35px; height: 35px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; color: #475569; cursor: pointer; position: relative; }
-        .lang-select { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 20px; }
-        .user-dropdown { display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 700; color: #1e293b; padding: 4px 12px; border: 1px solid #e2e8f0; border-radius: 20px; }
-        .user-dropdown img { width: 28px; height: 28px; border-radius: 50%; }
-
-        .dashboard-container { padding: 25px; max-width: 1500px; margin: 0 auto; width: 100%; }
-
-        /* ================= CSS RIÊNG CỦA BẢNG GIÁ ================= */
-        .tier-head-row { margin-bottom: 25px; }
-        .section-title { font-size: 22px; font-weight: 800; color: #1e293b; display: inline-block; }
-        .tier-head-sub { color: #64748b; margin-left: 10px; font-weight: 500; }
-        
-        .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;}
-        .tier {
-            background: #ffffff; border-radius: 16px; padding: 25px; border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s;
-            display: flex; flex-direction: column;
+        /* ================= BIẾN MÀU SẮC ĐỒNG BỘ ================= */
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f4f7fe;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --sidebar-bg: #111827;
+            --sidebar-text: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius: 12px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            --sidebar: 260px;
         }
-        .tier:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border-color: #2563eb; }
-        .tier-head { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .medal { width: 50px; height: 50px; }
-        .tier-name { font-size: 18px; font-weight: 800; color: #1e293b; }
-        .tier-amount { font-size: 20px; font-weight: 800; color: #2563eb; margin-top: 5px; }
-        .tier-amount.free { color: #10b981; }
-        .tier-caption { font-size: 12px; color: #64748b; font-weight: 600; }
-        
-        .tier-note { flex: 1; color: #475569; line-height: 1.6; margin-bottom: 25px; font-weight: 500; }
-        .tier-note p { position: relative; padding-left: 20px; margin-bottom: 10px; }
-        .tier-note p::before { content: '✓'; position: absolute; left: 0; color: #10b981; font-weight: 900; }
-        
-        .tier-btn { width: 100%; padding: 12px; border-radius: 10px; font-weight: 700; text-align: center; border: none; cursor: pointer; transition: 0.2s; }
-        .btn-current { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
-        .btn-upgrade { background: #2563eb; color: #fff; display: block; }
-        .btn-upgrade:hover { background: #1d4ed8; }
 
-        .platforms { background: #fff; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 20px;}
-        .platforms h3 { font-size: 18px; font-weight: 800; margin-bottom: 15px; color:#1e293b;}
-        .platforms-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 5px; }
-        .platforms-scroll::-webkit-scrollbar { height: 4px; }
-        .platforms-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-size: 14px; overflow-x: hidden; min-height: 100vh; display: flex; }
+        a { text-decoration: none; color: inherit; }
+        button, input, select, textarea { outline: none; font-family: 'Quicksand', sans-serif; cursor: pointer; border: none; }
+
+        /* ================= SIDEBAR CHUẨN ĐỒNG BỘ ================= */
+        .sidebar { width: var(--sidebar); position: fixed; left: 0; top: 0; bottom: 0; background: var(--sidebar-bg); color: #cbd5e1; display: flex; flex-direction: column; z-index: 1000; }
+        .brand { height: 76px; display: flex; align-items: center; padding: 0 25px; font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 1px; }
+        .brand span { color: #3b82f6; }
+        .sidebar-scroll { flex: 1; overflow: auto; padding: 10px 0; }
+        .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
         
-        .plat { display: flex; align-items: center; gap: 10px; padding: 10px 20px; background: #fff; border: 1px solid #e2e8f0; border-radius: 30px; cursor: pointer; font-weight: 700; white-space: nowrap; transition: 0.2s; color: #1e293b;}
-        .plat:hover, .plat.active { border-color: #2563eb; background: #eff6ff; color: #2563eb; box-shadow: 0 4px 10px rgba(37,99,235,0.1); }
-        .pico { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .sb-mod-section-head { color: #64748b; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 15px 25px 10px; letter-spacing: 1px; }
+        .sb-mi { 
+            display: flex; align-items: center; padding: 12px 15px; color: var(--sidebar-text); 
+            font-weight: 600; transition: 0.3s; background: transparent; 
+            width: calc(100% - 30px); margin: 0 15px 5px 15px; font-size: 14.5px; text-align: left; border-radius: 8px;
+        }
+        .sb-mi:hover { background: #1f2937; color: #fff; }
+        .sb-mi.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
+        .sb-mi-icon { width: 30px; display: flex; justify-content: flex-start; }
+        .sb-mi-icon i { font-size: 16px; }
+
+        /* ================= MAIN CONTENT & TOPBAR ================= */
+        .main { margin-left: var(--sidebar); width: calc(100% - var(--sidebar)); display: flex; flex-direction: column; min-height: 100vh; }
+        .topbar { height: 76px; position: sticky; top: 0; z-index: 900; background: #fff; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
+        .top-left, .top-right { display: flex; align-items: center; gap: 15px; }
         
-        .svc { background: #fff; border-radius: 16px; padding: 25px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .tb-crumb { font-weight: 600; color: var(--text-muted); font-size: 14.5px; display: flex; align-items: center; gap: 8px;}
+        .tb-crumb-current { color: var(--text-main); font-weight: 700; }
+        .search { width: 300px; display: flex; align-items: center; gap: 10px; padding: 10px 15px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; margin-left: 20px;}
+        .search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--text-main); font-weight: 500; font-size: 14px;}
+        .shortcut { font-size: 11px; background: #fff; border: 1px solid #cbd5e1; padding: 2px 6px; border-radius: 4px; color: #94a3b8; font-weight: 700; }
+
+        .icon-btn { width: 40px; height: 40px; background: #fff; border-radius: 50%; position: relative; color: #475569; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: 0.2s; border: 1px solid var(--border-color);}
+        .icon-btn:hover { background: #f1f5f9; }
+        .dot { position: absolute; right: 8px; top: 8px; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; border: 2px solid #fff; }
+        
+        .lang-box { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--text-main); padding: 5px 10px; border: 1px solid var(--border-color); border-radius: 20px; cursor: pointer; }
+        .user-box { display: flex; align-items: center; gap: 10px; padding: 4px 12px 4px 4px; border: 1px solid var(--border-color); border-radius: 25px; background: #fff; font-weight: 700; transition: 0.2s; cursor: pointer;}
+        .user-box:hover { background: #f8fafc; }
+        .avatar { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: #dbeafe; color: var(--primary); font-weight: 800; font-size: 15px; }
+
+        /* ================= NỘI DUNG BẢNG GIÁ ================= */
+        .content { padding: 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+        .page-head { margin-bottom: 25px; }
+        .page-head h1 { font-size: 24px; color: var(--text-main); display: inline-block;}
+        .page-head .sub-title { font-size: 14px; color: var(--text-muted); font-weight: 500; margin-left: 10px; display: inline-block;}
+
+        /* KHỐI CẤP BẬC */
+        .tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+        .tier { background: var(--card-bg); border-radius: var(--radius); padding: 25px; border: 1px solid var(--border-color); box-shadow: var(--shadow); display: flex; flex-direction: column; transition: 0.3s; }
+        .tier:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: var(--primary); }
+        .tier-head { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 20px; }
+        .medal { width: 60px; height: 60px; margin-bottom: 15px; }
+        .tier-name { font-size: 18px; font-weight: 800; color: var(--text-main); }
+        .tier-amount { font-size: 20px; font-weight: 800; color: var(--primary); margin-top: 5px; }
+        .tier-amount.free { color: var(--success); }
+        .tier-caption { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-top: 5px; }
+        
+        .tier-note { flex: 1; color: #475569; line-height: 1.6; margin-bottom: 25px; font-weight: 500; font-size: 13.5px; }
+        .tier-note p { position: relative; padding-left: 20px; margin-bottom: 10px; }
+        .tier-note p::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: 900; }
+        
+        .tier-btn { width: 100%; padding: 12px; border-radius: 8px; font-weight: 700; text-align: center; font-size: 14px; transition: 0.2s; }
+        .btn-current { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; border: 1px solid #e2e8f0;}
+        .btn-upgrade { background: var(--primary); color: #fff; }
+        .btn-upgrade:hover { background: var(--primary-hover); box-shadow: 0 4px 12px rgba(37,99,235,0.2); }
+
+        /* BỐ CỤC DỊCH VỤ: 2 CỘT (DANH MỤC TRÁI - BẢNG PHẢI) */
+        .services-layout { display: grid; grid-template-columns: 280px 1fr; gap: 25px; }
+        
+        /* Cột Nền tảng (Left) */
+        .panel { background: var(--card-bg); border-radius: var(--radius); padding: 25px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
+        .total-box { display: flex; align-items: center; justify-content: space-between; background: var(--primary); color: #fff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3); }
+        .t-label { font-weight: 600; font-size: 14px; opacity: 0.9; }
+        .t-num { font-size: 32px; font-weight: 800; line-height: 1; }
+        
+        .platforms h3 { font-size: 16px; font-weight: 800; margin-bottom: 15px; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px;}
+        .plat-list { display: flex; flex-direction: column; gap: 8px; }
+        .plat { display: flex; align-items: center; gap: 12px; padding: 12px 15px; background: transparent; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; color: var(--text-main); font-size: 14px; border: 1px solid transparent;}
+        .plat:hover { background: #f8fafc; border-color: var(--border-color); }
+        .plat.active { background: #eff6ff; color: var(--primary); border-color: #bfdbfe; }
+        .pico { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff; }
+        .pcount { margin-left: auto; background: #e2e8f0; color: #475569; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+        .plat.active .pcount { background: var(--primary); color: #fff; }
+
+        /* Cột Bảng giá (Right) */
         .svc-head { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .svc-head h3 { font-size: 18px; font-weight: 800; color: #1e293b;}
+        .svc-head h3 { font-size: 18px; font-weight: 800; color: var(--text-main); }
+        .filter-toolbar { display: flex; gap: 15px; margin-bottom: 20px; align-items: center; }
+        .tb-search-local { background: #f8fafc; padding: 12px 15px; border-radius: 10px; display: flex; align-items: center; width: 100%; border: 1px solid var(--border-color); }
+        .tb-search-local input { background: transparent; border: none; margin-left: 10px; width: 100%; font-size: 14px; color: var(--text-main); font-weight: 500; }
         
-        .toolbar { display: flex; gap: 15px; margin-bottom: 20px; }
-        .toolbar .search-box { width: 100%; max-width: 400px; background: #f8fafc; padding: 10px 15px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; align-items: center;}
-        .toolbar .search-box input { border: none; background: transparent; outline: none; margin-left: 10px; width: 100%; font-family: 'Quicksand'; font-size: 14px;}
-        
-        .table-scroll { overflow-x: auto; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .table-scroll { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border-color); }
         .pricetable { width: 100%; border-collapse: collapse; min-width: 800px; }
-        .pricetable th { background: #f8fafc; padding: 15px; text-align: left; font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; }
-        .pricetable td { padding: 16px 15px; border-bottom: 1px solid #e2e8f0; color: #1e293b; font-weight: 500; vertical-align: middle; }
+        .pricetable th { background: #f8fafc; padding: 16px 20px; text-align: left; font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); font-weight: 700; }
+        .pricetable td { padding: 18px 20px; border-bottom: 1px solid var(--border-color); color: var(--text-main); font-weight: 500; vertical-align: middle; }
         .pricetable tr:last-child td { border-bottom: none; }
         .pricetable tr:hover td { background: #f8fafc; }
         
-        .id-col { font-weight: 800; color: #2563eb; }
-        .svc-name { font-weight: 700; font-size: 14px; margin-bottom: 5px; }
-        .svc-range { font-size: 12px; color: #64748b; background: #f1f5f9; display: inline-block; padding: 3px 8px; border-radius: 6px; }
-        .price { font-weight: 800; color: #0f172a; }
-        .status { padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; background: #d1fae5; color: #047857; display: inline-flex; align-items: center; gap: 5px; }
+        .id-col { font-weight: 800; color: var(--primary); font-size: 13px;}
+        .svc-name { font-weight: 700; font-size: 14.5px; margin-bottom: 6px; color: #0f172a; line-height: 1.4; }
+        .svc-range { font-size: 12px; color: #64748b; background: #f1f5f9; display: inline-block; padding: 4px 10px; border-radius: 6px; font-weight: 600; }
+        .svc-note { color: #64748b; font-size: 13px; line-height: 1.5; font-weight: 500;}
+        .price { font-weight: 800; color: #0f172a; font-size: 14.5px; }
+        .status { padding: 6px 12px; border-radius: 20px; font-size: 11.5px; font-weight: 800; background: #d1fae5; color: #047857; display: inline-flex; align-items: center; gap: 6px; }
 
-        @media (max-width: 768px) {
+        /* FLOATING CONTACT BUTTON */
+        .rc-fab { position: fixed; right: 20px; bottom: 30px; display: flex; flex-direction: column; align-items: center; z-index: 9999; }
+        .rc-stack { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 15px; opacity: 0; transform: translateY(20px) scale(0.8); pointer-events: none; transition: 0.3s cubic-bezier(0.34, 1.4, 0.5, 1); }
+        .rc-fab.is-open .rc-stack { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .rc-ico { width: 50px; height: 50px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: 0.2s; color: #fff; }
+        .rc-ico:hover { transform: scale(1.1); }
+        .rc-main { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; box-shadow: 0 10px 25px rgba(37,99,235,0.4); transition: 0.2s; }
+        .rc-main:hover { transform: scale(1.05); }
+
+        @media (max-width: 1200px) {
+            .tiers { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 900px) {
             .sidebar { display: none; }
-            .header-right .search-bar { display: none; }
-            .platforms-scroll { padding-bottom: 15px; }
+            .main { margin-left: 0; width: 100%; }
+            .services-layout { grid-template-columns: 1fr; }
+            .tiers { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- SIDEBAR (Đồng bộ 100% với trangchu.html) -->
-    <div class="sidebar">
-        <div class="sidebar-brand">HOANGKUN</div>
-        <div class="sidebar-menu">
-            <div class="menu-category">Quản lý chung</div>
-            <!-- Chuyển link sang trangchu.html, bỏ class active -->
-            <a href="trangchu.html" class="menu-item"><i class="fa-solid fa-house"></i> Trang chủ</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-globe"></i> Website & API</a>
-            <!-- Bật sáng class active ở đây -->
-            <a href="banggia.html" class="menu-item active"><i class="fa-solid fa-tags"></i> Bảng giá & Cấp bậc</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-sack-dollar"></i> Kiếm tiền</a>
-            <a href="https://zalo.me/0788265513" target="_blank" class="menu-item"><i class="fa-solid fa-headset"></i> Liên hệ CSKH</a>
+    <!-- ================= SIDEBAR CHUẨN ================= -->
+    <aside class="sidebar">
+        <div class="brand">HOANG<span>KUN</span></div>
+        <div class="sidebar-scroll">
+            <div class="sb-mod-section-head">Quản lý chung</div>
+            <button class="sb-mi" onclick="window.location.href='trangchu.html'">
+                <div class="sb-mi-icon"><i class="fa-solid fa-house"></i></div> Trang tổng quan
+            </button>
+            <button class="sb-mi">
+                <div class="sb-mi-icon"><i class="fa-solid fa-globe"></i></div> Website & API
+            </button>
+            <button class="sb-mi active" onclick="window.location.href='banggia.html'">
+                <div class="sb-mi-icon"><i class="fa-solid fa-tags"></i></div> Bảng giá & Cấp bậc
+            </button>
+            <button class="sb-mi">
+                <div class="sb-mi-icon"><i class="fa-solid fa-sack-dollar"></i></div> Kiếm tiền
+            </button>
+            <button class="sb-mi" onclick="window.open('https://zalo.me/0788265513', '_blank')">
+                <div class="sb-mi-icon"><i class="fa-solid fa-headset"></i></div> Liên hệ CSKH
+            </button>
 
-            <div class="menu-category">Tài khoản</div>
-            <a href="#" class="menu-item"><i class="fa-solid fa-user-shield"></i> Tài khoản & bảo mật</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-wallet"></i> Nạp tiền</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-clock-rotate-left"></i> Nhật ký hoạt động</a>
+            <div class="sb-mod-section-head">Tài khoản</div>
+            <button class="sb-mi">
+                <div class="sb-mi-icon"><i class="fa-solid fa-user-shield"></i></div> Tài khoản & bảo mật
+            </button>
+            <button class="sb-mi">
+                <div class="sb-mi-icon"><i class="fa-solid fa-wallet"></i></div> Nạp tiền
+            </button>
+            <button class="sb-mi">
+                <div class="sb-mi-icon"><i class="fa-solid fa-clock-rotate-left"></i></div> Nhật ký hoạt động
+            </button>
 
-            <div class="menu-category">Danh sách dịch vụ</div>
-            <a href="#" class="menu-item"><i class="fa-solid fa-layer-group"></i> Dịch vụ khác <span class="badge-new">MỚI</span></a>
-            <a href="#" class="menu-item"><i class="fa-brands fa-facebook" style="color: #3b82f6;"></i> Facebook</a>
-            <a href="#" class="menu-item"><i class="fa-brands fa-instagram" style="color: #ec4899;"></i> Instagram</a>
-            <a href="#" class="menu-item"><i class="fa-brands fa-tiktok" style="color: #fff;"></i> TikTok</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-bag-shopping" style="color: #f97316;"></i> Shopee</a>
-            <a href="#" class="menu-item"><i class="fa-brands fa-youtube" style="color: #ef4444;"></i> Youtube</a>
-            <a href="#" class="menu-item"><i class="fa-brands fa-twitter" style="color: #38bdf8;"></i> Twitter</a>
-            <a href="javascript:void(0)" onclick="logout()" class="menu-item" style="color: #ef4444; margin-top: 20px;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+            <div class="sb-mod-section-head">Hệ thống của tôi</div>
+            <button class="sb-mi" onclick="logout()" style="color: var(--danger);">
+                <div class="sb-mi-icon"><i class="fa-solid fa-right-from-bracket"></i></div> Đăng xuất
+            </button>
         </div>
-    </div>
+    </aside>
 
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
-        <!-- HEADER (Đồng bộ 100% với trangchu.html) -->
-        <div class="header">
-            <div class="header-left">
-                <div class="header-path">Trang chủ / <span>Bảng giá dịch vụ</span></div>
-                <div class="search-bar">
-                    <i class="fa-solid fa-search"></i>
-                    <input type="text" placeholder="Tìm dịch vụ seeding">
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="main">
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div class="top-left">
+                <nav class="tb-crumb">
+                    <a href="trangchu.html">Trang chủ</a> <span style="color: #cbd5e1;">/</span> <span class="tb-crumb-current">Bảng giá dịch vụ</span>
+                </nav>
+                <div class="search">
+                    <i class="fa-solid fa-search" style="color: #94a3b8;"></i>
+                    <input type="text" placeholder="Tìm dịch vụ seeding...">
                     <span class="shortcut">Ctrl K</span>
                 </div>
             </div>
-            <div class="header-right">
-                <div class="header-icon"><i class="fa-solid fa-gear"></i></div>
-                <div class="header-icon"><i class="fa-solid fa-bell"></i></div>
-                <div class="lang-select">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" width="20" style="border-radius: 2px;"> Tiếng Việt <i class="fa-solid fa-angle-down" style="font-size: 0.8rem;"></i>
+            <div class="top-right">
+                <button class="icon-btn"><i class="fa-solid fa-moon"></i></button>
+                <button class="icon-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+                <div class="lang-box">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" width="20" style="border-radius: 2px;"> Tiếng Việt <i class="fa-solid fa-chevron-down" style="font-size: 10px; color: #94a3b8;"></i>
                 </div>
-                <div class="user-dropdown">
-                    <div id="avatar-mini" style="width:28px; height:28px; background:#e0f2fe; color:#0284c7; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.9rem;">H</div>
-                    <span id="display-username">Đang tải...</span> <i class="fa-solid fa-angle-down" style="font-size: 0.8rem;"></i>
-                </div>
+                <button class="user-box">
+                    <div class="avatar" id="avatar-mini">H</div>
+                    <span id="navUserName" style="color: #1e293b; margin-left: 5px;">Đang tải...</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 10px; color: #94a3b8; margin-right: 5px;"></i>
+                </button>
             </div>
-        </div>
+        </header>
 
         <!-- NỘI DUNG BẢNG GIÁ -->
-        <div class="dashboard-container">
-            <!-- KHỐI 1: CẤP BẬC THÀNH VIÊN -->
-            <div class="tier-head-row">
-                <div class="tier-head-left">
-                    <h2 class="section-title">Cấp bậc thành viên</h2>
-                    <span class="tier-head-sub">4 cấp · Ưu đãi độc quyền</span>
-                </div>
-            </div>
+        <div class="content">
             
+            <div class="page-head">
+                <h1>Cấp bậc thành viên</h1>
+                <span class="sub-title">4 cấp · Ưu đãi độc quyền</span>
+            </div>
+
+            <!-- KHỐI CẤP BẬC TỪ MÃ GỐC -->
             <div class="tiers">
+                <!-- TIER 1 -->
                 <div class="tier">
                     <div class="tier-head">
                         <img src="https://cdn-icons-png.flaticon.com/512/2583/2583344.png" class="medal" alt="Thành viên">
-                        <div>
-                            <div class="tier-name">Thành Viên</div>
-                            <div class="tier-amount free">Miễn phí</div>
-                            <div class="tier-caption">Cấp độ mặc định</div>
-                        </div>
+                        <div class="tier-name">Thành Viên</div>
+                        <div class="tier-amount free">Miễn phí</div>
+                        <div class="tier-caption">Cấp độ mặc định</div>
                     </div>
                     <div class="tier-note">
                         <p>Sử dụng các tính năng cơ bản</p>
@@ -206,123 +262,157 @@
                     <button class="tier-btn btn-current" disabled>Gói hiện tại</button>
                 </div>
                 
+                <!-- TIER 2 -->
                 <div class="tier">
                     <div class="tier-head">
                         <img src="https://cdn-icons-png.flaticon.com/512/2583/2583434.png" class="medal" alt="Cộng tác viên">
-                        <div>
-                            <div class="tier-name">Cộng tác viên</div>
-                            <div class="tier-amount">1.000.000đ</div>
-                            <div class="tier-caption">Tính trên tổng nạp</div>
-                        </div>
+                        <div class="tier-name">Cộng tác viên</div>
+                        <div class="tier-amount">1.000.000đ</div>
+                        <div class="tier-caption">Tính trên tổng nạp tháng</div>
                     </div>
                     <div class="tier-note">
                         <p>Thăng cấp tự động</p>
                         <p>Giá ưu đãi thấp hơn</p>
                         <p>Hỗ trợ bán dịch vụ tạo thu nhập</p>
                     </div>
-                    <button class="tier-btn btn-upgrade" onclick="window.location.href='#'">Nâng cấp ngay</button>
+                    <button class="tier-btn btn-upgrade">Nâng cấp ngay</button>
                 </div>
 
+                <!-- TIER 3 -->
                 <div class="tier">
                     <div class="tier-head">
                         <img src="https://cdn-icons-png.flaticon.com/512/2583/2583364.png" class="medal" alt="Đại lý">
-                        <div>
-                            <div class="tier-name">Đại lý</div>
-                            <div class="tier-amount">5.000.000đ</div>
-                            <div class="tier-caption">Tính trên tổng nạp</div>
-                        </div>
+                        <div class="tier-name">Đại lý</div>
+                        <div class="tier-amount">5.000.000đ</div>
+                        <div class="tier-caption">Tính trên tổng nạp tháng</div>
                     </div>
                     <div class="tier-note">
                         <p>1 giao dịch 2tr hoặc tổng 5tr</p>
                         <p>Hỗ trợ tạo website đại lý riêng</p>
                         <p>Áp dụng mức giá sỉ</p>
                     </div>
-                    <button class="tier-btn btn-upgrade" onclick="window.location.href='#'">Nâng cấp ngay</button>
+                    <button class="tier-btn btn-upgrade">Nâng cấp ngay</button>
                 </div>
 
+                <!-- TIER 4 -->
                 <div class="tier">
                     <div class="tier-head">
                         <img src="https://cdn-icons-png.flaticon.com/512/2583/2583324.png" class="medal" alt="NPP">
-                        <div>
-                            <div class="tier-name">Nhà Phân Phối</div>
-                            <div class="tier-amount">50.000.000đ</div>
-                            <div class="tier-caption">Tính trên tổng nạp</div>
-                        </div>
+                        <div class="tier-name">Nhà Phân Phối</div>
+                        <div class="tier-amount">50.000.000đ</div>
+                        <div class="tier-caption">Tính trên tổng nạp tháng</div>
                     </div>
                     <div class="tier-note">
                         <p>Chiết khấu giá chạm đáy</p>
                         <p>Hỗ trợ hệ thống full chức năng</p>
                         <p>Support riêng 24/7</p>
                     </div>
-                    <button class="tier-btn btn-upgrade" onclick="window.location.href='#'">Liên hệ ngay</button>
+                    <button class="tier-btn btn-upgrade">Liên hệ nâng cấp</button>
                 </div>
             </div>
 
-            <!-- KHỐI 2: TÌM KIẾM VÀ BẢNG GIÁ DỊCH VỤ -->
-            <div class="panel platforms">
-                <h3>Lọc theo nền tảng</h3>
-                <div class="platforms-scroll">
-                    <div class="plat active" data-cat="all">
-                        <span class="pico" style="background: linear-gradient(135deg,#5d8bf0,#3b62e8); color: white;"><i class="fa-solid fa-border-all"></i></span>
-                        <span>Tất cả nền tảng</span>
+            <!-- KHỐI DỊCH VỤ -->
+            <div class="services-layout">
+                <!-- Cột Lọc Nền Tảng -->
+                <div>
+                    <div class="panel total-box">
+                        <div>
+                            <div class="t-label" id="filterStatusLabel">Tổng cộng</div>
+                            <div class="t-num" id="totalServicesCount">0</div>
+                            <div class="t-unit">dịch vụ</div>
+                        </div>
+                        <i class="fa-solid fa-layer-group" style="font-size: 40px; opacity: 0.5;"></i>
                     </div>
-                    <div class="plat" data-cat="Facebook">
-                        <span class="pico" style="background: #1877f2; color: white;"><i class="fa-brands fa-facebook-f"></i></span>
-                        <span>Facebook</span>
-                    </div>
-                    <div class="plat" data-cat="Instagram">
-                        <span class="pico" style="background: linear-gradient(45deg,#f9ce34,#ee2a7b 45%,#6228d7); color: white;"><i class="fa-brands fa-instagram"></i></span>
-                        <span>Instagram</span>
-                    </div>
-                    <div class="plat" data-cat="TikTok">
-                        <span class="pico" style="background: #000; color: white;"><i class="fa-brands fa-tiktok"></i></span>
-                        <span>TikTok</span>
-                    </div>
-                    <div class="plat" data-cat="YouTube">
-                        <span class="pico" style="background: #ff0000; color: white;"><i class="fa-brands fa-youtube"></i></span>
-                        <span>YouTube</span>
-                    </div>
-                    <div class="plat" data-cat="Shopee">
-                        <span class="pico" style="background: #ee4d2d; color: white;"><i class="fa-solid fa-cart-shopping"></i></span>
-                        <span>Shopee</span>
-                    </div>
-                </div>
-            </div>
 
-            <div class="panel svc">
-                <div class="svc-head">
-                    <h3>Bảng Giá Dịch Vụ Mới Nhất</h3>
-                </div>
-                <div class="toolbar">
-                    <div class="search-box">
-                        <i class="fa-solid fa-search" style="color: #94a3b8;"></i>
-                        <input type="text" id="searchInput" placeholder="Tìm ID, tên dịch vụ...">
+                    <div class="panel">
+                        <div class="platforms">
+                            <h3>Danh mục nền tảng</h3>
+                            <div class="plat-list" id="platformList">
+                                <div class="plat active" data-cat="all">
+                                    <span class="pico" style="background: linear-gradient(135deg,#5d8bf0,#3b62e8);"><i class="fa-solid fa-border-all"></i></span>
+                                    <span>Tất cả nền tảng</span>
+                                    <span class="pcount" id="countAll">0</span>
+                                </div>
+                                <div class="plat" data-cat="Facebook">
+                                    <span class="pico" style="background: #1877f2;"><i class="fa-brands fa-facebook-f"></i></span>
+                                    <span>Facebook</span>
+                                    <span class="pcount" id="countFB">0</span>
+                                </div>
+                                <div class="plat" data-cat="Instagram">
+                                    <span class="pico" style="background: linear-gradient(45deg,#f9ce34,#ee2a7b 45%,#6228d7);"><i class="fa-brands fa-instagram"></i></span>
+                                    <span>Instagram</span>
+                                    <span class="pcount" id="countIG">0</span>
+                                </div>
+                                <div class="plat" data-cat="TikTok">
+                                    <span class="pico" style="background: #000;"><i class="fa-brands fa-tiktok"></i></span>
+                                    <span>TikTok</span>
+                                    <span class="pcount" id="countTT">0</span>
+                                </div>
+                                <div class="plat" data-cat="Shopee">
+                                    <span class="pico" style="background: #ee4d2d;"><i class="fa-solid fa-cart-shopping"></i></span>
+                                    <span>Shopee</span>
+                                    <span class="pcount" id="countSP">0</span>
+                                </div>
+                                <div class="plat" data-cat="Youtube">
+                                    <span class="pico" style="background: #ff0000;"><i class="fa-brands fa-youtube"></i></span>
+                                    <span>YouTube</span>
+                                    <span class="pcount" id="countYT">0</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="table-scroll">
-                    <table class="pricetable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên dịch vụ</th>
-                                <th style="width: 300px;">Ghi chú</th>
-                                <th>Giá Thành Viên</th>
-                                <th>Giá CTV</th>
-                                <th>Giá Đại Lý</th>
-                                <th>Trạng thái</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            <!-- Dữ liệu JS render -->
-                        </tbody>
-                    </table>
+                <!-- Cột Bảng Giá -->
+                <div class="panel svc">
+                    <div class="svc-head">
+                        <h3 id="tableTitle">Tất cả dịch vụ</h3>
+                    </div>
+                    
+                    <div class="filter-toolbar">
+                        <div class="tb-search-local">
+                            <i class="fa-solid fa-search" style="color: #94a3b8;"></i>
+                            <input type="text" id="searchInput" placeholder="Tìm ID, tên dịch vụ, ghi chú...">
+                        </div>
+                    </div>
+
+                    <div class="table-scroll">
+                        <table class="pricetable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên dịch vụ</th>
+                                    <th style="width: 300px;">Ghi chú</th>
+                                    <th>Giá Thành Viên</th>
+                                    <th>Giá CTV</th>
+                                    <th>Giá Đại Lý</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <!-- Data render by JS -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+    </main>
+
+    <!-- FLOATING CONTACT -->
+    <div class="rc-fab" id="contactFab">
+        <div class="rc-stack">
+            <a href="https://zalo.me/0905093155" target="_blank" class="rc-ico" style="background: #0088ff;"><i class="fa-solid fa-comment-dots"></i></a>
+            <a href="https://m.me/nhanvien.support" target="_blank" class="rc-ico" style="background: #1877f2;"><i class="fa-brands fa-facebook-messenger"></i></a>
+            <a href="tel:0905093155" class="rc-ico" style="background: #10b981;"><i class="fa-solid fa-phone"></i></a>
+            <a href="https://t.me/TeleThongBaoHeThongBot" target="_blank" class="rc-ico" style="background: #229ed9;"><i class="fa-brands fa-telegram"></i></a>
+        </div>
+        <button class="rc-main" onclick="document.getElementById('contactFab').classList.toggle('is-open')">
+            <i class="fa-solid fa-headset" style="font-size: 20px; margin-bottom: 2px;"></i> Hỗ trợ
+        </button>
     </div>
 
-    <!-- SCRIPT FIREBASE XỬ LÝ DỮ LIỆU ĐỘNG (Lấy Tên + Avatar) -->
+    <!-- SCRIPT FIREBASE & AUTH -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
@@ -335,19 +425,14 @@
             measurementId: "G-KJ8HJ3H2D5"
         };
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const auth = firebase.auth();
 
         auth.onAuthStateChanged((user) => {
             if (user) {
                 const displayName = user.displayName || "Thành viên";
                 const firstLetter = displayName.charAt(0).toUpperCase();
-                
-                // Cập nhật Header y như trang chủ
-                document.getElementById("display-username").innerText = displayName;
+                document.getElementById("navUserName").innerText = displayName;
                 document.getElementById("avatar-mini").innerText = firstLetter;
             } else {
                 window.location.href = "index.html";
@@ -356,34 +441,29 @@
 
         function logout() {
             Swal.fire({
-                title: 'Đăng xuất?',
-                text: "Bạn có chắc chắn muốn thoát tài khoản không?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#2563eb',
-                cancelButtonColor: '#ef4444',
-                confirmButtonText: 'Đồng ý',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    auth.signOut().then(() => {
-                        window.location.href = "index.html";
-                    });
-                }
-            });
+                title: 'Đăng xuất?', text: "Thoát tài khoản?", icon: 'warning', showCancelButton: true,
+                confirmButtonColor: '#2563eb', cancelButtonColor: '#ef4444', confirmButtonText: 'Đồng ý', cancelButtonText: 'Hủy'
+            }).then((result) => { if (result.isConfirmed) auth.signOut(); });
         }
     </script>
 
     <!-- SCRIPT BẢNG GIÁ DỊCH VỤ -->
     <script>
+        // Data dịch vụ mô phỏng từ code gốc
         const services = [
-            { id: "MS18", category: "Facebook", name: "Auto Tương Tác Chéo Hệ Thống", range: "min: 100 - max: 10.000", note: "Tương tác tự động hệ thống cơ bản. Chạy mượt, lên đều.", price: 0, priceCTV: 0, priceDL: 0, status: "Hoạt động" },
-            { id: "FB-01", category: "Facebook", name: "Tăng Like bài viết (Server siêu tốc)", range: "min: 50 - max: 50.000", note: "Lên cực nhanh, phù hợp kéo tương tác tức thì.", price: 20, priceCTV: 18, priceDL: 15, status: "Hoạt động" },
-            { id: "FB-02", category: "Facebook", name: "Sub Cá Nhân / Follow Fanpage", range: "min: 100 - max: 100.000", note: "Follower người dùng thật, không tụt. Bảo hành 30 ngày.", price: 35, priceCTV: 30, priceDL: 25, status: "Chạy chậm" },
-            { id: "TK-01", category: "TikTok", name: "Tăng Tim (Like) TikTok", range: "min: 100 - max: 200.000", note: "Tim kịch khung, đẩy xu hướng nhanh chóng.", price: 15, priceCTV: 12, priceDL: 10, status: "Hoạt động" },
-            { id: "IG-01", category: "Instagram", name: "Tăng Follower Instagram (Quốc Tế)", range: "min: 100 - max: 50.000", note: "Lên ngẫu nhiên rải rác trong ngày, nick xịn có avatar.", price: 40, priceCTV: 35, priceDL: 30, status: "Hoạt động" },
-            { id: "SP-01", category: "Shopee", name: "Tăng Follow Shopee", range: "min: 100 - max: 50.000", note: "Follow từ account thực, giúp tăng độ uy tín shop.", price: 45, priceCTV: 40, priceDL: 35, status: "Hoạt động" },
-            { id: "YT-01", category: "YouTube", name: "Tăng Sub YouTube (Không tuột)", range: "min: 100 - max: 10.000", note: "Tốc độ 100-300 sub/ngày. Cực kì an toàn cho kênh.", price: 500, priceCTV: 450, priceDL: 400, status: "Hoạt động" }
+            { id: "MS18", category: "Facebook", name: "Auto Tương Tác Chéo Hệ Thống", range: "100 - 10.000", note: "Tương tác tự động hệ thống cơ bản.", price: 0, priceCTV: 0, priceDL: 0, status: "Hoạt động" },
+            { id: "s_like", category: "Facebook", name: "Like bài viết speed", range: "50 - 50.000", note: "Lên cực nhanh, phù hợp kéo tương tác tức thời.", price: 20, priceCTV: 18, priceDL: 15, status: "Hoạt động" },
+            { id: "reactions", category: "Facebook", name: "Tăng Like bài viết chậm", range: "100 - 100.000", note: "Lên từ từ, an toàn cho page.", price: 15, priceCTV: 13, priceDL: 10, status: "Hoạt động" },
+            { id: "follow", category: "Facebook", name: "Sub Cá nhân & Sub Fanpage", range: "100 - 50.000", note: "Follow thật, bảo hành 30 ngày.", price: 35, priceCTV: 30, priceDL: 25, status: "Hoạt động" },
+            { id: "comment", category: "Facebook", name: "Tăng Bình Luận", range: "10 - 5.000", note: "Bình luận theo kịch bản tùy chọn.", price: 150, priceCTV: 130, priceDL: 110, status: "Bảo trì" },
+            { id: "like_instagram", category: "Instagram", name: "Like Instagram", range: "100 - 50.000", note: "Like ảnh, video IG nhanh chóng.", price: 25, priceCTV: 22, priceDL: 18, status: "Hoạt động" },
+            { id: "follow_instagram", category: "Instagram", name: "Follow Instagram", range: "100 - 50.000", note: "Lên ngẫu nhiên rải rác trong ngày.", price: 40, priceCTV: 35, priceDL: 30, status: "Hoạt động" },
+            { id: "like_tiktok", category: "TikTok", name: "Like (Tim) TikTok", range: "100 - 200.000", note: "Tim kịch khung, đẩy xu hướng nhanh.", price: 15, priceCTV: 12, priceDL: 10, status: "Hoạt động" },
+            { id: "follow_tiktok", category: "TikTok", name: "Follow TikTok", range: "100 - 100.000", note: "Tăng lượt theo dõi kênh.", price: 45, priceCTV: 40, priceDL: 35, status: "Hoạt động" },
+            { id: "view_tiktok", category: "TikTok", name: "View TikTok", range: "1000 - 1M", note: "Tăng lượt xem video siêu tốc.", price: 2, priceCTV: 1.5, priceDL: 1, status: "Hoạt động" },
+            { id: "follow_shopee", category: "Shopee", name: "Follow Shopee", range: "100 - 50.000", note: "Tăng lượt theo dõi shop.", price: 45, priceCTV: 40, priceDL: 35, status: "Hoạt động" },
+            { id: "like_youtube", category: "Youtube", name: "Like Youtube", range: "100 - 10.000", note: "Like video an toàn.", price: 60, priceCTV: 55, priceDL: 50, status: "Hoạt động" },
+            { id: "sub_youtube", category: "Youtube", name: "Subscribe Youtube", range: "100 - 10.000", note: "Tốc độ 100-300 sub/ngày.", price: 500, priceCTV: 450, priceDL: 400, status: "Hoạt động" }
         ];
 
         let currentCategory = 'all';
@@ -392,15 +472,28 @@
             return value === 0 ? 'Miễn phí' : Number(value).toLocaleString("vi-VN") + "đ";
         }
 
+        // Đếm số lượng dịch vụ
+        document.getElementById('totalServicesCount').innerText = services.length;
+        document.getElementById('countAll').innerText = services.length;
+        document.getElementById('countFB').innerText = services.filter(s => s.category === 'Facebook').length;
+        document.getElementById('countIG').innerText = services.filter(s => s.category === 'Instagram').length;
+        document.getElementById('countTT').innerText = services.filter(s => s.category === 'TikTok').length;
+        document.getElementById('countSP').innerText = services.filter(s => s.category === 'Shopee').length;
+        document.getElementById('countYT').innerText = services.filter(s => s.category === 'Youtube').length;
+
         function renderTable() {
             const q = document.getElementById('searchInput').value.toLowerCase();
             const tbody = document.getElementById('tableBody');
             
             const filtered = services.filter(s => {
-                const matchCat = currentCategory === 'all' || s.category.toLowerCase() === currentCategory.toLowerCase();
-                const matchQ = s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q);
+                const matchCat = currentCategory === 'all' || s.category === currentCategory;
+                const matchQ = s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q) || s.note.toLowerCase().includes(q);
                 return matchCat && matchQ;
             });
+
+            // Cập nhật số lượng hiển thị
+            document.getElementById('totalServicesCount').innerText = filtered.length;
+            document.getElementById('filterStatusLabel').innerText = currentCategory === 'all' && q === '' ? 'Tổng cộng' : 'Đang lọc';
 
             if(filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 40px; color: #64748b; font-style: italic;">Không tìm thấy dịch vụ nào!</td></tr>`;
@@ -419,9 +512,9 @@
                     <td class="id-col">${s.id}</td>
                     <td>
                         <div class="svc-name">${s.name}</div>
-                        <div class="svc-range">${s.range}</div>
+                        <div class="svc-range">min/max: ${s.range}</div>
                     </td>
-                    <td style="color: var(--text-muted); font-size: 13px; line-height: 1.5;">${s.note}</td>
+                    <td class="svc-note">${s.note}</td>
                     <td><span class="price" style="${priceColor}">${money(s.price)}</span></td>
                     <td><span class="price" style="${priceColor}">${money(s.priceCTV)}</span></td>
                     <td><span class="price" style="${priceColor}">${money(s.priceDL)}</span></td>
@@ -437,6 +530,8 @@
                 document.querySelector('.plat.active').classList.remove('active');
                 this.classList.add('active');
                 currentCategory = this.getAttribute('data-cat');
+                
+                document.getElementById('tableTitle').innerText = currentCategory === 'all' ? 'Tất cả dịch vụ' : 'Dịch vụ ' + currentCategory;
                 renderTable();
             });
         });
