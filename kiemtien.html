@@ -45,16 +45,17 @@ body{
     background:var(--bg);
     color:var(--text);
     min-height:100vh;
+    overflow-x:hidden;
 }
 
 button,input{
     font-family:inherit;
     outline:none;
+    border:0;
 }
 
 button{
     cursor:pointer;
-    border:0;
 }
 
 a{
@@ -62,11 +63,13 @@ a{
     color:inherit;
 }
 
-/* SIDEBAR */
+/* ================= SIDEBAR ================= */
 .sidebar{
     width:var(--sidebar-width);
     position:fixed;
-    inset:0 auto 0 0;
+    left:0;
+    top:0;
+    bottom:0;
     background:var(--sidebar);
     color:#cbd5e1;
     display:flex;
@@ -100,7 +103,7 @@ a{
     border-radius:4px;
 }
 
-.sb-title{
+.sb-mod-section-head{
     color:#64748b;
     font-size:11px;
     font-weight:700;
@@ -112,17 +115,16 @@ a{
 .sb-mi{
     display:flex;
     align-items:center;
-    gap:0;
     padding:12px 15px;
-    margin:0 15px 5px;
-    width:calc(100% - 30px);
     color:var(--sidebar-text);
-    background:transparent;
-    border-radius:8px;
-    font-size:14.5px;
     font-weight:600;
-    text-align:left;
     transition:.25s;
+    background:transparent;
+    width:calc(100% - 30px);
+    margin:0 15px 5px;
+    font-size:14.5px;
+    text-align:left;
+    border-radius:8px;
 }
 
 .sb-mi:hover{
@@ -136,19 +138,24 @@ a{
     box-shadow:0 4px 12px rgba(37,99,235,.25);
 }
 
-.sb-icon{
+.sb-mi-icon{
     width:30px;
     display:flex;
     justify-content:flex-start;
 }
 
-.sb-icon i{
+.sb-mi-icon i{
     font-size:16px;
 }
 
-/* MAIN */
+.sidebar-footer{
+    padding-bottom:10px;
+}
+
+/* ================= MAIN ================= */
 .main{
     margin-left:var(--sidebar-width);
+    width:calc(100% - var(--sidebar-width));
     min-height:100vh;
 }
 
@@ -165,17 +172,18 @@ a{
     padding:0 30px;
 }
 
-.crumb{
+.tb-crumb{
     display:flex;
     align-items:center;
     gap:8px;
     color:var(--muted);
-    font-size:14px;
+    font-size:14.5px;
     font-weight:600;
 }
 
-.crumb strong{
+.tb-crumb-current{
     color:var(--text);
+    font-weight:700;
 }
 
 .top-right{
@@ -187,11 +195,15 @@ a{
 .icon-btn{
     width:40px;
     height:40px;
-    border-radius:50%;
     background:#fff;
+    border-radius:50%;
     color:#475569;
-    font-size:17px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
     position:relative;
+    transition:.2s;
 }
 
 .icon-btn:hover{
@@ -200,60 +212,68 @@ a{
 
 .dot{
     position:absolute;
-    right:7px;
-    top:7px;
+    right:8px;
+    top:8px;
     width:8px;
     height:8px;
     background:var(--danger);
-    border:2px solid #fff;
     border-radius:50%;
+    border:2px solid #fff;
 }
 
-.lang{
+.lang-box{
     display:flex;
     align-items:center;
-    gap:7px;
-    padding:7px 11px;
+    gap:8px;
+    padding:5px 10px;
     border:1px solid var(--border);
     border-radius:20px;
-    font-size:13px;
-    font-weight:700;
+    font-weight:600;
+    color:var(--text);
 }
 
-.lang img{
+.lang-box img{
     width:20px;
+    border-radius:2px;
 }
 
-.user{
+.user-box{
     display:flex;
     align-items:center;
-    gap:9px;
+    gap:10px;
     padding:4px 12px 4px 4px;
     border:1px solid var(--border);
     border-radius:25px;
     background:#fff;
     font-weight:700;
+    transition:.2s;
+}
+
+.user-box:hover{
+    background:#f8fafc;
 }
 
 .avatar{
     width:32px;
     height:32px;
-    border-radius:50%;
     display:grid;
     place-items:center;
+    border-radius:50%;
     background:#dbeafe;
     color:var(--primary);
     font-weight:800;
+    font-size:15px;
 }
 
-/* CONTENT */
+/* ================= CONTENT ================= */
 .content{
     padding:30px;
     max-width:1400px;
-    margin:auto;
+    margin:0 auto;
+    width:100%;
 }
 
-/* HERO */
+/* ================= HERO ================= */
 .hero{
     background:linear-gradient(135deg,#2563eb,#1d4ed8);
     border-radius:16px;
@@ -290,7 +310,7 @@ a{
     font-size:40px;
 }
 
-/* STATS */
+/* ================= STATS ================= */
 .stats{
     display:grid;
     grid-template-columns:repeat(4,1fr);
@@ -307,6 +327,12 @@ a{
     display:flex;
     align-items:center;
     gap:15px;
+    transition:.25s;
+}
+
+.stat:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
 }
 
 .stat-icon{
@@ -318,10 +344,25 @@ a{
     font-size:22px;
 }
 
-.blue{background:#eff6ff;color:#2563eb}
-.green{background:#d1fae5;color:#047857}
-.orange{background:#fef3c7;color:#d97706}
-.red{background:#fee2e2;color:#dc2626}
+.blue{
+    background:#eff6ff;
+    color:#2563eb;
+}
+
+.green{
+    background:#d1fae5;
+    color:#047857;
+}
+
+.orange{
+    background:#fef3c7;
+    color:#d97706;
+}
+
+.red{
+    background:#fee2e2;
+    color:#dc2626;
+}
 
 .stat p{
     color:var(--muted);
@@ -336,7 +377,7 @@ a{
     font-weight:800;
 }
 
-/* GRID */
+/* ================= GRID ================= */
 .grid{
     display:grid;
     grid-template-columns:1.7fr 1fr;
@@ -371,7 +412,7 @@ a{
     color:var(--primary);
 }
 
-/* REFERRAL */
+/* ================= REFERRAL ================= */
 .ref-box{
     background:#f8fafc;
     border:1px solid var(--border);
@@ -441,7 +482,7 @@ a{
     color:var(--primary);
 }
 
-/* WITHDRAW */
+/* ================= WITHDRAW ================= */
 .withdraw-box{
     text-align:center;
 }
@@ -482,7 +523,7 @@ a{
     background:var(--primary-hover);
 }
 
-/* STEPS */
+/* ================= STEPS ================= */
 .steps{
     display:flex;
     flex-direction:column;
@@ -517,7 +558,7 @@ a{
     line-height:1.5;
 }
 
-/* HISTORY */
+/* ================= HISTORY ================= */
 .history{
     overflow-x:auto;
 }
@@ -546,23 +587,6 @@ a{
     font-weight:600;
 }
 
-.status{
-    padding:4px 9px;
-    border-radius:20px;
-    font-size:11px;
-    font-weight:800;
-}
-
-.status.success{
-    background:#d1fae5;
-    color:#047857;
-}
-
-.status.pending{
-    background:#fef3c7;
-    color:#b45309;
-}
-
 .empty{
     text-align:center;
     padding:30px 10px;
@@ -575,7 +599,7 @@ a{
     opacity:.5;
 }
 
-/* NOTICE */
+/* ================= NOTICE ================= */
 .notice{
     display:flex;
     gap:12px;
@@ -591,7 +615,7 @@ a{
     margin-top:2px;
 }
 
-/* RESPONSIVE */
+/* ================= RESPONSIVE ================= */
 @media(max-width:1100px){
     .stats{
         grid-template-columns:repeat(2,1fr);
@@ -613,8 +637,7 @@ a{
         font-size:14px;
     }
 
-    .sb-title,
-    .sb-mi:not(.active) .sb-icon+*{
+    .sb-mod-section-head{
         display:none;
     }
 
@@ -625,23 +648,28 @@ a{
         width:calc(100% - 20px);
     }
 
-    .sb-icon{
+    .sb-mi:not(.active){
+        font-size:0;
+    }
+
+    .sb-mi-icon{
         width:auto;
     }
 
     .main{
         margin-left:70px;
+        width:calc(100% - 70px);
     }
 
     .topbar{
         padding:0 15px;
     }
 
-    .lang{
+    .lang-box{
         display:none;
     }
 
-    .user span{
+    .user-box span{
         display:none;
     }
 
@@ -667,7 +695,7 @@ a{
         grid-template-columns:1fr;
     }
 
-    .crumb span{
+    .tb-crumb span{
         display:none;
     }
 
@@ -678,100 +706,118 @@ a{
     .hero h1{
         font-size:22px;
     }
+
+    .ref-link{
+        flex-direction:column;
+    }
+
+    .copy-btn{
+        height:45px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
+<!-- ================= SIDEBAR ================= -->
 <aside class="sidebar">
     <div class="brand">HOANGKUN</div>
 
     <div class="sidebar-scroll">
-        <div class="sb-title">Quản lý chung</div>
+        <div class="sb-mod-section-head">Quản lý chung</div>
 
         <button class="sb-mi" onclick="location.href='trangchu.html'">
-            <div class="sb-icon"><i class="fa-solid fa-house"></i></div>
+            <div class="sb-mi-icon"><i class="fa-solid fa-house"></i></div>
             Trang tổng quan
         </button>
 
         <button class="sb-mi" onclick="location.href='website-api.html'">
-            <div class="sb-icon"><i class="fa-solid fa-globe"></i></div>
+            <div class="sb-mi-icon"><i class="fa-solid fa-globe"></i></div>
             Website & API
         </button>
 
         <button class="sb-mi" onclick="location.href='banggia.html'">
-            <div class="sb-icon"><i class="fa-solid fa-tags"></i></div>
+            <div class="sb-mi-icon"><i class="fa-solid fa-tags"></i></div>
             Bảng giá & Cấp bậc
         </button>
 
         <button class="sb-mi active">
-            <div class="sb-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+            <div class="sb-mi-icon"><i class="fa-solid fa-sack-dollar"></i></div>
             Kiếm tiền
         </button>
 
         <button class="sb-mi" onclick="window.open('https://zalo.me/0788265513','_blank')">
-            <div class="sb-icon"><i class="fa-solid fa-headset"></i></div>
+            <div class="sb-mi-icon"><i class="fa-solid fa-headset"></i></div>
             Liên hệ CSKH
         </button>
 
-        <div class="sb-title">Tài khoản</div>
+        <div class="sb-mod-section-head">Tài khoản</div>
 
         <button class="sb-mi" onclick="location.href='taikhoan.html'">
-            <div class="sb-icon"><i class="fa-solid fa-user-shield"></i></div>
+            <div class="sb-mi-icon"><i class="fa-solid fa-user-shield"></i></div>
             Tài khoản & bảo mật
         </button>
 
         <button class="sb-mi" onclick="location.href='naptien.html'">
-            <div class="sb-icon"><i class="fa-solid fa-wallet"></i></div>
+            <div class="sb-mi-icon"><i class="fa-solid fa-wallet"></i></div>
             Nạp tiền
         </button>
 
         <button class="sb-mi" onclick="location.href='lichsu.html'">
-            <div class="sb-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <div class="sb-mi-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
             Nhật ký hoạt động
         </button>
 
-        <div class="sb-title">Danh sách dịch vụ</div>
+        <div class="sb-mod-section-head">Danh sách dịch vụ</div>
 
         <button class="sb-mi" onclick="location.href='dichvu-khac.html'">
-            <div class="sb-icon"><i class="fa-solid fa-layer-group"></i></div>
+            <div class="sb-mi-icon"><i class="fa-solid fa-layer-group"></i></div>
             Dịch vụ khác
         </button>
 
         <button class="sb-mi" onclick="location.href='facebook.html'">
-            <div class="sb-icon"><i class="fa-brands fa-facebook" style="color:#60a5fa"></i></div>
+            <div class="sb-mi-icon">
+                <i class="fa-brands fa-facebook" style="color:#60a5fa"></i>
+            </div>
             Facebook
         </button>
 
         <button class="sb-mi" onclick="location.href='instagram.html'">
-            <div class="sb-icon"><i class="fa-brands fa-instagram" style="color:#f472b6"></i></div>
+            <div class="sb-mi-icon">
+                <i class="fa-brands fa-instagram" style="color:#f472b6"></i>
+            </div>
             Instagram
         </button>
 
         <button class="sb-mi" onclick="location.href='tiktok.html'">
-            <div class="sb-icon"><i class="fa-brands fa-tiktok"></i></div>
+            <div class="sb-mi-icon">
+                <i class="fa-brands fa-tiktok" style="color:#fff"></i>
+            </div>
             TikTok
         </button>
     </div>
 
-    <button class="sb-mi" onclick="logout()" style="color:#ef4444">
-        <div class="sb-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
-        Đăng xuất
-    </button>
+    <div class="sidebar-footer">
+        <button class="sb-mi" onclick="logout()" style="color:var(--danger)">
+            <div class="sb-mi-icon">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </div>
+            Đăng xuất
+        </button>
+    </div>
 </aside>
 
-<!-- MAIN -->
+<!-- ================= MAIN ================= -->
 <main class="main">
 
     <!-- TOPBAR -->
     <header class="topbar">
-        <div class="crumb">
+        <nav class="tb-crumb">
             <a href="trangchu.html">Trang chủ</a>
             <span>/</span>
-            <strong>Kiếm tiền</strong>
-        </div>
+            <span class="tb-crumb-current">Kiếm tiền</span>
+        </nav>
 
         <div class="top-right">
             <button class="icon-btn">
@@ -783,19 +829,21 @@ a{
                 <span class="dot"></span>
             </button>
 
-            <div class="lang">
+            <div class="lang-box">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg">
                 Tiếng Việt
+                <i class="fa-solid fa-chevron-down" style="font-size:10px;color:#94a3b8"></i>
             </div>
 
-            <div class="user">
+            <button class="user-box">
                 <div class="avatar" id="avatar">H</div>
                 <span id="userName">Đang tải...</span>
                 <i class="fa-solid fa-chevron-down" style="font-size:10px;color:#94a3b8"></i>
-            </div>
+            </button>
         </div>
     </header>
 
+    <!-- CONTENT -->
     <div class="content">
 
         <!-- HERO -->
@@ -858,12 +906,13 @@ a{
 
         </div>
 
+        <!-- GRID -->
         <div class="grid">
 
-            <!-- LEFT -->
+            <!-- CỘT TRÁI -->
             <div>
 
-                <!-- REFERRAL -->
+                <!-- LINK GIỚI THIỆU -->
                 <div class="card">
                     <div class="card-head">
                         <h3 class="card-title">
@@ -879,8 +928,10 @@ a{
 
                         <div class="ref-link">
                             <input id="refLink" readonly>
+
                             <button class="copy-btn" onclick="copyReferral()">
-                                <i class="fa-solid fa-copy"></i> Sao chép
+                                <i class="fa-solid fa-copy"></i>
+                                Sao chép
                             </button>
                         </div>
 
@@ -903,7 +954,7 @@ a{
                     </div>
                 </div>
 
-                <!-- HISTORY -->
+                <!-- LỊCH SỬ -->
                 <div class="card">
                     <div class="card-head">
                         <h3 class="card-title">
@@ -940,10 +991,10 @@ a{
 
             </div>
 
-            <!-- RIGHT -->
+            <!-- CỘT PHẢI -->
             <div>
 
-                <!-- WITHDRAW -->
+                <!-- RÚT TIỀN -->
                 <div class="card">
                     <div class="withdraw-box">
                         <div class="withdraw-icon">
@@ -960,7 +1011,7 @@ a{
                     </div>
                 </div>
 
-                <!-- HOW TO -->
+                <!-- CÁCH KIẾM TIỀN -->
                 <div class="card">
                     <div class="card-head">
                         <h3 class="card-title">
@@ -1006,6 +1057,7 @@ a{
                     </div>
                 </div>
 
+                <!-- NOTICE -->
                 <div class="notice">
                     <i class="fa-solid fa-shield-halved"></i>
                     <span>
@@ -1015,9 +1067,7 @@ a{
                 </div>
 
             </div>
-
         </div>
-
     </div>
 </main>
 
@@ -1032,7 +1082,9 @@ const firebaseConfig={
     appId:"1:364993334554:web:800c66509b355ebf5370a3"
 };
 
-if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+if(!firebase.apps.length){
+    firebase.initializeApp(firebaseConfig);
+}
 
 const auth=firebase.auth();
 const db=firebase.database();
@@ -1053,7 +1105,11 @@ auth.onAuthStateChanged(user=>{
     document.getElementById("userName").innerText=name;
     document.getElementById("avatar").innerText=first;
 
-    const refLink=location.origin+location.pathname.replace("kiemtien.html","index.html")+"?ref="+user.uid;
+    const refLink=
+        location.origin+
+        location.pathname.replace("kiemtien.html","index.html")+
+        "?ref="+user.uid;
+
     document.getElementById("refLink").value=refLink;
 
     db.ref("users/"+user.uid).on("value",snapshot=>{
