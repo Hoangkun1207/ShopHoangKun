@@ -1,215 +1,467 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bảng Giá & Cấp Bậc - HoangKun Store</title>
-<style>
-:root{
---primary:#2563eb; --primary-soft:#eff6ff; --success:#10b981; --warning:#f59e0b;
---danger:#ef4444; --dark:#111827; --text:#1e293b; --muted:#64748b;
---border:#e2e8f0; --bg:#f8fafc; --card:#ffffff; --radius:16px;
---shadow:0 4px 18px rgba(15,23,42,.05); --sidebar:260px;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-button,input,select,textarea{font:inherit;cursor:pointer}
-a{text-decoration:none;color:inherit}
-.hidden{display:none!important}
-.app{display:flex;min-height:100vh}
-.sidebar{width:var(--sidebar);position:fixed;left:0;top:0;bottom:0;background:var(--dark);color:#cbd5e1;display:flex;flex-direction:column;z-index:1000}
-.brand{height:76px;display:flex;align-items:center;padding:0 22px;border-bottom:1px solid #263244;font-size:22px;font-weight:800;color:#fff}
-.brand span{color:#60a5fa}
-.sidebar-scroll{flex:1;overflow:auto;padding:14px 10px}
-.menu-title{font-size:11px;font-weight:800;color:#64748b;padding:15px 10px 7px;text-transform:uppercase}
-.menu{display:flex;align-items:center;gap:12px;width:100%;padding:12px 13px;margin-bottom:4px;border:0;border-radius:10px;background:transparent;color:#cbd5e1;text-align:left;transition:.2s}
-.menu:hover{background:#1f2937;color:#fff}
-.menu.active{background:var(--primary);color:#fff}
-.menu .badge{margin-left:auto;font-size:9px;font-weight:800;padding:3px 6px;border-radius:8px;background:var(--success);color:#fff}
-.sidebar-footer{padding:14px 10px;border-top:1px solid #263244}
-.main{margin-left:var(--sidebar);width:calc(100% - var(--sidebar));min-height:100vh}
-.topbar{height:76px;position:sticky;top:0;z-index:900;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
-.top-left,.top-right{display:flex;align-items:center;gap:12px}
-.mobile-toggle{display:none;border:1px solid var(--border);background:#fff;width:40px;height:40px;border-radius:10px}
-.search{width:330px;display:flex;align-items:center;gap:9px;padding:10px 13px;background:#f1f5f9;border:1px solid var(--border);border-radius:10px}
-.search input{width:100%;border:0;outline:0;background:transparent}
-.icon-btn{width:40px;height:40px;border:1px solid var(--border);background:#fff;border-radius:50%;position:relative;color:#475569}
-.user{display:flex;align-items:center;gap:9px;padding:5px 10px 5px 5px;border:1px solid var(--border);border-radius:22px;background:#fff}
-.avatar{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#dbeafe;color:var(--primary);font-weight:800}
-.content{padding:24px;max-width:1600px;margin:auto}
-.page-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:20px}
-.page-head h1{font-size:24px}
-.page-head p{margin-top:5px;color:var(--muted);font-size:14px}
-.actions{display:flex;gap:8px}
-.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:700;transition:.2s}
-.btn:hover{transform:translateY(-1px)}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-secondary{background:#fff;border:1px solid var(--border);color:var(--text)}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
-.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:5px 8px;border-radius:8px}
-.badge-blue{background:#dbeafe;color:#1d4ed8}
-.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.service{border:1px solid var(--border);border-radius:14px;padding:16px;background:#fff;transition:.2s}
-.service:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
-.service-top{display:flex;justify-content:space-between;gap:10px}
-.service-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:#eff6ff;color:#2563eb}
-.service h3{font-size:15px;margin:14px 0 6px}
-.service p{font-size:12px;color:var(--muted);line-height:1.5}
-.service-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:15px}
-.price{font-weight:800;color:#0f172a}
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.field{display:flex;flex-direction:column;gap:6px}
-.field label{font-size:12px;font-weight:700;color:#475569}
-.field input,.field select{width:100%;border:1px solid var(--border);border-radius:10px;padding:11px 12px;outline:0;background:#fff;color:var(--text)}
-.field input:focus,.field select:focus{border-color:#60a5fa;box-shadow:0 0 0 3px #dbeafe}
-@media(max-width:1200px){.service-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:900px){.sidebar{transform:translateX(-100%)}.main{margin-left:0;width:100%}}
-@media(max-width:650px){.service-grid,.form-grid{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <title>Bảng Giá & Cấp Bậc | HoangKun Store</title>
 
-<div class="app">
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-        <div class="brand">HOANG<span>KUN</span></div>
-        <div class="sidebar-scroll">
-            <div class="menu-title">Quản lý chung</div>
-            <!-- Nút gọi sang trangchu.html -->
-            <button class="menu" onclick="window.location.href='trangchu.html'"><i>⌂</i> Trang tổng quan</button>
-            <!-- Nút hiện tại được đánh dấu Active -->
-            <button class="menu active" onclick="window.location.href='banggia.html'"><i>◈</i> Bảng giá & Cấp bậc</button>
-            
-            <button class="menu" onclick="alert('Chức năng đang phát triển!')"><i>▣</i> Đơn hàng</button>
-            <button class="menu" onclick="alert('Chức năng đang phát triển!')"><i>◒</i> Thống kê</button>
-            
-            <div class="menu-title">Tài chính</div>
-            <button class="menu" onclick="alert('Chức năng đang phát triển!')"><i>＋</i> Nạp tiền</button>
-            
-            <div class="menu-title">Tài khoản</div>
-            <button class="menu" onclick="alert('Chức năng đang phát triển!')"><i>♙</i> Tài khoản</button>
-        </div>
-        <div class="sidebar-footer">
-            <button class="menu" id="logoutBtn"><i>⇥</i> Đăng xuất</button>
-        </div>
-    </aside>
-
-    <main class="main">
-        <!-- TOPBAR -->
-        <header class="topbar">
-            <div class="top-left">
-                <button class="mobile-toggle" id="mobileToggle">☰</button>
-                <div class="search">
-                    <span>⌕</span>
-                    <input id="globalSearch" placeholder="Tìm dịch vụ...">
-                </div>
-            </div>
-            <div class="top-right">
-                <div class="user">
-                    <div class="avatar" id="topAvatar">H</div>
-                    <span id="topName">Hoangkun</span>
-                </div>
-            </div>
-        </header>
-
-        <div class="content">
-            <!-- NỘI DUNG TRANG BẢNG GIÁ -->
-            <section class="page">
-                <div class="page-head">
-                    <div>
-                        <h1>Bảng giá & Cấp bậc</h1>
-                        <p>Chọn dịch vụ bạn muốn tạo đơn.</p>
-                    </div>
-                    <div class="actions">
-                        <button class="btn btn-secondary" onclick="renderServices()">Đặt lại</button>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="field">
-                            <label>Tìm dịch vụ</label>
-                            <input id="serviceSearch" placeholder="Ví dụ: Facebook, TikTok..." oninput="renderServices()">
-                        </div>
-                        <div class="field">
-                            <label>Danh mục</label>
-                            <select id="serviceCategory" onchange="renderServices()">
-                                <option value="all">Tất cả</option>
-                                <option>Facebook</option>
-                                <option>Instagram</option>
-                                <option>TikTok</option>
-                                <option>YouTube</option>
-                                <option>Khác</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="service-grid" id="serviceGrid" style="margin-top:18px">
-                    <!-- Danh sách dịch vụ sẽ được render qua JS -->
-                </div>
-            </section>
-        </div>
-    </main>
-</div>
-
-<!-- JAVASCRIPT XỬ LÝ DỊCH VỤ DÀNH RIÊNG CHO TRANG NÀY -->
-<script>
-    // Dữ liệu dịch vụ (Sản phẩm MS18 được đưa về giá 0đ theo yêu cầu trước đó)
-    const services = [
-        { id: "MS18", category: "Facebook", name: "Auto tương tác chéo hệ thống", description: "Tăng tương tác tự động theo hệ thống.", price: 0, unit: "1 tương tác" },
-        { id: "FB-LIKE", category: "Facebook", name: "Tăng lượt thích bài viết", description: "Dịch vụ tăng lượt thích theo số lượng.", price: 20, unit: "1 like" },
-        { id: "FB-FOLLOW", category: "Facebook", name: "Tăng người theo dõi", description: "Tăng follower cho trang cá nhân.", price: 30, unit: "1 follow" },
-        { id: "IG-LIKE", category: "Instagram", name: "Instagram Like", description: "Tăng lượt thích bài đăng Instagram.", price: 25, unit: "1 like" },
-        { id: "IG-FOLLOW", category: "Instagram", name: "Instagram Follow", description: "Tăng người theo dõi Instagram.", price: 35, unit: "1 follow" },
-        { id: "TT-LIKE", category: "TikTok", name: "TikTok Like", description: "Tăng lượt thích video TikTok.", price: 20, unit: "1 like" },
-        { id: "TT-FOLLOW", category: "TikTok", name: "TikTok Follow", description: "Tăng follower TikTok.", price: 30, unit: "1 follow" }
-    ];
-
-    function money(value) {
-        return Number(value || 0).toLocaleString("vi-VN") + "đ";
-    }
-
-    function renderServices() {
-        const q = (document.getElementById("serviceSearch").value || "").toLowerCase();
-        const cat = document.getElementById("serviceCategory").value || "all";
-        
-        const list = services.filter(s => {
-            const matchQ = !q || s.name.toLowerCase().includes(q) || s.category.toLowerCase().includes(q);
-            const matchCat = cat === "all" || s.category === cat;
-            return matchQ && matchCat;
-        });
-        
-        document.getElementById("serviceGrid").innerHTML = list.map(s => `
-            <div class="service">
-                <div class="service-top">
-                    <div class="service-icon">◈</div>
-                    <span class="badge badge-blue">${s.category}</span>
-                </div>
-                <h3>${s.name}</h3>
-                <p>${s.description}</p>
-                <div class="service-bottom">
-                    <div>
-                        <span class="price">${s.price === 0 ? 'Miễn phí' : money(s.price)}</span>
-                        <small> / ${s.unit}</small>
-                    </div>
-                    <button class="btn btn-primary" onclick="alert('Đã chọn: ${s.name}')">Đặt ngay</button>
-                </div>
-            </div>`
-        ).join("") || '<div class="card" style="grid-column:1/-1; text-align:center; padding: 40px; color:#64748b;">Không tìm thấy dịch vụ.</div>';
-    }
-
-    // Khởi chạy khi tải trang
-    document.addEventListener("DOMContentLoaded", () => {
-        renderServices();
-        
-        // Khôi phục tên User tạm thời nếu có lưu
-        let state = JSON.parse(localStorage.getItem("hoangkun_dashboard_v2"));
-        if(state && state.user) {
-            document.getElementById("topName").textContent = state.user.name;
-            document.getElementById("topAvatar").textContent = state.user.name.charAt(0).toUpperCase();
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- MÃ CSS ĐƯỢC VIẾT MỚI ĐỂ LÀM ĐẸP TOÀN BỘ TRANG -->
+    <style>
+        /* Tùy chỉnh màu sắc chủ đạo */
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --sidebar-bg: #111827;
+            --sidebar-text: #94a3b8;
         }
-    });
-</script>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-size: 14px; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        button, input { outline: none; font-family: 'Quicksand', sans-serif; }
+
+        /* ================= BỐ CỤC TỔNG (LAYOUT) ================= */
+        .kt-grid--root { display: flex; min-height: 100vh; }
+        .kt-page { display: flex; width: 100%; }
+        
+        /* ================= SIDEBAR (MENU TRÁI) ================= */
+        .kt-aside {
+            width: 260px;
+            background: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+        .kt-aside__brand {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            border-bottom: 1px solid #1f2937;
+        }
+        .web-logo { color: #fff; font-size: 22px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+        .sb-mod-section-head {
+            color: #64748b; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 20px 20px 10px; letter-spacing: 1px;
+        }
+        .sb-mi {
+            display: flex; align-items: center; padding: 12px 20px; color: var(--sidebar-text); font-weight: 600; transition: 0.3s;
+        }
+        .sb-mi:hover { background: #1f2937; color: #fff; }
+        .sb-mi.active { background: #1f2937; color: #fff; border-left: 4px solid var(--primary); }
+        .sb-mi-icon { width: 25px; display: flex; justify-content: flex-start; }
+        .sb-mi-icon svg { width: 18px; height: 18px; }
+
+        /* ================= MAIN CONTENT (NỘI DUNG PHẢI) ================= */
+        .kt-wrapper { margin-left: 260px; width: calc(100% - 260px); display: flex; flex-direction: column; }
+        .topbar-v2 {
+            height: 70px; background: #fff; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 90;
+        }
+        .tb-crumb { font-weight: 600; color: var(--text-muted); }
+        .tb-crumb-current { color: var(--text-main); font-weight: 700; }
+        .tb-search { background: var(--bg-color); padding: 8px 15px; border-radius: 8px; display: flex; align-items: center; width: 300px; border: 1px solid var(--border-color); }
+        .tb-search input { background: transparent; border: none; margin-left: 10px; width: 100%; }
+        .tb-profile { background: transparent; border: none; display: flex; align-items: center; gap: 10px; font-weight: 700; cursor: pointer; }
+        .tb-profile img { width: 35px; height: 35px; border-radius: 50%; }
+
+        /* ================= KHU VỰC CẤP BẬC (TIERS) ================= */
+        .prices-v2 { padding: 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
+        .tier-head-row { margin-bottom: 25px; }
+        .section-title { font-size: 22px; font-weight: 800; color: var(--text-main); display: inline-block; }
+        .tier-head-sub { color: var(--text-muted); margin-left: 10px; font-weight: 500; }
+        
+        .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .tier {
+            background: var(--card-bg); border-radius: 16px; padding: 25px; border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s;
+            display: flex; flex-direction: column;
+        }
+        .tier:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border-color: var(--primary); }
+        .tier-head { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .medal { width: 50px; height: 50px; }
+        .tier-name { font-size: 18px; font-weight: 800; color: var(--text-main); }
+        .tier-amount { font-size: 20px; font-weight: 800; color: var(--primary); margin-top: 5px; }
+        .tier-amount.free { color: var(--success); }
+        .tier-caption { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+        
+        .tier-note { flex: 1; color: #475569; line-height: 1.6; margin-bottom: 25px; font-weight: 500; }
+        .tier-note p { position: relative; padding-left: 20px; margin-bottom: 10px; }
+        .tier-note p::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: 900; }
+        
+        .tier-btn {
+            width: 100%; padding: 12px; border-radius: 10px; font-weight: 700; text-align: center; border: none; cursor: pointer; transition: 0.2s;
+        }
+        .btn-current { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
+        .btn-upgrade { background: var(--primary); color: #fff; display: block; }
+        .btn-upgrade:hover { background: var(--primary-hover); }
+
+        /* ================= KHU VỰC BẢNG GIÁ DỊCH VỤ ================= */
+        #vue_app { display: block !important; margin-top: 50px; } /* Mở khóa khu vực bị ẩn */
+        .total-box { background: var(--primary); color: #fff; padding: 20px; border-radius: 16px; display: inline-block; margin-bottom: 20px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3); }
+        .t-label { font-weight: 600; opacity: 0.9; }
+        .t-num { font-size: 36px; font-weight: 800; line-height: 1; margin: 5px 0; }
+        .t-unit { font-weight: 600; opacity: 0.9; }
+
+        .platforms h3 { font-size: 18px; font-weight: 800; margin-bottom: 15px; }
+        .platforms-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; }
+        .plat { display: flex; align-items: center; gap: 10px; padding: 10px 20px; background: #fff; border: 1px solid var(--border-color); border-radius: 30px; cursor: pointer; font-weight: 700; white-space: nowrap; transition: 0.2s; }
+        .plat:hover, .plat.active { border-color: var(--primary); background: #eff6ff; color: var(--primary); box-shadow: 0 4px 10px rgba(37,99,235,0.1); }
+        .pico { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        
+        .svc { background: #fff; border-radius: 16px; padding: 25px; margin-top: 20px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .svc-head { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .svc-head h3 { font-size: 18px; font-weight: 800; }
+        
+        .toolbar { display: flex; gap: 15px; margin-bottom: 20px; }
+        .toolbar .search { width: 100%; max-width: 400px; }
+        
+        .table-scroll { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border-color); }
+        .pricetable { width: 100%; border-collapse: collapse; min-width: 800px; }
+        .pricetable th { background: #f8fafc; padding: 15px; text-align: left; font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); }
+        .pricetable td { padding: 16px 15px; border-bottom: 1px solid var(--border-color); color: var(--text-main); font-weight: 500; vertical-align: middle; }
+        .pricetable tr:last-child td { border-bottom: none; }
+        .pricetable tr:hover td { background: #f8fafc; }
+        
+        .id-col { font-weight: 800; color: var(--primary); }
+        .svc-name { font-weight: 700; font-size: 14px; margin-bottom: 5px; }
+        .svc-range { font-size: 12px; color: var(--text-muted); background: #f1f5f9; display: inline-block; padding: 3px 8px; border-radius: 6px; }
+        .price { font-weight: 800; color: #0f172a; }
+        .status { padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; background: #d1fae5; color: #047857; display: inline-flex; align-items: center; gap: 5px; }
+        .status::before { content: ''; width: 6px; height: 6px; background: #047857; border-radius: 50%; }
+
+        /* ================= MOBILE RESPONSIVE ================= */
+        @media (max-width: 992px) {
+            .kt-aside { transform: translateX(-100%); }
+            .kt-wrapper { margin-left: 0; width: 100%; }
+            .tb-burger-mobile { display: block !important; border: none; background: transparent; font-size: 20px; cursor: pointer; }
+            .tb-search-wrap { display: none; }
+            .tiers { grid-template-columns: 1fr; }
+        }
+
+        /* Ẩn các class không cần thiết từ code thừa của hệ thống cũ */
+        .kt-header-mobile, #top-load { display: none; }
+    </style>
+</head>
+
+<body class="kt-header--fixed kt-subheader--fixed kt-aside--enabled view-user menu-modern">
+
+<div class="kt-grid kt-grid--hor kt-grid--root">
+    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+        
+        <!-- ================= MÀN HÌNH SIDEBAR TRÁI ================= -->
+        <div class="kt-aside" id="kt_aside">
+            <div class="kt-aside__brand">
+                <a href="trangchu.html" class="web-logo">HOANGKUN</a>
+            </div>
+            <div class="sidebar-scroll">
+                <nav class="sb-mod-nav">
+                    <div class="sb-mod-section-head">QUẢN LÝ CHUNG</div>
+                    <a href="trangchu.html" class="sb-mi">
+                        <span class="sb-mi-icon"><i class="fa-solid fa-house"></i></span>
+                        <span class="sb-mi-label">Trang chủ</span>
+                    </a>
+                    <a href="#" class="sb-mi">
+                        <span class="sb-mi-icon"><i class="fa-solid fa-globe"></i></span>
+                        <span class="sb-mi-label">Website & API</span>
+                    </a>
+                    <!-- BẬT SÁNG NÚT BẢNG GIÁ -->
+                    <a href="banggia.html" class="sb-mi active">
+                        <span class="sb-mi-icon"><i class="fa-solid fa-tags"></i></span>
+                        <span class="sb-mi-label">Bảng giá & Cấp bậc</span>
+                    </a>
+                    <a href="#" class="sb-mi">
+                        <span class="sb-mi-icon"><i class="fa-solid fa-sack-dollar"></i></span>
+                        <span class="sb-mi-label">Kiếm tiền</span>
+                    </a>
+                    
+                    <div class="sb-mod-section-head">TÀI KHOẢN</div>
+                    <a href="#" class="sb-mi">
+                        <span class="sb-mi-icon"><i class="fa-solid fa-user-shield"></i></span>
+                        <span class="sb-mi-label">Tài khoản & bảo mật</span>
+                    </a>
+                    <a href="#" class="sb-mi">
+                        <span class="sb-mi-icon"><i class="fa-solid fa-wallet"></i></span>
+                        <span class="sb-mi-label">Nạp tiền</span>
+                    </a>
+                    <a href="#" class="sb-mi">
+                        <span class="sb-mi-icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                        <span class="sb-mi-label">Nhật ký hoạt động</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- ================= MÀN HÌNH NỘI DUNG PHẢI ================= -->
+        <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper">
+            
+            <header class="topbar-v2">
+                <div class="top-left" style="display: flex; align-items: center; gap: 15px;">
+                    <button class="tb-burger-mobile" style="display: none;"><i class="fa-solid fa-bars"></i></button>
+                    <nav class="tb-crumb">
+                        <a href="trangchu.html">Trang chủ</a> <span style="margin: 0 8px; color: #cbd5e1;">/</span> <span class="tb-crumb-current">Bảng giá dịch vụ</span>
+                    </nav>
+                    <div class="tb-search">
+                        <i class="fa-solid fa-search" style="color: #94a3b8;"></i>
+                        <input type="text" placeholder="Tìm dịch vụ seeding...">
+                    </div>
+                </div>
+                <div class="top-right" style="display: flex; gap: 20px; align-items: center;">
+                    <button class="tb-profile">
+                        <img src="https://ui-avatars.com/api/?name=Hoang&background=e0f2fe&color=0284c7" alt="avatar">
+                        <span style="color: #1e293b;">Hoangkun</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 10px; color: #94a3b8;"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content">
+                <div class="prices-v2">
+                    <!-- KHỐI 1: CẤP BẬC THÀNH VIÊN -->
+                    <div class="tier-head-row">
+                        <div class="tier-head-left">
+                            <h2 class="section-title">Cấp bậc thành viên</h2>
+                            <span class="tier-head-sub">4 cấp · Ưu đãi độc quyền</span>
+                        </div>
+                    </div>
+                    
+                    <div class="tiers">
+                        <!-- TIER 1 -->
+                        <div class="tier">
+                            <div class="tier-head">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2583/2583344.png" class="medal" alt="Thành viên">
+                                <div>
+                                    <div class="tier-name">Thành Viên</div>
+                                    <div class="tier-amount free">Miễn phí</div>
+                                    <div class="tier-caption">Cấp độ mặc định</div>
+                                </div>
+                            </div>
+                            <div class="tier-note">
+                                <p>Sử dụng các tính năng cơ bản</p>
+                                <p>Hỗ trợ qua hệ thống Ticket</p>
+                            </div>
+                            <button class="tier-btn btn-current" disabled>Gói hiện tại</button>
+                        </div>
+                        
+                        <!-- TIER 2 -->
+                        <div class="tier">
+                            <div class="tier-head">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2583/2583434.png" class="medal" alt="Cộng tác viên">
+                                <div>
+                                    <div class="tier-name">Cộng tác viên</div>
+                                    <div class="tier-amount">1.000.000đ</div>
+                                    <div class="tier-caption">Tính trên tổng nạp</div>
+                                </div>
+                            </div>
+                            <div class="tier-note">
+                                <p>Thăng cấp tự động</p>
+                                <p>Giá ưu đãi thấp hơn</p>
+                                <p>Hỗ trợ bán dịch vụ tạo thu nhập</p>
+                            </div>
+                            <button class="tier-btn btn-upgrade" onclick="window.location.href='#'">Nâng cấp ngay</button>
+                        </div>
+
+                        <!-- TIER 3 -->
+                        <div class="tier">
+                            <div class="tier-head">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2583/2583364.png" class="medal" alt="Đại lý">
+                                <div>
+                                    <div class="tier-name">Đại lý</div>
+                                    <div class="tier-amount">5.000.000đ</div>
+                                    <div class="tier-caption">Tính trên tổng nạp</div>
+                                </div>
+                            </div>
+                            <div class="tier-note">
+                                <p>1 giao dịch 2tr hoặc tổng 5tr</p>
+                                <p>Hỗ trợ tạo website đại lý riêng</p>
+                                <p>Áp dụng mức giá sỉ</p>
+                            </div>
+                            <button class="tier-btn btn-upgrade" onclick="window.location.href='#'">Nâng cấp ngay</button>
+                        </div>
+
+                        <!-- TIER 4 -->
+                        <div class="tier">
+                            <div class="tier-head">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2583/2583324.png" class="medal" alt="NPP">
+                                <div>
+                                    <div class="tier-name">Nhà Phân Phối</div>
+                                    <div class="tier-amount">50.000.000đ</div>
+                                    <div class="tier-caption">Tính trên tổng nạp</div>
+                                </div>
+                            </div>
+                            <div class="tier-note">
+                                <p>Chiết khấu giá chạm đáy</p>
+                                <p>Hỗ trợ hệ thống full chức năng</p>
+                                <p>Support riêng 24/7</p>
+                            </div>
+                            <button class="tier-btn btn-upgrade" onclick="window.location.href='#'">Liên hệ ngay</button>
+                        </div>
+                    </div>
+
+                    <!-- KHỐI 2: DANH SÁCH BẢNG GIÁ DỊCH VỤ -->
+                    <div id="vue_app">
+                        <div class="panel platforms">
+                            <h3>Lọc theo nền tảng</h3>
+                            <div class="platforms-scroll">
+                                <div class="plat active">
+                                    <span class="pico" style="background: linear-gradient(135deg,#5d8bf0,#3b62e8); color: white;"><i class="fa-solid fa-border-all"></i></span>
+                                    <span>Tất cả nền tảng</span>
+                                </div>
+                                <div class="plat">
+                                    <span class="pico" style="background: #1877f2; color: white;"><i class="fa-brands fa-facebook-f"></i></span>
+                                    <span>Facebook</span>
+                                </div>
+                                <div class="plat">
+                                    <span class="pico" style="background: linear-gradient(45deg,#f9ce34,#ee2a7b 45%,#6228d7); color: white;"><i class="fa-brands fa-instagram"></i></span>
+                                    <span>Instagram</span>
+                                </div>
+                                <div class="plat">
+                                    <span class="pico" style="background: #000; color: white;"><i class="fa-brands fa-tiktok"></i></span>
+                                    <span>TikTok</span>
+                                </div>
+                                <div class="plat">
+                                    <span class="pico" style="background: #ff0000; color: white;"><i class="fa-brands fa-youtube"></i></span>
+                                    <span>YouTube</span>
+                                </div>
+                                <div class="plat">
+                                    <span class="pico" style="background: #ee4d2d; color: white;"><i class="fa-solid fa-cart-shopping"></i></span>
+                                    <span>Shopee</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel svc">
+                            <div class="svc-head">
+                                <h3>Bảng Giá Dịch Vụ Mới Nhất</h3>
+                            </div>
+                            <div class="toolbar">
+                                <div class="tb-search" style="width: 100%; max-width: 400px; background: #f8fafc;">
+                                    <i class="fa-solid fa-search" style="color: #94a3b8;"></i>
+                                    <input type="text" placeholder="Tìm ID, tên dịch vụ...">
+                                </div>
+                            </div>
+
+                            <div class="table-scroll">
+                                <table class="pricetable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tên dịch vụ</th>
+                                            <th style="width: 300px;">Ghi chú</th>
+                                            <th>Giá Thành Viên</th>
+                                            <th>Giá CTV</th>
+                                            <th>Giá Đại Lý</th>
+                                            <th>Trạng thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dòng 1 (Miễn phí theo đúng yêu cầu trước đây của bạn) -->
+                                        <tr>
+                                            <td class="id-col">MS18</td>
+                                            <td>
+                                                <div class="svc-name">Auto Tương Tác Chéo Hệ Thống</div>
+                                                <div class="svc-range">min: 100 - max: 10.000</div>
+                                            </td>
+                                            <td style="color: var(--text-muted); font-size: 13px; line-height: 1.5;">Tương tác tự động hệ thống cơ bản. Chạy mượt, lên đều.</td>
+                                            <td><span class="price" style="color: #10b981;">Miễn phí</span></td>
+                                            <td><span class="price" style="color: #10b981;">Miễn phí</span></td>
+                                            <td><span class="price" style="color: #10b981;">Miễn phí</span></td>
+                                            <td><span class="status">Hoạt động</span></td>
+                                        </tr>
+                                        <!-- Dòng 2 -->
+                                        <tr>
+                                            <td class="id-col">FB-01</td>
+                                            <td>
+                                                <div class="svc-name">Tăng Like bài viết (Server siêu tốc)</div>
+                                                <div class="svc-range">min: 50 - max: 50.000</div>
+                                            </td>
+                                            <td style="color: var(--text-muted); font-size: 13px; line-height: 1.5;">Lên cực nhanh, phù hợp kéo tương tác tức thì.</td>
+                                            <td><span class="price">20đ</span></td>
+                                            <td><span class="price">18đ</span></td>
+                                            <td><span class="price">15đ</span></td>
+                                            <td><span class="status">Hoạt động</span></td>
+                                        </tr>
+                                        <!-- Dòng 3 -->
+                                        <tr>
+                                            <td class="id-col">FB-02</td>
+                                            <td>
+                                                <div class="svc-name">Sub Cá Nhân / Follow Fanpage</div>
+                                                <div class="svc-range">min: 100 - max: 100.000</div>
+                                            </td>
+                                            <td style="color: var(--text-muted); font-size: 13px; line-height: 1.5;">Follower người dùng thật, không tụt. Bảo hành 30 ngày.</td>
+                                            <td><span class="price">35đ</span></td>
+                                            <td><span class="price">30đ</span></td>
+                                            <td><span class="price">25đ</span></td>
+                                            <td><span class="status" style="background: #fef3c7; color: #b45309;">Chạy chậm</span></td>
+                                        </tr>
+                                        <!-- Dòng 4 -->
+                                        <tr>
+                                            <td class="id-col">TK-01</td>
+                                            <td>
+                                                <div class="svc-name">Tăng Tim (Like) TikTok</div>
+                                                <div class="svc-range">min: 100 - max: 200.000</div>
+                                            </td>
+                                            <td style="color: var(--text-muted); font-size: 13px; line-height: 1.5;">Tim kịch khung, đẩy xu hướng nhanh chóng.</td>
+                                            <td><span class="price">15đ</span></td>
+                                            <td><span class="price">12đ</span></td>
+                                            <td><span class="price">10đ</span></td>
+                                            <td><span class="status">Hoạt động</span></td>
+                                        </tr>
+                                        <!-- Dòng 5 -->
+                                        <tr>
+                                            <td class="id-col">IG-01</td>
+                                            <td>
+                                                <div class="svc-name">Tăng Follower Instagram (Quốc Tế)</div>
+                                                <div class="svc-range">min: 100 - max: 50.000</div>
+                                            </td>
+                                            <td style="color: var(--text-muted); font-size: 13px; line-height: 1.5;">Lên ngẫu nhiên rải rác trong ngày, nick xịn có avatar.</td>
+                                            <td><span class="price">40đ</span></td>
+                                            <td><span class="price">35đ</span></td>
+                                            <td><span class="price">30đ</span></td>
+                                            <td><span class="status">Hoạt động</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KHỐI LIÊN HỆ GÓC PHẢI DƯỚI (Giữ nguyên) -->
+    <style>
+        .rc-fab { position: fixed; right: 20px; bottom: 30px; display: flex; flex-direction: column; align-items: center; z-index: 9999; }
+        .rc-stack { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 15px; opacity: 0; transform: translateY(20px) scale(0.8); pointer-events: none; transition: 0.3s cubic-bezier(0.34, 1.4, 0.5, 1); }
+        .rc-fab.is-open .rc-stack { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .rc-ico { width: 50px; height: 50px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: 0.2s; color: #fff; }
+        .rc-ico:hover { transform: scale(1.1); }
+        .rc-main { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; box-shadow: 0 10px 25px rgba(37,99,235,0.4); cursor: pointer; transition: 0.2s; }
+        .rc-main:hover { transform: scale(1.05); }
+    </style>
+    <div class="rc-fab" id="contactFab">
+        <div class="rc-stack">
+            <a href="https://zalo.me/0905093155" target="_blank" class="rc-ico" style="background: #0088ff;"><i class="fa-solid fa-comment-dots"></i></a>
+            <a href="https://m.me/nhanvien.support" target="_blank" class="rc-ico" style="background: #1877f2;"><i class="fa-brands fa-facebook-messenger"></i></a>
+            <a href="tel:0905093155" class="rc-ico" style="background: #10b981;"><i class="fa-solid fa-phone"></i></a>
+            <a href="https://t.me/TeleThongBaoHeThongBot" target="_blank" class="rc-ico" style="background: #229ed9;"><i class="fa-brands fa-telegram"></i></a>
+        </div>
+        <button class="rc-main" onclick="document.getElementById('contactFab').classList.toggle('is-open')">
+            <i class="fa-solid fa-headset" style="font-size: 20px; margin-bottom: 2px;"></i> Hỗ trợ
+        </button>
+    </div>
+
 </body>
 </html>
