@@ -1124,12 +1124,16 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 const db = firebase.database();
 
+/* =========================
+   ĐIỀU HƯỚNG
+========================= */
+
 function go(file) {
     window.location.href = file;
 }
 
 function openZalo() {
-    window.open("https://zalo.me/0788265513","_blank");
+    window.open("https://zalo.me/0788265513", "_blank");
 }
 
 /* =========================
@@ -1137,23 +1141,50 @@ function openZalo() {
 ========================= */
 
 function formatXu(value) {
-
     return Number(value || 0).toLocaleString("vi-VN") + " xu";
-
 }
+
+/* =========================
+   DỊCH VỤ FACEBOOK
+   Đơn giá / 1 đơn vị
+========================= */
+
+const prices = {
+    reaction: 700,
+    follow: 1700,
+    comment: 1300,
+    post_view: 300,
+    page_like: 2300,
+    story_view: 300
+};
+
+/* =========================
+   TÊN DỊCH VỤ
+========================= */
+
+const serviceNames = {
+    reaction: "Tăng thả cảm xúc",
+    follow: "Tăng theo dõi Facebook",
+    comment: "Tăng Like Comment",
+    post_view: "Tăng View bài viết",
+    page_like: "Tăng Like Page",
+    story_view: "Tăng View Story"
+};
 
 /* =========================
    USER
 ========================= */
 
+let currentUser = null;
+
 auth.onAuthStateChanged(user => {
 
     if (!user) {
-
         window.location.href = "index.html";
-
         return;
     }
+
+    currentUser = user;
 
     const name = user.displayName || "Thành viên";
     const letter = name.charAt(0).toUpperCase();
@@ -1163,6 +1194,9 @@ auth.onAuthStateChanged(user => {
 
     document.getElementById("avatarMini").textContent = letter;
     document.getElementById("menuAvatar").textContent = letter;
+
+    /* Load lịch sử đơn Facebook */
+    loadOrders();
 
 });
 
@@ -1184,20 +1218,21 @@ userBtn.addEventListener("click", e => {
 document.addEventListener("click", e => {
 
     if (!userDropdown.contains(e.target)) {
-
         userDropdown.classList.remove("open");
-
     }
 
 });
 
 /* =========================
-   SEARCH
+   SEARCH CTRL + K
 ========================= */
 
 document.addEventListener("keydown", e => {
 
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+    if (
+        (e.ctrlKey || e.metaKey) &&
+        e.key.toLowerCase() === "k"
+    ) {
 
         e.preventDefault();
 
@@ -1208,45 +1243,94 @@ document.addEventListener("keydown", e => {
 });
 
 /* =========================
-   BẢNG GIÁ FACEBOOK
-========================= */
-
-const prices = {
-
-    reaction: 700,
-    follow: 1700,
-    comment: 1300,
-    postview: 300,
-    pagelike: 2300,
-    storyview: 300
-
-};
-
-/* =========================
-   TÊN DỊCH VỤ
-========================= */
-
-const serviceNames = {
-
-    reaction: "Thả cảm xúc",
-    follow: "Theo dõi Facebook",
-    comment: "Like Comment",
-    postview: "View bài viết",
-    pagelike: "Like Page",
-    storyview: "View Story"
-
-};
-
-/* =========================
    ELEMENT
 ========================= */
 
 const service = document.getElementById("service");
 const quantity = document.getElementById("quantity");
+const linkInput = document.getElementById("link");
 const totalPrice = document.getElementById("totalPrice");
+const linkError = document.getElementById("linkError");
 
 /* =========================
-   TÍNH TIỀN
+   KIỂM TRA LINK FACEBOOK
+========================= */
+
+function isValidFacebookUrl(value) {
+
+    if (!value) {
+        return false;
+    }
+
+    let url;
+
+    try {
+        url = new URL(value);
+    } catch (error) {
+        return false;
+    }
+
+    const host = url.hostname
+        .toLowerCase()
+        .replace(/^www\./, "");
+
+    const allowedHosts = [
+        "facebook.com",
+        "m.facebook.com",
+        "fb.com",
+        "fb.watch"
+    ];
+
+    return allowedHosts.some(domain => {
+
+        return host === domain ||
+               host.endsWith("." + domain);
+
+    });
+
+}
+
+/* =========================
+   VALIDATE LINK KHI NHẬP
+========================= */
+
+linkInput.addEventListener("input", () => {
+
+    const value = linkInput.value.trim();
+
+    if (!value) {
+
+        linkInput.style.borderColor = "#dfe7f2";
+
+        if (linkError) {
+            linkError.style.display = "none";
+        }
+
+        return;
+    }
+
+    if (isValidFacebookUrl(value)) {
+
+        linkInput.style.borderColor = "#16b978";
+
+        if (linkError) {
+            linkError.style.display = "none";
+        }
+
+    } else {
+
+        linkInput.style.borderColor = "#ef4444";
+
+        if (linkError) {
+            linkError.style.display = "block";
+        }
+
+    }
+
+});
+
+/* =========================
+   TÍNH GIÁ
 ========================= */
 
 function updatePrice() {
@@ -1257,178 +1341,586 @@ function updatePrice() {
         amount = 0;
     }
 
-    const price = prices[service.value] || 0;
+    const unitPrice = prices[service.value] || 0;
 
-    const total = amount * price;
+    const total = amount * unitPrice;
 
     totalPrice.textContent = formatXu(total);
 
 }
 
 /* =========================
-   SỰ KIỆN TÍNH GIÁ
+   EVENT TÍNH GIÁ
 ========================= */
 
 service.addEventListener("change", updatePrice);
-
 quantity.addEventListener("input", updatePrice);
+
+/* =========================
+   KHÔNG CHO NHẬP < 50
+========================= */
 
 quantity.addEventListener("blur", () => {
 
     let amount = Number(quantity.value || 0);
 
     if (amount < 50) {
-
         quantity.value = 50;
-
+        updatePrice();
     }
-
-    updatePrice();
 
 });
 
 /* =========================
-   KHỞI TẠO GIÁ
+   TẠO MÃ ĐƠN
 ========================= */
 
-updatePrice();
+function generateOrderId() {
+
+    const now = Date.now();
+
+    const random = Math.floor(
+        1000 + Math.random() * 9000
+    );
+
+    return "FB" + now.toString().slice(-8) + random;
+
+}
+
+/* =========================
+   FORMAT THỜI GIAN
+========================= */
+
+function formatDate(timestamp) {
+
+    const date = new Date(timestamp);
+
+    return date.toLocaleString("vi-VN", {
+        day:"2-digit",
+        month:"2-digit",
+        year:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+    });
+
+}
 
 /* =========================
    ĐẶT DỊCH VỤ
 ========================= */
 
-function createOrder() {
+async function createOrder() {
 
-    const link = document.getElementById("link").value.trim();
+    if (!currentUser) {
 
+        Swal.fire({
+            icon:"warning",
+            title:"Chưa đăng nhập",
+            text:"Vui lòng đăng nhập trước khi đặt dịch vụ.",
+            confirmButtonColor:"#1677ff"
+        });
+
+        return;
+    }
+
+    const link = linkInput.value.trim();
     const amount = Number(quantity.value || 0);
-
     const serviceId = service.value;
-
     const serviceName = serviceNames[serviceId];
-
     const unitPrice = prices[serviceId];
-
     const total = amount * unitPrice;
 
-    /* KIỂM TRA LINK */
+    /* =========================
+       KIỂM TRA LINK
+    ========================= */
 
     if (!link) {
 
-        Swal.fire({
+        linkInput.focus();
 
-            icon:"warning",
-
-            title:"Thiếu link",
-
-            text:"Vui lòng nhập link Facebook cần chạy.",
-
-            confirmButtonColor:"#1677ff"
-
-        });
-
-        return;
-
-    }
-
-    /* KIỂM TRA SỐ LƯỢNG */
-
-    if (!Number.isInteger(amount) || amount < 50) {
-
-        Swal.fire({
-
-            icon:"warning",
-
-            title:"Số lượng không hợp lệ",
-
-            text:"Số lượng tối thiểu là 50.",
-
-            confirmButtonColor:"#1677ff"
-
-        });
-
-        quantity.value = 50;
-
-        updatePrice();
-
-        return;
-
-    }
-
-    /* XÁC NHẬN */
-
-    Swal.fire({
-
-        icon:"question",
-
-        title:"Xác nhận đặt dịch vụ",
-
-        html:
-
-            "<div style='text-align:left;line-height:1.9'>" +
-
-            "<b>Dịch vụ:</b> " + serviceName + "<br>" +
-
-            "<b>Đơn giá:</b> " + formatXu(unitPrice) + " / 1<br>" +
-
-            "<b>Số lượng:</b> " +
-            amount.toLocaleString("vi-VN") + "<br>" +
-
-            "<b>Tổng tiền:</b> " +
-            "<span style='color:#1677ff;font-weight:800'>" +
-            formatXu(total) +
-            "</span>" +
-
-            "</div>",
-
-        showCancelButton:true,
-
-        confirmButtonColor:"#1677ff",
-
-        cancelButtonColor:"#ef4444",
-
-        confirmButtonText:"Xác nhận",
-
-        cancelButtonText:"Hủy"
-
-    }).then(result => {
-
-        if (!result.isConfirmed) {
-            return;
+        if (linkError) {
+            linkError.textContent =
+                "Vui lòng nhập link Facebook.";
+            linkError.style.display = "block";
         }
 
         Swal.fire({
+            icon:"warning",
+            title:"Thiếu link Facebook",
+            text:"Vui lòng nhập link Facebook cần chạy.",
+            confirmButtonColor:"#1677ff"
+        });
 
-            icon:"success",
+        return;
+    }
 
-            title:"Đã tiếp nhận đơn",
+    if (!isValidFacebookUrl(link)) {
 
+        linkInput.focus();
+
+        if (linkError) {
+            linkError.textContent =
+                "Link không hợp lệ. Hãy nhập link Facebook bắt đầu bằng https://facebook.com/...";
+            linkError.style.display = "block";
+        }
+
+        Swal.fire({
+            icon:"error",
+            title:"Link Facebook không hợp lệ",
             html:
+                "Vui lòng nhập link Facebook đúng định dạng.<br><br>" +
+                "<b>Ví dụ:</b><br>" +
+                "https://facebook.com/...",
+            confirmButtonColor:"#1677ff"
+        });
 
-                "Dịch vụ: <b>" +
+        return;
+    }
+
+    /* =========================
+       KIỂM TRA SỐ LƯỢNG
+    ========================= */
+
+    if (!Number.isInteger(amount) || amount < 50) {
+
+        quantity.value = 50;
+        updatePrice();
+
+        Swal.fire({
+            icon:"warning",
+            title:"Số lượng không hợp lệ",
+            text:"Số lượng tối thiểu là 50.",
+            confirmButtonColor:"#1677ff"
+        });
+
+        return;
+    }
+
+    /* =========================
+       DỮ LIỆU ĐƠN
+    ========================= */
+
+    const orderId = generateOrderId();
+    const createdAt = Date.now();
+
+    const orderData = {
+
+        orderId: orderId,
+
+        userId: currentUser.uid,
+
+        serviceId: serviceId,
+
+        service: serviceName,
+
+        link: link,
+
+        quantity: amount,
+
+        unitPrice: unitPrice,
+
+        total: total,
+
+        status: "Đã đặt - Vui lòng chờ",
+
+        note:
+            document.getElementById("note").value.trim(),
+
+        createdAt: createdAt,
+
+        platform: "Facebook"
+
+    };
+
+    /* =========================
+       HIỆN LOADING
+    ========================= */
+
+    Swal.fire({
+        title:"Đang tạo đơn...",
+        text:"Vui lòng chờ trong giây lát.",
+        allowOutsideClick:false,
+        allowEscapeKey:false,
+        showConfirmButton:false,
+        didOpen:() => {
+            Swal.showLoading();
+        }
+    });
+
+    try {
+
+        /* =========================
+           LƯU FIREBASE
+        ========================= */
+
+        const orderRef = db
+            .ref("users")
+            .child(currentUser.uid)
+            .child("facebookOrders")
+            .child(orderId);
+
+        await orderRef.set(orderData);
+
+        /* =========================
+           LƯU LOCAL DỰ PHÒNG
+        ========================= */
+
+        saveLocalOrder(orderData);
+
+        /* =========================
+           CẬP NHẬT BẢNG NGAY
+        ========================= */
+
+        addOrderToTable(orderData, true);
+
+        /* =========================
+           XÓA FORM
+        ========================= */
+
+        linkInput.value = "";
+        document.getElementById("note").value = "";
+
+        quantity.value = 50;
+
+        linkInput.style.borderColor = "#dfe7f2";
+
+        if (linkError) {
+            linkError.style.display = "none";
+        }
+
+        updatePrice();
+
+        /* =========================
+           THÔNG BÁO THÀNH CÔNG
+        ========================= */
+
+        Swal.fire({
+            icon:"success",
+            title:"Đặt dịch vụ thành công!",
+            html:
+                "<div style='line-height:1.8'>" +
+
+                "<b>Mã đơn:</b> " +
+                orderId +
+
+                "<br>" +
+
+                "<b>Dịch vụ:</b> " +
                 serviceName +
-                "</b><br>" +
 
-                "Số lượng: <b>" +
+                "<br>" +
+
+                "<b>Số lượng:</b> " +
                 amount.toLocaleString("vi-VN") +
-                "</b><br>" +
 
-                "Chi phí: <b>" +
+                "<br>" +
+
+                "<b>Chi phí:</b> " +
                 formatXu(total) +
-                "</b>",
+
+                "<br><br>" +
+
+                "<span style='color:#1677ff;font-weight:800'>" +
+                "Vui lòng chờ hệ thống xử lý đơn hàng." +
+                "</span>" +
+
+                "</div>",
 
             confirmButtonColor:"#1677ff",
-
             confirmButtonText:"Đã hiểu"
+        });
+
+    } catch (error) {
+
+        console.error("Lỗi tạo đơn:", error);
+
+        /* Nếu Firebase lỗi vẫn lưu local */
+        saveLocalOrder(orderData);
+        addOrderToTable(orderData, true);
+
+        Swal.fire({
+            icon:"warning",
+            title:"Đơn đã được ghi nhận",
+            html:
+                "Hệ thống đã lưu đơn trên thiết bị.<br>" +
+                "Vui lòng kiểm tra lại kết nối mạng nếu lịch sử chưa đồng bộ.",
+            confirmButtonColor:"#1677ff"
+        });
+
+    }
+
+}
+
+/* =========================
+   LOCAL STORAGE
+========================= */
+
+function saveLocalOrder(order) {
+
+    try {
+
+        const key =
+            "hoangkun_facebook_orders_" +
+            currentUser.uid;
+
+        let orders =
+            JSON.parse(localStorage.getItem(key) || "[]");
+
+        /* Không lưu trùng */
+        orders =
+            orders.filter(item =>
+                item.orderId !== order.orderId
+            );
+
+        orders.unshift(order);
+
+        /* Giữ tối đa 50 đơn */
+        orders = orders.slice(0, 50);
+
+        localStorage.setItem(
+            key,
+            JSON.stringify(orders)
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Không thể lưu local:",
+            error
+        );
+
+    }
+
+}
+
+/* =========================
+   LẤY LOCAL ORDER
+========================= */
+
+function getLocalOrders() {
+
+    if (!currentUser) {
+        return [];
+    }
+
+    try {
+
+        const key =
+            "hoangkun_facebook_orders_" +
+            currentUser.uid;
+
+        return JSON.parse(
+            localStorage.getItem(key) || "[]"
+        );
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+/* =========================
+   LOAD LỊCH SỬ FIREBASE
+========================= */
+
+function loadOrders() {
+
+    if (!currentUser) {
+        return;
+    }
+
+    const table =
+        document.getElementById("orderTable");
+
+    table.innerHTML = `
+        <tr>
+            <td colspan="5"
+                style="text-align:center;color:#9aa6b8;padding:25px">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                &nbsp; Đang tải lịch sử...
+            </td>
+        </tr>
+    `;
+
+    db.ref("users")
+        .child(currentUser.uid)
+        .child("facebookOrders")
+        .orderByChild("createdAt")
+        .limitToLast(50)
+        .once("value")
+        .then(snapshot => {
+
+            const orders = [];
+
+            snapshot.forEach(child => {
+
+                orders.push(child.val());
+
+            });
+
+            /* Mới nhất lên đầu */
+            orders.sort((a,b) =>
+                Number(b.createdAt || 0) -
+                Number(a.createdAt || 0)
+            );
+
+            renderOrders(orders);
+
+        })
+        .catch(error => {
+
+            console.error(
+                "Lỗi tải lịch sử:",
+                error
+            );
+
+            /* Nếu Firebase lỗi thì lấy local */
+            const localOrders =
+                getLocalOrders();
+
+            renderOrders(localOrders);
 
         });
+
+}
+
+/* =========================
+   HIỂN THỊ TOÀN BỘ LỊCH SỬ
+========================= */
+
+function renderOrders(orders) {
+
+    const table =
+        document.getElementById("orderTable");
+
+    table.innerHTML = "";
+
+    if (!orders || orders.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="5"
+                    style="text-align:center;color:#9aa6b8;padding:25px">
+                    Chưa có đơn hàng Facebook
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    orders.forEach(order => {
+
+        addOrderToTable(order, false);
 
     });
 
 }
 
 /* =========================
-   LOGOUT
+   THÊM 1 ĐƠN VÀO BẢNG
+========================= */
+
+function addOrderToTable(order, prepend = false) {
+
+    const table =
+        document.getElementById("orderTable");
+
+    /* Nếu đang hiển thị "chưa có đơn" */
+    if (
+        table.children.length === 1 &&
+        table.children[0].innerText.includes("Chưa có")
+    ) {
+
+        table.innerHTML = "";
+
+    }
+
+    /* Không tạo trùng */
+    const oldRow =
+        document.querySelector(
+            `[data-order-id="${order.orderId}"]`
+        );
+
+    if (oldRow) {
+        oldRow.remove();
+    }
+
+    const row =
+        document.createElement("tr");
+
+    row.setAttribute(
+        "data-order-id",
+        order.orderId
+    );
+
+    row.innerHTML = `
+
+        <td>
+            <strong style="color:#1677ff">
+                ${escapeHtml(order.orderId || "---")}
+            </strong>
+        </td>
+
+        <td>
+            ${escapeHtml(order.service || "---")}
+        </td>
+
+        <td>
+            ${Number(order.quantity || 0)
+                .toLocaleString("vi-VN")}
+        </td>
+
+        <td>
+            <span class="status"
+                  style="
+                    background:#eef6ff;
+                    color:#1677ff;
+                  ">
+                ${escapeHtml(
+                    order.status ||
+                    "Đã đặt - Vui lòng chờ"
+                )}
+            </span>
+        </td>
+
+        <td>
+            ${formatDate(order.createdAt)}
+        </td>
+
+    `;
+
+    if (prepend) {
+
+        table.prepend(row);
+
+    } else {
+
+        table.appendChild(row);
+
+    }
+
+}
+
+/* =========================
+   CHỐNG HTML INJECTION
+========================= */
+
+function escapeHtml(value) {
+
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+/* =========================
+   ĐĂNG XUẤT
 ========================= */
 
 function logout() {
@@ -1437,7 +1929,8 @@ function logout() {
 
         title:"Đăng xuất?",
 
-        text:"Bạn có chắc muốn đăng xuất khỏi tài khoản?",
+        text:
+            "Bạn có chắc muốn đăng xuất khỏi tài khoản?",
 
         icon:"warning",
 
@@ -1457,7 +1950,8 @@ function logout() {
 
             auth.signOut().then(() => {
 
-                window.location.href = "index.html";
+                window.location.href =
+                    "index.html";
 
             });
 
@@ -1466,6 +1960,12 @@ function logout() {
     });
 
 }
+
+/* =========================
+   KHỞI TẠO GIÁ
+========================= */
+
+updatePrice();
 
 </script>
 
