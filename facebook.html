@@ -968,21 +968,21 @@
 
         <button class="sb-mi" onclick="go('taikhoan.html')">
             <span class="sb-icon">
-                <i class="fa-regular fa-user"></i>
+                <i class="fa-solid fa-user-shield"></i>
             </span>
             Tài khoản & bảo mật
         </button>
 
         <button class="sb-mi" onclick="go('naptien.html')">
             <span class="sb-icon">
-                <i class="fa-regular fa-credit-card"></i>
+                <i class="fa-solid fa-wallet"></i>
             </span>
             Nạp tiền
         </button>
 
         <button class="sb-mi" onclick="go('lichsu.html')">
             <span class="sb-icon">
-                <i class="fa-regular fa-clock"></i>
+                <i class="fa-solid fa-clock-rotate-left"></i>
             </span>
             Nhật ký hoạt động
         </button>
@@ -2256,102 +2256,58 @@ function getLocalOrders() {
 ===================================================== */
 
 async function deductBalance(amount) {
+    const balanceRef = db.ref("users").child(currentUser.uid).child(balanceField);
+    let insufficient = false;
 
-    const balanceRef =
-        db
-            .ref("users")
-            .child(currentUser.uid)
-            .child(balanceField);
+    const result = await balanceRef.transaction(currentValue => {
+        // Tránh lỗi cache cục bộ của Firebase khi currentValue bị null
+        if (currentValue === null) {
+            return currentBalance - amount; 
+        }
 
-    const result =
-        await balanceRef.transaction(
-            currentValue => {
+        const balance = Number(currentValue || 0);
+        if (balance < amount) {
+            insufficient = true;
+            return currentValue; // Không đủ xu thì trả về giá trị cũ để không thay đổi db
+        }
+        
+        insufficient = false;
+        return balance - amount;
+    });
 
-                const balance =
-                    Number(currentValue || 0);
-
-                if (balance < amount) {
-
-                    return;
-
-                }
-
-                return balance - amount;
-
-            }
-        );
-
-    if (!result.committed) {
-
-        throw new Error(
-            "INSUFFICIENT_BALANCE"
-        );
-
+    // Nếu trên Server thật sự không đủ xu
+    if (insufficient) {
+        throw new Error("INSUFFICIENT_BALANCE");
     }
 
-    const newBalance =
-        Number(result.snapshot.val() || 0);
-
-    currentBalance = newBalance;
-
-    balanceValue.textContent =
-        formatXu(newBalance);
-
-    return newBalance;
-
+    currentBalance = Number(result.snapshot.val() || 0);
+    balanceValue.textContent = formatXu(currentBalance);
+    return currentBalance;
 }
-
 
 /* =====================================================
    HOÀN XU
 ===================================================== */
 
 async function refundBalance(amount) {
-
     try {
-
-        const balanceRef =
-            db
-                .ref("users")
-                .child(currentUser.uid)
-                .child(balanceField);
-
-        const result =
-            await balanceRef.transaction(
-                currentValue => {
-
-                    return (
-                        Number(currentValue || 0) +
-                        Number(amount || 0)
-                    );
-
-                }
-            );
-
+        const balanceRef = db.ref("users").child(currentUser.uid).child(balanceField);
+        const result = await balanceRef.transaction(curr => {
+            // Tránh lỗi cache cục bộ của Firebase
+            if (curr === null) return currentBalance + amount;
+            
+            return Number(curr || 0) + Number(amount || 0);
+        });
+        
         if (result.committed) {
-
-            currentBalance =
-                Number(
-                    result.snapshot.val() || 0
-                );
-
-            balanceValue.textContent =
-                formatXu(currentBalance);
-
+            currentBalance = Number(result.snapshot.val() || 0);
+            balanceValue.textContent = formatXu(currentBalance);
             return true;
         }
-
-    } catch (error) {
-
-        console.error(
-            "Lỗi hoàn xu:",
-            error
-        );
-
+    } catch (e) { 
+        console.error(e); 
     }
-
     return false;
-
 }
 
 
@@ -3205,6 +3161,8 @@ updatePrice();
        CẤM CHUỘT PHẢI
     ========================= */
     document.addEventListener("contextmenu", function (e) {
+        const tag = e.target.tagName.toLowerCase();
+        if (tag === "input" || tag === "textarea") return;
         e.preventDefault();
         securityWarning("Chuột phải đã bị vô hiệu hóa trên trang này!");
         return false;
@@ -3239,4 +3197,4 @@ updatePrice();
 })();
 </script>
 </body>
-</html> sửa tối thiểu đi cho khách nhập bao nhiêu cũng được miễn lúc đặt là 50 giống bên ig mà tôi bảo đi
+</html> sửa nốt đi nhanh
