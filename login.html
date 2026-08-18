@@ -41,20 +41,21 @@
             background: #fff;
             margin: 20px;
             border-radius: 30px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
         .container h1{
             font-size: 36px;
             margin: -10px 0;
-            color: #333;
+            color: #1e293b;
+            font-weight: 800;
         }
 
         .container p{
             font-size: 14.5px;
             margin: 15px 0;
-            color: #333;
+            color: #64748b;
         }
 
         form{ width: 100%; }
@@ -81,76 +82,81 @@
 
         .input-box{
             position: relative;
-            margin: 15px 0;
+            margin: 18px 0; 
         }
 
         .input-box input{
             width: 100%;
-            padding: 12px 50px 12px 20px;
-            background: #eee;
-            border-radius: 8px;
-            border: none;
+            padding: 14px 50px 14px 25px;
+            background: #f4f8fb;
+            border-radius: 30px; /* Đã bo tròn tuyệt đối */
+            border: 2px solid transparent;
             outline: none;
             font-size: 15px;
-            color: #333;
+            color: #1e293b;
             font-weight: 500;
+            transition: 0.3s ease;
         }
 
         .input-box input::placeholder{
-            color: #888;
+            color: #94a3b8;
             font-weight: 400;
+        }
+
+        .input-box input:focus {
+            border-color: #7494ec;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(116, 148, 236, 0.15);
         }
             
         .input-box i{
             position: absolute;
-            right: 20px;
+            right: 22px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 20px;
+            color: #94a3b8;
+            transition: 0.3s ease;
+        }
+
+        .input-box input:focus ~ i {
             color: #7494ec;
         }
 
-        .forgot-link{ margin: -5px 0 15px; text-align: right; }
+        .forgot-link{ margin: -5px 0 20px; text-align: right; }
         .forgot-link a{
             font-size: 13px;
-            color: #333;
-            font-weight: 500;
+            color: #7494ec;
+            font-weight: 600;
+            transition: 0.2s;
         }
-        .forgot-link a:hover { color: #7494ec; text-decoration: underline; }
+        .forgot-link a:hover { color: #5c7ee0; text-decoration: underline; }
 
         .btn{
             width: 100%;
-            height: 48px;
-            background: #7494ec;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+            height: 50px;
+            background: linear-gradient(135deg, #7494ec, #5c7ee0);
+            border-radius: 30px; /* Đã bo tròn tuyệt đối */
+            box-shadow: 0 5px 15px rgba(116, 148, 236, 0.3);
             border: none;
             cursor: pointer;
             font-size: 16px;
             color: #fff;
             font-weight: 600;
-            transition: 0.3s;
+            transition: 0.3s ease;
         }
 
-        .btn:hover { background: #5c7ee0; }
-        .btn:disabled { background: #a1b6f0; cursor: not-allowed; }
-
-        .social-icons{
-            display: flex;
-            justify-content: center;
+        .btn:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(116, 148, 236, 0.45);
         }
-
-        .social-icons a{
-            display: inline-flex;
-            padding: 10px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            font-size: 24px;
-            color: #333;
-            margin: 0 8px;
-            transition: 0.3s;
+        
+        .btn:disabled { 
+            background: #a1b6f0; 
+            cursor: not-allowed; 
+            transform: none;
+            box-shadow: none;
         }
-        .social-icons a:hover { background: #eee; border-color: #7494ec; color: #7494ec; }
 
         .toggle-box{
             position: absolute;
@@ -186,9 +192,6 @@
             transition: .6s ease-in-out;
             pointer-events: auto;
         }
-        
-        .toggle-panel h1 { color: #fff; }
-        .toggle-panel p { color: #fff; margin-bottom: 20px; }
 
         .toggle-panel.toggle-left{ 
             left: 0;
@@ -208,25 +211,44 @@
             transition-delay: 1.2s;
         }
 
+        .toggle-panel p{ margin-bottom: 25px; }
+
         .toggle-panel .btn{
             width: 160px;
-            height: 46px;
+            height: 48px;
             background: transparent;
             border: 2px solid #fff;
+            border-radius: 30px; /* Bo tròn tuyệt đối */
             box-shadow: none;
         }
-        .toggle-panel .btn:hover { background: rgba(255,255,255,0.1); }
+
+        .toggle-panel .btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: none;
+        }
 
         @media screen and (max-width: 768px){
-            .container{ height: 750px; width: 100%; max-width: calc(100vw - 30px); margin: 0 auto; }
+            .container{ height: 700px; width: 100%; max-width: calc(100vw - 30px); margin: 0 auto; }
 
-            .form-box{ bottom: 0; width: 100%; height: 70%; right: 0; padding: 25px; }
+            .form-box{
+                bottom: 0;
+                width: 100%;
+                height: 70%;
+                padding: 25px;
+            }
 
             .container.active .form-box.login{ right: 0; bottom: 30%; visibility: hidden; }
             .form-box.register { right: 0; bottom: -70%; padding: 20px; }
             .container.active .form-box.register { right: 0; bottom: 0; }
 
-            .toggle-box::before{ left: 0; top: -270%; width: 100%; height: 300%; border-radius: 20vw; }
+            .toggle-box::before{
+                left: 0;
+                top: -270%;
+                width: 100%;
+                height: 300%;
+                border-radius: 20vw;
+            }
+
             .container.active .toggle-box::before{ left: 0; top: 70%; }
 
             .toggle-panel{ width: 100%; height: 30%; left: 0; }
@@ -239,7 +261,12 @@
 
             .toggle-panel h1 { font-size: 26px; }
             .input-box { margin: 12px 0; }
-            .input-box input { padding: 10px 40px 10px 15px; font-size: 14px;}
+            .input-box input { padding: 12px 40px 12px 20px; font-size: 14px;}
+        }
+
+        @media screen and (max-width: 400px){
+            .form-box { padding: 20px; }
+            .toggle-panel h1{font-size: 24px; }
         }
     </style>
 </head>
@@ -263,12 +290,6 @@
                     <a href="javascript:void(0)" onclick="forgotPassword()">Quên mật khẩu?</a>
                 </div>
                 <button type="submit" class="btn" id="loginBtnSpinner">Đăng nhập</button>
-                <p>hoặc đăng nhập bằng</p>
-                <div class="social-icons">
-                    <a href="#"><i class='bx bxl-google' ></i></a>
-                    <a href="#"><i class='bx bxl-facebook' ></i></a>
-                    <a href="#"><i class='bx bxl-github' ></i></a>
-                </div>
             </form>
         </div>
 
@@ -385,6 +406,7 @@
             });
 
             try {
+                // Kiểm tra trùng tên hiển thị trong DB
                 const check = await db.ref("users").orderByChild("ho_ten").equalTo(name).once("value");
                 if (check.exists()) {
                     btn.disabled = false;
@@ -392,11 +414,13 @@
                     return Swal.fire("Tên hiển thị đã tồn tại!", "Vui lòng chọn tên khác.", "warning");
                 }
 
+                // Tạo tài khoản Auth
                 const userCredential = await auth.createUserWithEmailAndPassword(email, pass);
                 const user = userCredential.user;
                 
                 await user.updateProfile({ displayName: name });
                 
+                // Lưu dữ liệu vào Realtime Database
                 await db.ref("users/" + user.uid).set({
                     uid: user.uid,
                     name: name,
@@ -416,6 +440,7 @@
                 await auth.signOut();
                 e.target.reset();
 
+                // Chuyển form
                 container.classList.remove('active');
                 document.getElementById("login-email").value = email;
 
@@ -550,7 +575,6 @@
                 }
             }
 
-            // Chặn chuột phải (Ngoại trừ ô input)
             document.addEventListener("contextmenu", function (e) {
                 const tag = e.target.tagName.toLowerCase();
                 if (tag === "input" || tag === "textarea") return;
@@ -559,7 +583,6 @@
                 return false;
             }, true);
 
-            // Chặn F12 / DevTools
             document.addEventListener("keydown", function (e) {
                 const key = e.key.toLowerCase();
                 if (e.key === "F12" || e.keyCode === 123) {
@@ -575,6 +598,7 @@
                     return false;
                 }
             }, true);
+            console.log("%c🛡️ HOANGKUN SECURITY SYSTEM", "font-size:20px;font-weight:bold;color:#7494ec;");
         })();
     </script>
 </body>
