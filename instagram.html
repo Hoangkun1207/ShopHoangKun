@@ -295,9 +295,9 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #526074;
             font-size: 13px;
             font-weight: 600;
+            color: #526074;
         }
 
         .lang img {
@@ -405,7 +405,6 @@
             font-size: 12px;
             font-weight: 700;
             text-align: left;
-            transition: .2s;
         }
 
         .user-menu button:hover {
@@ -533,12 +532,6 @@
             background: #fff;
             color: var(--primary);
             border: 1px solid #dceaff;
-            transition: .2s;
-        }
-        
-        .refresh-balance:hover {
-            background: var(--primary);
-            color: #fff;
         }
 
         /* =========================
@@ -920,7 +913,7 @@
             <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
         <button class="sb-mi" onclick="go('facebook.html')">
-            <span class="sb-icon"><i class="fa-brands fa-facebook"></i></span> Facebook
+            <span class="sb-icon"><i class="fa-brands fa-facebook" style="color:#1877f2"></i></span> Facebook
             <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
         <button class="sb-mi active">
@@ -932,12 +925,12 @@
             <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
         <button class="sb-mi" onclick="go('youtube.html')">
-            <span class="sb-icon"><i class="fa-brands fa-youtube"></i></span> YouTube
+            <span class="sb-icon"><i class="fa-brands fa-youtube" style="color:#ff1744"></i></span> YouTube
             <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
     </div>
     <div class="sidebar-footer">
-        <button class="sb-mi" onclick="logout()" style="color:#ff6670">
+        <button class="sb-mi" onclick="logout()" style="color:#ef4444">
             <span class="sb-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Đăng xuất
         </button>
     </div>
@@ -1044,7 +1037,7 @@
                             <label>Số lượng</label>
                             <div class="quantity-control">
                                 <button type="button" onclick="changeQuantity(-1)"><i class="fa-solid fa-minus"></i></button>
-                                <input id="quantity" type="number" value="50" min="50" step="1" inputmode="numeric">
+                                <input id="quantity" type="number" value="50" step="1" inputmode="numeric">
                                 <button type="button" onclick="changeQuantity(1)"><i class="fa-solid fa-plus"></i></button>
                             </div>
                             <small>Số lượng tối thiểu: 50</small>
@@ -1156,23 +1149,6 @@ const firebaseConfig = {
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
-
-/* =====================================================
-   MOBILE MENU
-===================================================== */
-function toggleSidebar() {
-    document.querySelector('.sidebar').classList.toggle('open');
-}
-
-document.addEventListener("click", e => {
-    const sidebar = document.querySelector('.sidebar');
-    const mobileBtn = document.querySelector('.mobile-menu');
-    if (window.innerWidth <= 800 && sidebar && mobileBtn) {
-        if (!sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
-            sidebar.classList.remove('open');
-        }
-    }
-});
 
 /* =====================================================
    NAVIGATION
@@ -1317,24 +1293,21 @@ linkInput.addEventListener("input", () => {
    QUANTITY & PRICE
 ===================================================== */
 function changeQuantity(amount) {
-    let current = Number(quantity.value) || 50;
+    let current = Number(quantity.value) || 0;
     current += amount;
-    if (current < 50) current = 50;
+    if (current < 0) current = 0;
     quantity.value = Math.floor(current);
     updatePrice();
 }
 
 quantity.addEventListener("input", () => {
-    let value = Number(quantity.value);
-    if (!Number.isFinite(value) || value < 50) value = 50;
-    quantity.value = Math.floor(value);
     updatePrice();
 });
 
 function updatePrice() {
-    let amount = Math.floor(Number(quantity.value || 0));
-    if (amount < 50) amount = 50;
-    quantity.value = amount;
+    let amount = Number(quantity.value || 0);
+    amount = Math.floor(amount);
+    if (amount < 0) amount = 0;
     
     const unitPrice = Number(prices[service.value] || 0);
     const total = amount * unitPrice;
@@ -1522,455 +1495,24 @@ function logout() {
 }
 
 updatePrice();
-</script>
-<script>
-/* =========================================================
-   HOANGKUN SECURITY SYSTEM
-   CHỐNG F12 / CHUỘT PHẢI / DEVTOOLS / VIEW SOURCE
-   ========================================================= */
 
-(function () {
+/* =========================
+   MOBILE MENU
+========================= */
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('open');
+}
 
-    let warningCooldown = false;
-
-    /* =========================
-       THÔNG BÁO CẢNH BÁO
-    ========================= */
-    function securityWarning(message = "Thao tác này không được phép!") {
-
-        // Không spam popup liên tục
-        if (warningCooldown) return;
-
-        warningCooldown = true;
-
-        setTimeout(() => {
-            warningCooldown = false;
-        }, 1800);
-
-        if (typeof Swal !== "undefined") {
-
-            Swal.fire({
-                icon: "warning",
-                title: "⚠️ CẢNH BÁO BẢO MẬT",
-                html: `
-                    <div style="
-                        text-align:center;
-                        color:#64748b;
-                        font-size:14px;
-                        line-height:1.7;
-                    ">
-                        <div style="
-                            width:65px;
-                            height:65px;
-                            margin:0 auto 15px;
-                            border-radius:50%;
-                            background:linear-gradient(135deg,#fff7ed,#ffedd5);
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            font-size:30px;
-                        ">
-                            🔒
-                        </div>
-
-                        <b style="color:#ef4444;font-size:15px;">
-                            ${message}
-                        </b>
-
-                        <p style="margin-top:8px;">
-                            Vui lòng không cố gắng truy cập
-                            công cụ dành cho nhà phát triển.
-                        </p>
-
-                        <div style="
-                            margin-top:14px;
-                            padding:10px 12px;
-                            background:#f8fafc;
-                            border:1px solid #e2e8f0;
-                            border-radius:10px;
-                            font-size:12px;
-                        ">
-                            🛡️ HoangKun Store Security
-                        </div>
-                    </div>
-                `,
-                confirmButtonText: "Đã hiểu",
-                confirmButtonColor: "#1677ff",
-                width: "420px",
-                allowOutsideClick: true,
-                allowEscapeKey: true,
-                backdrop: "rgba(15,23,42,.78)",
-                showClass: {
-                    popup: `
-                        animate__animated
-                        animate__fadeInDown
-                    `
-                }
-            });
-
-        } else {
-            alert("⚠️ CẢNH BÁO BẢO MẬT\n\n" + message);
+document.addEventListener("click", e => {
+    const sidebar = document.querySelector('.sidebar');
+    const mobileBtn = document.querySelector('.mobile-menu');
+    if (window.innerWidth <= 800 && sidebar && mobileBtn) {
+        if (!sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
+            sidebar.classList.remove('open');
         }
     }
-
-
-    /* =========================
-       CẤM CHUỘT PHẢI
-    ========================= */
-    document.addEventListener("contextmenu", function (e) {
-
-        e.preventDefault();
-
-        securityWarning(
-            "Chuột phải đã bị vô hiệu hóa trên trang này!"
-        );
-
-        return false;
-
-    }, true);
-
-
-    /* =========================
-       CẤM F12
-    ========================= */
-    document.addEventListener("keydown", function (e) {
-
-        const key = e.key.toLowerCase();
-
-        /* F12 */
-        if (e.key === "F12" || e.keyCode === 123) {
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            securityWarning(
-                "Phím F12 đã bị vô hiệu hóa!"
-            );
-
-            return false;
-        }
-
-
-        /* =========================
-           CTRL + SHIFT + I
-           DEVTOOLS
-        ========================= */
-        if (
-            e.ctrlKey &&
-            e.shiftKey &&
-            key === "i"
-        ) {
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            securityWarning(
-                "Không được phép mở Developer Tools!"
-            );
-
-            return false;
-        }
-
-
-        /* =========================
-           CTRL + SHIFT + J
-           CONSOLE
-        ========================= */
-        if (
-            e.ctrlKey &&
-            e.shiftKey &&
-            key === "j"
-        ) {
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            securityWarning(
-                "Không được phép mở Console!"
-            );
-
-            return false;
-        }
-
-
-        /* =========================
-           CTRL + SHIFT + C
-           INSPECT ELEMENT
-        ========================= */
-        if (
-            e.ctrlKey &&
-            e.shiftKey &&
-            key === "c"
-        ) {
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            securityWarning(
-                "Không được phép sử dụng Inspect Element!"
-            );
-
-            return false;
-        }
-
-
-        /* =========================
-           CTRL + U
-           VIEW SOURCE
-        ========================= */
-        if (
-            e.ctrlKey &&
-            key === "u"
-        ) {
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            securityWarning(
-                "Không được phép xem mã nguồn trực tiếp!"
-            );
-
-            return false;
-        }
-
-
-        /* =========================
-           CTRL + S
-           SAVE PAGE
-        ========================= */
-        if (
-            e.ctrlKey &&
-            key === "s"
-        ) {
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            securityWarning(
-                "Không được phép lưu trang trực tiếp!"
-            );
-
-            return false;
-        }
-
-
-        /* =========================
-           CTRL + P
-           IN / SAVE PDF
-        ========================= */
-        if (
-            e.ctrlKey &&
-            key === "p"
-        ) {
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            securityWarning(
-                "Chức năng này đã bị giới hạn!"
-            );
-
-            return false;
-        }
-
-    }, true);
-
-
-    /* =========================
-       CHẶN KÉO ẢNH
-    ========================= */
-    document.addEventListener("dragstart", function (e) {
-
-        if (
-            e.target &&
-            e.target.tagName === "IMG"
-        ) {
-            e.preventDefault();
-
-            securityWarning(
-                "Không được phép kéo hoặc sao chép hình ảnh!"
-            );
-
-            return false;
-        }
-
-    }, true);
-
-
-    /* =========================
-       CHẶN DOUBLE CLICK
-       TRÊN ẢNH
-    ========================= */
-    document.addEventListener("dblclick", function (e) {
-
-        if (
-            e.target &&
-            e.target.tagName === "IMG"
-        ) {
-            e.preventDefault();
-        }
-
-    }, true);
-
-
-    /* =========================
-       CHẶN COPY
-    ========================= */
-    document.addEventListener("copy", function (e) {
-
-        // Cho phép copy trong input/textarea
-        const target = e.target;
-
-        if (
-            target &&
-            (
-                target.tagName === "INPUT" ||
-                target.tagName === "TEXTAREA"
-            )
-        ) {
-            return;
-        }
-
-        e.preventDefault();
-
-        securityWarning(
-            "Không được phép sao chép nội dung trang!"
-        );
-
-    }, true);
-
-
-    /* =========================
-       CHẶN CUT
-    ========================= */
-    document.addEventListener("cut", function (e) {
-
-        const target = e.target;
-
-        if (
-            target &&
-            (
-                target.tagName === "INPUT" ||
-                target.tagName === "TEXTAREA"
-            )
-        ) {
-            return;
-        }
-
-        e.preventDefault();
-
-        securityWarning(
-            "Không được phép cắt nội dung trang!"
-        );
-
-    }, true);
-
-
-    /* =========================
-       CHẶN CHỌN TEXT
-       NHƯNG KHÔNG CHẶN INPUT
-    ========================= */
-    document.addEventListener("selectstart", function (e) {
-
-        const target = e.target;
-
-        if (
-            target &&
-            (
-                target.tagName === "INPUT" ||
-                target.tagName === "TEXTAREA" ||
-                target.tagName === "BUTTON"
-            )
-        ) {
-            return;
-        }
-
-        // Không cho bôi đen text trang
-        e.preventDefault();
-
-    }, true);
-
-
-    /* =========================
-       DEVTOOLS DETECTION
-       
-       Đây chỉ là lớp phát hiện phía client,
-       không phải bảo mật tuyệt đối.
-    ========================= */
-
-    let devtoolsShown = false;
-
-    function detectDevTools() {
-
-        const threshold = 160;
-
-        const widthDiff =
-            window.outerWidth - window.innerWidth;
-
-        const heightDiff =
-            window.outerHeight - window.innerHeight;
-
-        if (
-            widthDiff > threshold ||
-            heightDiff > threshold
-        ) {
-
-            if (!devtoolsShown) {
-
-                devtoolsShown = true;
-
-                securityWarning(
-                    "Phát hiện môi trường Developer Tools. Vui lòng đóng công cụ này!"
-                );
-
-            }
-
-        } else {
-
-            devtoolsShown = false;
-
-        }
-
-    }
-
-    setInterval(detectDevTools, 1200);
-
-
-    /* =========================
-       CHẶN MENU CHUỘT PHẢI
-       TRÊN TOÀN BỘ TRANG
-    ========================= */
-    window.oncontextmenu = function () {
-
-        securityWarning(
-            "Chuột phải đã bị vô hiệu hóa!"
-        );
-
-        return false;
-
-    };
-
-
-    /* =========================
-       BẢO VỆ KHI RỜI TRANG
-    ========================= */
-    window.addEventListener("beforeunload", function () {
-        // Không can thiệp nếu trình duyệt tự đóng/tab.
-    });
-
-
-    console.log(
-        "%c🛡️ HOANGKUN SECURITY SYSTEM",
-        "font-size:20px;font-weight:bold;color:#1677ff;"
-    );
-
-    console.log(
-        "%c⚠️ Khu vực này dành cho hệ thống.",
-        "font-size:14px;color:#ef4444;font-weight:bold;"
-    );
-
-})();
+});
 </script>
-    
+
 </body>
 </html>
