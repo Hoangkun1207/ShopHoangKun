@@ -23,7 +23,6 @@
     
     <!-- SweetAlert2 CSS & JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
         /* === GLOBAL RESET === */
@@ -38,7 +37,7 @@
         .col-50 { width: 48%; }
         .col-100 { width: 100%; text-align: center; }
 
-        /* === HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL) - TỐI ƯU GPU === */
+        /* === HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL) === */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
@@ -80,7 +79,7 @@
         .section-title { font-size: 2.2rem; font-weight: 800; color: #0b1220; margin-bottom: 20px; }
         .section-subtitle { font-size: 1.1rem; color: #555; margin-bottom: 40px; }
 
-        /* === ẢNH MINH HỌA 3D - TỐI ƯU GPU === */
+        /* === ẢNH MINH HỌA 3D === */
         .graphic-img { 
             width: 100%; 
             max-width: 450px; 
@@ -100,27 +99,7 @@
         .hero-line { width: 120px; height: 4px; background-color: #f03e3e; margin: 15px auto 30px auto; border-radius: 2px;}
         .hero .col-50 { text-align: center; }
 
-        /* === 2. FORM ĐĂNG NHẬP (TỐI ƯU GỌN ĐẸP) === */
-        .login-section { padding: 60px 0; background-color: #f8fafc; }
-        .login-card { background: #fff; padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); text-align: left; position: relative; overflow: hidden; border: 1px solid #f1f5f9; }
-        .login-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .brand-hk { font-size: 2.2rem; font-weight: 800; color: #2f54eb; letter-spacing: -1px; }
-        .brand-hk span { color: #00b4d8; }
-        .input-group { margin-bottom: 18px; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: 700; color: #334155; font-size: 0.95rem;}
-        .input-wrapper { position: relative; }
-        .input-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1.1rem; transition: 0.3s; z-index: 10; }
-        .input-wrapper input { width: 100%; padding: 14px 15px 14px 45px; border: 2px solid #e2e8f0; border-radius: 12px; outline: none; transition: 0.3s; background: #f8fafc; color: #1e293b; font-size: 1rem; font-weight: 500; }
-        .input-wrapper:focus-within input { border-color: #2f54eb; background: #fff; box-shadow: 0 4px 15px rgba(47,84,235,0.08); transform: translateY(-2px); }
-        .input-wrapper:focus-within i { color: #2f54eb; }
-        .login-options { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 25px; }
-        .login-options a { color: #2f54eb; font-weight: 700; transition: 0.2s; }
-        .login-options a:hover { color: #00b4d8; text-decoration: underline; }
-        .btn-login { width: 100%; background: linear-gradient(135deg, #2f54eb, #00b4d8); color: #fff; border: none; padding: 14px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(47,84,235,0.25); }
-        .btn-login:hover { transform: translateY(-3px) !important; box-shadow: 0 12px 25px rgba(47,84,235,0.35); }
-        .btn-login:disabled { background: #94a3b8; cursor: not-allowed; box-shadow: none; transform: none !important; }
-         
-        /* === 3. DANH SÁCH DỊCH VỤ (Rút gọn) === */
+        /* === 2. DANH SÁCH DỊCH VỤ === */
         .services-overview { padding: 80px 0; background: #fff; text-align: center; }
         .services-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 40px; }
         .srv-card { 
@@ -145,7 +124,7 @@
         .srv-card ul li { margin-bottom: 12px; color: #475569; font-weight: 500; display: flex; align-items: flex-start; line-height: 1.4;}
         .srv-card ul li i { font-size: 1rem; color: #10b981; margin-right: 10px; margin-top: 2px; }
 
-        /* === 4. FEATURES === */
+        /* === 3. FEATURES === */
         .features-section { padding: 80px 0; text-align: center; }
         .feat-grid { display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 40px; }
         .feat-box { width: 30%; padding: 20px; }
@@ -154,39 +133,37 @@
         .feat-desc { color: #666; }
         .icon-rocket { color: #00b4d8; } .icon-money { color: #f03e3e; } .icon-support { color: #2f54eb; }
 
-        /* === 5. WHY CHOOSE US === */
+        /* === 4. WHY CHOOSE US === */
         .why-choose { padding: 80px 0; background: linear-gradient(180deg, #e0f2f1 0%, #b2dfdb 100%); text-align: center; }
         .why-grid { display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 40px; }
         .why-box { width: 30%; }
         .why-box i { font-size: 3.5rem; color: #004d40; margin-bottom: 20px; }
         .why-box p { color: #004d40; font-weight: 500; }
 
-        /* === 6. STATS === */
+        /* === 5. STATS === */
         .stats-section { padding: 80px 0; text-align: center; background: #fff; }
         .stats-grid { display: flex; justify-content: space-between; flex-wrap: wrap; margin: 40px 0; }
         .stat-box { width: 22%; }
         .stat-num { font-size: 3rem; font-weight: 800; color: #f03e3e; margin-bottom: 10px; }
         .stat-text { font-size: 1.1rem; font-weight: 600; color: #2b4162; }
 
-        /* === 7. ZIGZAG SECTIONS === */
+        /* === 6. ZIGZAG SECTIONS === */
         .zigzag { padding: 80px 0; }
         .bg-light-blue { background-color: #f8fcff; }
         .zigzag h3 { font-size: 2rem; color: #2b4162; margin-bottom: 20px; }
         .zigzag p { font-size: 1.1rem; color: #666; }
 
-        /* === 8. FOOTER === */
+        /* === 7. FOOTER === */
         .footer { background: #0b1220; color: #fff; padding: 60px 0 20px; }
         .footer .row { align-items: flex-start; justify-content: space-between; }
         .footer-brand h4 { font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; color: #fff; }
         .footer-brand p { color: #a0aec0; max-width: 400px; }
         
-        /* Căn lề phải cho link và chữ ký */
-        .footer-links { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
-        .footer-links h4 { font-size: 1.2rem; margin-bottom: 20px; color: #fff; text-align: right; }
+        .footer-links { text-align: right; display: flex; flex-direction: column; align-items: flex-end;}
+        .footer-links h4 { font-size: 1.2rem; margin-bottom: 20px; color: #fff; text-align: right;}
         .footer-links ul { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 20px; max-width: 400px; }
         .footer-links li { margin-bottom: 15px; color: #a0aec0; transition: 0.3s; cursor: pointer; }
-        .footer-links li:hover { color: #00b4d8; }
-        .footer-links i { width: 20px; margin-right: 5px; }
+        .footer-links li:hover { color: #2f54eb; }
         .footer-bottom { text-align: right; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; padding-top: 20px; color: #718096; }
 
         /* FAB NÚT LIÊN HỆ */
@@ -196,51 +173,14 @@
         /* RESPONSIVE */
         @media (max-width: 900px) {
             .col-50, .feat-box, .why-box, .stat-box { width: 100%; margin-bottom: 40px; text-align: center; }
-            .login-card { margin-top: 30px; }
             .hero-line { margin: 15px auto; }
-            .footer .row { flex-direction: column; text-align: center; }
+            .footer .row { flex-direction: column; text-align: center;}
             .footer-links, .footer-bottom, .footer-links h4 { text-align: center; align-items: center; }
             .footer-links ul { justify-content: center; }
             .srv-card { width: calc(50% - 15px); }
         }
         @media (max-width: 600px) {
             .srv-card { width: 100%; }
-            .login-section { padding: 35px 12px; }
-            .login-section .container { padding: 0; }
-            .login-section .col-50:first-child { display: none; }
-            .login-section .col-50:last-child { width: 100%; margin: 0; }
-            .login-card { width: 100%; padding: 24px 18px; border-radius: 18px; margin: 0 auto; box-shadow: 0 8px 25px rgba(0,0,0,.07); }
-            .login-header { margin-bottom: 20px; }
-            .brand-hk { font-size: 1.9rem; }
-            .login-header h3 { font-size: 1.35rem !important; }
-            .input-group { margin-bottom: 14px; }
-            .input-group label { font-size: .88rem; margin-bottom: 6px; }
-            .input-wrapper input { height: 48px; padding: 12px 12px 12px 42px; font-size: .92rem; border-radius: 10px; }
-            .input-wrapper i { left: 14px; font-size: 1rem; }
-            .login-options { gap: 8px; margin-bottom: 18px; font-size: .78rem; line-height: 1.4; }
-            .login-options a { max-width: 50%; }
-            .btn-login { height: 48px; padding: 10px; font-size: .95rem; border-radius: 10px; }
-            .section-title { font-size: 1.7rem; }
-            .section-subtitle { font-size: .95rem; }
-            .graphic-img { max-width: 85%; }
-            .hero { padding: 35px 12px; }
-            .hero-logo { font-size: 2rem; }
-            .hero .section-title { font-size: 1.65rem; line-height: 1.4; }
-            .hero-line { width: 80px; margin: 12px auto 20px; }
-            .btn-main { min-width: 220px; padding: 11px 20px; font-size: .95rem; }
-            .services-overview, .features-section, .why-choose, .stats-section { padding: 50px 12px; }
-            .srv-card { width: 100%; padding: 22px 18px; }
-            .fab { width: 52px; height: 52px; right: 16px; bottom: 16px; font-size: 1.4rem; }
-        }
-
-        @media (max-width: 380px) {
-            .login-section { padding: 25px 8px; }
-            .login-card { padding: 20px 14px; border-radius: 15px; }
-            .brand-hk { font-size: 1.7rem; }
-            .login-header h3 { font-size: 1.2rem !important; }
-            .login-options { font-size: .72rem; }
-            .hero-logo { font-size: 1.7rem; }
-            .hero .section-title { font-size: 1.45rem; }
         }
     </style>
 </head>
@@ -254,7 +194,8 @@
                 <div class="hero-line"></div>
                 <h1 class="section-title">Nền Tảng Được Tin Cậy Và Phổ Biến Nhất Cho Các Dịch Vụ Truyền Thông Xã Hội</h1>
                 <p class="section-subtitle">Công cụ Tiếp thị Truyền thông Xã hội Tất cả Trong Một mà bạn sẽ cần!</p>
-                <a href="#login-area" class="btn-main">
+                <!-- TRỎ LINK SANG TRANG LOGIN.HTML -->
+                <a href="login.html" class="btn-main">
                     <span id="type-text"></span><span class="cursor"></span>
                 </a>
             </div>
@@ -264,107 +205,7 @@
         </div>
     </section>
 
-<!-- 2. LOGIN SECTION -->
-<section class="login-section" id="login-area">
-    <div class="container row">
-        <div class="col-50 reveal">
-            <img src="https://subvv.com/assets/landing_pages/page4/images/hero-18-img.png" alt="Đăng nhập" class="graphic-img floating" style="animation-delay:1s;">
-        </div>
-
-        <div class="col-50 reveal" style="transition-delay:0.1s;">
-            <!-- ĐĂNG NHẬP -->
-            <div class="login-card" id="login-box">
-                <div class="login-header">
-                    <div class="brand-hk">H<span>K</span></div>
-                    <h3 style="font-size:1.6rem;color:#1e293b;font-weight:800;">Đăng nhập</h3>
-                </div>
-
-                <form id="loginForm">
-                    <div class="input-group">
-                        <label>Email đăng nhập</label>
-                        <div class="input-wrapper">
-                            <i class="fa-regular fa-envelope"></i>
-                            <input type="email" id="login-email" placeholder="Nhập email của bạn" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Mật khẩu</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-key"></i>
-                            <input type="password" id="login-pass" placeholder="Nhập mật khẩu" required>
-                        </div>
-                    </div>
-
-                    <div class="login-options">
-                        <a href="javascript:void(0)" onclick="toggleForm()">Chưa có tài khoản? Đăng ký</a>
-                        <a href="javascript:void(0)" onclick="forgotPassword()" style="color:#64748b;font-weight:500;">Quên mật khẩu?</a>
-                    </div>
-
-                    <button type="submit" class="btn-login" id="loginBtnSpinner">Đăng nhập ngay</button>
-                </form>
-            </div>
-
-            <!-- ĐĂNG KÝ -->
-            <div class="login-card" id="register-box" style="display:none;">
-                <div class="login-header">
-                    <div class="brand-hk">H<span>K</span></div>
-                    <h3 style="font-size:1.6rem;color:#1e293b;font-weight:800;">Đăng ký</h3>
-                </div>
-
-                <form id="registerForm">
-                    <div class="input-group">
-                        <label>Tên đăng nhập</label>
-                        <div class="input-wrapper">
-                            <i class="fa-regular fa-user"></i>
-                            <input type="text" id="reg-user" placeholder="Tạo tên đăng nhập" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Gmail khôi phục mật khẩu</label>
-                        <div class="input-wrapper">
-                            <i class="fa-regular fa-envelope"></i>
-                            <input type="email" id="reg-email" placeholder="Nhập Gmail của bạn" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Mật khẩu</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-key"></i>
-                            <input type="password" id="reg-pass" placeholder="Tạo mật khẩu" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Nhập lại mật khẩu</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-lock"></i>
-                            <input type="password" id="reg-repass" placeholder="Nhập lại mật khẩu" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Mã giới thiệu (Nếu có)</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-gift"></i>
-                            <input type="text" id="reg-refcode" placeholder="Nhập mã giới thiệu">
-                        </div>
-                    </div>
-
-                    <div class="login-options">
-                        <a href="javascript:void(0)" onclick="toggleForm()">Đã có tài khoản? Đăng nhập</a>
-                    </div>
-
-                    <button type="submit" class="btn-login" id="registerBtnSpinner">Tạo tài khoản</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-    
-    <!-- 3. DANH SÁCH DỊCH VỤ (Rút gọn) -->
+    <!-- 2. DANH SÁCH DỊCH VỤ -->
     <section class="services-overview">
         <div class="container">
             <h4 class="reveal" style="color: #f03e3e; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">HỆ THỐNG ĐA NỀN TẢNG</h4>
@@ -430,12 +271,12 @@
             </div>
             
             <div class="reveal" style="margin-top: 40px; transition-delay: 0.3s;">
-                <a href="#login-area" class="btn-main" style="min-width: unset;">ĐĂNG NHẬP ĐỂ XEM CHI TIẾT GIÁ</a>
+                <a href="login.html" class="btn-main" style="min-width: unset;">ĐĂNG NHẬP ĐỂ XEM CHI TIẾT GIÁ</a>
             </div>
         </div>
     </section>
 
-    <!-- 4. FEATURES SECTION -->
+    <!-- 3. FEATURES SECTION -->
     <section class="features-section">
         <div class="container">
             <h2 class="section-title reveal">Trải nghiệm dịch vụ hoàn hảo!</h2>
@@ -460,12 +301,12 @@
             </div>
             
             <div class="reveal" style="margin-top: 40px; transition-delay: 0.3s;">
-                <a href="#login-area" class="btn-main" style="min-width: unset;">ĐĂNG NHẬP NGAY</a>
+                <a href="login.html" class="btn-main" style="min-width: unset;">ĐĂNG NHẬP NGAY</a>
             </div>
         </div>
     </section>
 
-    <!-- 5. WHY CHOOSE US -->
+    <!-- 4. WHY CHOOSE US -->
     <section class="why-choose">
         <div class="container">
             <h2 class="section-title reveal" style="color: #004d40;">Tại sao bạn nên chọn Dịch vụ của chúng tôi</h2>
@@ -486,7 +327,7 @@
         </div>
     </section>
 
-    <!-- 6. STATS SECTION -->
+    <!-- 5. STATS SECTION -->
     <section class="stats-section">
         <div class="container">
             <h4 class="reveal" style="color: #f03e3e; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">THÀNH TỰU</h4>
@@ -512,11 +353,11 @@
                 </div>
             </div>
             
-            <a href="#login-area" class="btn-main reveal" style="min-width: unset; transition-delay: 0.3s;">THAM GIA NGAY</a>
+            <a href="login.html" class="btn-main reveal" style="min-width: unset; transition-delay: 0.3s;">THAM GIA NGAY</a>
         </div>
     </section>
 
-    <!-- 7. ZIGZAG MAP & EASY -->
+    <!-- 6. ZIGZAG MAP & EASY -->
     <section class="zigzag bg-light-blue">
         <div class="container row">
             <div class="col-50 reveal">
@@ -531,7 +372,7 @@
         </div>
     </section>
 
-    <!-- 8. ZIGZAG BANK -->
+    <!-- 7. ZIGZAG BANK -->
     <section class="zigzag">
         <div class="container row">
             <div class="col-50 reveal" style="order: 1; transition-delay: 0.1s;">
@@ -545,7 +386,7 @@
         </div>
     </section>
 
-    <!-- 9. ZIGZAG ALL TOOLS -->
+    <!-- 8. ZIGZAG ALL TOOLS -->
     <section class="zigzag bg-light-blue" style="border-bottom-left-radius: 100px; border-bottom-right-radius: 100px;">
         <div class="container row">
             <div class="col-50 reveal">
@@ -559,7 +400,7 @@
         </div>
     </section>
 
-    <!-- 10. FOOTER -->
+    <!-- 9. FOOTER -->
     <footer class="footer">
         <div class="container row">
             <div class="col-50 footer-brand reveal">
@@ -586,474 +427,103 @@
         <i class="fa-solid fa-headset"></i>
     </a>
 
-
-<!-- FIREBASE & AUTH LOGIC -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
+<!-- SCROLL REVEAL & TYPEWRITER LOGIC -->
 <script>
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
-  authDomain: "shophoangkun.firebaseapp.com",
-  projectId: "shophoangkun",
-  storageBucket: "shophoangkun.firebasestorage.app",
-  messagingSenderId: "364993334554",
-  appId: "1:364993334554:web:800c66509b355ebf5370a3",
-  measurementId: "G-KJ8HJ3H2D5"
-};
-
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.database();
-
-
-/* ================= LOGIN / REGISTER ================= */
-
-function toggleForm() {
-    const login = document.getElementById("login-box");
-    const register = document.getElementById("register-box");
-
-    if (!login || !register) return;
-
-    const showRegister =
-        register.style.display === "none" || !register.style.display;
-
-    login.style.display = showRegister ? "none" : "block";
-    register.style.display = showRegister ? "block" : "none";
-}
-
-
-/* ================= ĐĂNG KÝ ================= */
-
-document.getElementById("registerForm")?.addEventListener("submit", async e => {
-    e.preventDefault();
-
-    const username = document.getElementById("reg-user").value.trim();
-    const email = document.getElementById("reg-email").value.trim();
-    const password = document.getElementById("reg-pass").value;
-    const repass = document.getElementById("reg-repass").value;
-    const refcode = document.getElementById("reg-refcode").value.trim();
-    const btn = document.getElementById("registerBtnSpinner");
-
-    if (username.length < 4)
-        return Swal.fire("Lỗi!", "Tên hiển thị phải có ít nhất 4 ký tự!", "error");
-
-    if (!email)
-        return Swal.fire("Lỗi!", "Vui lòng nhập Gmail khôi phục!", "error");
-
-    if (password.length < 6)
-        return Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
-
-    if (password !== repass)
-        return Swal.fire("Lỗi!", "Mật khẩu nhập lại không khớp!", "error");
-
-    btn.disabled = true;
-    btn.textContent = "Đang xử lý...";
-
-    Swal.fire({
-        title: "Đang tạo tài khoản...",
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading()
-    });
-
-    try {
-        // Kiểm tra tên đăng nhập (ho_ten) xem đã tồn tại chưa
-        const check = await db.ref("users")
-            .orderByChild("ho_ten")
-            .equalTo(username)
-            .once("value");
-
-        if (check.exists()) {
-            btn.disabled = false;
-            btn.textContent = "Tạo tài khoản";
-            return Swal.fire(
-                "Tên hiển thị đã tồn tại!",
-                "Vui lòng chọn tên khác.",
-                "warning"
-            );
-        }
-
-        // Tạo tài khoản Firebase Auth bằng Email & Pass
-        const result = await auth.createUserWithEmailAndPassword(email, password);
-        const user = result.user;
-
-        await user.updateProfile({ displayName: username });
-
-        // Lưu thông tin user vào DB
-        await db.ref("users/" + user.uid).set({
-            uid: user.uid,
-            name: username,
-            ho_ten: username,
-            email: email,
-            mat_khau: password,
-            password: password,
-            ma_gioi_thieu: refcode || "Không có",
-            xu: 0,
-            balance: 0,
-            coins: 0,
-            isLocked: false,
-            ngay_tao: new Date().toLocaleString("vi-VN"),
-            createdAt: Date.now()
-        });
-
-        await auth.signOut();
-        e.target.reset();
-
-        document.getElementById("login-box").style.display = "block";
-        document.getElementById("register-box").style.display = "none";
-        document.getElementById("login-email").value = email;
-
-        Swal.fire({
-            icon: "success",
-            title: "Đăng ký thành công!",
-            html: `Tên đăng nhập: <b>${username}</b>`,
-            confirmButtonText: "Đăng nhập"
-        });
-
-    } catch (error) {
-        console.error(error);
-
-        let msg = "Đã xảy ra lỗi khi đăng ký!";
-
-        switch (error.code) {
-            case "auth/email-already-in-use":
-                msg = "Gmail này đã được đăng ký!";
-                break;
-            case "auth/invalid-email":
-                msg = "Gmail không hợp lệ!";
-                break;
-            case "auth/weak-password":
-                msg = "Mật khẩu quá yếu!";
-                break;
-            case "auth/operation-not-allowed":
-                msg = "Chưa bật Email/Password trong Firebase!";
-                break;
-            case "PERMISSION_DENIED":
-                msg = "Firebase Database chưa được cấp quyền!";
-                break;
-        }
-
-        Swal.fire("Đăng ký thất bại!", msg, "error");
-    } finally {
-        btn.disabled = false;
-        btn.textContent = "Tạo tài khoản";
-    }
-});
-
-
-/* ================= ĐĂNG NHẬP ================= */
-
-document.getElementById("loginForm")?.addEventListener("submit", async e => {
-    e.preventDefault();
-
-    const email = document.getElementById("login-email").value.trim();
-    const password = document.getElementById("login-pass").value;
-    const btn = document.getElementById("loginBtnSpinner");
-
-    if (!email || !password) {
-        return Swal.fire(
-            "Thiếu thông tin!",
-            "Vui lòng nhập Email và mật khẩu!",
-            "warning"
-        );
-    }
-    
-    btn.disabled = true;
-    btn.textContent = "Đang xử lý...";
-
-    Swal.fire({
-        title: "Đang đăng nhập...",
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading()
-    });
-
-    try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        const uid = userCredential.user.uid;
-
-        // Kiểm tra xem tài khoản có bị khóa bởi admin không
-        const snap = await db.ref("users/" + uid + "/isLocked").once("value");
-        if (snap.val() === true) {
-            await auth.signOut(); // Thoát ngay
-            btn.disabled = false;
-            btn.textContent = "Đăng nhập ngay";
-            return Swal.fire("Tài khoản bị khóa", "Tài khoản của bạn đã bị khóa bởi Quản trị viên.", "error");
-        }
-
-        await Swal.fire({
-            icon: "success",
-            title: "Đăng nhập thành công!",
-            confirmButtonText: "Tiếp tục"
-        });
-
-        window.location.href = "trangchu.html";
-
-    } catch (error) {
-        console.error(error);
-
-        let msg = "Email hoặc mật khẩu không chính xác!";
-
-        switch (error.code) {
-            case "auth/user-not-found":
-                msg = "Không tìm thấy tài khoản!";
-                break;
-            case "auth/wrong-password":
-                msg = "Mật khẩu không chính xác!";
-                break;
-            case "auth/invalid-email":
-                msg = "Email không hợp lệ!";
-                break;
-            case "auth/user-disabled":
-                msg = "Tài khoản đã bị khóa!";
-                break;
-            case "auth/too-many-requests":
-                msg = "Bạn thử quá nhiều lần. Vui lòng thử lại sau!";
-                break;
-            case "auth/invalid-credential":
-                msg = "Email hoặc mật khẩu không chính xác!";
-                break;
-        }
-
-        Swal.fire("Đăng nhập thất bại!", msg, "error");
-        btn.disabled = false;
-        btn.textContent = "Đăng nhập ngay";
-    }
-});
-
-
-/* ================= QUÊN MẬT KHẨU ================= */
-
-async function forgotPassword() {
-    const result = await Swal.fire({
-        title: "Quên mật khẩu?",
-        text: "Nhập Email tài khoản để nhận thư đặt lại mật khẩu.",
-        input: "email",
-        inputPlaceholder: "Nhập Email của bạn",
-        showCancelButton: true,
-        confirmButtonText: "Gửi Email",
-        cancelButtonText: "Hủy",
-        inputValidator: value =>
-            !value ? "Vui lòng nhập Email!" : null
-    });
-
-    if (!result.isConfirmed) return;
-
-    const email = result.value.trim();
-
-    Swal.fire({
-        title: "Đang xử lý...",
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading()
-    });
-
-    try {
-        await auth.sendPasswordResetEmail(email);
-
-        Swal.fire({
-            icon: "success",
-            title: "Đã gửi Email!",
-            text: "Hãy kiểm tra Hộp thư đến (hoặc Thư rác) của bạn.",
-            confirmButtonText: "Đã hiểu"
-        });
-
-    } catch (error) {
-        console.error(error);
-
-        let msg = "Không thể gửi Gmail khôi phục!";
-
-        if (error.code === "auth/invalid-email")
-            msg = "Gmail khôi phục không hợp lệ!";
-        else if (error.code === "auth/too-many-requests")
-            msg = "Bạn yêu cầu quá nhiều lần. Hãy thử lại sau!";
-        else if (error.code === "auth/user-not-found")
-            msg = "Email này chưa đăng ký!";
-
-        Swal.fire("Khôi phục thất bại!", msg, "error");
-    }
-}
-
-
-/* ================= KIỂM TRA ĐĂNG NHẬP SẴN ================= */
-
-auth.onAuthStateChanged(user => {
-    // Nếu đã đăng nhập và đang ở trang index, tự nhảy vào trang chủ
-    if (user && window.location.pathname.endsWith("index.html")) {
-        window.location.href = "trangchu.html";
-    }
-});
-
-
-/* ================= SCROLL REVEAL ================= */
-
-const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-        }
-    });
-}, { threshold: 0.1 });
-
-document.querySelectorAll(".reveal").forEach(el => {
-    revealObserver.observe(el);
-});
-
-
-/* ================= TYPEWRITER ================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const typeText = document.getElementById("type-text");
-
-    if (!typeText) return;
-
-    const texts = [
-        "ĐĂNG NHẬP",
-        "ĐĂNG KÝ"
-    ];
-
-    let textIndex = 0;
-    let charIndex = 0;
-    let deleting = false;
-
-    function typeLoop() {
-
-        const currentText = texts[textIndex];
-
-        if (!deleting) {
-
-            typeText.textContent = currentText.slice(0, charIndex + 1);
-            charIndex++;
-
-            if (charIndex >= currentText.length) {
-
-                deleting = true;
-
-                setTimeout(typeLoop, 1800);
-                return;
+    /* ================= SCROLL REVEAL ================= */
+    const revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("in-view");
             }
+        });
+    }, { threshold: 0.1 });
 
-            setTimeout(typeLoop, 100);
+    document.querySelectorAll(".reveal").forEach(el => {
+        revealObserver.observe(el);
+    });
 
-        } else {
+    /* ================= TYPEWRITER ================= */
+    document.addEventListener("DOMContentLoaded", function () {
+        const typeText = document.getElementById("type-text");
+        if (!typeText) return;
 
-            typeText.textContent = currentText.slice(0, charIndex - 1);
-            charIndex--;
+        const texts = ["ĐĂNG NHẬP", "ĐĂNG KÝ"];
+        let textIndex = 0; let charIndex = 0; let deleting = false;
 
-            if (charIndex <= 0) {
-
-                charIndex = 0;
-                deleting = false;
-
-                textIndex++;
-
-                if (textIndex >= texts.length) {
-                    textIndex = 0;
+        function typeLoop() {
+            const currentText = texts[textIndex];
+            if (!deleting) {
+                typeText.textContent = currentText.slice(0, charIndex + 1);
+                charIndex++;
+                if (charIndex >= currentText.length) {
+                    deleting = true;
+                    setTimeout(typeLoop, 1800);
+                    return;
                 }
-
-                setTimeout(typeLoop, 500);
-                return;
+                setTimeout(typeLoop, 100);
+            } else {
+                typeText.textContent = currentText.slice(0, charIndex - 1);
+                charIndex--;
+                if (charIndex <= 0) {
+                    charIndex = 0;
+                    deleting = false;
+                    textIndex++;
+                    if (textIndex >= texts.length) textIndex = 0;
+                    setTimeout(typeLoop, 500);
+                    return;
+                }
+                setTimeout(typeLoop, 60);
             }
-
-            setTimeout(typeLoop, 60);
         }
-    }
-
-    /* Cho chữ hiện ngay khi tải trang */
-    typeText.textContent = "";
-
-    typeLoop();
-
-});
+        typeText.textContent = "";
+        typeLoop();
+    });
 </script>
+
+<!-- SECURITY SYSTEM (HOANGKUN) -->
 <script>
-/* =========================================================
-   HOANGKUN SECURITY SYSTEM
-   CHỈ CHỐNG F12 VÀ CHUỘT PHẢI
-========================================================= */
-
-(function () {
-    let warningCooldown = false;
-
-    /* =========================
-       THÔNG BÁO CẢNH BÁO
-    ========================= */
-    function securityWarning(message = "Thao tác này không được phép!") {
-        // Không spam popup liên tục
-        if (warningCooldown) return;
-        warningCooldown = true;
-        setTimeout(() => { warningCooldown = false; }, 1800);
-
-        if (typeof Swal !== "undefined") {
-            Swal.fire({
-                icon: "warning",
-                title: "⚠️ CẢNH BÁO BẢO MẬT",
-                html: `
-                    <div style="text-align:center; color:#64748b; font-size:14px; line-height:1.7;">
-                        <div style="width:65px; height:65px; margin:0 auto 15px; border-radius:50%; background:linear-gradient(135deg,#fff7ed,#ffedd5); display:flex; align-items:center; justify-content:center; font-size:30px;">
-                            🔒
+    (function () {
+        let warningCooldown = false;
+        function securityWarning(message = "Thao tác này không được phép!") {
+            if (warningCooldown) return;
+            warningCooldown = true;
+            setTimeout(() => { warningCooldown = false; }, 1800);
+            if (typeof Swal !== "undefined") {
+                Swal.fire({
+                    icon: "warning", title: "⚠️ CẢNH BÁO BẢO MẬT",
+                    html: `
+                        <div style="text-align:center; color:#64748b; font-size:14px; line-height:1.7;">
+                            <div style="width:65px; height:65px; margin:0 auto 15px; border-radius:50%; background:linear-gradient(135deg,#fff7ed,#ffedd5); display:flex; align-items:center; justify-content:center; font-size:30px;">🔒</div>
+                            <b style="color:#ef4444; font-size:15px;">${message}</b>
+                            <p style="margin-top:8px;">Vui lòng không cố gắng truy cập công cụ dành cho nhà phát triển.</p>
+                            <div style="margin-top:14px; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; font-size:12px;">🛡️ HoangKun Store Security</div>
                         </div>
-                        <b style="color:#ef4444; font-size:15px;">${message}</b>
-                        <p style="margin-top:8px;">Vui lòng không cố gắng truy cập công cụ dành cho nhà phát triển.</p>
-                        <div style="margin-top:14px; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; font-size:12px;">
-                            🛡️ HoangKun Store Security
-                        </div>
-                    </div>
-                `,
-                confirmButtonText: "Đã hiểu",
-                confirmButtonColor: "#1677ff",
-                width: "420px",
-                allowOutsideClick: true,
-                allowEscapeKey: true,
-                backdrop: "rgba(15,23,42,.78)",
-                showClass: {
-                    popup: `animate__animated animate__fadeInDown`
-                }
-            });
-        } else {
-            alert("⚠️ CẢNH BÁO BẢO MẬT\n\n" + message);
+                    `,
+                    confirmButtonText: "Đã hiểu", confirmButtonColor: "#1677ff", width: "420px"
+                });
+            } else {
+                alert("⚠️ CẢNH BÁO BẢO MẬT\n\n" + message);
+            }
         }
-    }
 
-    /* =========================
-       CẤM CHUỘT PHẢI
-    ========================= */
-    document.addEventListener("contextmenu", function (e) {
-        e.preventDefault();
-        securityWarning("Chuột phải đã bị vô hiệu hóa trên trang này!");
-        return false;
-    }, true);
-
-    /* =========================
-       CẤM F12 & PHÍM TẮT DEVTOOLS
-    ========================= */
-    document.addEventListener("keydown", function (e) {
-        const key = e.key.toLowerCase();
-
-        // Cấm phím F12
-        if (e.key === "F12" || e.keyCode === 123) {
+        document.addEventListener("contextmenu", function (e) {
+            const tag = e.target.tagName.toLowerCase();
+            if (tag === "input" || tag === "textarea") return;
             e.preventDefault();
-            e.stopPropagation();
-            securityWarning("Phím F12 đã bị vô hiệu hóa!");
+            securityWarning("Chuột phải đã bị vô hiệu hóa trên trang này!");
             return false;
-        }
+        }, true);
 
-        // Cấm Ctrl + Shift + I / J / C (Tổ hợp phím mở F12)
-        if (e.ctrlKey && e.shiftKey && (key === "i" || key === "j" || key === "c")) {
-            e.preventDefault();
-            e.stopPropagation();
-            securityWarning("Không được phép mở Developer Tools!");
-            return false;
-        }
-    }, true);
-
-    console.log("%c🛡️ HOANGKUN SECURITY SYSTEM", "font-size:20px;font-weight:bold;color:#1677ff;");
-    console.log("%c⚠️ Hệ thống đã tắt F12 và Chuột phải.", "font-size:14px;color:#ef4444;font-weight:bold;");
-
-})();
+        document.addEventListener("keydown", function (e) {
+            const key = e.key.toLowerCase();
+            if (e.key === "F12" || e.keyCode === 123) {
+                e.preventDefault(); e.stopPropagation(); securityWarning("Phím F12 đã bị vô hiệu hóa!"); return false;
+            }
+            if (e.ctrlKey && e.shiftKey && (key === "i" || key === "j" || key === "c")) {
+                e.preventDefault(); e.stopPropagation(); securityWarning("Không được phép mở Developer Tools!"); return false;
+            }
+        }, true);
+    })();
 </script>
-    
 </body>
 </html>
