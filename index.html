@@ -41,7 +41,7 @@
         .col-50 { width: 48%; }
         .col-100 { width: 100%; text-align: center; }
 
-        /* === HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL) - TỐI ƯU GPU === */
+        /* === HIỆU ỨNG HIỆN KHI CUỘN (SCROLL REVEAL) === */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
@@ -67,23 +67,23 @@
         }
         .btn-main:hover { transform: translateY(-3px) !important; box-shadow: 0 8px 20px rgba(250, 40, 40, 0.4); color: #fff; }
          
-     .btn-main .cursor {
-    display: inline-block;
-    width: 2px;
-    height: 1.2em;
-    min-width: 2px;
-    background: #fff;
-    margin-left: 5px;
-    vertical-align: middle;
-    animation: blinkCursor 0.7s infinite;
-    flex-shrink: 0;
-}
+        .btn-main .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            min-width: 2px;
+            background: #fff;
+            margin-left: 5px;
+            vertical-align: middle;
+            animation: blinkCursor 0.7s infinite;
+            flex-shrink: 0;
+        }
         @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         .section-title { font-size: 2.2rem; font-weight: 800; color: #0b1220; margin-bottom: 20px; }
         .section-subtitle { font-size: 1.1rem; color: #555; margin-bottom: 40px; }
 
-        /* === ẢNH MINH HỌA 3D - TỐI ƯU GPU === */
+        /* === ẢNH MINH HỌA 3D === */
         .graphic-img { 
             width: 100%; 
             max-width: 450px; 
@@ -104,25 +104,25 @@
         .hero .col-50 { text-align: center; }
 
         /* === 2. SLIDING FORM ĐĂNG NHẬP/ĐĂNG KÝ === */
-        .login-section {
-            padding: 60px 20px;
-            background: #ffffff;
-            display: flex;
-            justify-content: center;
+        .login-section { 
+            padding: 60px 0; 
+            background-color: #ffffff; 
+            display: flex; 
+            justify-content: center; 
             align-items: center;
         }
         
         .auth-container {
             position: relative;
             width: 100%;
-            max-width: 900px;
-            height: 580px;
-            background: #ffffff;
+            max-width: 850px;
+            height: 550px;
+            background: #fff;
             margin: 0 auto;
-            border-radius: 32px;
-            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.12), 0 4px 14px rgba(15, 23, 42, 0.06);
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            border: 1px solid #eef2f7;
+            border: 1px solid #f1f5f9;
         }
 
         .auth-container h1 { font-size: 32px; margin-bottom: 10px; color: #1e293b; font-weight: 800;}
@@ -156,8 +156,8 @@
         .auth-input-box input {
             width: 100%;
             padding: 13px 50px 13px 20px;
-            background: #f8fafc;
-            border-radius: 12px;
+            background: transparent; 
+            border-radius: 30px; 
             border: 2px solid #e2e8f0;
             outline: none;
             font-size: 15px;
@@ -167,7 +167,7 @@
         }
 
         .auth-input-box input::placeholder { color: #94a3b8; font-weight: 500; }
-        .auth-input-box input:focus { border-color: #2f54eb; background: #fff; box-shadow: 0 4px 15px rgba(47,84,235,0.08); }
+        .auth-input-box input:focus { border-color: #2f54eb; box-shadow: 0 4px 15px rgba(47,84,235,0.08); }
 
         .auth-input-box i {
             position: absolute;
@@ -188,7 +188,7 @@
             width: 100%;
             height: 48px;
             background: linear-gradient(135deg, #2f54eb, #00b4d8);
-            border-radius: 12px;
+            border-radius: 30px; 
             box-shadow: 0 8px 20px rgba(47,84,235,0.25);
             border: none;
             cursor: pointer;
@@ -205,13 +205,13 @@
             display: inline-flex;
             padding: 10px;
             border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 24px;
+            border-radius: 50%;
+            font-size: 20px;
             color: #64748b;
             margin: 0 8px;
             transition: 0.3s;
         }
-        .auth-social-icons a:hover { background: #f8fafc; border-color: #2f54eb; color: #2f54eb; }
+        .auth-social-icons a:hover { background: #f8fafc; border-color: #2f54eb; color: #2f54eb; transform: translateY(-2px); }
 
         .auth-toggle-box {
             position: absolute;
@@ -269,7 +269,7 @@
             width: calc(33.333% - 20px); 
             background: #f8fafc; 
             padding: 30px 20px; 
-            border-radius: 15px; 
+            border-radius: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.03); 
             transition: all 0.3s ease;
             text-align: left;
@@ -335,7 +335,6 @@
         /* RESPONSIVE CHUNG */
         @media (max-width: 900px) {
             .col-50, .feat-box, .why-box, .stat-box { width: 100%; margin-bottom: 40px; text-align: center; }
-            .login-card { margin-top: 30px; }
             .hero-line { margin: 15px auto; }
             .footer .row { flex-direction: column; }
             .srv-card { width: calc(50% - 15px); }
@@ -388,8 +387,7 @@
 
     <!-- 2. LOGIN SECTION (SLIDING FORM) -->
     <section class="login-section" id="login-area">
-        <div class="container">
-            <!-- Auth Container thay thế cho 2 cột cũ -->
+        <div class="container reveal">
             <div class="auth-container" id="authContainer">
                 
                 <!-- LOGIN FORM -->
@@ -408,12 +406,6 @@
                             <a href="javascript:void(0)" onclick="forgotPassword()">Quên mật khẩu?</a>
                         </div>
                         <button type="submit" class="auth-btn" id="loginBtnSpinner">Đăng nhập</button>
-                        <p>hoặc đăng nhập bằng</p>
-                        <div class="auth-social-icons">
-                            <a href="#"><i class='bx bxl-google'></i></a>
-                            <a href="#"><i class='bx bxl-facebook'></i></a>
-                            <a href="#"><i class='bx bxl-github'></i></a>
-                        </div>
                     </form>
                 </div>
 
@@ -692,13 +684,17 @@
     const showRegisterBtn = document.getElementById('showRegisterBtn');
     const showLoginBtn = document.getElementById('showLoginBtn');
 
-    showRegisterBtn.addEventListener('click', () => {
-        authContainer.classList.add('active');
-    });
+    if(showRegisterBtn && showLoginBtn) {
+        showRegisterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            authContainer.classList.add('active');
+        });
 
-    showLoginBtn.addEventListener('click', () => {
-        authContainer.classList.remove('active');
-    });
+        showLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            authContainer.classList.remove('active');
+        });
+    }
 </script>
 
 <!-- FIREBASE & AUTH LOGIC -->
@@ -723,9 +719,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-
 /* ================= ĐĂNG KÝ ================= */
-
 document.getElementById("registerForm")?.addEventListener("submit", async e => {
     e.preventDefault();
 
@@ -736,17 +730,10 @@ document.getElementById("registerForm")?.addEventListener("submit", async e => {
     const refcode = document.getElementById("reg-refcode").value.trim();
     const btn = document.getElementById("registerBtnSpinner");
 
-    if (username.length < 4)
-        return Swal.fire("Lỗi!", "Tên hiển thị phải có ít nhất 4 ký tự!", "error");
-
-    if (!email)
-        return Swal.fire("Lỗi!", "Vui lòng nhập Email!", "error");
-
-    if (password.length < 6)
-        return Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
-
-    if (password !== repass)
-        return Swal.fire("Lỗi!", "Mật khẩu nhập lại không khớp!", "error");
+    if (username.length < 4) return Swal.fire("Lỗi!", "Tên hiển thị phải có ít nhất 4 ký tự!", "error");
+    if (!email) return Swal.fire("Lỗi!", "Vui lòng nhập Email!", "error");
+    if (password.length < 6) return Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
+    if (password !== repass) return Swal.fire("Lỗi!", "Mật khẩu nhập lại không khớp!", "error");
 
     btn.disabled = true;
     btn.textContent = "Đang xử lý...";
@@ -758,74 +745,40 @@ document.getElementById("registerForm")?.addEventListener("submit", async e => {
     });
 
     try {
-        // Kiểm tra tên đăng nhập (ho_ten) xem đã tồn tại chưa
-        const check = await db.ref("users")
-            .orderByChild("ho_ten")
-            .equalTo(username)
-            .once("value");
-
+        const check = await db.ref("users").orderByChild("ho_ten").equalTo(username).once("value");
         if (check.exists()) {
             btn.disabled = false;
             btn.textContent = "Tạo tài khoản";
-            return Swal.fire(
-                "Tên hiển thị đã tồn tại!",
-                "Vui lòng chọn tên khác.",
-                "warning"
-            );
+            return Swal.fire("Tên hiển thị đã tồn tại!", "Vui lòng chọn tên khác.", "warning");
         }
 
-        // Tạo tài khoản Firebase Auth bằng Email & Pass
         const result = await auth.createUserWithEmailAndPassword(email, password);
         const user = result.user;
-
         await user.updateProfile({ displayName: username });
 
-        // Lưu thông tin user vào DB
         await db.ref("users/" + user.uid).set({
-            uid: user.uid,
-            name: username,
-            ho_ten: username,
-            email: email,
-            mat_khau: password,
-            password: password,
-            ma_gioi_thieu: refcode || "Không có",
-            xu: 0,
-            balance: 0,
-            coins: 0,
-            isLocked: false,
-            ngay_tao: new Date().toLocaleString("vi-VN"),
-            createdAt: Date.now()
+            uid: user.uid, name: username, ho_ten: username, email: email,
+            mat_khau: password, password: password, ma_gioi_thieu: refcode || "Không có",
+            xu: 0, balance: 0, coins: 0, isLocked: false,
+            ngay_tao: new Date().toLocaleString("vi-VN"), createdAt: Date.now()
         });
 
         await auth.signOut();
         e.target.reset();
 
-        // Chuyển sang panel Đăng nhập
         authContainer.classList.remove('active');
         document.getElementById("login-email").value = email;
 
         Swal.fire({
-            icon: "success",
-            title: "Đăng ký thành công!",
+            icon: "success", title: "Đăng ký thành công!",
             html: `Chào mừng <b>${username}</b>. Bạn có thể đăng nhập ngay!`,
             confirmButtonText: "Đăng nhập"
         });
-
     } catch (error) {
-        console.error(error);
         let msg = "Đã xảy ra lỗi khi đăng ký!";
-
-        switch (error.code) {
-            case "auth/email-already-in-use":
-                msg = "Email này đã được đăng ký cho tài khoản khác!";
-                break;
-            case "auth/invalid-email":
-                msg = "Email không hợp lệ!";
-                break;
-            case "auth/weak-password":
-                msg = "Mật khẩu quá yếu!";
-                break;
-        }
+        if (error.code === "auth/email-already-in-use") msg = "Email này đã được đăng ký cho tài khoản khác!";
+        else if (error.code === "auth/invalid-email") msg = "Email không hợp lệ!";
+        else if (error.code === "auth/weak-password") msg = "Mật khẩu quá yếu!";
         Swal.fire("Đăng ký thất bại!", msg, "error");
     } finally {
         btn.disabled = false;
@@ -833,9 +786,7 @@ document.getElementById("registerForm")?.addEventListener("submit", async e => {
     }
 });
 
-
 /* ================= ĐĂNG NHẬP ================= */
-
 document.getElementById("loginForm")?.addEventListener("submit", async e => {
     e.preventDefault();
 
@@ -843,129 +794,70 @@ document.getElementById("loginForm")?.addEventListener("submit", async e => {
     const password = document.getElementById("login-pass").value;
     const btn = document.getElementById("loginBtnSpinner");
 
-    if (!email || !password) {
-        return Swal.fire(
-            "Thiếu thông tin!",
-            "Vui lòng nhập Email và mật khẩu!",
-            "warning"
-        );
-    }
+    if (!email || !password) return Swal.fire("Thiếu thông tin!", "Vui lòng nhập Email và mật khẩu!", "warning");
 
     btn.disabled = true;
     btn.textContent = "Đang xử lý...";
 
-    Swal.fire({
-        title: "Đang đăng nhập...",
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading()
-    });
+    Swal.fire({ title: "Đang đăng nhập...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
     try {
         const userCredential = await auth.signInWithEmailAndPassword(email, password);
         const uid = userCredential.user.uid;
 
-        // Kiểm tra xem tài khoản có bị khóa bởi admin không
         const snap = await db.ref("users/" + uid + "/isLocked").once("value");
         if (snap.val() === true) {
-            await auth.signOut(); // Thoát ngay
+            await auth.signOut(); 
             btn.disabled = false;
             btn.textContent = "Đăng nhập";
             return Swal.fire("Tài khoản bị khóa", "Tài khoản của bạn đã bị khóa bởi Quản trị viên.", "error");
         }
 
-        await Swal.fire({
-            icon: "success",
-            title: "Đăng nhập thành công!",
-            confirmButtonText: "Tiếp tục"
-        });
-
+        await Swal.fire({ icon: "success", title: "Đăng nhập thành công!", confirmButtonText: "Tiếp tục" });
         window.location.href = "trangchu.html";
-
     } catch (error) {
-        console.error(error);
         let msg = "Email hoặc mật khẩu không chính xác!";
-
-        switch (error.code) {
-            case "auth/user-not-found":
-            case "auth/invalid-credential":
-            case "auth/wrong-password":
-                msg = "Email hoặc mật khẩu không chính xác!";
-                break;
-            case "auth/invalid-email":
-                msg = "Email không hợp lệ!";
-                break;
-            case "auth/user-disabled":
-                msg = "Tài khoản đã bị vô hiệu hóa bởi Firebase!";
-                break;
-            case "auth/too-many-requests":
-                msg = "Bạn thử quá nhiều lần. Vui lòng thử lại sau vài phút!";
-                break;
-        }
-
+        if (error.code === "auth/user-disabled") msg = "Tài khoản đã bị vô hiệu hóa bởi Firebase!";
+        else if (error.code === "auth/too-many-requests") msg = "Bạn thử quá nhiều lần. Vui lòng thử lại sau vài phút!";
         Swal.fire("Đăng nhập thất bại!", msg, "error");
         btn.disabled = false;
         btn.textContent = "Đăng nhập";
     }
 });
 
-
 /* ================= QUÊN MẬT KHẨU ================= */
-
 async function forgotPassword() {
     const result = await Swal.fire({
-        title: "Quên mật khẩu?",
-        text: "Nhập Email tài khoản để nhận thư đặt lại mật khẩu.",
-        input: "email",
-        inputPlaceholder: "Nhập Email của bạn",
-        showCancelButton: true,
-        confirmButtonText: "Gửi Email",
-        cancelButtonText: "Hủy",
+        title: "Quên mật khẩu?", text: "Nhập Email tài khoản để nhận thư đặt lại mật khẩu.",
+        input: "email", inputPlaceholder: "Nhập Email của bạn",
+        showCancelButton: true, confirmButtonText: "Gửi Email", cancelButtonText: "Hủy",
         inputValidator: value => !value ? "Vui lòng nhập Email!" : null
     });
 
     if (!result.isConfirmed) return;
-
     const email = result.value.trim();
-
-    Swal.fire({
-        title: "Đang gửi...",
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading()
-    });
+    Swal.fire({ title: "Đang gửi...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
     try {
         await auth.sendPasswordResetEmail(email);
-
-        Swal.fire({
-            icon: "success",
-            title: "Đã gửi Email!",
-            text: "Vui lòng kiểm tra Hộp thư đến (hoặc thư mục rác) để đặt lại mật khẩu.",
-            confirmButtonText: "Đã hiểu"
-        });
-
+        Swal.fire({ icon: "success", title: "Đã gửi Email!", text: "Vui lòng kiểm tra Hộp thư đến (hoặc thư mục rác) để đặt lại mật khẩu.", confirmButtonText: "Đã hiểu" });
     } catch (error) {
-        console.error(error);
         let msg = "Không thể gửi Email khôi phục!";
         if (error.code === "auth/user-not-found") msg = "Email này chưa được đăng ký!";
         else if (error.code === "auth/invalid-email") msg = "Email không hợp lệ!";
         else if (error.code === "auth/too-many-requests") msg = "Bạn yêu cầu quá nhiều lần. Hãy thử lại sau!";
-
         Swal.fire("Gửi thất bại!", msg, "error");
     }
 }
 
-
 /* ================= KIỂM TRA ĐĂNG NHẬP SẴN ================= */
 auth.onAuthStateChanged(user => {
-    // Nếu đã đăng nhập và đang ở trang index, tự nhảy vào trang chủ
     if (user && window.location.pathname.endsWith("index.html")) {
         window.location.href = "trangchu.html";
     }
 });
 
-
 /* ================= SCROLL REVEAL ================= */
-
 const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -978,74 +870,44 @@ document.querySelectorAll(".reveal").forEach(el => {
     revealObserver.observe(el);
 });
 
-
 /* ================= TYPEWRITER ================= */
-
 document.addEventListener("DOMContentLoaded", function () {
-
     const typeText = document.getElementById("type-text");
-
     if (!typeText) return;
 
-    const texts = [
-        "ĐĂNG NHẬP",
-        "ĐĂNG KÝ"
-    ];
-
-    let textIndex = 0;
-    let charIndex = 0;
-    let deleting = false;
+    const texts = ["ĐĂNG NHẬP", "ĐĂNG KÝ"];
+    let textIndex = 0; let charIndex = 0; let deleting = false;
 
     function typeLoop() {
-
         const currentText = texts[textIndex];
-
         if (!deleting) {
-
             typeText.textContent = currentText.slice(0, charIndex + 1);
             charIndex++;
-
             if (charIndex >= currentText.length) {
-
                 deleting = true;
-
                 setTimeout(typeLoop, 1800);
                 return;
             }
-
             setTimeout(typeLoop, 100);
-
         } else {
-
             typeText.textContent = currentText.slice(0, charIndex - 1);
             charIndex--;
-
             if (charIndex <= 0) {
-
                 charIndex = 0;
                 deleting = false;
-
                 textIndex++;
-
-                if (textIndex >= texts.length) {
-                    textIndex = 0;
-                }
-
+                if (textIndex >= texts.length) textIndex = 0;
                 setTimeout(typeLoop, 500);
                 return;
             }
-
             setTimeout(typeLoop, 60);
         }
     }
-
-    /* Cho chữ hiện ngay khi tải trang */
     typeText.textContent = "";
-
     typeLoop();
-
 });
 </script>
+
 <script>
 /* =========================================================
    HOANGKUN SECURITY SYSTEM
@@ -1055,11 +917,7 @@ document.addEventListener("DOMContentLoaded", function () {
 (function () {
     let warningCooldown = false;
 
-    /* =========================
-       THÔNG BÁO CẢNH BÁO
-    ========================= */
     function securityWarning(message = "Thao tác này không được phép!") {
-        // Không spam popup liên tục
         if (warningCooldown) return;
         warningCooldown = true;
         setTimeout(() => { warningCooldown = false; }, 1800);
@@ -1095,9 +953,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    /* =========================
-       CẤM CHUỘT PHẢI (Trừ input)
-    ========================= */
     document.addEventListener("contextmenu", function (e) {
         const tag = e.target.tagName.toLowerCase();
         if (tag === "input" || tag === "textarea") return;
@@ -1106,21 +961,14 @@ document.addEventListener("DOMContentLoaded", function () {
         return false;
     }, true);
 
-    /* =========================
-       CẤM F12 & PHÍM TẮT DEVTOOLS
-    ========================= */
     document.addEventListener("keydown", function (e) {
         const key = e.key.toLowerCase();
-
-        // Cấm phím F12
         if (e.key === "F12" || e.keyCode === 123) {
             e.preventDefault();
             e.stopPropagation();
             securityWarning("Phím F12 đã bị vô hiệu hóa!");
             return false;
         }
-
-        // Cấm Ctrl + Shift + I / J / C (Tổ hợp phím mở F12)
         if (e.ctrlKey && e.shiftKey && (key === "i" || key === "j" || key === "c")) {
             e.preventDefault();
             e.stopPropagation();
@@ -1134,6 +982,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
 })();
 </script>
-    
 </body>
-</html>
+</html> 
