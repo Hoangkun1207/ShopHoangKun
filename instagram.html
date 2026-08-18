@@ -268,6 +268,8 @@
             background: #fff;
             color: #526074;
             transition: .2s;
+            display: grid;
+            place-items: center;
         }
 
         .icon-btn:hover {
@@ -295,9 +297,9 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            color: #526074;
             font-size: 13px;
             font-weight: 600;
-            color: #526074;
         }
 
         .lang img {
@@ -321,7 +323,10 @@
             display: flex;
             align-items: center;
             gap: 9px;
+            transition: .2s;
         }
+
+        .user:hover { background: #f8fafc; }
 
         .avatar {
             width: 35px;
@@ -405,6 +410,7 @@
             font-size: 12px;
             font-weight: 700;
             text-align: left;
+            transition: .2s;
         }
 
         .user-menu button:hover {
@@ -532,6 +538,12 @@
             background: #fff;
             color: var(--primary);
             border: 1px solid #dceaff;
+            transition: .2s;
+        }
+        
+        .refresh-balance:hover {
+            background: var(--primary);
+            color: #fff;
         }
 
         /* =========================
@@ -806,7 +818,7 @@
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            background: linear-gradient(145deg, #833ab4, #fd1d1d, #fcb045);
             color: #fff;
             z-index: 1100;
             display: flex;
@@ -892,41 +904,35 @@
         </button>
         <button class="sb-mi" onclick="openZalo()">
             <span class="sb-icon"><i class="fa-solid fa-headset"></i></span> Liên hệ CSKH
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
 
         <div class="sb-title">Tài khoản</div>
         <button class="sb-mi" onclick="go('taikhoan.html')">
-            <span class="sb-icon"><i class="fa-regular fa-user"></i></span> Tài khoản & bảo mật
+            <span class="sb-icon"><i class="fa-solid fa-user-shield"></i></span> Tài khoản & bảo mật
         </button>
         <button class="sb-mi" onclick="go('naptien.html')">
-            <span class="sb-icon"><i class="fa-regular fa-credit-card"></i></span> Nạp tiền
+            <span class="sb-icon"><i class="fa-solid fa-wallet"></i></span> Nạp tiền
         </button>
         <button class="sb-mi" onclick="go('lichsu.html')">
-            <span class="sb-icon"><i class="fa-regular fa-clock"></i></span> Nhật ký hoạt động
+            <span class="sb-icon"><i class="fa-solid fa-clock-rotate-left"></i></span> Nhật ký hoạt động
         </button>
 
         <div class="sb-title">Danh sách dịch vụ</div>
         <button class="sb-mi" onclick="go('dichvu.html')">
-            <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span> Dịch vụ khác
+            <span class="sb-icon"><i class="fa-solid fa-layer-group"></i></span> Dịch vụ khác
             <span class="badge">MỚI</span>
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
         <button class="sb-mi" onclick="go('facebook.html')">
             <span class="sb-icon"><i class="fa-brands fa-facebook" style="color:#1877f2"></i></span> Facebook
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
         <button class="sb-mi active">
             <span class="sb-icon"><i class="fa-brands fa-instagram"></i></span> Instagram
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
         <button class="sb-mi" onclick="go('tiktok.html')">
             <span class="sb-icon"><i class="fa-brands fa-tiktok"></i></span> TikTok
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
         <button class="sb-mi" onclick="go('youtube.html')">
-            <span class="sb-icon"><i class="fa-brands fa-youtube" style="color:#ff1744"></i></span> YouTube
-            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="sb-icon"><i class="fa-brands fa-youtube" style="color:#f87171"></i></span> YouTube
         </button>
     </div>
     <div class="sidebar-footer">
@@ -1151,6 +1157,23 @@ const auth = firebase.auth();
 const db = firebase.database();
 
 /* =====================================================
+   MOBILE MENU
+===================================================== */
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('open');
+}
+
+document.addEventListener("click", e => {
+    const sidebar = document.querySelector('.sidebar');
+    const mobileBtn = document.querySelector('.mobile-menu');
+    if (window.innerWidth <= 800 && sidebar && mobileBtn) {
+        if (!sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    }
+});
+
+/* =====================================================
    NAVIGATION
 ===================================================== */
 function go(file) { window.location.href = file; }
@@ -1339,12 +1362,27 @@ function getLocalOrders() {
 
 async function deductBalance(amount) {
     const balanceRef = db.ref("users").child(currentUser.uid).child(balanceField);
+    let insufficient = false;
+
     const result = await balanceRef.transaction(currentValue => {
+        if (currentValue === null) {
+            return currentBalance - amount; 
+        }
+
         const balance = Number(currentValue || 0);
-        if (balance < amount) return; 
+        if (balance < amount) {
+            insufficient = true;
+            return currentValue; 
+        }
+        
+        insufficient = false;
         return balance - amount;
     });
-    if (!result.committed) throw new Error("INSUFFICIENT_BALANCE");
+
+    if (insufficient) {
+        throw new Error("INSUFFICIENT_BALANCE");
+    }
+
     currentBalance = Number(result.snapshot.val() || 0);
     balanceValue.textContent = formatXu(currentBalance);
     return currentBalance;
@@ -1353,13 +1391,19 @@ async function deductBalance(amount) {
 async function refundBalance(amount) {
     try {
         const balanceRef = db.ref("users").child(currentUser.uid).child(balanceField);
-        const result = await balanceRef.transaction(curr => Number(curr || 0) + Number(amount || 0));
+        const result = await balanceRef.transaction(curr => {
+            if (curr === null) return currentBalance + amount;
+            return Number(curr || 0) + Number(amount || 0);
+        });
+        
         if (result.committed) {
             currentBalance = Number(result.snapshot.val() || 0);
             balanceValue.textContent = formatXu(currentBalance);
             return true;
         }
-    } catch (e) { console.error(e); }
+    } catch (e) { 
+        console.error(e); 
+    }
     return false;
 }
 
@@ -1514,5 +1558,93 @@ document.addEventListener("click", e => {
 });
 </script>
 
+<script>
+/* =========================================================
+   HOANGKUN SECURITY SYSTEM
+   CHỈ CHỐNG F12 VÀ CHUỘT PHẢI
+========================================================= */
+
+(function () {
+    let warningCooldown = false;
+
+    /* =========================
+       THÔNG BÁO CẢNH BÁO
+    ========================= */
+    function securityWarning(message = "Thao tác này không được phép!") {
+        // Không spam popup liên tục
+        if (warningCooldown) return;
+        warningCooldown = true;
+        setTimeout(() => { warningCooldown = false; }, 1800);
+
+        if (typeof Swal !== "undefined") {
+            Swal.fire({
+                icon: "warning",
+                title: "⚠️ CẢNH BÁO BẢO MẬT",
+                html: `
+                    <div style="text-align:center; color:#64748b; font-size:14px; line-height:1.7;">
+                        <div style="width:65px; height:65px; margin:0 auto 15px; border-radius:50%; background:linear-gradient(135deg,#fff7ed,#ffedd5); display:flex; align-items:center; justify-content:center; font-size:30px;">
+                            🔒
+                        </div>
+                        <b style="color:#ef4444; font-size:15px;">${message}</b>
+                        <p style="margin-top:8px;">Vui lòng không cố gắng truy cập công cụ dành cho nhà phát triển.</p>
+                        <div style="margin-top:14px; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; font-size:12px;">
+                            🛡️ HoangKun Store Security
+                        </div>
+                    </div>
+                `,
+                confirmButtonText: "Đã hiểu",
+                confirmButtonColor: "#1677ff",
+                width: "420px",
+                allowOutsideClick: true,
+                allowEscapeKey: true,
+                backdrop: "rgba(15,23,42,.78)",
+                showClass: {
+                    popup: `animate__animated animate__fadeInDown`
+                }
+            });
+        } else {
+            alert("⚠️ CẢNH BÁO BẢO MẬT\n\n" + message);
+        }
+    }
+
+    /* =========================
+       CẤM CHUỘT PHẢI (NGOẠI TRỪ INPUT)
+    ========================= */
+    document.addEventListener("contextmenu", function (e) {
+        const tag = e.target.tagName.toLowerCase();
+        if (tag === "input" || tag === "textarea") return;
+        e.preventDefault();
+        securityWarning("Chuột phải đã bị vô hiệu hóa trên trang này!");
+        return false;
+    }, true);
+
+    /* =========================
+       CẤM F12 & PHÍM TẮT DEVTOOLS
+    ========================= */
+    document.addEventListener("keydown", function (e) {
+        const key = e.key.toLowerCase();
+
+        // Cấm phím F12
+        if (e.key === "F12" || e.keyCode === 123) {
+            e.preventDefault();
+            e.stopPropagation();
+            securityWarning("Phím F12 đã bị vô hiệu hóa!");
+            return false;
+        }
+
+        // Cấm Ctrl + Shift + I / J / C (Tổ hợp phím mở F12)
+        if (e.ctrlKey && e.shiftKey && (key === "i" || key === "j" || key === "c")) {
+            e.preventDefault();
+            e.stopPropagation();
+            securityWarning("Không được phép mở Developer Tools!");
+            return false;
+        }
+    }, true);
+
+    console.log("%c🛡️ HOANGKUN SECURITY SYSTEM", "font-size:20px;font-weight:bold;color:#1677ff;");
+    console.log("%c⚠️ Hệ thống đã tắt F12 và Chuột phải.", "font-size:14px;color:#ef4444;font-weight:bold;");
+
+})();
+</script>
 </body>
-</html>
+</html> sửa cả instrangram di
