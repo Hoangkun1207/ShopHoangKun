@@ -3545,6 +3545,67 @@ auth.onAuthStateChanged(user => {
 
         }, 700);
 
+        /* =====================================================
+           HIỆU ỨNG THÔNG BÁO REALTIME KHI CỘNG/TRỪ XU
+        ===================================================== */
+        const historyRef = db.ref("users/" + user.uid + "/lich_su_hoa_hong");
+        
+        historyRef.once("value").then(snap => {
+            const initialCount = snap.numChildren();
+            let loadedCount = 0;
+
+            historyRef.on("child_added", childSnap => {
+                loadedCount++;
+                
+                // Chỉ hiện thông báo với giao dịch mới phát sinh
+                if (loadedCount > initialCount) {
+                    const data = childSnap.val();
+                    if (!data) return;
+
+                    const amount = Number(data.amount || 0);
+                    const isAdd = amount > 0;
+                    const absAmount = Math.abs(amount).toLocaleString("vi-VN");
+                    
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 6000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: isAdd ? 'success' : 'info',
+                        title: isAdd ? '🎉 BẠN VỪA ĐƯỢC CỘNG XU!' : '💸 BIẾN ĐỘNG SỐ DƯ',
+                        html: `
+                            <div style="font-size: 14px; font-weight: 600; color: #526074; margin-top: 5px; text-align: left;">
+                                Giao dịch: ${isAdd 
+                                    ? `<span style="color:#10b981; font-weight: 800; font-size: 16px;">+${absAmount} xu</span>` 
+                                    : `<span style="color:#ef4444; font-weight: 800; font-size: 16px;">-${absAmount} xu</span>`}<br>
+                                <span style="font-size: 12px; color: #8a96aa;">Lý do: ${data.content || 'Hệ thống cập nhật'}</span>
+                            </div>
+                        `,
+                        background: '#ffffff',
+                        color: '#172033',
+                        iconColor: isAdd ? '#10b981' : '#ef4444'
+                    });
+                    
+                    // Nếu là cộng tiền thì gọi pháo hoa
+                    if (isAdd && typeof confetti === "function") {
+                        confetti({
+                            particleCount: 80,
+                            spread: 70,
+                            origin: { y: 0.8 },
+                            zIndex: 99999
+                        });
+                    }
+                }
+            });
+        });
 
         /* =====================================================
            FIREBASE USER DATA
