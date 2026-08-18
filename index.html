@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+    
+    <script>
+        // Kiểm tra xem khách đã xem Intro chưa
+        if (!sessionStorage.getItem("introDone")) {
+            // Chưa xem -> Chuyển hướng sang xem Intro ngay lập tức
+            window.location.href = "intro.html";
+        }
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hoangkun Store - Hệ Thống Dịch Vụ Mạng Xã Hội Đa Nền Tảng Uy Tín</title>
