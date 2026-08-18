@@ -902,9 +902,9 @@
                         <div class="field">
                             <label>Số lượng</label>
                             <div class="quantity-control">
-                                <button type="button" onclick="changeQuantity(-50)"><i class="fa-solid fa-minus"></i></button>
-                                <input id="quantity" type="number" value="50" min="50" step="1" inputmode="numeric">
-                                <button type="button" onclick="changeQuantity(50)"><i class="fa-solid fa-plus"></i></button>
+                                <button type="button" onclick="changeQuantity(-1)"><i class="fa-solid fa-minus"></i></button>
+                                <input id="quantity" type="number" value="50" step="1" inputmode="numeric">
+                                <button type="button" onclick="changeQuantity(1)"><i class="fa-solid fa-plus"></i></button>
                             </div>
                             <small style="color:#ef4444; font-weight:bold;">1 ID KHÔNG CÀI 2 ĐƠN CÙNG LÚC !</small>
                         </div>
@@ -1118,7 +1118,7 @@ auth.onAuthStateChanged(user => {
 const userBtn = document.getElementById("userBtn");
 const userDropdown = document.querySelector(".user-dropdown");
 userBtn.addEventListener("click", e => { e.stopPropagation(); userDropdown.classList.toggle("open"); });
-document.addEventListener("click", e => { if (!userDropdown.contains(e.target) && !userBtn.contains(e.target)) userDropdown.classList.remove("open"); });
+document.addEventListener("click", e => { if (!userDropdown.contains(e.target)) userDropdown.classList.remove("open"); });
 
 document.addEventListener("keydown", e => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
@@ -1195,24 +1195,21 @@ linkInput.addEventListener("input", () => {
    QUANTITY & PRICE
 ===================================================== */
 function changeQuantity(amount) {
-    let current = Number(quantity.value) || 50;
+    let current = Number(quantity.value) || 0;
     current += amount;
-    if (current < 50) current = 50;
+    if (current < 0) current = 0;
     quantity.value = Math.floor(current);
     updatePrice();
 }
 
 quantity.addEventListener("input", () => {
-    let value = Number(quantity.value);
-    if (!Number.isFinite(value) || value < 50) value = 50;
-    quantity.value = Math.floor(value);
     updatePrice();
 });
 
 function updatePrice() {
-    let amount = Math.floor(Number(quantity.value || 0));
-    if (amount < 50) amount = 50;
-    quantity.value = amount;
+    let amount = Number(quantity.value || 0);
+    amount = Math.floor(amount);
+    if (amount < 0) amount = 0;
     
     const unitPrice = Number(prices[service.value] || 0);
     const total = amount * unitPrice;
@@ -1486,6 +1483,5 @@ updatePrice();
 
 })();
 </script>
-    
 </body>
 </html>
