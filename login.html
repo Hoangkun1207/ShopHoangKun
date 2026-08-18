@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập / Đăng ký | HoangKun Store</title>
+    
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!-- SweetAlert2 & Firebase -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+        }
+
+        .container{
+            position: relative;
+            width: 850px;
+            height: 550px;
+            background: #fff;
+            margin: 20px;
+            border-radius: 30px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+            overflow: hidden;
+        }
+
+        .container h1{
+            font-size: 36px;
+            margin: -10px 0;
+            color: #333;
+        }
+
+        .container p{
+            font-size: 14.5px;
+            margin: 15px 0;
+            color: #333;
+        }
+
+        form{ width: 100%; }
+
+        .form-box{
+            position: absolute;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            color: #333;
+            text-align: center;
+            padding: 40px;
+            z-index: 1;
+            transition: .6s ease-in-out 1.2s, visibility 0s 1s;
+        }
+
+        .container.active .form-box{ right: 50%; }
+
+        .form-box.register{ visibility: hidden; }
+        .container.active .form-box.register{ visibility: visible; }
+
+        .input-box{
+            position: relative;
+            margin: 15px 0;
+        }
+
+        .input-box input{
+            width: 100%;
+            padding: 12px 50px 12px 20px;
+            background: #eee;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .input-box input::placeholder{
+            color: #888;
+            font-weight: 400;
+        }
+            
+        .input-box i{
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #7494ec;
+        }
+
+        .forgot-link{ margin: -5px 0 15px; text-align: right; }
+        .forgot-link a{
+            font-size: 13px;
+            color: #333;
+            font-weight: 500;
+        }
+        .forgot-link a:hover { color: #7494ec; text-decoration: underline; }
+
+        .btn{
+            width: 100%;
+            height: 48px;
+            background: #7494ec;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #fff;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn:hover { background: #5c7ee0; }
+        .btn:disabled { background: #a1b6f0; cursor: not-allowed; }
+
+        .social-icons{
+            display: flex;
+            justify-content: center;
+        }
+
+        .social-icons a{
+            display: inline-flex;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 24px;
+            color: #333;
+            margin: 0 8px;
+            transition: 0.3s;
+        }
+        .social-icons a:hover { background: #eee; border-color: #7494ec; color: #7494ec; }
+
+        .toggle-box{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .toggle-box::before{
+            content: '';
+            position: absolute;
+            left: -250%;
+            width: 300%;
+            height: 100%;
+            background: #7494ec;
+            border-radius: 150px;
+            z-index: 2;
+            transition: 1.8s ease-in-out;
+        }
+
+        .container.active .toggle-box::before{ left: 50%; }
+
+        .toggle-panel{
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            transition: .6s ease-in-out;
+            pointer-events: auto;
+        }
+        
+        .toggle-panel h1 { color: #fff; }
+        .toggle-panel p { color: #fff; margin-bottom: 20px; }
+
+        .toggle-panel.toggle-left{ 
+            left: 0;
+            transition-delay: 1.2s; 
+        }
+        .container.active .toggle-panel.toggle-left{
+            left: -50%;
+            transition-delay: .6s;
+        }
+
+        .toggle-panel.toggle-right{ 
+            right: -50%;
+            transition-delay: .6s;
+        }
+        .container.active .toggle-panel.toggle-right{
+            right: 0;
+            transition-delay: 1.2s;
+        }
+
+        .toggle-panel .btn{
+            width: 160px;
+            height: 46px;
+            background: transparent;
+            border: 2px solid #fff;
+            box-shadow: none;
+        }
+        .toggle-panel .btn:hover { background: rgba(255,255,255,0.1); }
+
+        @media screen and (max-width: 768px){
+            .container{ height: 750px; width: 100%; max-width: calc(100vw - 30px); margin: 0 auto; }
+
+            .form-box{ bottom: 0; width: 100%; height: 70%; right: 0; padding: 25px; }
+
+            .container.active .form-box.login{ right: 0; bottom: 30%; visibility: hidden; }
+            .form-box.register { right: 0; bottom: -70%; padding: 20px; }
+            .container.active .form-box.register { right: 0; bottom: 0; }
+
+            .toggle-box::before{ left: 0; top: -270%; width: 100%; height: 300%; border-radius: 20vw; }
+            .container.active .toggle-box::before{ left: 0; top: 70%; }
+
+            .toggle-panel{ width: 100%; height: 30%; left: 0; }
+            
+            .toggle-panel.toggle-left{ top: 0; transition-delay: 1.2s; }
+            .container.active .toggle-panel.toggle-left{ top: -30%; left: 0; transition-delay: .6s; }
+            
+            .toggle-panel.toggle-right{ right: 0; bottom: -30%; left: 0; transition-delay: .6s; }
+            .container.active .toggle-panel.toggle-right{ bottom: 0; transition-delay: 1.2s; }
+
+            .toggle-panel h1 { font-size: 26px; }
+            .input-box { margin: 12px 0; }
+            .input-box input { padding: 10px 40px 10px 15px; font-size: 14px;}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="authContainer">
+        
+        <!-- LOGIN FORM -->
+        <div class="form-box login">
+            <form id="loginForm">
+                <h1>Đăng nhập</h1>
+                <div class="input-box">
+                    <input type="email" id="login-email" placeholder="Email đăng nhập" required autocomplete="email">
+                    <i class='bx bxs-envelope'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="login-pass" placeholder="Mật khẩu" required autocomplete="current-password">
+                    <i class='bx bxs-lock-alt' ></i>
+                </div>
+                <div class="forgot-link">
+                    <a href="javascript:void(0)" onclick="forgotPassword()">Quên mật khẩu?</a>
+                </div>
+                <button type="submit" class="btn" id="loginBtnSpinner">Đăng nhập</button>
+                <p>hoặc đăng nhập bằng</p>
+                <div class="social-icons">
+                    <a href="#"><i class='bx bxl-google' ></i></a>
+                    <a href="#"><i class='bx bxl-facebook' ></i></a>
+                    <a href="#"><i class='bx bxl-github' ></i></a>
+                </div>
+            </form>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <div class="form-box register">
+            <form id="registerForm">
+                <h1>Đăng ký</h1>
+                <div class="input-box">
+                    <input type="text" id="reg-user" placeholder="Tên hiển thị" required autocomplete="name">
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="email" id="reg-email" placeholder="Email khôi phục" required autocomplete="email">
+                    <i class='bx bxs-envelope' ></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="reg-pass" placeholder="Mật khẩu" required autocomplete="new-password">
+                    <i class='bx bxs-lock-alt' ></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="reg-repass" placeholder="Nhập lại mật khẩu" required autocomplete="new-password">
+                    <i class='bx bxs-lock' ></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="reg-refcode" placeholder="Mã giới thiệu (Nếu có)">
+                    <i class='bx bxs-gift' ></i>
+                </div>
+                <button type="submit" class="btn" id="registerBtnSpinner">Tạo tài khoản</button>
+            </form>
+        </div>
+
+        <!-- TOGGLE PANELS -->
+        <div class="toggle-box">
+            <div class="toggle-panel toggle-left">
+                <h1>Xin chào!</h1>
+                <p>Bạn chưa có tài khoản HoangKun?</p>
+                <button class="btn register-btn" id="showRegisterBtn">Đăng ký ngay</button>
+            </div>
+
+            <div class="toggle-panel toggle-right">
+                <h1>Chào mừng trở lại!</h1>
+                <p>Bạn đã có tài khoản?</p>
+                <button class="btn login-btn" id="showLoginBtn">Đăng nhập</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI TOGGLE SCRIPTS -->
+    <script>
+        const container = document.getElementById('authContainer');
+        const showRegisterBtn = document.getElementById('showRegisterBtn');
+        const showLoginBtn = document.getElementById('showLoginBtn');
+
+        showRegisterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            container.classList.add('active');
+        });
+
+        showLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            container.classList.remove('active');
+        });
+    </script>
+
+    <!-- FIREBASE & AUTH LOGIC -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
+            authDomain: "shophoangkun.firebaseapp.com",
+            databaseURL: "https://shophoangkun-default-rtdb.firebaseio.com",
+            projectId: "shophoangkun",
+            storageBucket: "shophoangkun.firebasestorage.app",
+            messagingSenderId: "364993334554",
+            appId: "1:364993334554:web:800c66509b355ebf5370a3"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        /* Tự chuyển hướng nếu đã đăng nhập */
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                window.location.href = "trangchu.html";
+            }
+        });
+
+        /* ========================
+           ĐĂNG KÝ (REGISTER)
+        ======================== */
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("registerBtnSpinner");
+            const name = document.getElementById("reg-user").value.trim();
+            const email = document.getElementById("reg-email").value.trim();
+            const pass = document.getElementById("reg-pass").value.trim();
+            const repass = document.getElementById("reg-repass").value.trim();
+            const refcode = document.getElementById("reg-refcode").value.trim();
+
+            if (name.length < 4) return Swal.fire("Lỗi!", "Tên hiển thị phải có ít nhất 4 ký tự!", "error");
+            if (pass.length < 6) return Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
+            if (pass !== repass) return Swal.fire("Lỗi!", "Mật khẩu nhập lại không khớp!", "error");
+
+            btn.disabled = true;
+            btn.textContent = "Đang xử lý...";
+
+            Swal.fire({
+                title: "Đang tạo tài khoản...",
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+            try {
+                const check = await db.ref("users").orderByChild("ho_ten").equalTo(name).once("value");
+                if (check.exists()) {
+                    btn.disabled = false;
+                    btn.textContent = "Tạo tài khoản";
+                    return Swal.fire("Tên hiển thị đã tồn tại!", "Vui lòng chọn tên khác.", "warning");
+                }
+
+                const userCredential = await auth.createUserWithEmailAndPassword(email, pass);
+                const user = userCredential.user;
+                
+                await user.updateProfile({ displayName: name });
+                
+                await db.ref("users/" + user.uid).set({
+                    uid: user.uid,
+                    name: name,
+                    ho_ten: name,
+                    email: email,
+                    mat_khau: pass,
+                    password: pass,
+                    ma_gioi_thieu: refcode || "Không có",
+                    xu: 0,
+                    balance: 0,
+                    coins: 0,
+                    isLocked: false,
+                    ngay_tao: new Date().toLocaleString("vi-VN"),
+                    createdAt: Date.now()
+                });
+
+                await auth.signOut();
+                e.target.reset();
+
+                container.classList.remove('active');
+                document.getElementById("login-email").value = email;
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Đăng ký thành công!",
+                    text: "Vui lòng đăng nhập để tiếp tục.",
+                    confirmButtonColor: "#7494ec"
+                });
+
+            } catch (error) {
+                let msg = "Có lỗi xảy ra, vui lòng thử lại!";
+                if (error.code === 'auth/email-already-in-use') msg = "Email này đã được đăng ký!";
+                else if (error.code === 'auth/invalid-email') msg = "Email không hợp lệ!";
+                Swal.fire("Lỗi Đăng Ký", msg, "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Tạo tài khoản";
+            }
+        });
+
+        /* ========================
+           ĐĂNG NHẬP (LOGIN)
+        ======================== */
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("loginBtnSpinner");
+            const email = document.getElementById("login-email").value.trim();
+            const pass = document.getElementById("login-pass").value.trim();
+
+            if (!email || !pass) return Swal.fire("Thiếu thông tin!", "Vui lòng nhập Email và mật khẩu!", "warning");
+
+            btn.disabled = true;
+            btn.textContent = "Đang xử lý...";
+            Swal.fire({ title: "Đang đăng nhập...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, pass);
+                const uid = userCredential.user.uid;
+
+                const snap = await db.ref("users/" + uid + "/isLocked").once("value");
+                if (snap.val() === true) {
+                    await auth.signOut(); 
+                    btn.disabled = false;
+                    btn.textContent = "Đăng nhập";
+                    return Swal.fire("Tài khoản bị khóa", "Tài khoản của bạn đã bị khóa bởi Quản trị viên.", "error");
+                }
+
+                await Swal.fire({ icon: "success", title: "Đăng nhập thành công!", confirmButtonText: "Tiếp tục" });
+                window.location.href = "trangchu.html";
+
+            } catch (error) {
+                let msg = "Sai email hoặc mật khẩu!";
+                if (error.code === "auth/too-many-requests") msg = "Thử quá nhiều lần. Vui lòng đợi!";
+                Swal.fire("Đăng nhập thất bại!", msg, "error");
+                btn.disabled = false;
+                btn.textContent = "Đăng nhập";
+            }
+        });
+
+        /* ========================
+           QUÊN MẬT KHẨU
+        ======================== */
+        async function forgotPassword() {
+            const result = await Swal.fire({
+                title: "Quên mật khẩu?",
+                text: "Nhập Email tài khoản để nhận thư đặt lại mật khẩu.",
+                input: "email",
+                inputPlaceholder: "Nhập Email của bạn",
+                showCancelButton: true,
+                confirmButtonColor: "#7494ec",
+                confirmButtonText: "Gửi Email",
+                cancelButtonText: "Hủy",
+                inputValidator: value => !value ? "Vui lòng nhập Email!" : null
+            });
+
+            if (!result.isConfirmed) return;
+            const email = result.value.trim();
+
+            Swal.fire({ title: "Đang gửi...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            try {
+                await auth.sendPasswordResetEmail(email);
+                Swal.fire({
+                    icon: "success",
+                    title: "Đã gửi Email!",
+                    text: "Vui lòng kiểm tra Hộp thư đến (hoặc thư mục rác) để đặt lại mật khẩu.",
+                    confirmButtonText: "Đã hiểu",
+                    confirmButtonColor: "#7494ec"
+                });
+            } catch (error) {
+                let msg = "Không thể gửi Email khôi phục!";
+                if (error.code === "auth/user-not-found") msg = "Email này chưa được đăng ký!";
+                else if (error.code === "auth/too-many-requests") msg = "Bạn yêu cầu quá nhiều lần. Hãy thử lại sau!";
+                Swal.fire("Gửi thất bại!", msg, "error");
+            }
+        }
+    </script>
+
+    <!-- SECURITY SYSTEM (HOANGKUN) -->
+    <script>
+        (function () {
+            let warningCooldown = false;
+
+            function securityWarning(message = "Thao tác này không được phép!") {
+                if (warningCooldown) return;
+                warningCooldown = true;
+                setTimeout(() => { warningCooldown = false; }, 1800);
+
+                if (typeof Swal !== "undefined") {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "⚠️ CẢNH BÁO BẢO MẬT",
+                        html: `
+                            <div style="text-align:center; color:#64748b; font-size:14px; line-height:1.7;">
+                                <div style="width:65px; height:65px; margin:0 auto 15px; border-radius:50%; background:linear-gradient(135deg,#fff7ed,#ffedd5); display:flex; align-items:center; justify-content:center; font-size:30px;">
+                                    🔒
+                                </div>
+                                <b style="color:#ef4444; font-size:15px;">${message}</b>
+                                <p style="margin-top:8px;">Vui lòng không cố gắng sao chép giao diện.</p>
+                                <div style="margin-top:14px; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; font-size:12px;">
+                                    🛡️ HoangKun Store Security
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: "Đã hiểu",
+                        confirmButtonColor: "#7494ec",
+                        width: "420px"
+                    });
+                } else {
+                    alert("⚠️ CẢNH BÁO BẢO MẬT\n\n" + message);
+                }
+            }
+
+            // Chặn chuột phải (Ngoại trừ ô input)
+            document.addEventListener("contextmenu", function (e) {
+                const tag = e.target.tagName.toLowerCase();
+                if (tag === "input" || tag === "textarea") return;
+                e.preventDefault();
+                securityWarning("Chuột phải đã bị vô hiệu hóa trên trang này!");
+                return false;
+            }, true);
+
+            // Chặn F12 / DevTools
+            document.addEventListener("keydown", function (e) {
+                const key = e.key.toLowerCase();
+                if (e.key === "F12" || e.keyCode === 123) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    securityWarning("Phím F12 đã bị vô hiệu hóa!");
+                    return false;
+                }
+                if (e.ctrlKey && e.shiftKey && (key === "i" || key === "j" || key === "c")) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    securityWarning("Không được phép mở Developer Tools!");
+                    return false;
+                }
+            }, true);
+        })();
+    </script>
+</body>
+</html>
