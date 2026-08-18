@@ -1382,7 +1382,6 @@
                                     id="quantity"
                                     type="number"
                                     value="50"
-                                    min="50"
                                     step="1"
                                     inputmode="numeric"
                                 >
@@ -2116,90 +2115,36 @@ linkInput.addEventListener(
 ===================================================== */
 
 function changeQuantity(amount) {
-
-    let current =
-        Number(quantity.value) || 50;
-
+    let current = Number(quantity.value) || 0;
     current += amount;
-
-    if (current < 50) {
-        current = 50;
-    }
-
-    current = Math.floor(current);
-
-    quantity.value = current;
-
+    if (current < 0) { current = 0; }
+    quantity.value = Math.floor(current);
     updatePrice();
-
 }
-
 
 /* =====================================================
    KIỂM TRA SỐ LƯỢNG
 ===================================================== */
 
-quantity.addEventListener(
-    "input",
-    () => {
-
-        let value =
-            Number(quantity.value);
-
-        if (!Number.isFinite(value)) {
-            value = 50;
-        }
-
-        value = Math.floor(value);
-
-        if (value < 50) {
-            value = 50;
-        }
-
-        quantity.value = value;
-
-        updatePrice();
-
-    }
-);
-
+quantity.addEventListener("input", () => {
+    updatePrice();
+});
 
 /* =====================================================
    TÍNH GIÁ
 ===================================================== */
 
 function updatePrice() {
-
-    let amount =
-        Number(quantity.value || 0);
-
-    if (
-        !Number.isFinite(amount) ||
-        amount < 50
-    ) {
-        amount = 50;
-    }
-
+    let amount = Number(quantity.value || 0);
     amount = Math.floor(amount);
-
-    quantity.value = amount;
-
-    const unitPrice =
-        Number(prices[service.value] || 0);
-
-    const total =
-        amount * unitPrice;
-
-    totalPrice.textContent =
-        formatXu(total);
-
-    priceNote.textContent =
-        "Đơn giá: " +
-        formatXu(unitPrice) +
-        " / 1";
-
+    if (amount < 0) amount = 0;
+    
+    const unitPrice = Number(prices[service.value] || 0);
+    const total = amount * unitPrice;
+    
+    totalPrice.textContent = formatXu(total);
+    priceNote.textContent = "Đơn giá: " + formatXu(unitPrice) + " / 1";
 }
-
 
 /* =====================================================
    EVENT GIÁ
@@ -3218,7 +3163,7 @@ updatePrice();
 
     /* =========================
        THÔNG BÁO CẢNH BÁO
-    ========================= */
+    ======================== */
     function securityWarning(message = "Thao tác này không được phép!") {
         // Không spam popup liên tục
         if (warningCooldown) return;
@@ -3294,4 +3239,4 @@ updatePrice();
 })();
 </script>
 </body>
-</html>
+</html> sửa tối thiểu đi cho khách nhập bao nhiêu cũng được miễn lúc đặt là 50 giống bên ig mà tôi bảo đi
