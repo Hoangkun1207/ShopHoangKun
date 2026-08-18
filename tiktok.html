@@ -886,6 +886,7 @@
                                 <option value="tiktok_follow">Theo dõi — 1.700 xu / 1</option>
                                 <option value="tiktok_save">Lượt lưu video — 500 xu / 1</option>
                                 <option value="tiktok_view">View video — 300 xu / 1</option>
+                                <option value="tiktok_comment">Bình luận — 1.300 xu / 1</option>
                                 <option value="tiktok_share">Share video — 300 xu / 1</option>
                                 <option value="tiktok_share_live">Share Livestream — 500 xu / 1</option>
                                 <option value="tiktok_view_live">Mắt xem Livestream — 1.000 xu / 1</option>
@@ -902,9 +903,9 @@
                         <div class="field">
                             <label>Số lượng</label>
                             <div class="quantity-control">
-                                <button type="button" onclick="changeQuantity(-1)"><i class="fa-solid fa-minus"></i></button>
+                                <button type="button" onclick="changeQuantity(-50)"><i class="fa-solid fa-minus"></i></button>
                                 <input id="quantity" type="number" value="50" step="1" inputmode="numeric">
-                                <button type="button" onclick="changeQuantity(1)"><i class="fa-solid fa-plus"></i></button>
+                                <button type="button" onclick="changeQuantity(50)"><i class="fa-solid fa-plus"></i></button>
                             </div>
                             <small style="color:#ef4444; font-weight:bold;">1 ID KHÔNG CÀI 2 ĐƠN CÙNG LÚC !</small>
                         </div>
@@ -1118,7 +1119,7 @@ auth.onAuthStateChanged(user => {
 const userBtn = document.getElementById("userBtn");
 const userDropdown = document.querySelector(".user-dropdown");
 userBtn.addEventListener("click", e => { e.stopPropagation(); userDropdown.classList.toggle("open"); });
-document.addEventListener("click", e => { if (!userDropdown.contains(e.target)) userDropdown.classList.remove("open"); });
+document.addEventListener("click", e => { if (!userDropdown.contains(e.target) && !userBtn.contains(e.target)) userDropdown.classList.remove("open"); });
 
 document.addEventListener("keydown", e => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
@@ -1239,23 +1240,42 @@ function getLocalOrders() {
     try { return JSON.parse(localStorage.getItem(getLocalKey()) || "[]"); } catch { return []; }
 }
 
+/* FIX LỖI FIREBASE CACHE KHI TRỪ XU */
 async function deductBalance(amount) {
     const balanceRef = db.ref("users").child(currentUser.uid).child(balanceField);
+    let insufficient = false;
+
     const result = await balanceRef.transaction(currentValue => {
+        if (currentValue === null) return currentBalance - amount; 
+
         const balance = Number(currentValue || 0);
-        if (balance < amount) return; 
+        if (balance < amount) {
+            insufficient = true;
+            return currentValue;
+        }
+        
+        insufficient = false;
         return balance - amount;
     });
-    if (!result.committed) throw new Error("INSUFFICIENT_BALANCE");
+
+    if (insufficient) {
+        throw new Error("INSUFFICIENT_BALANCE");
+    }
+
     currentBalance = Number(result.snapshot.val() || 0);
     balanceValue.textContent = formatXu(currentBalance);
     return currentBalance;
 }
 
+/* FIX LỖI FIREBASE CACHE KHI HOÀN XU */
 async function refundBalance(amount) {
     try {
         const balanceRef = db.ref("users").child(currentUser.uid).child(balanceField);
-        const result = await balanceRef.transaction(curr => Number(curr || 0) + Number(amount || 0));
+        const result = await balanceRef.transaction(curr => {
+            if (curr === null) return currentBalance + amount;
+            return Number(curr || 0) + Number(amount || 0);
+        });
+        
         if (result.committed) {
             currentBalance = Number(result.snapshot.val() || 0);
             balanceValue.textContent = formatXu(currentBalance);
@@ -1397,6 +1417,7 @@ function logout() {
 
 updatePrice();
 </script>
+
 <script>
 /* =========================================================
    HOANGKUN SECURITY SYSTEM
@@ -1447,9 +1468,11 @@ updatePrice();
     }
 
     /* =========================
-       CẤM CHUỘT PHẢI
+       CẤM CHUỘT PHẢI (NGOẠI TRỪ INPUT)
     ========================= */
     document.addEventListener("contextmenu", function (e) {
+        const tag = e.target.tagName.toLowerCase();
+        if (tag === "input" || tag === "textarea") return;
         e.preventDefault();
         securityWarning("Chuột phải đã bị vô hiệu hóa trên trang này!");
         return false;
@@ -1484,4 +1507,4 @@ updatePrice();
 })();
 </script>
 </body>
-</html>
+</html> sửa cả facebook đi
