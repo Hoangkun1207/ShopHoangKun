@@ -40,7 +40,7 @@
         button,input,textarea{font-family:inherit;border:0;outline:0}
         button{cursor:pointer}
 
-        /* ========================= SIDEBAR ========================= */
+        /* SIDEBAR */
         .sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);background:linear-gradient(180deg,#0c1627,#101b2d);color:#fff;z-index:2000;display:flex;flex-direction:column}
         .sidebar.open {transform: translateX(0) !important;transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);box-shadow: 10px 0 40px rgba(0,0,0,0.6);}
         .brand{height:76px;display:flex;align-items:center;padding:0 25px;font-size:18px;font-weight:800;border-bottom:1px solid rgba(255,255,255,.04);flex-shrink: 0;}
@@ -57,7 +57,7 @@
         .badge{margin-left:auto;background:#0fc58a;color:#fff;padding:2px 6px;border-radius:5px;font-size:8px;font-weight:800}
         .sidebar-footer{padding:10px 0;border-top:1px solid rgba(255,255,255,.05);flex-shrink: 0;}
 
-        /* ========================= MAIN & TOPBAR ========================= */
+        /* MAIN & TOPBAR */
         .main{margin-left:var(--sidebar);min-height:100vh;}
         .topbar{height:76px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:900;}
         .top-left,.top-right{display:flex;align-items:center;gap:14px}
@@ -93,7 +93,7 @@
         /* ========================= CONTENT AREA ========================= */
         .content { padding: 25px 28px 40px; max-width: 1450px; margin: auto; }
 
-        /* KHỐI THỐNG KÊ (ĐÃ XÓA TỔNG NẠP THÁNG) */
+        /* KHỐI THỐNG KÊ (ĐÃ XÓA TỔNG NẠP THÁNG ĐỂ MỞ RỘNG) */
         .pw-grid { display: grid; grid-template-columns: 1.5fr 1fr; align-items: stretch; gap: 24px; margin-bottom: 28px; }
         .pw-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 22px 28px; box-shadow: 0 2px 8px rgba(15,23,42,.04); display: flex; align-items: center; gap: 16px; }
 
@@ -126,15 +126,9 @@
         .server-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
         .server-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: .2s; background: #fff; }
         
-        /* Hiệu ứng nối liền khung Note với Server được chọn */
-        .server-item.active { 
-            border-color: var(--primary); 
-            background: #fcfdff; 
-            border-bottom-left-radius: 0; 
-            border-bottom-right-radius: 0; 
-            border-bottom-color: transparent;
-        }
-
+        /* Cắt viền nối liền Note xanh */
+        .server-item.active { border-color: var(--primary); background: #fcfdff; border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: transparent;}
+        
         .sv-radio { margin-right: 12px; accent-color: var(--primary); transform: scale(1.1); cursor: pointer; }
         .sv-name { font-size: 13.5px; font-weight: 700; color: var(--text); flex: 1; }
         .sv-name a { color: var(--primary); font-size: 12px; font-weight: 600; margin-left: 5px; text-decoration: underline; }
@@ -144,17 +138,18 @@
         .badge-status.maintain { background: var(--danger); }
 
         .server-alert { 
-            background: #e8fcf3; 
+            background: #eafff4; 
             border: 1px solid var(--primary); 
             border-top: none; 
-            padding: 12px 15px; 
+            padding: 14px 16px; 
             border-radius: 0 0 10px 10px; 
             font-size: 12.5px; 
             color: #065f46; 
             line-height: 1.6; 
-            margin-top: -10.5px; /* Ép nối liền vào khung server phía trên */
-            margin-bottom: 10px; 
-            font-weight: 500; 
+            margin-top: -10.5px; 
+            margin-bottom: 15px; 
+            font-weight: 500;
+            display: none; /* Mặc định ẩn, điều khiển bằng JS */
         }
 
         .field { margin-bottom: 20px; }
@@ -291,7 +286,6 @@
 
 <!-- MAIN -->
 <main class="main">
-    <!-- TOPBAR -->
     <header class="topbar">
         <div class="top-left">
             <button class="mobile-menu" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
@@ -341,7 +335,7 @@
     <!-- CONTENT -->
     <div class="content">
 
-        <!-- THỐNG KÊ (Đã bỏ cột Tổng Nạp) -->
+        <!-- THỐNG KÊ (Đã xóa Tổng nạp tháng) -->
         <div class="pw-grid">
             <div class="pw-card">
                 <div class="pw-avatar" id="bigAvatar">H</div>
@@ -385,7 +379,7 @@
                     <span class="form-label">Chọn server</span>
                     
                     <div class="server-list">
-                        <!-- Mặc định chọn SV1 với giá 39,717,000 xu -->
+                        
                         <label class="server-item active" for="sv1" onclick="selectServer(1, 39717000, 'Check pass lấy lại mật khẩu')">
                             <input type="radio" name="server" id="sv1" class="sv-radio" checked>
                             <div class="sv-name">Check pass lấy lại mật khẩu. <a href="#">Xem Demo</a></div>
@@ -393,14 +387,8 @@
                             <div class="badge-status active">Hoạt động</div>
                         </label>
 
-                        <!-- Thẻ Lưu Ý Xanh Lá - Mặc định nằm dưới SV1 -->
-                        <div class="server-alert" id="serverNote">
-                            - Cần thiết bị chính chủ *<br>
-                            - Tài khoản và mật khẩu cũ ( nếu có)<br>
-                            - Gmail và pass cũ ( Nếu có)<br>
-                            - Link facebook bị hack và CCCD mặt trước<br><br>
-                            - Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm.
-                        </div>
+                        <!-- Box Lưu ý Bám đuôi -->
+                        <div class="server-alert" id="serverNote" style="display:block;"></div>
 
                         <label class="server-item" for="sv2" onclick="selectServer(2, 80682000, 'Đi Cổng support kéo ALL dạng FAQ')">
                             <input type="radio" name="server" id="sv2" class="sv-radio">
@@ -438,31 +426,8 @@
                         </label>
                     </div>
 
-                    <div class="field">
-                        <label>Link facebook*</label>
-                        <input type="text" id="fbLink" placeholder="Link facebook*">
-                    </div>
-
-                    <!-- THÊM 2 Ô INPUT KHI CHỌN SV1 -->
-                    <div class="field" id="field-oldAcc">
-                        <label>Tài khoản/pass cũ( nếu có)</label>
-                        <input type="text" id="oldAcc" placeholder="Tài khoản/pass cũ( nếu có)">
-                    </div>
-
-                    <div class="field" id="field-oldEmail">
-                        <label>Gmail/pass cũ ( nếu có)</label>
-                        <input type="text" id="oldEmail" placeholder="Gmail/pass cũ ( nếu có)">
-                    </div>
-
-                    <div class="field" id="field-cccd" style="display:none;">
-                        <label>CCCD (link ảnh hoặc gửi zalo)</label>
-                        <textarea id="cccdInfo" placeholder="CCCD (link ảnh hoặc gửi zalo)"></textarea>
-                    </div>
-
-                    <div class="field">
-                        <label>SDT Zalo liên hệ</label>
-                        <input type="number" id="zaloPhone" placeholder="Nhập SĐT Zalo của bạn">
-                    </div>
+                    <!-- Nơi Đổ Form Động Tương Ứng Với Server -->
+                    <div id="dynamic-fields"></div>
 
                     <button class="btn-submit" id="submitBtn" onclick="createOrder()"><i class="fa-solid fa-cart-plus"></i> Tạo yêu cầu</button>
                 </div>
@@ -501,7 +466,7 @@
                             <tr>
                                 <th>Mã đơn</th>
                                 <th>Dịch vụ</th>
-                                <th>Link URL</th>
+                                <th>Thông tin cung cấp</th>
                                 <th>Chi phí (xu)</th>
                                 <th>Trạng thái</th>
                                 <th>Thời gian</th>
@@ -527,6 +492,54 @@
 
 <script>
 /* =====================================================
+   CẤU HÌNH DỮ LIỆU ĐỘNG THEO TỪNG SERVER
+===================================================== */
+const serverNotes = {
+    1: "- Cần thiết bị chính chủ *<br>- Tài khoản và mật khẩu cũ ( nếu có)<br>- Gmail và pass cũ ( Nếu có)<br>- Link facebook bị hack và CCCD mặt trước<br><br>- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm.",
+    2: "- Cần cung cấp thông tin qua zalo<br>- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm.",
+    3: "- Cần cung cấp thông tin qua zalo<br>- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm.",
+    4: "- Cần cung cấp thông tin qua zalo<br>- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm.",
+    5: "Thời gian làm : 5 phút - 48h tuỳ nick có bị treo hay bị spam k<br>Thông tin cần :<br>- Tài khoản+pass fb<br>- SĐT liên kết ( nếu có ) + CCCD mặt trước<br>- Giá thay đổi khi thông tin của bạn không khớp chính chủ",
+    6: "- Tài khoản và mật khẩu nick FB<br>- CCCD nếu cần<br>- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm."
+};
+
+const serverFields = {
+    1: `
+        <div class="field"><label>Link facebook*</label><input type="text" placeholder="Link facebook*"></div>
+        <div class="field"><label>Tài khoản/pass cũ( nếu có)</label><input type="text" placeholder="Tài khoản/pass cũ( nếu có)"></div>
+        <div class="field"><label>Gmail/pass cũ ( nếu có)</label><input type="text" placeholder="Gmail/pass cũ ( nếu có)"></div>
+        <div class="field"><label>SDT Zalo liên hệ</label><input type="number" placeholder="Nhập SĐT Zalo của bạn"></div>
+    `,
+    2: `
+        <div class="field"><label>Link url facebook*</label><input type="text" placeholder="Link url facebook*"></div>
+        <div class="field"><label>CCCD ( link ảnh hoặc gửi zalo )</label><textarea placeholder="CCCD ( link ảnh hoặc gửi zalo )"></textarea></div>
+        <div class="field"><label>SDT Zalo liên hệ</label><input type="number" placeholder="Nhập SĐT Zalo của bạn"></div>
+    `,
+    3: `
+        <div class="field"><label>Link url facebook*</label><input type="text" placeholder="Link url facebook*"></div>
+        <div class="field"><label>CCCD ( link ảnh hoặc gửi zalo )</label><textarea placeholder="CCCD ( link ảnh hoặc gửi zalo )"></textarea></div>
+        <div class="field"><label>SDT Zalo liên hệ</label><input type="number" placeholder="Nhập SĐT Zalo của bạn"></div>
+    `,
+    4: `
+        <div class="field"><label>Link url facebook*</label><input type="text" placeholder="Link url facebook*"></div>
+        <div class="field"><label>CCCD ( link ảnh hoặc gửi zalo )</label><textarea placeholder="CCCD ( link ảnh hoặc gửi zalo )"></textarea></div>
+        <div class="field"><label>SDT Zalo liên hệ</label><input type="number" placeholder="Nhập SĐT Zalo của bạn"></div>
+    `,
+    5: `
+        <div class="field"><label>Tài khoản+pass fb*</label><input type="text" placeholder="Tài khoản+pass fb*"></div>
+        <div class="field"><label>SĐT liên kết ( nếu có )</label><input type="text" placeholder="SĐT liên kết ( nếu có )"></div>
+        <div class="field"><label>CCCD mặt trước( gửi link ảnh hoặc zalo)</label><input type="text" placeholder="CCCD mặt trước( gửi link ảnh hoặc zalo)"></div>
+        <div class="field"><label>Ghi chú</label><input type="text" placeholder="Ghi chú"></div>
+    `,
+    6: `
+        <div class="field"><label>Tài khoản + mail</label><input type="text" placeholder="Tài khoản + mail"></div>
+        <div class="field"><label>Mật khẩu mail liên kết ( nếu có )</label><input type="text" placeholder="Mật khẩu mail liên kết ( nếu có )"></div>
+        <div class="field"><label>SĐT liên kết</label><input type="text" placeholder="SĐT liên kết"></div>
+        <div class="field"><label>SDT Zalo liên hệ</label><input type="number" placeholder="SDT Zalo liên hệ"></div>
+    `
+};
+
+/* =====================================================
    FIREBASE
 ===================================================== */
 const firebaseConfig = {
@@ -548,7 +561,6 @@ let currentBalance = 0;
 let balanceField = "xu";
 let isOrdering = false;
 
-// Mặc định khởi tạo SV1
 let selectedServiceId = 1;
 let selectedServicePrice = 39717000;
 let selectedServiceName = "Check pass lấy lại mật khẩu";
@@ -564,7 +576,6 @@ auth.onAuthStateChanged(user => {
     document.getElementById("menuUserName").textContent = name;
     document.getElementById("avatarMini").textContent = letter;
     document.getElementById("menuAvatar").textContent = letter;
-
     document.getElementById("bigUserName").textContent = name;
     document.getElementById("bigUserEmail").textContent = user.email || "Không có email";
     document.getElementById("bigAvatar").textContent = letter;
@@ -572,6 +583,10 @@ auth.onAuthStateChanged(user => {
     loadBalance();
     loadOrders();
 });
+
+// Khởi tạo mặc định SV1 khi vừa load trang
+document.getElementById("dynamic-fields").innerHTML = serverFields[1];
+document.getElementById("serverNote").innerHTML = serverNotes[1];
 
 /* =====================================================
    UI LOGIC & TABS
@@ -667,15 +682,11 @@ async function refundBalance(amount) {
 }
 
 /* =====================================================
-   TẠO YÊU CẦU & LƯU FIREBASE
+   TỰ ĐỘNG CHUYỂN FORM & LƯU FIREBASE
 ===================================================== */
 function selectServer(id, price, name) {
-    // Tắt viền xanh các nút khác
-    document.querySelectorAll('.server-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    
-    // Kích hoạt viền xanh cho nút vừa bấm
+    // Kích hoạt viền xanh cho thẻ Server
+    document.querySelectorAll('.server-item').forEach(item => item.classList.remove('active'));
     const activeLabel = document.querySelector(`label[for="sv${id}"]`);
     activeLabel.classList.add('active');
     
@@ -683,28 +694,14 @@ function selectServer(id, price, name) {
     selectedServicePrice = price;
     selectedServiceName = name;
 
+    // Gắn thông báo màu xanh ngay dưới Server đang chọn
     const noteBox = document.getElementById("serverNote");
-    const notes = {
-        1: "- Cần thiết bị chính chủ *<br>- Tài khoản và mật khẩu cũ ( nếu có)<br>- Gmail và pass cũ ( Nếu có)<br>- Link facebook bị hack và CCCD mặt trước<br><br>- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm.",
-        2: "- Cần cung cấp thông tin qua zalo<br>- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm."
-    };
-
-    // Đổ text lưu ý vào hộp màu xanh
-    noteBox.innerHTML = notes[id] || "- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm.";
-
-    // Logic quan trọng: Di chuyển hộp lưu ý xuống ngay dưới nút vừa bấm
+    noteBox.innerHTML = serverNotes[id];
     activeLabel.insertAdjacentElement('afterend', noteBox);
+    noteBox.style.display = "block";
 
-    // Ẩn hiện ô nhập liệu linh hoạt theo Server
-    if(id === 1) {
-        document.getElementById('field-oldAcc').style.display = 'block';
-        document.getElementById('field-oldEmail').style.display = 'block';
-        document.getElementById('field-cccd').style.display = 'none';
-    } else {
-        document.getElementById('field-oldAcc').style.display = 'none';
-        document.getElementById('field-oldEmail').style.display = 'none';
-        document.getElementById('field-cccd').style.display = 'block';
-    }
+    // Đổ form nhập liệu tương ứng
+    document.getElementById("dynamic-fields").innerHTML = serverFields[id];
 }
 
 function escapeHtml(value) {
@@ -732,13 +729,21 @@ async function createOrder() {
     if (isOrdering) return;
     if (!currentUser) return Swal.fire({ icon: "warning", title: "Chưa đăng nhập", text: "Vui lòng đăng nhập trước khi đặt dịch vụ.", confirmButtonColor: "#1677ff" });
 
-    const link = document.getElementById("fbLink").value.trim();
-    const phone = document.getElementById("zaloPhone").value.trim();
-    const total = selectedServicePrice;
+    // Thu thập tự động toàn bộ dữ liệu từ các ô input mà người dùng vừa nhập
+    let inputsArr = [];
+    let hasEmpty = false;
 
-    if (!link || !phone) { 
-        return Swal.fire({ icon: "warning", title: "Thiếu thông tin", text: "Vui lòng nhập Link Facebook và SĐT Zalo.", confirmButtonColor: "#1677ff" }); 
+    document.querySelectorAll('#dynamic-fields .field input, #dynamic-fields .field textarea').forEach(el => {
+        if(el.value.trim() === '') hasEmpty = true;
+        else inputsArr.push(el.placeholder + ": " + el.value.trim());
+    });
+
+    if (hasEmpty || inputsArr.length === 0) { 
+        return Swal.fire({ icon: "warning", title: "Thiếu thông tin", text: "Vui lòng nhập đầy đủ tất cả các ô.", confirmButtonColor: "#1677ff" }); 
     }
+
+    const extraInfo = inputsArr.join(" | ");
+    const total = selectedServicePrice;
 
     if (currentBalance < total) {
         return Swal.fire({
@@ -758,18 +763,10 @@ async function createOrder() {
 
     let deducted = false;
     const orderId = generateOrderId();
-    
-    // Gộp thông tin lại để lưu gọn gàng
-    let extraInfo = "";
-    if(selectedServiceId === 1) {
-        extraInfo = `Acc cũ: ${document.getElementById("oldAcc").value} | Email cũ: ${document.getElementById("oldEmail").value}`;
-    } else {
-        extraInfo = `CCCD/Note: ${document.getElementById("cccdInfo").value}`;
-    }
 
     const orderData = {
-        orderId, userId: currentUser.uid, serviceId: selectedServiceId, service: selectedServiceName, platform: "Dịch Vụ Mở Khóa", link,
-        extraInfo, phone, total, status: "Đang xử lý", createdAt: Date.now()
+        orderId, userId: currentUser.uid, serviceId: selectedServiceId, service: selectedServiceName, platform: "Dịch Vụ Mở Khóa", 
+        extraInfo: extraInfo, total, status: "Đang xử lý", createdAt: Date.now()
     };
 
     try {
@@ -780,16 +777,12 @@ async function createOrder() {
         saveLocalOrder(orderData);
         addOrderToTable(orderData, true);
 
-        // Xóa form
-        document.getElementById("fbLink").value = ""; 
-        document.getElementById("oldAcc").value = ""; 
-        document.getElementById("oldEmail").value = ""; 
-        document.getElementById("cccdInfo").value = ""; 
-        document.getElementById("zaloPhone").value = "";
+        // Reset nhanh các ô input
+        document.querySelectorAll('#dynamic-fields .field input, #dynamic-fields .field textarea').forEach(el => el.value = "");
 
         Swal.fire({
             icon: "success", title: "Tạo yêu cầu thành công!",
-            html: `<div style='line-height:1.9'><b>Mã yêu cầu:</b> ${escapeHtml(orderId)}<br><b>Dịch vụ:</b> ${escapeHtml(selectedServiceName)}<br><b>Đã trừ:</b> ${formatXu(total)} xu<br><br><span style='color:#16b978;font-weight:800'>Kỹ thuật viên sẽ liên hệ với bạn qua Zalo trong vài phút tới!</span></div>`,
+            html: `<div style='line-height:1.9'><b>Mã yêu cầu:</b> ${escapeHtml(orderId)}<br><b>Dịch vụ:</b> ${escapeHtml(selectedServiceName)}<br><b>Đã trừ:</b> ${formatXu(total)} xu<br><br><span style='color:#16b978;font-weight:800'>Kỹ thuật viên sẽ liên hệ với bạn trong vài phút tới!</span></div>`,
             confirmButtonColor: "#1677ff", confirmButtonText: "Đã hiểu"
         });
     } catch (error) {
@@ -860,7 +853,7 @@ function addOrderToTable(order, prepend = false) {
     row.innerHTML = `
         <td><strong style="color:#1677ff">${escapeHtml(order.orderId)}</strong></td>
         <td>${escapeHtml(order.service || "---")}</td>
-        <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="${escapeHtml(order.link)}" target="_blank" style="color:#1677ff">${escapeHtml(order.link || "---")}</a></td>
+        <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color:#64748b;" title="${escapeHtml(order.extraInfo)}">${escapeHtml(order.extraInfo || "---")}</td>
         <td><strong style="color:#1677ff">${formatXu(order.total || 0)} xu</strong></td>
         <td><span class="status">${escapeHtml(order.status || "Đang xử lý")}</span></td>
         <td>${dateStr}</td>
