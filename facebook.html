@@ -25,6 +25,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <style>
         :root{
             --primary:#1677ff;
@@ -43,7 +44,6 @@
             --radius:18px;
         }
 
-        /* KHÔNG ÉP GLOBAL MAX-WIDTH ĐỂ TRÁNH LỖI ĐƠ MÀN HÌNH MÀ VẪN GIỮ ĐƯỢC LAYOUT PC */
         *{
             margin:0;
             padding:0;
@@ -205,6 +205,7 @@
         /* GRID LAYOUT */
         .grid{display:grid;grid-template-columns:1.7fr 1fr;gap:20px}
         
+        /* ĐÂY LÀ PHẦN CARD MÀ BẠN CẦN LÀM NỔI BẬT KHỐI */
         .card{
             background:#fff;border:1px solid var(--border);border-radius:18px;
             box-shadow:0 5px 20px rgba(31,51,73,.045);padding:22px;margin-bottom:20px;
@@ -345,7 +346,7 @@
         .support:hover { transform: translateY(-4px) scale(1.03); }
 
         /* =========================================================
-           RESPONSIVE MOBILE MƯỢT MÀ VÀ NỔI KHỐI CHO ĐIỆN THOẠI
+           RESPONSIVE MOBILE 
         ========================================================= */
         @media(max-width:1100px){
             :root{--sidebar:240px}
@@ -424,6 +425,92 @@
             
             .card { padding: 18px; } /* Cho lề trong của Card nhỉnh hơn chút để thoáng form */
         }
+
+
+/* =========================================================
+   FACEBOOK SERVICE UI - FIX / POLISH
+   Đồng bộ đúng với HTML hiện tại
+========================================================= */
+.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.75fr);gap:20px;align-items:start}
+.layout>div{min-width:0}
+.page-title{margin:4px 0 20px;padding:0 2px}
+.page-title h1{font-size:34px;line-height:1.1;letter-spacing:-.7px;color:#101d33;margin-bottom:6px}
+.page-title p{font-size:14px;color:#7d8ba1;font-weight:600}
+.card{padding:22px;border:1px solid #e5ebf4;border-radius:18px;background:#fff;box-shadow:0 8px 28px rgba(20,44,78,.055);margin-bottom:20px}
+.card-title{font-size:15px;min-height:42px;margin-bottom:18px;gap:11px}
+.card-title>i{font-size:17px}
+.fb-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(145deg,#e9f3ff,#dcecff);box-shadow:inset 0 0 0 1px #d4e7ff}
+.balance-box{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:14px 16px;margin-bottom:18px;border:1px solid #dfeaf8;border-radius:14px;background:linear-gradient(135deg,#f7fbff,#eef6ff)}
+.balance-left{display:flex;align-items:center;gap:11px;min-width:0}
+.balance-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#fff;color:#1677ff;box-shadow:0 4px 12px rgba(22,119,255,.1);flex:none}
+.balance-label{font-size:11px;color:#8090a7;font-weight:700;margin-bottom:2px}
+.balance-value{font-size:17px;color:#14213a;font-weight:800;line-height:1.2}
+.refresh-balance{width:34px;height:34px;border-radius:10px;background:#fff;color:#1677ff;border:1px solid #dce8f7;transition:.2s;flex:none}
+.refresh-balance:hover{background:#1677ff;color:#fff;transform:rotate(25deg)}
+.service-box{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px}
+.field{min-width:0;display:flex;flex-direction:column;gap:7px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:800;color:#334155}
+.field input,.field select{width:100%;height:44px;padding:0 13px;border:1px solid #dfe6f0;border-radius:11px;background:#fff;color:#253047;font-size:13px;font-weight:600;transition:.2s;box-shadow:0 1px 2px rgba(15,23,42,.02)}
+.field input:focus,.field select:focus{border-color:#7db9ff;box-shadow:0 0 0 3px rgba(22,119,255,.09)}
+.field input::placeholder{color:#a5afbf;font-weight:500}
+.field select{cursor:pointer;padding-right:35px}
+.field small{font-size:10.5px;color:#96a2b5;font-weight:600;line-height:1.35}
+.quantity-control{height:44px;display:grid;grid-template-columns:42px minmax(0,1fr) 42px;border:1px solid #dfe6f0;border-radius:11px;overflow:hidden;background:#fff}
+.quantity-control button{background:#f7f9fc;color:#64748b;font-size:13px;transition:.2s}
+.quantity-control button:hover{background:#eaf3ff;color:#1677ff}
+.quantity-control input{height:42px;border:0!important;border-radius:0!important;text-align:center;padding:0 5px;box-shadow:none!important;font-size:14px;font-weight:800}
+.quantity-control input::-webkit-inner-spin-button,.quantity-control input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.quantity-control input[type=number]{-moz-appearance:textfield}
+.link-error{font-size:11px;color:#ef4444;font-weight:700;min-height:0}
+.price{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:18px;padding:15px 16px;border:1px solid #e1ebf7;border-radius:13px;background:#f8fbff}
+.price span{font-size:12px;color:#738198;font-weight:700}
+.price strong{font-size:19px;color:#1677ff;font-weight:800;white-space:nowrap}
+.price-note{font-size:11px;color:#8b98aa;font-weight:600;text-align:right;margin-top:7px}
+.btn-order{height:50px;margin-top:14px;border-radius:12px;background:linear-gradient(105deg,#0878ff,#2997ff);box-shadow:0 9px 20px rgba(22,119,255,.2);font-size:14px;letter-spacing:.1px}
+.btn-order:hover{box-shadow:0 12px 25px rgba(22,119,255,.28);transform:translateY(-2px)}
+.table-card{overflow:hidden}
+.table-wrap{width:100%;overflow-x:auto;border:1px solid #e8edf4;border-radius:12px;margin-top:4px}
+table{width:100%;min-width:680px;border-collapse:separate;border-spacing:0;font-size:12px}
+thead th{height:43px;padding:0 13px;background:#f7f9fc;color:#718096;font-size:10.5px;text-transform:uppercase;letter-spacing:.35px;font-weight:800;text-align:left;border-bottom:1px solid #e7edf5;white-space:nowrap}
+tbody td{height:50px;padding:9px 13px;color:#475569;font-weight:600;border-bottom:1px solid #eef2f6;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#fbfdff}
+.info-list{display:flex;flex-direction:column;gap:4px}
+.info-item{display:flex;align-items:flex-start;gap:12px;padding:12px 10px;border-radius:12px;transition:.2s}
+.info-item:hover{background:#f7faff}
+.info-item>i{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#eef5ff;color:#1677ff;font-size:14px;flex:none}
+.info-item>div{font-size:11.5px;color:#7a8799;line-height:1.55;font-weight:600;padding-top:1px}
+.info-item strong{display:block;color:#26344a;font-size:12.5px;font-weight:800;margin-bottom:2px}
+.server-box{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:15px;padding:13px 14px;border:1px solid #dcefe6;border-radius:12px;background:#f4fbf7;color:#344054;font-size:12px;font-weight:800}
+.online{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:20px;background:#dcfce9;color:#079455;font-size:9px;font-weight:800}
+.online:before{content:"";width:6px;height:6px;border-radius:50%;background:#12b76a;box-shadow:0 0 0 3px rgba(18,183,106,.12)}
+.user-dropdown.open .user-menu{opacity:1;visibility:visible;transform:translateY(0)}
+
+@media(max-width:1100px){
+    .layout{grid-template-columns:1fr}
+    .layout>div:last-child{display:grid;grid-template-columns:1fr}
+}
+@media(max-width:800px){
+    .layout{display:block}
+    .service-box{grid-template-columns:1fr}
+    .field.full{grid-column:auto}
+    .page-title h1{font-size:28px}
+    .topbar{height:70px}
+    .content{padding:20px 15px 35px}
+    .card{padding:18px;border-radius:16px}
+}
+@media(max-width:500px){
+    .page-title{margin-bottom:15px}
+    .page-title h1{font-size:25px}
+    .page-title p{font-size:12px;line-height:1.5}
+    .card{padding:15px;margin-bottom:15px}
+    .balance-box{padding:12px}
+    .balance-value{font-size:15px}
+    .price strong{font-size:17px}
+    .support{width:58px;height:58px;right:15px;bottom:15px}
+}
+
 </style>
 </head>
 
