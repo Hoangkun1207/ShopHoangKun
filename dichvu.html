@@ -64,6 +64,7 @@
         .mobile-menu { display: none; border: none; cursor: pointer; flex-shrink: 0; }
         .crumb{display:flex;align-items:center;gap:10px;color:#99a4b7;font-size:14px;font-weight:600}
         .crumb i{font-size:11px;color:#c4ccda}
+        .crumb .current{color:#172033;font-weight:800}
         .search{width:285px;height:42px;border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:10px;padding:0 12px;color:#9aa6b8;background:#fff;margin-left:5px}
         .search input{width:100%;font-size:13px;color:#334155;background:transparent}
         .shortcut{font-size:10px;color:#9aa6b8;background:#f5f7fb;border:1px solid #e8edf5;border-radius:5px;padding:3px 6px;white-space:nowrap}
@@ -92,8 +93,8 @@
         /* ========================= CONTENT AREA ========================= */
         .content { padding: 25px 28px 40px; max-width: 1450px; margin: auto; }
 
-        /* KHỐI THỐNG KÊ */
-        .pw-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1fr); align-items: stretch; gap: 24px; margin-bottom: 28px; }
+        /* KHỐI THỐNG KÊ (ĐÃ XÓA TỔNG NẠP THÁNG) */
+        .pw-grid { display: grid; grid-template-columns: 1.5fr 1fr; align-items: stretch; gap: 24px; margin-bottom: 28px; }
         .pw-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 22px 28px; box-shadow: 0 2px 8px rgba(15,23,42,.04); display: flex; align-items: center; gap: 16px; }
 
         .pw-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0; flex-shrink: 0; background: linear-gradient(135deg,#d9edff,#b8dcff); color: #1677ff; display: grid; place-items: center; font-size: 20px; font-weight: bold;}
@@ -105,7 +106,6 @@
 
         .pw-card--stat { position: relative; background: linear-gradient(135deg,#f5f9ff 0%,#eaf2fe 100%); }
         .pw-stat-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: #fff; color: #0b74ff; flex-shrink: 0; box-shadow: 0 2px 6px rgba(15,23,42,.08); border: 1px solid #eef2f8; font-size: 16px; }
-        .pw-stat-icon.pink { color: #ec4899; }
         .pw-stat-body { min-width: 0; }
         .pw-stat-label { font-size: 12px; color: #94a3b8; margin-bottom: 2px; font-weight: 600; }
         .pw-stat-val { font-size: 18px; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 4px;}
@@ -125,8 +125,16 @@
         
         .server-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
         .server-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: .2s; background: #fff; }
-        .server-item:hover { border-color: #b9dcff; }
-        .server-item.active { border-color: var(--primary); background: #fcfdff; }
+        
+        /* Hiệu ứng nối liền khung Note với Server được chọn */
+        .server-item.active { 
+            border-color: var(--primary); 
+            background: #fcfdff; 
+            border-bottom-left-radius: 0; 
+            border-bottom-right-radius: 0; 
+            border-bottom-color: transparent;
+        }
+
         .sv-radio { margin-right: 12px; accent-color: var(--primary); transform: scale(1.1); cursor: pointer; }
         .sv-name { font-size: 13.5px; font-weight: 700; color: var(--text); flex: 1; }
         .sv-name a { color: var(--primary); font-size: 12px; font-weight: 600; margin-left: 5px; text-decoration: underline; }
@@ -135,7 +143,19 @@
         .badge-status.active { background: var(--success); }
         .badge-status.maintain { background: var(--danger); }
 
-        .server-alert { background: #e6fffa; border-left: 4px solid var(--success); padding: 12px 15px; border-radius: 4px 8px 8px 4px; font-size: 12.5px; color: #065f46; line-height: 1.6; margin-bottom: 20px; font-weight: 600; }
+        .server-alert { 
+            background: #e8fcf3; 
+            border: 1px solid var(--primary); 
+            border-top: none; 
+            padding: 12px 15px; 
+            border-radius: 0 0 10px 10px; 
+            font-size: 12.5px; 
+            color: #065f46; 
+            line-height: 1.6; 
+            margin-top: -10.5px; /* Ép nối liền vào khung server phía trên */
+            margin-bottom: 10px; 
+            font-weight: 500; 
+        }
 
         .field { margin-bottom: 20px; }
         .field label { display: block; font-size: 13px; font-weight: 800; margin-bottom: 8px; color: var(--text); }
@@ -321,7 +341,7 @@
     <!-- CONTENT -->
     <div class="content">
 
-        <!-- THỐNG KÊ (Xu) -->
+        <!-- THỐNG KÊ (Đã bỏ cột Tổng Nạp) -->
         <div class="pw-grid">
             <div class="pw-card">
                 <div class="pw-avatar" id="bigAvatar">H</div>
@@ -350,18 +370,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="pw-card pw-card--stat">
-                <div class="pw-stat-icon pink">
-                    <i class="fa-regular fa-credit-card"></i>
-                </div>
-                <div class="pw-stat-body">
-                    <div class="pw-stat-label">Tổng nạp tháng</div>
-                    <div class="pw-stat-val">
-                        <span>50,000</span> <span class="unit">xu</span>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="dashboard-container">
@@ -385,6 +393,7 @@
                             <div class="badge-status active">Hoạt động</div>
                         </label>
 
+                        <!-- Thẻ Lưu Ý Xanh Lá - Mặc định nằm dưới SV1 -->
                         <div class="server-alert" id="serverNote">
                             - Cần thiết bị chính chủ *<br>
                             - Tài khoản và mật khẩu cũ ( nếu có)<br>
@@ -661,8 +670,14 @@ async function refundBalance(amount) {
    TẠO YÊU CẦU & LƯU FIREBASE
 ===================================================== */
 function selectServer(id, price, name) {
-    document.querySelectorAll('.server-item').forEach(item => item.classList.remove('active'));
-    document.querySelector(`label[for="sv${id}"]`).classList.add('active');
+    // Tắt viền xanh các nút khác
+    document.querySelectorAll('.server-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Kích hoạt viền xanh cho nút vừa bấm
+    const activeLabel = document.querySelector(`label[for="sv${id}"]`);
+    activeLabel.classList.add('active');
     
     selectedServiceId = id;
     selectedServicePrice = price;
@@ -670,11 +685,15 @@ function selectServer(id, price, name) {
 
     const noteBox = document.getElementById("serverNote");
     const notes = {
-        1: "- Cần thiết bị chính chủ *<br>- Tài khoản và mật khẩu cũ (nếu có)<br>- Gmail và pass cũ (Nếu có)<br>- Link facebook bị hack và CCCD mặt trước<br><br>- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm.",
+        1: "- Cần thiết bị chính chủ *<br>- Tài khoản và mật khẩu cũ ( nếu có)<br>- Gmail và pass cũ ( Nếu có)<br>- Link facebook bị hack và CCCD mặt trước<br><br>- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm.",
         2: "- Cần cung cấp thông tin qua zalo<br>- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm."
     };
 
+    // Đổ text lưu ý vào hộp màu xanh
     noteBox.innerHTML = notes[id] || "- Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm.";
+
+    // Logic quan trọng: Di chuyển hộp lưu ý xuống ngay dưới nút vừa bấm
+    activeLabel.insertAdjacentElement('afterend', noteBox);
 
     // Ẩn hiện ô nhập liệu linh hoạt theo Server
     if(id === 1) {
