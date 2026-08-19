@@ -37,7 +37,7 @@
         .container{
             position: relative;
             width: 850px;
-            height: 550px;
+            height: 620px; /* Đã tăng chiều cao để form đăng ký hiển thị đủ nút */
             background: #fff;
             margin: 20px;
             border-radius: 30px;
@@ -47,14 +47,14 @@
 
         .container h1{
             font-size: 36px;
-            margin: -10px 0;
+            margin: -5px 0 10px;
             color: #1e293b;
             font-weight: 800;
         }
 
         .container p{
             font-size: 14.5px;
-            margin: 15px 0;
+            margin: 10px 0 20px;
             color: #64748b;
         }
 
@@ -70,7 +70,7 @@
             align-items: center;
             color: #333;
             text-align: center;
-            padding: 40px;
+            padding: 30px 40px;
             z-index: 1;
             transition: .6s ease-in-out 1.2s, visibility 0s 1s;
         }
@@ -82,14 +82,14 @@
 
         .input-box{
             position: relative;
-            margin: 18px 0; 
+            margin: 15px 0; /* Thu nhỏ khoảng cách để dồn chỗ cho 5 thẻ */
         }
 
         .input-box input{
             width: 100%;
             padding: 14px 50px 14px 25px;
             background: #f4f8fb;
-            border-radius: 30px; /* Đã bo tròn tuyệt đối */
+            border-radius: 30px;
             border: 2px solid transparent;
             outline: none;
             font-size: 15px;
@@ -136,7 +136,7 @@
             width: 100%;
             height: 50px;
             background: linear-gradient(135deg, #7494ec, #5c7ee0);
-            border-radius: 30px; /* Đã bo tròn tuyệt đối */
+            border-radius: 30px;
             box-shadow: 0 5px 15px rgba(116, 148, 236, 0.3);
             border: none;
             cursor: pointer;
@@ -218,7 +218,7 @@
             height: 48px;
             background: transparent;
             border: 2px solid #fff;
-            border-radius: 30px; /* Bo tròn tuyệt đối */
+            border-radius: 30px;
             box-shadow: none;
         }
 
@@ -226,251 +226,72 @@
             background: rgba(255, 255, 255, 0.15);
             transform: none;
         }
-        @media screen and (max-width: 768px){
-            body{
-                min-height: 100dvh;
-                padding: 12px;
-                overflow-x: hidden;
-            }
 
-            .container{
-                width: 100%;
-                max-width: 430px;
-                height: min(720px, calc(100dvh - 24px));
-                min-height: 620px;
-                margin: 0 auto;
-                border-radius: 24px;
+        /* =========================================
+           BẢN FIX RESPONSIVE CHUẨN (PC & MOBILE)
+        ========================================= */
+        @media screen and (max-width: 768px){
+            .container{ 
+                height: 750px; 
+                max-height: 96vh;
+                width: 100%; 
+                max-width: calc(100vw - 30px); 
+                margin: auto; 
             }
 
             .form-box{
-                right: 0;
                 bottom: 0;
                 width: 100%;
-                height: 70%;
-                min-height: 430px;
-                padding: 24px clamp(18px, 6vw, 32px);
-                overflow-y: auto;
+                height: 65%; /* Trải dài form chiếm 65% trên điện thoại */
+                right: 0;
+                top: auto;
+                padding: 20px 25px;
+                overflow-y: auto; /* Bật thanh cuộn nếu màn hình quá bé */
                 overflow-x: hidden;
+                transition: .6s ease-in-out 1.2s, visibility 0s 1s;
             }
 
-            .form-box form{
-                max-width: 380px;
-                margin: 0 auto;
-            }
+            .form-box form { margin: auto 0; }
 
-            .container.active .form-box{
-                right: 0;
-            }
+            .form-box.login { top: 35%; bottom: auto; }
+            .form-box.register { top: 100%; bottom: auto; visibility: hidden; }
 
-            .form-box.login{
-                bottom: 0;
-                visibility: visible;
-            }
-
-            .container.active .form-box.login{
-                right: 0;
-                bottom: 30%;
-                visibility: hidden;
-            }
-
-            .form-box.register{
-                right: 0;
-                bottom: -70%;
-                visibility: hidden;
-            }
-
-            .container.active .form-box.register{
-                right: 0;
-                bottom: 0;
-                visibility: visible;
-            }
-
-            .container h1{
-                font-size: clamp(26px, 7vw, 32px);
-                margin: 0 0 4px;
-            }
-
-            .container p{
-                font-size: 13px;
-                line-height: 1.5;
-            }
-
-            .input-box{
-                margin: 12px 0;
-            }
-
-            .input-box input{
-                height: 48px;
-                padding: 12px 48px 12px 18px;
-                font-size: 14px;
-            }
-
-            .input-box i{
-                right: 18px;
-                font-size: 19px;
-            }
-
-            .forgot-link{
-                margin: -2px 0 14px;
-            }
-
-            .forgot-link a{
-                font-size: 12.5px;
-            }
-
-            .btn{
-                height: 48px;
-                font-size: 15px;
-            }
+            .container.active .form-box.login { top: 100%; visibility: hidden; transition: .6s ease-in-out; }
+            .container.active .form-box.register { top: 0; visibility: visible; transition: .6s ease-in-out 1.2s, visibility 0s 0s; }
+            .container.active .form-box { right: 0; }
 
             .toggle-box::before{
-                left: 0;
-                top: -270%;
-                width: 100%;
+                left: -50%;
+                top: -265%;
+                width: 200%;
                 height: 300%;
-                border-radius: 80px;
+                border-radius: 50%;
             }
 
-            .container.active .toggle-box::before{
-                left: 0;
-                top: 70%;
-            }
+            .container.active .toggle-box::before{ left: -50%; top: 65%; }
 
-            .toggle-panel{
-                width: 100%;
-                height: 30%;
-                left: 0;
-                padding: 16px 20px;
-                text-align: center;
-            }
+            .toggle-panel{ width: 100%; height: 35%; left: 0; padding: 15px; }
+            
+            .toggle-panel.toggle-right { top: 0; right: auto; transition-delay: 1.2s; }
+            .container.active .toggle-panel.toggle-right { top: -35%; transition-delay: .6s; }
+            
+            .toggle-panel.toggle-left { top: 100%; transition-delay: .6s; }
+            .container.active .toggle-panel.toggle-left { top: 65%; left: 0; transition-delay: 1.2s; }
 
-            .toggle-panel.toggle-left{
-                top: 0;
-                left: 0;
-                right: auto;
-                transition-delay: 1.2s;
-            }
-
-            .container.active .toggle-panel.toggle-left{
-                top: -30%;
-                left: 0;
-                transition-delay: .6s;
-            }
-
-            .toggle-panel.toggle-right{
-                right: 0;
-                left: 0;
-                bottom: -30%;
-                top: auto;
-                transition-delay: .6s;
-            }
-
-            .container.active .toggle-panel.toggle-right{
-                right: 0;
-                bottom: 0;
-                transition-delay: 1.2s;
-            }
-
-            .toggle-panel h1{
-                font-size: clamp(23px, 6vw, 28px);
-                margin-bottom: 2px;
-            }
-
-            .toggle-panel p{
-                margin: 6px 0 14px;
-                font-size: 12.5px;
-            }
-
-            .toggle-panel .btn{
-                width: 145px;
-                height: 43px;
-                font-size: 14px;
-            }
-
-            .swal2-popup{
-                width: calc(100% - 28px) !important;
-                max-width: 380px !important;
-            }
+            .container h1 { font-size: 26px; margin-bottom: 5px; }
+            .input-box { margin: 12px 0; }
+            .input-box input { padding: 12px 40px 12px 20px; font-size: 14px; height: 46px;}
+            .btn { height: 46px; font-size: 15px;}
+            
+            .toggle-panel h1 { font-size: 24px; }
+            .toggle-panel p { margin-bottom: 15px; font-size: 13px; }
+            .toggle-panel .btn { width: 150px; height: 42px; font-size: 14px; }
         }
 
         @media screen and (max-width: 400px){
-            body{
-                padding: 8px;
-            }
-
-            .container{
-                height: calc(100dvh - 16px);
-                min-height: 580px;
-                border-radius: 20px;
-            }
-
-            .form-box{
-                height: 72%;
-                min-height: 400px;
-                padding: 20px 16px;
-            }
-
-            .container.active .form-box.login{
-                bottom: 28%;
-            }
-
-            .form-box.register{
-                bottom: -72%;
-            }
-
-            .container.active .form-box.register{
-                bottom: 0;
-            }
-
-            .toggle-panel{
-                height: 28%;
-                padding: 12px 14px;
-            }
-
-            .container.active .toggle-panel.toggle-left{
-                top: -28%;
-            }
-
-            .toggle-panel.toggle-right{
-                bottom: -28%;
-            }
-
-            .container h1{
-                font-size: 25px;
-            }
-
-            .input-box input{
-                height: 46px;
-                font-size: 13px;
-            }
-
-            .btn{
-                height: 46px;
-            }
-
-            .toggle-panel p{
-                margin-bottom: 10px;
-            }
-        }
-
-        @media screen and (max-height: 650px) and (max-width: 768px){
-            .container{
-                min-height: 540px;
-                height: calc(100dvh - 16px);
-            }
-
-            .form-box{
-                padding-top: 16px;
-                padding-bottom: 16px;
-            }
-
-            .input-box{
-                margin: 8px 0;
-            }
-
-            .toggle-panel p{
-                margin: 4px 0 8px;
-            }
+            .container { height: 750px; }
+            .form-box { padding: 20px 15px; }
+            .toggle-panel h1 { font-size: 22px; }
         }
     </style>
 </head>
