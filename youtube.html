@@ -18,867 +18,886 @@
 
     <style>
         :root {
-            --primary:#ff1744;
-            --primary2:#ff3158;
-            --dark:#0d1728;
-            --bg:#f3f6fc;
-            --card:#fff;
-            --text:#172033;
-            --muted:#8a96aa;
-            --border:#e7edf6;
-            --danger:#ef4444;
-            --success:#16b978;
-            --sidebar:280px;
+            --primary: #ff1744;
+            --primary2: #ff3158;
+            --dark: #0d1728;
+            --bg: #f3f6fc;
+            --card: #fff;
+            --text: #172033;
+            --muted: #8a96aa;
+            --border: #e7edf6;
+            --danger: #ef4444;
+            --success: #16b978;
+            --blue: #1677ff;
+            --sidebar: 280px;
         }
 
         * {
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:'Quicksand',sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Quicksand", sans-serif;
         }
 
         body {
-            background:var(--bg);
-            color:var(--text);
-            min-height:100vh;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
         }
 
-        button,input,select {
-            font-family:inherit;
-            border:0;
-            outline:0;
+        button,
+        input,
+        select {
+            font-family: inherit;
+            outline: none;
+            border: 0;
         }
 
         button {
-            cursor:pointer;
+            cursor: pointer;
         }
 
         /* ========================= SIDEBAR ========================= */
 
         .sidebar {
-            position:fixed;
-            left:0;
-            top:0;
-            bottom:0;
-            width:var(--sidebar);
-            background:linear-gradient(180deg,#0c1627,#101b2d);
-            color:#fff;
-            z-index:1000;
-            display:flex;
-            flex-direction:column;
-            transition:transform:.3s ease;
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: var(--sidebar);
+            background: linear-gradient(180deg, #0c1627, #101b2d);
+            color: #fff;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: .3s ease;
         }
 
         .brand {
-            height:76px;
-            display:flex;
-            align-items:center;
-            padding:0 25px;
-            font-size:18px;
-            font-weight:800;
-            border-bottom:1px solid rgba(255,255,255,.04);
+            height: 76px;
+            padding: 0 25px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 800;
+            border-bottom: 1px solid rgba(255,255,255,.04);
         }
 
         .sidebar-scroll {
-            flex:1;
-            overflow-y:auto;
-            padding:15px 0;
-            scrollbar-width:thin;
-            scrollbar-color:#374151 transparent;
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #374151 transparent;
         }
 
         .sb-title {
-            padding:13px 22px 9px;
-            color:#60708b;
-            font-size:10px;
-            font-weight:800;
-            text-transform:uppercase;
-            letter-spacing:1px;
+            padding: 13px 22px 9px;
+            color: #60708b;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .sb-mi {
-            position:relative;
-            width:calc(100% - 20px);
-            margin:0 10px 4px;
-            height:42px;
-            padding:0 15px;
-            border-radius:9px;
-            background:transparent;
-            color:#b9c4d6;
-            display:flex;
-            align-items:center;
-            gap:14px;
-            font-size:14px;
-            font-weight:700;
-            text-align:left;
-            transition:.2s;
+            position: relative;
+            width: calc(100% - 20px);
+            height: 42px;
+            margin: 0 10px 4px;
+            padding: 0 15px;
+            border-radius: 9px;
+            background: transparent;
+            color: #b9c4d6;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: left;
+            transition: .2s;
         }
 
         .sb-mi:hover {
-            background:#17253b;
-            color:#fff;
+            background: #17253b;
+            color: #fff;
         }
 
         .sb-mi.active {
-            background:linear-gradient(90deg,#72202d,#541b28);
-            color:#fff;
-            box-shadow:inset 3px 0 #ff1744;
+            background: linear-gradient(90deg, #72202d, #541b28);
+            color: #fff;
+            box-shadow: inset 3px 0 var(--primary);
         }
 
         .sb-icon {
-            width:20px;
-            text-align:center;
-            font-size:15px;
+            width: 20px;
+            text-align: center;
+            font-size: 15px;
         }
 
         .arrow {
-            margin-left:auto;
-            color:#64748b;
-            font-size:10px;
+            margin-left: auto;
+            color: #64748b;
+            font-size: 10px;
         }
 
         .badge {
-            margin-left:auto;
-            background:#0fc58a;
-            color:#fff;
-            padding:2px 6px;
-            border-radius:5px;
-            font-size:8px;
-            font-weight:800;
+            margin-left: auto;
+            padding: 2px 6px;
+            border-radius: 5px;
+            background: #0fc58a;
+            color: #fff;
+            font-size: 8px;
+            font-weight: 800;
         }
 
         .sidebar-footer {
-            padding:10px 0;
-            border-top:1px solid rgba(255,255,255,.05);
+            padding: 10px 0;
+            border-top: 1px solid rgba(255,255,255,.05);
         }
 
-        /* ========================= MOBILE MENU ========================= */
+        /* ========================= MOBILE ========================= */
 
         .mobile-menu {
-            display:none;
-            width:40px;
-            height:40px;
-            border:none;
-            border-radius:10px;
-            background:#eef5ff;
-            color:#2563eb;
-            place-items:center;
-            font-size:18px;
-            flex-shrink:0;
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #eef5ff;
+            color: var(--blue);
+            place-items: center;
+            font-size: 18px;
+            flex-shrink: 0;
         }
 
         .sidebar-overlay {
-            display:none;
-            position:fixed;
-            inset:0;
-            background:rgba(0,0,0,.45);
-            z-index:999;
-            backdrop-filter:blur(2px);
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(0,0,0,.45);
+            backdrop-filter: blur(2px);
         }
 
         .sidebar-overlay.show {
-            display:block;
+            display: block;
         }
 
-        /* ========================= MAIN & TOPBAR ========================= */
+        /* ========================= MAIN ========================= */
 
         .main {
-            margin-left:var(--sidebar);
-            min-height:100vh;
+            min-height: 100vh;
+            margin-left: var(--sidebar);
         }
 
         .topbar {
-            height:76px;
-            background:#fff;
-            border-bottom:1px solid var(--border);
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            padding:0 30px;
-            position:sticky;
-            top:0;
-            z-index:900;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            height: 76px;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
         }
 
         .top-left,
         .top-right {
-            display:flex;
-            align-items:center;
-            gap:14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
         .crumb {
-            display:flex;
-            align-items:center;
-            gap:10px;
-            color:#99a4b7;
-            font-size:14px;
-            font-weight:600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #99a4b7;
+            font-size: 14px;
+            font-weight: 600;
         }
 
         .crumb i {
-            font-size:11px;
+            font-size: 11px;
         }
 
         .crumb .current {
-            color:#172033;
-            font-weight:800;
+            color: var(--text);
+            font-weight: 800;
         }
 
         .search {
-            width:285px;
-            height:42px;
-            border:1px solid var(--border);
-            border-radius:12px;
-            display:flex;
-            align-items:center;
-            gap:10px;
-            padding:0 12px;
-            color:#9aa6b8;
+            width: 285px;
+            height: 42px;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: #9aa6b8;
         }
 
         .search input {
-            width:100%;
-            background:transparent;
+            width: 100%;
+            background: transparent;
+            color: var(--text);
         }
 
         .shortcut {
-            font-size:10px;
-            color:#9aa6b8;
-            background:#f5f7fb;
-            border:1px solid #e8edf5;
-            border-radius:5px;
-            padding:3px 6px;
-            white-space:nowrap;
+            padding: 3px 6px;
+            border: 1px solid #e8edf5;
+            border-radius: 5px;
+            background: #f5f7fb;
+            color: #9aa6b8;
+            font-size: 10px;
+            white-space: nowrap;
         }
 
         .icon-btn {
-            width:40px;
-            height:40px;
-            border:1px solid var(--border);
-            background:#fff;
-            border-radius:50%;
-            color:#526074;
-            position:relative;
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: #fff;
+            color: #526074;
         }
 
         .dot {
-            position:absolute;
-            right:7px;
-            top:7px;
-            width:7px;
-            height:7px;
-            border-radius:50%;
-            background:#1677ff;
-            border:2px solid #fff;
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            width: 7px;
+            height: 7px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            background: var(--blue);
         }
 
         .lang {
-            height:40px;
-            padding:0 12px;
-            border:1px solid var(--border);
-            border-radius:11px;
-            display:flex;
-            align-items:center;
-            gap:8px;
-            font-size:13px;
-            font-weight:600;
-            color:#526074;
+            height: 40px;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            color: #526074;
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .lang img {
-            width:21px;
+            width: 21px;
         }
 
+        /* ========================= USER ========================= */
+
         .user-dropdown {
-            position:relative;
+            position: relative;
         }
 
         .user {
-            height:44px;
-            padding:4px 10px 4px 4px;
-            border:1px solid var(--border);
-            background:#fff;
-            border-radius:24px;
-            display:flex;
-            align-items:center;
-            gap:9px;
+            height: 44px;
+            padding: 4px 10px 4px 4px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: #fff;
         }
 
         .avatar {
-            width:35px;
-            height:35px;
-            border-radius:50%;
-            display:grid;
-            place-items:center;
-            background:linear-gradient(135deg,#ffe0e5,#ffc1cb);
-            color:#ff1744;
-            font-weight:800;
+            width: 35px;
+            height: 35px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffe0e5, #ffc1cb);
+            color: var(--primary);
+            font-weight: 800;
         }
 
         .user-name {
-            font-size:13px;
-            font-weight:800;
+            font-size: 13px;
+            font-weight: 800;
         }
 
         .user i {
-            font-size:10px;
-            color:#9ba6b8;
+            color: #9ba6b8;
+            font-size: 10px;
         }
 
         .user-menu {
-            position:absolute;
-            right:0;
-            top:52px;
-            width:230px;
-            background:#fff;
-            border:1px solid #e7edf6;
-            border-radius:14px;
-            padding:8px;
-            box-shadow:0 12px 35px rgba(0,0,0,.12);
-            opacity:0;
-            visibility:hidden;
-            transform:translateY(-8px);
-            transition:.2s;
-            z-index:2000;
+            position: absolute;
+            top: 52px;
+            right: 0;
+            width: 230px;
+            padding: 8px;
+            border: 1px solid #e7edf6;
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 12px 35px rgba(0,0,0,.12);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: .2s;
+            z-index: 2000;
         }
 
         .user-menu.show {
-            opacity:1;
-            visibility:visible;
-            transform:translateY(0);
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
         .user-menu-header {
-            display:flex;
-            align-items:center;
-            gap:10px;
-            padding:8px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .user-menu-header strong {
-            display:block;
-            font-size:13px;
+            display: block;
+            font-size: 13px;
         }
 
         .user-menu-header span {
-            display:block;
-            font-size:10px;
-            color:#94a0b2;
-            margin-top:2px;
+            display: block;
+            margin-top: 2px;
+            color: #94a0b2;
+            font-size: 10px;
         }
 
         .user-menu-line {
-            height:1px;
-            background:#edf1f6;
-            margin:5px 0;
+            height: 1px;
+            margin: 5px 0;
+            background: #edf1f6;
         }
 
         .user-menu button {
-            width:100%;
-            height:38px;
-            display:flex;
-            align-items:center;
-            gap:10px;
-            padding:0 10px;
-            background:transparent;
-            border-radius:9px;
-            color:#526074;
-            font-size:12px;
-            font-weight:700;
-            text-align:left;
+            width: 100%;
+            height: 38px;
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 9px;
+            background: transparent;
+            color: #526074;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: left;
         }
 
         .user-menu button:hover {
-            background:#fff1f3;
-            color:#ff1744;
+            background: #fff1f3;
+            color: var(--primary);
         }
 
         .user-menu .logout-item {
-            color:#ef4444;
+            color: var(--danger);
         }
 
         /* ========================= CONTENT ========================= */
 
         .content {
-            padding:28px;
-            max-width:1450px;
-            margin:auto;
+            max-width: 1450px;
+            margin: auto;
+            padding: 28px;
         }
 
         .page-title {
-            margin-bottom:20px;
+            margin-bottom: 20px;
         }
 
         .page-title h1 {
-            font-size:24px;
-            font-weight:800;
+            font-size: 24px;
+            font-weight: 800;
         }
 
         .page-title h1 i {
-            color:#ff1744;
+            color: var(--primary);
         }
 
         .page-title p {
-            margin-top:5px;
-            color:#8a96aa;
-            font-size:13px;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 13px;
         }
 
         .service-layout {
-            display:grid;
-            grid-template-columns:minmax(0,1fr) 320px;
-            gap:20px;
+            display: grid;
+            grid-template-columns: minmax(0,1fr) 320px;
+            gap: 20px;
+            align-items: start;
         }
 
         .card {
-            background:#fff;
-            border:1px solid #e8eef7;
-            border-radius:18px;
-            box-shadow:0 5px 20px rgba(31,51,73,.045);
-            padding:22px;
-            margin-bottom:20px;
+            margin-bottom: 20px;
+            padding: 22px;
+            border: 1px solid #e8eef7;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(31,51,73,.045);
         }
 
         .card-title {
-            margin-bottom:20px;
-            display:flex;
-            align-items:center;
-            gap:10px;
-            font-size:16px;
-            font-weight:800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 800;
         }
 
         .yt-icon {
-            width:42px;
-            height:42px;
-            border-radius:12px;
-            display:grid;
-            place-items:center;
-            background:#ff1744;
-            color:#fff;
-            font-size:21px;
-            box-shadow:0 8px 20px rgba(255,23,68,.22);
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 21px;
+            box-shadow: 0 8px 20px rgba(255,23,68,.22);
         }
 
         /* ========================= BALANCE ========================= */
 
         .balance-box {
-            margin-bottom:18px;
-            padding:15px 17px;
-            border:1px solid #dceaff;
-            border-radius:14px;
-            background:linear-gradient(135deg,#eef6ff,#f8fbff);
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
+            margin-bottom: 18px;
+            padding: 15px 17px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #dceaff;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #eef6ff, #f8fbff);
         }
 
         .balance-left {
-            display:flex;
-            align-items:center;
-            gap:12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .balance-icon {
-            width:40px;
-            height:40px;
-            border-radius:11px;
-            background:#dceeff;
-            color:#1677ff;
-            display:grid;
-            place-items:center;
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            background: #dceeff;
+            color: var(--blue);
         }
 
         .balance-label {
-            color:#758299;
-            font-size:11px;
-            font-weight:700;
+            color: #758299;
+            font-size: 11px;
+            font-weight: 700;
         }
 
         .balance-value {
-            margin-top:2px;
-            color:#1677ff;
-            font-size:18px;
-            font-weight:800;
+            margin-top: 2px;
+            color: var(--blue);
+            font-size: 18px;
+            font-weight: 800;
         }
 
         .refresh-balance {
-            width:35px;
-            height:35px;
-            border-radius:9px;
-            background:#fff;
-            color:#1677ff;
-            border:1px solid #dceaff;
+            width: 35px;
+            height: 35px;
+            border: 1px solid #dceaff;
+            border-radius: 9px;
+            background: #fff;
+            color: var(--blue);
         }
 
         /* ========================= WARNING ========================= */
 
         .warning-red {
-            background:#6a1a24;
-            color:#fca5a5;
-            border-radius:8px;
-            padding:15px;
-            margin-bottom:18px;
-            font-size:13px;
-            line-height:1.6;
+            margin-bottom: 18px;
+            padding: 14px 15px;
+            border-radius: 10px;
+            background: #6a1a24;
+            color: #fca5a5;
+            font-size: 12px;
+            line-height: 1.6;
         }
 
         .warning-red strong {
-            color:#f87171;
-            display:block;
-            margin-bottom:5px;
-            font-size:14px;
+            display: block;
+            margin-bottom: 4px;
+            color: #f87171;
+            font-size: 13px;
         }
 
         .warning-red b {
-            color:#fff;
+            color: #fff;
         }
 
         .warning-brown {
-            background:#4b2c20;
-            color:#fdba74;
-            border-radius:8px;
-            padding:15px;
-            margin-top:5px;
-            font-size:12.5px;
-            line-height:1.6;
+            margin-top: 5px;
+            padding: 13px 14px;
+            border-radius: 10px;
+            background: #4b2c20;
+            color: #fdba74;
+            font-size: 11px;
+            line-height: 1.55;
         }
 
         .warning-brown strong {
-            color:#f87171;
-            display:block;
-            margin-bottom:5px;
-            font-size:13px;
-            text-transform:uppercase;
+            display: block;
+            margin-bottom: 4px;
+            color: #f87171;
+            font-size: 12px;
         }
 
         /* ========================= FORM ========================= */
 
         .service-box {
-            display:flex;
-            flex-direction:column;
-            gap:16px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: minmax(0,1fr) 180px;
+            gap: 15px;
         }
 
         .field {
-            display:flex;
-            flex-direction:column;
-            gap:7px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
         }
 
         .field label {
-            color:#526074;
-            font-size:12px;
-            font-weight:800;
+            color: #526074;
+            font-size: 12px;
+            font-weight: 800;
         }
 
         .field input,
         .field select {
-            width:100%;
-            height:46px;
-            padding:0 13px;
-            border:1px solid #dfe7f2;
-            border-radius:11px;
-            color:#334155;
-            background:#fff;
-            font-size:13px;
+            width: 100%;
+            height: 45px;
+            padding: 0 13px;
+            border: 1px solid #dfe7f2;
+            border-radius: 11px;
+            background: #fff;
+            color: #334155;
+            font-size: 12px;
+            transition: .2s;
         }
 
         .field input:focus,
         .field select:focus {
-            border-color:#ff1744;
-            box-shadow:0 0 0 3px rgba(255,23,68,.08);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255,23,68,.08);
+        }
+
+        .field select:disabled {
+            cursor: not-allowed;
+            background: #f8fafc;
         }
 
         .link-error {
-            display:none;
-            margin-top:-2px;
-            color:var(--danger);
-            font-size:10px;
-            font-weight:700;
+            display: none;
+            margin-top: -2px;
+            color: var(--danger);
+            font-size: 10px;
+            font-weight: 700;
         }
 
         /* ========================= QUANTITY ========================= */
 
         .quantity-control {
-            height:46px;
-            display:flex;
-            align-items:center;
-            border:1px solid #dfe7f2;
-            border-radius:11px;
-            overflow:hidden;
-            background:#fff;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            border: 1px solid #dfe7f2;
+            border-radius: 11px;
+            background: #fff;
         }
 
         .quantity-control button {
-            width:46px;
-            height:100%;
-            background:#f5f8fc;
-            color:#526074;
-            font-size:15px;
-            transition:.2s;
+            width: 44px;
+            height: 100%;
+            background: #f5f8fc;
+            color: #526074;
+            transition: .2s;
         }
 
         .quantity-control button:hover {
-            background:#ffe0e5;
-            color:var(--primary);
+            background: #ffe0e5;
+            color: var(--primary);
         }
 
         .quantity-control input {
-            height:100%;
-            border:0;
-            border-radius:0;
-            text-align:center;
-            box-shadow:none!important;
+            height: 100%;
+            padding: 0 5px;
+            border: 0;
+            border-radius: 0;
+            text-align: center;
+            box-shadow: none !important;
         }
 
         /* ========================= PRICE ========================= */
 
         .price {
-            margin-top:18px;
-            padding:16px;
-            border-radius:13px;
-            background:#fff0f3;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
+            margin-top: 17px;
+            padding: 15px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 13px;
+            background: #fff0f3;
         }
 
         .price span {
-            color:#738096;
-            font-size:12px;
-            font-weight:700;
+            color: #738096;
+            font-size: 12px;
+            font-weight: 700;
         }
 
         .price strong {
-            color:var(--primary);
-            font-size:18px;
+            color: var(--primary);
+            font-size: 18px;
         }
 
         .price-note {
-            margin-top:7px;
-            color:#8a96aa;
-            font-size:10px;
-            text-align:right;
+            margin-top: 6px;
+            color: #8a96aa;
+            font-size: 10px;
+            text-align: right;
         }
 
         /* ========================= ORDER BUTTON ========================= */
 
         .btn-order {
-            width:100%;
-            height:48px;
-            margin-top:16px;
-            border-radius:12px;
-            background:#1677ff;
-            color:#fff;
-            font-size:14px;
-            font-weight:800;
-            box-shadow:0 8px 18px rgba(22,119,255,.22);
-            transition:.2s;
+            width: 100%;
+            height: 47px;
+            margin-top: 15px;
+            border-radius: 11px;
+            background: var(--blue);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            box-shadow: 0 8px 18px rgba(22,119,255,.22);
+            transition: .2s;
         }
 
         .btn-order:hover {
-            background:#086be8;
-            transform:translateY(-1px);
+            background: #086be8;
+            transform: translateY(-1px);
         }
 
         .btn-order:disabled {
-            cursor:not-allowed;
-            opacity:.65;
-            transform:none;
+            opacity: .65;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* ========================= INFO ========================= */
 
         .info-list {
-            display:flex;
-            flex-direction:column;
-            gap:12px;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
         }
 
         .info-item {
-            padding:12px;
-            border:1px solid #edf1f6;
-            border-radius:12px;
-            display:flex;
-            gap:12px;
+            padding: 12px;
+            display: flex;
+            gap: 12px;
+            border: 1px solid #edf1f6;
+            border-radius: 12px;
         }
 
         .info-item i {
-            width:20px;
-            margin-top:2px;
-            color:var(--primary);
-            text-align:center;
+            width: 20px;
+            margin-top: 2px;
+            color: var(--primary);
+            text-align: center;
         }
 
         .info-item div {
-            color:#68758a;
-            font-size:12px;
-            line-height:1.5;
+            color: #68758a;
+            font-size: 11px;
+            line-height: 1.5;
         }
 
         .info-item strong {
-            display:block;
-            margin-bottom:2px;
-            color:#26344a;
+            display: block;
+            margin-bottom: 2px;
+            color: #26344a;
+            font-size: 12px;
         }
 
         .server-box {
-            margin-top:18px;
-            padding:15px;
-            border-radius:13px;
-            background:#f5f8fc;
+            margin-top: 17px;
+            padding: 14px;
+            border-radius: 13px;
+            background: #f5f8fc;
         }
 
         .server-box strong {
-            font-size:13px;
+            font-size: 12px;
         }
 
         .online {
-            float:right;
-            color:#16b978;
-            font-size:11px;
-            font-weight:800;
+            float: right;
+            color: var(--success);
+            font-size: 10px;
+            font-weight: 800;
         }
 
         .online::before {
-            content:"";
-            width:7px;
-            height:7px;
-            margin-right:5px;
-            display:inline-block;
-            border-radius:50%;
-            background:#16b978;
+            content: "";
+            width: 7px;
+            height: 7px;
+            margin-right: 5px;
+            display: inline-block;
+            border-radius: 50%;
+            background: var(--success);
         }
 
         /* ========================= TABLE ========================= */
 
         .table-wrap {
-            overflow-x:auto;
+            overflow-x: auto;
         }
 
         table {
-            width:100%;
-            min-width:650px;
-            border-collapse:collapse;
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
         }
 
         th {
-            padding:12px;
-            background:#f7f9fc;
-            color:#7d899c;
-            font-size:11px;
-            text-align:left;
+            padding: 12px;
+            background: #f7f9fc;
+            color: #7d899c;
+            font-size: 10px;
+            text-align: left;
         }
 
         td {
-            padding:13px 12px;
-            border-top:1px solid #edf1f6;
-            color:#526074;
-            font-size:12px;
+            padding: 12px;
+            border-top: 1px solid #edf1f6;
+            color: #526074;
+            font-size: 11px;
         }
 
         .status {
-            padding:4px 8px;
-            border-radius:7px;
-            background:#eef6ff;
-            color:#1677ff;
-            display:inline-flex;
-            font-size:10px;
-            font-weight:800;
+            display: inline-flex;
+            padding: 4px 8px;
+            border-radius: 7px;
+            background: #eef6ff;
+            color: var(--blue);
+            font-size: 9px;
+            font-weight: 800;
         }
 
         /* ========================= RESPONSIVE ========================= */
 
-        @media(max-width:1100px) {
+        @media (max-width: 1100px) {
             .service-layout {
-                grid-template-columns:1fr;
+                grid-template-columns: 1fr;
             }
         }
 
-        @media(max-width:800px) {
-
+        @media (max-width: 800px) {
             :root {
-                --sidebar:0px;
+                --sidebar: 0px;
             }
 
             .sidebar {
-                width:280px;
-                transform:translateX(-100%);
-                box-shadow:10px 0 35px rgba(0,0,0,.18);
+                width: 280px;
+                transform: translateX(-100%);
+                box-shadow: 10px 0 35px rgba(0,0,0,.18);
             }
 
             .sidebar.open {
-                transform:translateX(0);
+                transform: translateX(0);
             }
 
             .main {
-                margin-left:0;
+                margin-left: 0;
             }
 
             .topbar {
-                padding:0 15px;
+                height: 68px;
+                padding: 0 15px;
             }
 
             .top-left {
-                gap:8px;
+                gap: 8px;
             }
 
             .mobile-menu {
-                display:grid;
+                display: grid;
             }
 
             .crumb,
             .lang {
-                display:none;
+                display: none;
             }
 
             .search {
-                width:220px;
+                width: 220px;
             }
 
             .content {
-                padding:15px;
+                padding: 15px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
             }
         }
 
-        @media(max-width:500px) {
-
+        @media (max-width: 500px) {
             .search {
-                display:none;
+                display: none;
             }
 
             .user-name {
-                display:none;
+                display: none;
             }
 
             .top-right {
-                gap:7px;
+                gap: 7px;
             }
 
             .icon-btn {
-                width:38px;
-                height:38px;
+                width: 38px;
+                height: 38px;
             }
 
             .card {
-                padding:16px;
-                border-radius:15px;
+                padding: 16px;
+                border-radius: 15px;
             }
 
             .page-title h1 {
-                font-size:20px;
+                font-size: 20px;
             }
 
             .balance-value {
-                font-size:16px;
+                font-size: 16px;
             }
 
             .warning-red,
             .warning-brown {
-                font-size:11.5px;
+                font-size: 11px;
             }
         }
     </style>
@@ -886,17 +905,14 @@
 
 <body>
 
-<!-- NỀN MỜ KHI MỞ SIDEBAR MOBILE -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
 <!-- ========================= SIDEBAR ========================= -->
 
 <aside class="sidebar" id="sidebar">
-
     <div class="brand">HOANGKUN</div>
 
     <div class="sidebar-scroll">
-
         <div class="sb-title">Quản lý chung</div>
 
         <button class="sb-mi" onclick="go('trangchu.html')">
@@ -967,28 +983,16 @@
         <button class="sb-mi active">
             <span class="sb-icon"><i class="fa-brands fa-youtube"></i></span>
             YouTube
-            <span class="arrow">
-                <i class="fa-solid fa-chevron-right"></i>
-            </span>
+            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </button>
-
     </div>
 
     <div class="sidebar-footer">
-
-        <button
-            class="sb-mi"
-            onclick="logout()"
-            style="color:#ff6670"
-        >
-            <span class="sb-icon">
-                <i class="fa-solid fa-right-from-bracket"></i>
-            </span>
+        <button class="sb-mi" onclick="logout()" style="color:#ff6670">
+            <span class="sb-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
             Đăng xuất
         </button>
-
     </div>
-
 </aside>
 
 <!-- ========================= MAIN ========================= -->
@@ -996,11 +1000,8 @@
 <main class="main">
 
     <header class="topbar">
-
         <div class="top-left">
-
-            <!-- NÚT 3 GẠCH MOBILE -->
-            <button class="mobile-menu" id="mobileMenu" onclick="toggleSidebar()" aria-label="Mở menu">
+            <button class="mobile-menu" onclick="toggleSidebar()" aria-label="Mở menu">
                 <i class="fa-solid fa-bars"></i>
             </button>
 
@@ -1015,11 +1016,9 @@
                 <input type="text" id="serviceSearch" placeholder="Tìm dịch vụ...">
                 <span class="shortcut">Ctrl K</span>
             </div>
-
         </div>
 
         <div class="top-right">
-
             <button class="icon-btn" onclick="go('taikhoan.html')">
                 <i class="fa-solid fa-gear"></i>
             </button>
@@ -1030,13 +1029,12 @@
             </button>
 
             <div class="lang">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" alt="VN">
                 <span>VN</span>
                 Tiếng Việt
             </div>
 
             <div class="user-dropdown">
-
                 <button class="user" id="userBtn">
                     <div class="avatar" id="avatarMini">H</div>
                     <span class="user-name" id="navUserName">Đang tải...</span>
@@ -1044,16 +1042,12 @@
                 </button>
 
                 <div class="user-menu" id="userMenu">
-
                     <div class="user-menu-header">
-
                         <div class="avatar" id="menuAvatar">H</div>
-
                         <div>
                             <strong id="menuUserName">Đang tải...</strong>
                             <span>Thành viên</span>
                         </div>
-
                     </div>
 
                     <div class="user-menu-line"></div>
@@ -1079,13 +1073,9 @@
                         <i class="fa-solid fa-right-from-bracket"></i>
                         Đăng xuất
                     </button>
-
                 </div>
-
             </div>
-
         </div>
-
     </header>
 
     <!-- ========================= CONTENT ========================= -->
@@ -1093,84 +1083,53 @@
     <div class="content">
 
         <div class="page-title">
-
             <h1>
                 <i class="fa-brands fa-youtube"></i>
                 Dịch vụ YouTube
             </h1>
-
-            <p>
-                Dịch vụ Tăng Subscribe YouTube uy tín, an toàn cho kênh của bạn.
-            </p>
-
+            <p>Dịch vụ tăng Subscribe YouTube uy tín, an toàn cho kênh của bạn.</p>
         </div>
 
         <div class="service-layout">
 
-            <!-- ================= LEFT ================= -->
+            <!-- ========================= LEFT ========================= -->
 
             <div>
 
                 <div class="card">
 
                     <div class="card-title">
-
                         <div class="yt-icon">
                             <i class="fa-brands fa-youtube"></i>
                         </div>
-
                         Tạo Tiến Trình Mới
-
                     </div>
 
                     <div class="warning-red">
-
                         <strong>CẢNH BÁO:</strong>
-
-                        - Kênh cần đăng ít nhất
-                        <b>1 video</b>
-                        có độ dài ít nhất
-                        <b>20 giây</b>
-                        trước khi tăng để hạn chế bị tụt sub!!!
-
+                        - Kênh cần đăng ít nhất <b>1 video</b> có độ dài ít nhất
+                        <b>20 giây</b> trước khi tăng để hạn chế bị tụt sub!
                         <br>
-
-                        - Trong quá trình tăng không xóa video!!!
-
+                        - Trong quá trình tăng không xóa video!
                     </div>
 
                     <!-- BALANCE -->
 
                     <div class="balance-box">
-
                         <div class="balance-left">
-
                             <div class="balance-icon">
                                 <i class="fa-solid fa-coins"></i>
                             </div>
 
                             <div>
-
-                                <div class="balance-label">
-                                    Số dư hiện tại
-                                </div>
-
-                                <div class="balance-value" id="balanceValue">
-                                    Đang tải...
-                                </div>
-
+                                <div class="balance-label">Số dư hiện tại</div>
+                                <div class="balance-value" id="balanceValue">Đang tải...</div>
                             </div>
-
                         </div>
 
-                        <button
-                            class="refresh-balance"
-                            onclick="loadBalance()"
-                            title="Làm mới số dư"
-                        >
+                        <button class="refresh-balance" onclick="loadBalance()" title="Làm mới số dư">
                             <i class="fa-solid fa-rotate"></i>
                         </button>
-
                     </div>
 
                     <!-- FORM -->
@@ -1178,87 +1137,71 @@
                     <div class="service-box">
 
                         <div class="field">
-
                             <label>Dịch vụ</label>
-
                             <select id="service" disabled>
                                 <option value="youtube_sub">
                                     Theo dõi (Subscribe) — 6.600 xu / 1 sub
                                 </option>
                             </select>
-
                         </div>
 
-                        <div class="field">
+                        <!-- LINK + QUANTITY -->
 
-                            <label>Url Channel Youtube</label>
+                        <div class="form-row">
 
-                            <input
-                                id="link"
-                                type="text"
-                                autocomplete="off"
-                                placeholder="https://www.youtube.com/channel/..."
-                            >
-
-                            <span class="link-error" id="linkError"></span>
-
-                        </div>
-
-                        <div class="field">
-
-                            <label>Số lượng</label>
-
-                            <div class="quantity-control">
-
-                                <button
-                                    type="button"
-                                    onclick="changeQuantity(-1)"
-                                >
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
+                            <div class="field">
+                                <label>URL Channel YouTube</label>
 
                                 <input
-                                    id="quantity"
-                                    type="number"
-                                    value="50"
-                                    step="1"
-                                    inputmode="numeric"
+                                    id="link"
+                                    type="text"
+                                    autocomplete="off"
+                                    placeholder="https://www.youtube.com/channel/..."
                                 >
 
-                                <button
-                                    type="button"
-                                    onclick="changeQuantity(1)"
-                                >
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-
+                                <span class="link-error" id="linkError"></span>
                             </div>
 
-                            <div class="warning-brown">
+                            <div class="field">
+                                <label>Số lượng</label>
 
-                                <strong>
-                                    HÃY ĐỌC ĐỂ TRÁNH MẤT XU KHI SỬ DỤNG!
-                                </strong>
+                                <div class="quantity-control">
+                                    <button type="button" onclick="changeQuantity(-1)">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
 
-                                - 1 ID KHÔNG CÀI 2 ĐƠN CÙNG LÚC TRONG HỆ THỐNG !
-                                ĐƠN CŨ XONG MỚI CÀI ĐƠN MỚI !
-                                CỐ TÌNH CÀI BỊ HỤT SỐ LƯỢNG SẼ KHÔNG XỬ LÝ !
+                                    <input
+                                        id="quantity"
+                                        type="number"
+                                        value="50"
+                                        min="50"
+                                        step="1"
+                                        inputmode="numeric"
+                                    >
 
+                                    <button type="button" onclick="changeQuantity(1)">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
                             </div>
 
                         </div>
 
+                        <div class="warning-brown">
+                            <strong>HÃY ĐỌC ĐỂ TRÁNH MẤT XU KHI SỬ DỤNG!</strong>
+                            - 1 ID KHÔNG CÀI 2 ĐƠN CÙNG LÚC TRONG HỆ THỐNG!
+                            ĐƠN CŨ XONG MỚI CÀI ĐƠN MỚI!
+                            CỐ TÌNH CÀI BỊ HỤT SỐ LƯỢNG SẼ KHÔNG XỬ LÝ!
+                        </div>
+
                         <div class="field">
-
                             <label>Mã ghi nhớ</label>
-
                             <input
                                 id="note"
                                 type="text"
                                 maxlength="300"
                                 placeholder="Có thể để trống..."
                             >
-
                         </div>
 
                     </div>
@@ -1266,54 +1209,31 @@
                     <!-- PRICE -->
 
                     <div class="price">
-
-                        <span>
-                            Thành tiền: Xu
-                        </span>
-
-                        <strong id="totalPrice">
-                            330.000 xu
-                        </strong>
-
+                        <span>Thành tiền: Xu</span>
+                        <strong id="totalPrice">330.000 xu</strong>
                     </div>
 
                     <div class="price-note" id="priceNote">
                         Đơn giá: 6.600 xu / 1 sub
                     </div>
 
-                    <!-- ORDER -->
-
-                    <button
-                        class="btn-order"
-                        id="orderButton"
-                        onclick="createOrder()"
-                    >
+                    <button class="btn-order" id="orderButton" onclick="createOrder()">
                         Mua
                     </button>
 
                 </div>
 
-                <!-- ================= HISTORY ================= -->
+                <!-- ========================= HISTORY ========================= -->
 
-                <div class="card table-card">
-
+                <div class="card">
                     <div class="card-title">
-
-                        <i
-                            class="fa-solid fa-clock-rotate-left"
-                            style="color:#ff1744"
-                        ></i>
-
+                        <i class="fa-solid fa-clock-rotate-left" style="color:#ff1744"></i>
                         Lịch sử mua
-
                     </div>
 
                     <div class="table-wrap">
-
                         <table>
-
                             <thead>
-
                                 <tr>
                                     <th>Mã đơn</th>
                                     <th>Dịch vụ</th>
@@ -1322,113 +1242,74 @@
                                     <th>Trạng thái</th>
                                     <th>Thời gian</th>
                                 </tr>
-
                             </thead>
 
                             <tbody id="orderTable">
-
                                 <tr>
-                                    <td
-                                        colspan="6"
-                                        style="
-                                            text-align:center;
-                                            color:#9aa6b8;
-                                            padding:25px
-                                        "
-                                    >
+                                    <td colspan="6" style="text-align:center;color:#9aa6b8;padding:25px">
                                         Chưa có đơn hàng
                                     </td>
                                 </tr>
-
                             </tbody>
-
                         </table>
-
                     </div>
-
                 </div>
 
             </div>
 
-            <!-- ================= RIGHT INFO ================= -->
+            <!-- ========================= RIGHT ========================= -->
 
             <div>
 
                 <div class="card">
 
                     <div class="card-title">
-
-                        <i
-                            class="fa-solid fa-circle-info"
-                            style="color:#ff1744"
-                        ></i>
-
+                        <i class="fa-solid fa-circle-info" style="color:#ff1744"></i>
                         Hướng dẫn & Lưu ý
-
                     </div>
 
                     <div class="info-list">
 
                         <div class="info-item">
-
-                            <i
-                                class="fa-solid fa-triangle-exclamation"
-                                style="color:#ef4444"
-                            ></i>
-
+                            <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444"></i>
                             <div>
                                 <strong>Bắt buộc</strong>
                                 Kênh phải có video dài trên 20s.
                                 Không xoá hoặc ẩn video trong lúc hệ thống đang chạy Sub.
                             </div>
-
                         </div>
 
                         <div class="info-item">
-
                             <i class="fa-solid fa-bolt"></i>
-
                             <div>
                                 <strong>Tốc độ xử lý</strong>
                                 Đơn hàng sẽ được hệ thống xếp hàng và chạy tự động.
                             </div>
-
                         </div>
 
                         <div class="info-item">
-
                             <i class="fa-solid fa-coins"></i>
-
                             <div>
                                 <strong>Bảng giá</strong>
-                                Mức giá cho 1 Lượt Theo dõi là 6.600 xu.
+                                Mức giá cho 1 lượt Theo dõi là 6.600 xu.
                                 Đặt tối thiểu 50 Sub/đơn.
                             </div>
-
                         </div>
 
                         <div class="info-item">
-
                             <i class="fa-solid fa-rotate"></i>
-
                             <div>
                                 <strong>Bảo hành</strong>
-                                Liên hệ qua Zalo nếu đơn hàng gặp sự cố,
-                                lưu ý đọc kỹ cảnh báo chống tụt sub.
+                                Liên hệ qua Zalo nếu đơn hàng gặp sự cố.
+                                Lưu ý đọc kỹ cảnh báo chống tụt sub.
                             </div>
-
                         </div>
 
                     </div>
 
                     <div class="server-box">
-
                         <strong>Trạng thái hệ thống</strong>
-
-                        <span class="online">
-                            ONLINE
-                        </span>
-
+                        <span class="online">ONLINE</span>
                     </div>
 
                 </div>
@@ -1436,24 +1317,20 @@
             </div>
 
         </div>
-
     </div>
-
 </main>
 
 <script>
-/* =====================================================
-   FIREBASE
-===================================================== */
+/* ========================= FIREBASE ========================= */
 
 const firebaseConfig = {
-    apiKey:"AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
-    authDomain:"shophoangkun.firebaseapp.com",
-    databaseURL:"https://shophoangkun-default-rtdb.firebaseio.com",
-    projectId:"shophoangkun",
-    storageBucket:"shophoangkun.firebasestorage.app",
-    messagingSenderId:"364993334554",
-    appId:"1:364993334554:web:800c66509b355ebf5370a3"
+    apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
+    authDomain: "shophoangkun.firebaseapp.com",
+    databaseURL: "https://shophoangkun-default-rtdb.firebaseio.com",
+    projectId: "shophoangkun",
+    storageBucket: "shophoangkun.firebasestorage.app",
+    messagingSenderId: "364993334554",
+    appId: "1:364993334554:web:800c66509b355ebf5370a3"
 };
 
 if (!firebase.apps.length) {
@@ -1463,12 +1340,39 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 const db = firebase.database();
 
-/* =====================================================
-   MOBILE SIDEBAR
-===================================================== */
+/* ========================= BIẾN ========================= */
+
+let currentUser = null;
+let currentBalance = 0;
+let balanceField = "xu";
+let isOrdering = false;
+
+const prices = {
+    youtube_sub: 6600
+};
+
+const serviceNames = {
+    youtube_sub: "Tăng Theo dõi (Sub)"
+};
+
+/* ========================= ELEMENT ========================= */
+
+const quantity = document.getElementById("quantity");
+const linkInput = document.getElementById("link");
+const noteInput = document.getElementById("note");
+const totalPrice = document.getElementById("totalPrice");
+const linkError = document.getElementById("linkError");
+const orderButton = document.getElementById("orderButton");
+const balanceValue = document.getElementById("balanceValue");
+const orderTable = document.getElementById("orderTable");
 
 const sidebar = document.getElementById("sidebar");
 const sidebarOverlay = document.getElementById("sidebarOverlay");
+const userBtn = document.getElementById("userBtn");
+const userMenu = document.getElementById("userMenu");
+const userDropdown = document.querySelector(".user-dropdown");
+
+/* ========================= MOBILE ========================= */
 
 function toggleSidebar() {
     sidebar.classList.toggle("open");
@@ -1480,8 +1384,6 @@ function closeSidebar() {
     sidebarOverlay.classList.remove("show");
 }
 
-/* Tự đóng menu khi chuyển trang */
-
 function go(file) {
     closeSidebar();
     window.location.href = file;
@@ -1489,76 +1391,52 @@ function go(file) {
 
 function openZalo() {
     closeSidebar();
-    window.open("https://zalo.me/0788265513","_blank");
+    window.open("https://zalo.me/0788265513", "_blank");
 }
 
-/* =====================================================
-   BIẾN DỮ LIỆU
-===================================================== */
+/* ========================= USER DROPDOWN ========================= */
 
-let currentUser = null;
-let currentBalance = 0;
-let balanceField = "xu";
-let isOrdering = false;
+userBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    userMenu.classList.toggle("show");
+});
 
-const prices = {
-    youtube_sub:6600
-};
+document.addEventListener("click", e => {
+    if (!userDropdown.contains(e.target)) {
+        userMenu.classList.remove("show");
+    }
+});
 
-const serviceNames = {
-    youtube_sub:"Tăng Theo dõi (Sub)"
-};
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const quantity = document.getElementById("quantity");
-const linkInput = document.getElementById("link");
-const noteInput = document.getElementById("note");
-const totalPrice = document.getElementById("totalPrice");
-const linkError = document.getElementById("linkError");
-const orderButton = document.getElementById("orderButton");
-const balanceValue = document.getElementById("balanceValue");
-const orderTable = document.getElementById("orderTable");
-
-/* =====================================================
-   FORMATTERS
-===================================================== */
+/* ========================= FORMAT ========================= */
 
 function formatXu(value) {
     return Number(value || 0).toLocaleString("vi-VN") + " xu";
 }
 
 function formatDate(timestamp) {
-
     if (!timestamp) return "---";
 
     return new Date(timestamp).toLocaleString("vi-VN", {
-        day:"2-digit",
-        month:"2-digit",
-        year:"numeric",
-        hour:"2-digit",
-        minute:"2-digit"
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
     });
 }
 
 function escapeHtml(value) {
-
     return String(value ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
-/* =====================================================
-   AUTH
-===================================================== */
+/* ========================= AUTH ========================= */
 
 auth.onAuthStateChanged(user => {
-
     if (!user) {
         window.location.href = "index.html";
         return;
@@ -1582,66 +1460,31 @@ auth.onAuthStateChanged(user => {
     loadOrders();
 });
 
-/* =====================================================
-   USER DROPDOWN
-===================================================== */
-
-const userBtn = document.getElementById("userBtn");
-const userMenu = document.getElementById("userMenu");
-const userDropdown = document.querySelector(".user-dropdown");
-
-userBtn.addEventListener("click", e => {
-
-    e.stopPropagation();
-
-    userMenu.classList.toggle("show");
-
-});
-
-document.addEventListener("click", e => {
-
-    if (!userDropdown.contains(e.target)) {
-        userMenu.classList.remove("show");
-    }
-
-});
-
-/* =====================================================
-   CTRL + K
-===================================================== */
+/* ========================= CTRL + K ========================= */
 
 document.addEventListener("keydown", e => {
-
     if (
         (e.ctrlKey || e.metaKey) &&
         e.key.toLowerCase() === "k"
     ) {
-
         e.preventDefault();
 
-        const searchInput =
-            document.getElementById("serviceSearch");
+        const searchInput = document.getElementById("serviceSearch");
 
         if (searchInput) {
             searchInput.focus();
         }
-
     }
-
 });
 
-/* =====================================================
-   SỐ DƯ
-===================================================== */
+/* ========================= LOAD BALANCE ========================= */
 
 async function loadBalance() {
-
     if (!currentUser) return;
 
     balanceValue.textContent = "Đang tải...";
 
     try {
-
         const snapshot = await db
             .ref("users")
             .child(currentUser.uid)
@@ -1659,72 +1502,54 @@ async function loadBalance() {
         let found = false;
 
         for (const field of fields) {
-
             if (
                 data[field] !== undefined &&
                 data[field] !== null &&
                 !isNaN(Number(data[field]))
             ) {
-
                 balanceField = field;
                 currentBalance = Number(data[field]);
                 found = true;
-
                 break;
             }
         }
 
         if (!found) {
-
             balanceField = "xu";
             currentBalance = 0;
-
         }
 
-        balanceValue.textContent =
-            formatXu(currentBalance);
+        balanceValue.textContent = formatXu(currentBalance);
 
     } catch (error) {
-
-        console.error("Lỗi tải số dư:",error);
-
-        balanceValue.textContent =
-            "Không tải được";
+        console.error("Lỗi tải số dư:", error);
+        balanceValue.textContent = "Không tải được";
     }
 }
 
-/* =====================================================
-   VALIDATE YOUTUBE
-===================================================== */
+/* ========================= YOUTUBE VALIDATE ========================= */
 
 function isValidYoutubeUrl(value) {
-
     if (!value) return false;
-
-    value = value.trim();
 
     let url;
 
     try {
-        url = new URL(value);
+        url = new URL(value.trim());
     } catch {
         return false;
     }
 
-    const protocol =
-        url.protocol.toLowerCase();
-
     if (
-        protocol !== "https:" &&
-        protocol !== "http:"
+        url.protocol !== "https:" &&
+        url.protocol !== "http:"
     ) {
         return false;
     }
 
-    const host =
-        url.hostname
-            .toLowerCase()
-            .replace(/^www\./,"");
+    const host = url.hostname
+        .toLowerCase()
+        .replace(/^www\./, "");
 
     return (
         host === "youtube.com" ||
@@ -1733,186 +1558,141 @@ function isValidYoutubeUrl(value) {
 }
 
 function showLinkError(message) {
-
     linkInput.style.borderColor = "#ef4444";
-
     linkError.textContent = message;
-
     linkError.style.display = "block";
 }
 
 function clearLinkError() {
-
     linkInput.style.borderColor = "#dfe7f2";
-
     linkError.textContent = "";
-
     linkError.style.display = "none";
 }
 
-linkInput.addEventListener("input",() => {
-
-    const value =
-        linkInput.value.trim();
+linkInput.addEventListener("input", () => {
+    const value = linkInput.value.trim();
 
     if (!value) {
-
         clearLinkError();
-
         return;
     }
 
     if (isValidYoutubeUrl(value)) {
-
-        linkInput.style.borderColor =
-            "#16b978";
-
-        linkError.style.display =
-            "none";
-
+        linkInput.style.borderColor = "#16b978";
+        linkError.style.display = "none";
     } else {
-
-        showLinkError(
-            "Link Channel YouTube không hợp lệ."
-        );
-
+        showLinkError("Link Channel YouTube không hợp lệ.");
     }
-
 });
 
-/* =====================================================
-   QUANTITY & PRICE
-===================================================== */
+/* ========================= QUANTITY ========================= */
 
 function changeQuantity(amount) {
+    let current = Number(quantity.value) || 50;
 
-    let current = Number(quantity.value) || 0;
     current += amount;
-    if (current < 0) current = 0;
+
+    if (current < 50) {
+        current = 50;
+    }
+
     quantity.value = Math.floor(current);
     updatePrice();
-
 }
 
-quantity.addEventListener("input",() => {
-
-    updatePrice();
-
-});
+quantity.addEventListener("input", updatePrice);
 
 function updatePrice() {
-
     let amount = Number(quantity.value || 0);
+
     amount = Math.floor(amount);
-    if (amount < 0) amount = 0;
+
+    if (amount < 50) {
+        amount = 50;
+    }
 
     quantity.value = amount;
 
-    const unitPrice =
-        prices.youtube_sub;
+    const total = amount * prices.youtube_sub;
 
-    const total =
-        amount * unitPrice;
-
-    totalPrice.textContent =
-        formatXu(total);
+    totalPrice.textContent = formatXu(total);
 }
 
-/* =====================================================
-   ORDER ID
-===================================================== */
+/* ========================= ORDER ID ========================= */
 
 function generateOrderId() {
-
     return (
         "YT" +
         Date.now().toString().slice(-9) +
-        Math.floor(
-            1000 + Math.random() * 9000
-        )
+        Math.floor(1000 + Math.random() * 9000)
     );
 }
 
-/* =====================================================
-   LOCAL STORAGE
-===================================================== */
+/* ========================= LOCAL STORAGE ========================= */
 
 function getLocalKey() {
-
-    return (
-        "hoangkun_youtube_orders_" +
-        currentUser.uid
-    );
+    return "hoangkun_youtube_orders_" + currentUser.uid;
 }
 
 function saveLocalOrder(order) {
-
     try {
+        let orders = JSON.parse(
+            localStorage.getItem(getLocalKey()) || "[]"
+        );
 
-        let orders =
-            JSON.parse(
-                localStorage.getItem(
-                    getLocalKey()
-                ) || "[]"
-            );
-
-        orders =
-            orders.filter(
-                item =>
-                    item.orderId !== order.orderId
-            );
+        orders = orders.filter(
+            item => item.orderId !== order.orderId
+        );
 
         orders.unshift(order);
 
         localStorage.setItem(
             getLocalKey(),
-            JSON.stringify(
-                orders.slice(0,50)
-            )
+            JSON.stringify(orders.slice(0, 50))
         );
 
-    } catch (e) {
-
-        console.error(e);
-
+    } catch (error) {
+        console.error(error);
     }
 }
 
 function getLocalOrders() {
-
     try {
-
         return JSON.parse(
-            localStorage.getItem(
-                getLocalKey()
-            ) || "[]"
+            localStorage.getItem(getLocalKey()) || "[]"
         );
-
     } catch {
-
         return [];
     }
 }
 
-/* =====================================================
-   TRỪ XU
-===================================================== */
+/* ========================= DEDUCT BALANCE ========================= */
 
 async function deductBalance(amount) {
-    const balanceRef = db.ref("users").child(currentUser.uid).child(balanceField);
+    const balanceRef = db
+        .ref("users")
+        .child(currentUser.uid)
+        .child(balanceField);
+
     let insufficient = false;
 
     const result = await balanceRef.transaction(currentValue => {
         if (currentValue === null) {
-            return currentBalance - amount; 
+            if (currentBalance < amount) {
+                insufficient = true;
+                return currentValue;
+            }
+
+            return currentBalance - amount;
         }
 
         const balance = Number(currentValue || 0);
+
         if (balance < amount) {
             insufficient = true;
-            return currentValue; 
+            return currentValue;
         }
-        
+
         insufficient = false;
         return balance - amount;
     });
@@ -1923,215 +1703,169 @@ async function deductBalance(amount) {
 
     currentBalance = Number(result.snapshot.val() || 0);
     balanceValue.textContent = formatXu(currentBalance);
+
     return currentBalance;
 }
 
-
-/* =====================================================
-   HOÀN XU
-===================================================== */
+/* ========================= REFUND ========================= */
 
 async function refundBalance(amount) {
     try {
-        const balanceRef = db.ref("users").child(currentUser.uid).child(balanceField);
-        const result = await balanceRef.transaction(curr => {
-            if (curr === null) return currentBalance + amount;
-            return Number(curr || 0) + Number(amount || 0);
+        const balanceRef = db
+            .ref("users")
+            .child(currentUser.uid)
+            .child(balanceField);
+
+        const result = await balanceRef.transaction(current => {
+            if (current === null) {
+                return currentBalance + amount;
+            }
+
+            return Number(current || 0) + Number(amount || 0);
         });
-        
+
         if (result.committed) {
             currentBalance = Number(result.snapshot.val() || 0);
             balanceValue.textContent = formatXu(currentBalance);
             return true;
         }
-    } catch (e) { 
-        console.error(e); 
+
+    } catch (error) {
+        console.error(error);
     }
+
     return false;
 }
 
-/* =====================================================
-   TẠO ĐƠN
-===================================================== */
+/* ========================= CREATE ORDER ========================= */
 
 async function createOrder() {
-
     if (isOrdering) return;
 
     if (!currentUser) {
-
         return Swal.fire({
-            icon:"warning",
-            title:"Chưa đăng nhập",
-            text:"Vui lòng đăng nhập trước khi đặt dịch vụ.",
-            confirmButtonColor:"#1677ff"
+            icon: "warning",
+            title: "Chưa đăng nhập",
+            text: "Vui lòng đăng nhập trước khi đặt dịch vụ.",
+            confirmButtonColor: "#1677ff"
         });
     }
 
-    const link =
-        linkInput.value.trim();
-
-    const amount =
-        Number(quantity.value);
-
-    const unitPrice =
-        prices.youtube_sub;
-
-    const total =
-        amount * unitPrice;
+    const link = linkInput.value.trim();
+    const amount = Number(quantity.value);
+    const unitPrice = prices.youtube_sub;
+    const total = amount * unitPrice;
 
     if (!link) {
-
         linkInput.focus();
 
         return Swal.fire({
-            icon:"warning",
-            title:"Thiếu link",
-            text:"Vui lòng nhập link YouTube.",
-            confirmButtonColor:"#1677ff"
+            icon: "warning",
+            title: "Thiếu link",
+            text: "Vui lòng nhập link YouTube.",
+            confirmButtonColor: "#1677ff"
         });
     }
 
     if (!isValidYoutubeUrl(link)) {
-
         linkInput.focus();
 
         return Swal.fire({
-            icon:"error",
-            title:"Link không hợp lệ",
-            text:"Ví dụ: https://www.youtube.com/channel/UC...",
-            confirmButtonColor:"#1677ff"
+            icon: "error",
+            title: "Link không hợp lệ",
+            text: "Ví dụ: https://www.youtube.com/channel/UC...",
+            confirmButtonColor: "#1677ff"
         });
     }
 
     if (amount < 50) {
-
         return Swal.fire({
-            icon:"warning",
-            title:"Lỗi số lượng",
-            text:"Số lượng tối thiểu là 50.",
-            confirmButtonColor:"#1677ff"
+            icon: "warning",
+            title: "Lỗi số lượng",
+            text: "Số lượng tối thiểu là 50.",
+            confirmButtonColor: "#1677ff"
         });
     }
 
     if (total <= 0) {
-
         return Swal.fire({
-            icon:"error",
-            title:"Lỗi giá",
-            text:"Giá dịch vụ không hợp lệ.",
-            confirmButtonColor:"#1677ff"
+            icon: "error",
+            title: "Lỗi giá",
+            text: "Giá dịch vụ không hợp lệ.",
+            confirmButtonColor: "#1677ff"
         });
     }
 
     if (currentBalance < total) {
-
-        return Swal.fire({
-
-            icon:"warning",
-
-            title:"Không đủ xu",
-
-            html:`
+        const result = await Swal.fire({
+            icon: "warning",
+            title: "Không đủ xu",
+            html: `
                 Số dư hiện tại:
                 <b>${formatXu(currentBalance)}</b>
                 <br>
-
                 Chi phí đơn:
                 <b>${formatXu(total)}</b>
                 <br>
-
                 Bạn còn thiếu:
                 <b style="color:#ef4444">
-                    ${formatXu(total-currentBalance)}
+                    ${formatXu(total - currentBalance)}
                 </b>
-
                 <br><br>
                 Vui lòng nạp thêm xu.
             `,
-
-            showCancelButton:true,
-            confirmButtonText:"Nạp tiền",
-            cancelButtonText:"Đóng",
-            confirmButtonColor:"#1677ff"
-
-        }).then(res => {
-
-            if (res.isConfirmed) {
-                go("naptien.html");
-            }
-
+            showCancelButton: true,
+            confirmButtonText: "Nạp tiền",
+            cancelButtonText: "Đóng",
+            confirmButtonColor: "#1677ff"
         });
+
+        if (result.isConfirmed) {
+            go("naptien.html");
+        }
+
+        return;
     }
 
     isOrdering = true;
-
     orderButton.disabled = true;
-
     orderButton.innerHTML =
         '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
 
     Swal.fire({
-        title:"Đang tạo đơn...",
-        text:"Đang kiểm tra và trừ xu, vui lòng chờ.",
-        allowOutsideClick:false,
-        allowEscapeKey:false,
-        showConfirmButton:false,
-        didOpen:() => Swal.showLoading()
+        title: "Đang tạo đơn...",
+        text: "Đang kiểm tra và trừ xu, vui lòng chờ.",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: () => Swal.showLoading()
     });
 
     let deducted = false;
+    const orderId = generateOrderId();
 
-    const orderId =
-        generateOrderId();
+    const balanceBefore = currentBalance;
 
     const orderData = {
-
         orderId,
-
-        userId:
-            currentUser.uid,
-
-        serviceId:
-            "youtube_sub",
-
-        service:
-            serviceNames.youtube_sub,
-
-        platform:
-            "YouTube",
-
+        userId: currentUser.uid,
+        serviceId: "youtube_sub",
+        service: serviceNames.youtube_sub,
+        platform: "YouTube",
         link,
-
-        quantity:
-            amount,
-
+        quantity: amount,
         unitPrice,
-
         total,
-
-        status:
-            "Đã đặt - Vui lòng chờ",
-
-        note:
-            noteInput.value.trim(),
-
-        createdAt:
-            Date.now(),
-
+        status: "Đã đặt - Vui lòng chờ",
+        note: noteInput.value.trim(),
+        createdAt: Date.now(),
         balanceField,
-
-        balanceBefore:
-            currentBalance,
-
-        balanceAfter:
-            currentBalance - total
+        balanceBefore,
+        balanceAfter: balanceBefore - total
     };
 
     try {
-
         await deductBalance(total);
-
         deducted = true;
 
         await db
@@ -2142,11 +1876,7 @@ async function createOrder() {
             .set(orderData);
 
         saveLocalOrder(orderData);
-
-        addOrderToTable(
-            orderData,
-            true
-        );
+        addOrderToTable(orderData, true);
 
         linkInput.value = "";
         noteInput.value = "";
@@ -2156,126 +1886,85 @@ async function createOrder() {
         updatePrice();
 
         Swal.fire({
-
-            icon:"success",
-
-            title:"Đặt dịch vụ thành công!",
-
-            html:`
+            icon: "success",
+            title: "Đặt dịch vụ thành công!",
+            html: `
                 <div style="line-height:1.9">
-
-                    <b>Mã đơn:</b>
-                    ${escapeHtml(orderId)}
+                    <b>Mã đơn:</b> ${escapeHtml(orderId)}
                     <br>
-
-                    <b>Dịch vụ:</b>
-                    ${serviceNames.youtube_sub}
+                    <b>Dịch vụ:</b> ${serviceNames.youtube_sub}
                     <br>
-
-                    <b>Số lượng:</b>
-                    ${amount.toLocaleString("vi-VN")}
+                    <b>Số lượng:</b> ${amount.toLocaleString("vi-VN")}
                     <br>
-
-                    <b>Đã trừ:</b>
-                    ${formatXu(total)}
+                    <b>Đã trừ:</b> ${formatXu(total)}
                     <br>
-
-                    <b>Số dư còn lại:</b>
-                    ${formatXu(currentBalance)}
-
+                    <b>Số dư còn lại:</b> ${formatXu(currentBalance)}
                     <br><br>
-
                     <span style="color:#1677ff;font-weight:800">
-                        Đã đặt thành công,
-                        vui lòng chờ hệ thống xử lý.
+                        Đã đặt thành công, vui lòng chờ hệ thống xử lý.
                     </span>
-
                 </div>
             `,
-
-            confirmButtonColor:"#1677ff",
-            confirmButtonText:"Đã hiểu"
-
+            confirmButtonColor: "#1677ff",
+            confirmButtonText: "Đã hiểu"
         });
 
     } catch (error) {
-
         console.error(error);
 
-        if (
-            error.message ===
-            "INSUFFICIENT_BALANCE"
-        ) {
-
+        if (error.message === "INSUFFICIENT_BALANCE") {
             await loadBalance();
 
             return Swal.fire({
-                icon:"warning",
-                title:"Không đủ xu",
-                text:"Số dư của bạn không đủ để đặt đơn này.",
-                confirmButtonColor:"#1677ff"
+                icon: "warning",
+                title: "Không đủ xu",
+                text: "Số dư của bạn không đủ để đặt đơn này.",
+                confirmButtonColor: "#1677ff"
             });
         }
 
         if (deducted) {
-
-            const refunded =
-                await refundBalance(total);
+            const refunded = await refundBalance(total);
 
             if (refunded) {
-
                 Swal.fire({
-                    icon:"error",
-                    title:"Lỗi tạo đơn",
-                    text:"Đã hoàn lại xu. Vui lòng thử lại.",
-                    confirmButtonColor:"#1677ff"
+                    icon: "error",
+                    title: "Lỗi tạo đơn",
+                    text: "Đã hoàn lại xu. Vui lòng thử lại.",
+                    confirmButtonColor: "#1677ff"
                 });
-
             } else {
-
                 Swal.fire({
-                    icon:"error",
-                    title:"Lỗi hệ thống",
-                    html:"Vui lòng liên hệ CSKH để kiểm tra.",
-                    confirmButtonColor:"#1677ff"
+                    icon: "error",
+                    title: "Lỗi hệ thống",
+                    html: "Vui lòng liên hệ CSKH để kiểm tra.",
+                    confirmButtonColor: "#1677ff"
                 });
-
             }
-
         } else {
-
             Swal.fire({
-                icon:"error",
-                title:"Không thể tạo đơn",
-                text:"Vui lòng thử lại sau.",
-                confirmButtonColor:"#1677ff"
+                icon: "error",
+                title: "Không thể tạo đơn",
+                text: "Vui lòng thử lại sau.",
+                confirmButtonColor: "#1677ff"
             });
         }
 
     } finally {
-
         isOrdering = false;
-
         orderButton.disabled = false;
-
         orderButton.innerHTML = "Mua";
     }
 }
 
-/* =====================================================
-   LỊCH SỬ
-===================================================== */
+/* ========================= LOAD ORDERS ========================= */
 
 async function loadOrders() {
-
     if (!currentUser) return;
 
     orderTable.innerHTML = `
         <tr>
-            <td
-                colspan="6"
-                style="text-align:center;color:#9aa6b8;padding:25px"
-            >
+            <td colspan="6" style="text-align:center;color:#9aa6b8;padding:25px">
                 <i class="fa-solid fa-spinner fa-spin"></i>
                 Đang tải lịch sử...
             </td>
@@ -2283,116 +1972,83 @@ async function loadOrders() {
     `;
 
     try {
-
-        const snapshot =
-            await db
-                .ref("users")
-                .child(currentUser.uid)
-                .child("youtubeOrders")
-                .orderByChild("createdAt")
-                .limitToLast(50)
-                .once("value");
+        const snapshot = await db
+            .ref("users")
+            .child(currentUser.uid)
+            .child("youtubeOrders")
+            .orderByChild("createdAt")
+            .limitToLast(50)
+            .once("value");
 
         const orders = [];
 
         snapshot.forEach(child => {
-
             if (child.val()) {
                 orders.push(child.val());
             }
-
         });
 
-        orders.sort(
-            (a,b) =>
-                Number(b.createdAt || 0) -
-                Number(a.createdAt || 0)
+        orders.sort((a, b) =>
+            Number(b.createdAt || 0) -
+            Number(a.createdAt || 0)
         );
 
         if (orders.length) {
-
             renderHistoryTable(orders);
-
         } else {
-
-            renderHistoryTable(
-                getLocalOrders()
-            );
-
+            renderHistoryTable(getLocalOrders());
         }
 
-    } catch (e) {
-
-        console.error(e);
-
-        renderHistoryTable(
-            getLocalOrders()
-        );
+    } catch (error) {
+        console.error(error);
+        renderHistoryTable(getLocalOrders());
     }
 }
 
-function renderHistoryTable(orders) {
+/* ========================= HISTORY TABLE ========================= */
 
+function renderHistoryTable(orders) {
     orderTable.innerHTML = "";
 
-    if (!orders || orders.length === 0) {
-
+    if (!orders || !orders.length) {
         orderTable.innerHTML = `
             <tr>
-                <td
-                    colspan="6"
-                    style="text-align:center;color:#9aa6b8;padding:25px"
-                >
+                <td colspan="6" style="text-align:center;color:#9aa6b8;padding:25px">
                     Chưa có đơn hàng YouTube
                 </td>
             </tr>
         `;
-
         return;
     }
 
-    orders.forEach(o => {
-        addOrderToTable(o,false);
+    orders.forEach(order => {
+        addOrderToTable(order, false);
     });
 }
 
-/* =====================================================
-   THÊM ĐƠN VÀO BẢNG
-===================================================== */
-
-function addOrderToTable(
-    order,
-    prepend = false
-) {
-
+function addOrderToTable(order, prepend = false) {
     if (!order || !order.orderId) return;
 
     if (
         orderTable.children.length === 1 &&
-        orderTable.children[0]
-            .innerText
-            .includes("Chưa có")
+        orderTable.children[0].innerText.includes("Chưa có")
     ) {
         orderTable.innerHTML = "";
     }
 
-    const oldRow =
-        orderTable.querySelector(
-            `[data-order-id="${CSS.escape(order.orderId)}"]`
-        );
+    const oldRow = Array.from(orderTable.children).find(
+        row => row.dataset.orderId === order.orderId
+    );
 
     if (oldRow) {
         oldRow.remove();
     }
 
-    const row =
-        document.createElement("tr");
+    const row = document.createElement("tr");
 
-    row.dataset.orderId =
-        order.orderId;
+    row.dataset.orderId = order.orderId;
 
     row.innerHTML = `
-
         <td>
             <strong style="color:#1677ff">
                 ${escapeHtml(order.orderId)}
@@ -2404,8 +2060,7 @@ function addOrderToTable(
         </td>
 
         <td>
-            ${Number(order.quantity || 0)
-                .toLocaleString("vi-VN")}
+            ${Number(order.quantity || 0).toLocaleString("vi-VN")}
         </td>
 
         <td>
@@ -2415,21 +2070,8 @@ function addOrderToTable(
         </td>
 
         <td>
-            <span
-                class="status"
-                style="
-                    background:#eef6ff;
-                    color:#1677ff;
-                    padding:4px 8px;
-                    border-radius:7px;
-                    font-size:10px;
-                    font-weight:800;
-                "
-            >
-                ${escapeHtml(
-                    order.status ||
-                    "Đã đặt - Vui lòng chờ"
-                )}
+            <span class="status">
+                ${escapeHtml(order.status || "Đã đặt - Vui lòng chờ")}
             </span>
         </td>
 
@@ -2439,106 +2081,95 @@ function addOrderToTable(
     `;
 
     if (prepend) {
-
         orderTable.prepend(row);
-
     } else {
-
         orderTable.appendChild(row);
-
     }
 }
 
-/* =====================================================
-   LOGOUT
-===================================================== */
+/* ========================= LOGOUT ========================= */
 
 function logout() {
-
     closeSidebar();
 
     Swal.fire({
-
-        title:"Đăng xuất?",
-
-        text:"Bạn có chắc muốn đăng xuất khỏi tài khoản?",
-
-        icon:"warning",
-
-        showCancelButton:true,
-
-        confirmButtonColor:"#ff1744",
-
-        cancelButtonColor:"#ef4444",
-
-        confirmButtonText:"Đăng xuất",
-
-        cancelButtonText:"Hủy"
-
-    }).then(res => {
-
-        if (res.isConfirmed) {
-
-            auth.signOut()
-                .then(() => {
-
-                    window.location.href =
-                        "index.html";
-
-                });
-
+        title: "Đăng xuất?",
+        text: "Bạn có chắc muốn đăng xuất khỏi tài khoản?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#ff1744",
+        cancelButtonColor: "#ef4444",
+        confirmButtonText: "Đăng xuất",
+        cancelButtonText: "Hủy"
+    }).then(result => {
+        if (result.isConfirmed) {
+            auth.signOut().then(() => {
+                window.location.href = "index.html";
+            });
         }
-
     });
 }
 
-/* =====================================================
-   KHỞI TẠO
-===================================================== */
+/* ========================= INIT ========================= */
 
 updatePrice();
 
-/* Đóng sidebar khi xoay / đổi kích thước về PC */
-
-window.addEventListener("resize",() => {
-
+window.addEventListener("resize", () => {
     if (window.innerWidth > 800) {
         closeSidebar();
     }
-
 });
 
-</script>
-<script>
-/* =========================================================
-   HOANGKUN SECURITY SYSTEM
-   CHỈ CHỐNG F12 VÀ CHUỘT PHẢI
-========================================================= */
+/* ========================= SECURITY ========================= */
 
 (function () {
     let warningCooldown = false;
 
-    /* =========================
-       THÔNG BÁO CẢNH BÁO
-    ========================= */
     function securityWarning(message = "Thao tác này không được phép!") {
-        // Không spam popup liên tục
         if (warningCooldown) return;
+
         warningCooldown = true;
-        setTimeout(() => { warningCooldown = false; }, 1800);
+
+        setTimeout(() => {
+            warningCooldown = false;
+        }, 1800);
 
         if (typeof Swal !== "undefined") {
             Swal.fire({
                 icon: "warning",
                 title: "⚠️ CẢNH BÁO BẢO MẬT",
                 html: `
-                    <div style="text-align:center; color:#64748b; font-size:14px; line-height:1.7;">
-                        <div style="width:65px; height:65px; margin:0 auto 15px; border-radius:50%; background:linear-gradient(135deg,#fff7ed,#ffedd5); display:flex; align-items:center; justify-content:center; font-size:30px;">
+                    <div style="text-align:center;color:#64748b;font-size:14px;line-height:1.7">
+                        <div style="
+                            width:65px;
+                            height:65px;
+                            margin:0 auto 15px;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            border-radius:50%;
+                            background:linear-gradient(135deg,#fff7ed,#ffedd5);
+                            font-size:30px;
+                        ">
                             🔒
                         </div>
-                        <b style="color:#ef4444; font-size:15px;">${message}</b>
-                        <p style="margin-top:8px;">Vui lòng không cố gắng truy cập công cụ dành cho nhà phát triển.</p>
-                        <div style="margin-top:14px; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; font-size:12px;">
+
+                        <b style="color:#ef4444;font-size:15px">
+                            ${message}
+                        </b>
+
+                        <p style="margin-top:8px">
+                            Vui lòng không cố gắng truy cập công cụ dành cho nhà phát triển.
+                        </p>
+
+                        <div style="
+                            margin-top:14px;
+                            padding:10px 12px;
+                            border:1px solid #e2e8f0;
+                            border-radius:10px;
+                            background:#f8fafc;
+                            font-size:12px;
+                        ">
                             🛡️ HoangKun Store Security
                         </div>
                     </div>
@@ -2548,54 +2179,74 @@ window.addEventListener("resize",() => {
                 width: "420px",
                 allowOutsideClick: true,
                 allowEscapeKey: true,
-                backdrop: "rgba(15,23,42,.78)",
-                showClass: {
-                    popup: `animate__animated animate__fadeInDown`
-                }
+                backdrop: "rgba(15,23,42,.78)"
             });
         } else {
             alert("⚠️ CẢNH BÁO BẢO MẬT\n\n" + message);
         }
     }
 
-    /* =========================
-       CẤM CHUỘT PHẢI (NGOẠI TRỪ INPUT)
-    ========================= */
-    document.addEventListener("contextmenu", function (e) {
+    /* CẤM CHUỘT PHẢI */
+
+    document.addEventListener("contextmenu", e => {
         const tag = e.target.tagName.toLowerCase();
-        if (tag === "input" || tag === "textarea") return;
+
+        if (tag === "input" || tag === "textarea") {
+            return;
+        }
+
         e.preventDefault();
-        securityWarning("Chuột phải đã bị vô hiệu hóa trên trang này!");
+
+        securityWarning(
+            "Chuột phải đã bị vô hiệu hóa trên trang này!"
+        );
+
         return false;
     }, true);
 
-    /* =========================
-       CẤM F12 & PHÍM TẮT DEVTOOLS
-    ========================= */
-    document.addEventListener("keydown", function (e) {
+    /* CẤM F12 + DEVTOOLS */
+
+    document.addEventListener("keydown", e => {
         const key = e.key.toLowerCase();
 
-        // Cấm phím F12
         if (e.key === "F12" || e.keyCode === 123) {
             e.preventDefault();
             e.stopPropagation();
-            securityWarning("Phím F12 đã bị vô hiệu hóa!");
+
+            securityWarning(
+                "Phím F12 đã bị vô hiệu hóa!"
+            );
+
             return false;
         }
 
-        // Cấm Ctrl + Shift + I / J / C (Tổ hợp phím mở F12)
-        if (e.ctrlKey && e.shiftKey && (key === "i" || key === "j" || key === "c")) {
+        if (
+            e.ctrlKey &&
+            e.shiftKey &&
+            (key === "i" || key === "j" || key === "c")
+        ) {
             e.preventDefault();
             e.stopPropagation();
-            securityWarning("Không được phép mở Developer Tools!");
+
+            securityWarning(
+                "Không được phép mở Developer Tools!"
+            );
+
             return false;
         }
     }, true);
 
-    console.log("%c🛡️ HOANGKUN SECURITY SYSTEM", "font-size:20px;font-weight:bold;color:#1677ff;");
-    console.log("%c⚠️ Hệ thống đã tắt F12 và Chuột phải.", "font-size:14px;color:#ef4444;font-weight:bold;");
+    console.log(
+        "%c🛡️ HOANGKUN SECURITY SYSTEM",
+        "font-size:20px;font-weight:bold;color:#1677ff;"
+    );
 
+    console.log(
+        "%c⚠️ Hệ thống đã tắt F12 và Chuột phải.",
+        "font-size:14px;color:#ef4444;font-weight:bold;"
+    );
 })();
 </script>
+
 </body>
-</html> còn cái file lịch sử nữa có bị lỗi không
+</html>
