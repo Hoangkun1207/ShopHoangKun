@@ -44,7 +44,6 @@
             --radius:18px;
         }
 
-        /* ĐÃ GỠ BỎ LỆNH GÂY ĐƠ MÀN HÌNH Ở ĐÂY */
         *{
             margin:0;
             padding:0;
@@ -56,7 +55,7 @@
             background:var(--bg);
             color:var(--text);
             min-height:100vh;
-            overflow-x:hidden; /* Chỉ ẩn thanh cuộn ngang, không dùng !important để tránh lỗi Safari */
+            overflow-x:hidden; 
         }
 
         a{text-decoration:none;color:inherit}
@@ -205,6 +204,8 @@
 
         /* GRID LAYOUT */
         .grid{display:grid;grid-template-columns:1.7fr 1fr;gap:20px}
+        
+        /* ĐÂY LÀ PHẦN CARD MÀ BẠN CẦN LÀM NỔI BẬT KHỐI */
         .card{
             background:#fff;border:1px solid var(--border);border-radius:18px;
             box-shadow:0 5px 20px rgba(31,51,73,.045);padding:22px;margin-bottom:20px;
@@ -345,7 +346,7 @@
         .support:hover { transform: translateY(-4px) scale(1.03); }
 
         /* =========================================================
-           RESPONSIVE MOBILE AN TOÀN - KHÔNG GÂY ĐƠ
+           RESPONSIVE MOBILE 
         ========================================================= */
         @media(max-width:1100px){
             :root{--sidebar:240px}
@@ -363,13 +364,18 @@
             .main {
                 margin-left:0; 
                 width: 100%; 
-                overflow-x: hidden; /* Đảm bảo main tự cắt ngang, không phá Safari */
+                overflow-x: hidden; 
             }
             .topbar{padding:0 15px;}
             .crumb{display:none}
             .search{margin:0;width:200px}
             .lang, .user-name {display:none}
-            .content{padding:15px; width: 100%;}
+            
+            /* TẠO LỀ CHUẨN XUNG QUANH TRÊN MOBILE VÀ TÁCH RỜI HEADER */
+            .content{
+                padding: 15px 12px; /* Lề ngoài ôm cả thân web */
+                width: 100%;
+            }
             .page-head{flex-direction:column;align-items:flex-start;gap:12px}
             .balance{width:100%;display:flex;justify-content:space-between;align-items:center}
             .service-grid{grid-template-columns:1fr}
@@ -377,7 +383,16 @@
 
             /* Bảng cuộn mượt ngang - Fix tràn bảng gây zoom màn hình */
             .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-            .card { overflow-x: hidden; width: 100%; }
+            
+            /* BO TRÒN VÀ TẠO BÓNG CHO CARD ĐỂ NỔI LÊN TRÊN NỀN XÁM */
+            .card { 
+                overflow-x: hidden; 
+                width: 100%; 
+                border-radius: 20px; /* Bo góc card trên điện thoại */
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Bóng mờ giúp khối nổi lên */
+                border: none;
+                margin-bottom: 15px; /* Giữ khoảng cách với các khối dưới */
+            }
 
             /* Nút 3 gạch mobile */
             .mobile-menu {
@@ -395,10 +410,11 @@
         }
 
         @media(max-width:500px){
-            .topbar{height:65px; padding: 0 12px;}
+            .topbar{height:65px; padding: 0 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);}
             .search{display:none}
             .top-right{gap:6px}
-            .page-title{font-size:21px}
+            .page-title{font-size:21px; margin-left: 5px;}
+            .page-desc{margin-left: 5px;}
             .quick{grid-template-columns:1fr}
             
             /* Ép gọn thẻ input URL tránh bị phình màn hình */
@@ -406,7 +422,8 @@
                 width: 100%;
                 max-width: 100%;
             }
-            .card { padding: 15px; } /* Lề thu gọn trên màn quá bé */
+            
+            .card { padding: 18px; } /* Cho lề trong của Card nhỉnh hơn chút để thoáng form */
         }
 </style>
 </head>
