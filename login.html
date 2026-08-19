@@ -37,7 +37,7 @@
         .container{
             position: relative;
             width: 850px;
-            height: 620px; /* Đã tăng chiều cao để form đăng ký hiển thị đủ nút */
+            height: 620px; /* Đã tăng chiều cao để không bao giờ mất nút */
             background: #fff;
             margin: 20px;
             border-radius: 30px;
@@ -58,8 +58,6 @@
             color: #64748b;
         }
 
-        form{ width: 100%; }
-
         .form-box{
             position: absolute;
             right: 0;
@@ -75,6 +73,8 @@
             transition: .6s ease-in-out 1.2s, visibility 0s 1s;
         }
 
+        .form-box form { width: 100%; }
+
         .container.active .form-box{ right: 50%; }
 
         .form-box.register{ visibility: hidden; }
@@ -82,7 +82,12 @@
 
         .input-box{
             position: relative;
-            margin: 15px 0; /* Thu nhỏ khoảng cách để dồn chỗ cho 5 thẻ */
+            margin: 18px 0; 
+        }
+
+        /* Khung đăng ký có 5 ô nên margin nhỏ lại để vừa đẹp */
+        .register .input-box {
+            margin: 12px 0;
         }
 
         .input-box input{
@@ -228,38 +233,50 @@
         }
 
         /* =========================================
-           BẢN FIX RESPONSIVE CHUẨN (PC & MOBILE)
+           FIX TRIỆT ĐỂ RESPONSIVE TRÊN ĐIỆN THOẠI
         ========================================= */
         @media screen and (max-width: 768px){
+            body { margin: 0; background: #fff; }
+            
             .container{ 
-                height: 750px; 
-                max-height: 96vh;
+                height: 100vh; /* Chuyển thành app full màn hình */
+                max-height: none;
                 width: 100%; 
-                max-width: calc(100vw - 30px); 
-                margin: auto; 
+                max-width: 100vw; 
+                margin: 0; 
+                border-radius: 0; 
+                box-shadow: none;
             }
 
             .form-box{
-                bottom: 0;
                 width: 100%;
-                height: 65%; /* Trải dài form chiếm 65% trên điện thoại */
+                height: 65%; /* Tối ưu để lấy đủ chỗ cho 5 ô input */
                 right: 0;
                 top: auto;
                 padding: 20px 25px;
-                overflow-y: auto; /* Bật thanh cuộn nếu màn hình quá bé */
+                overflow-y: auto; /* Bật tự động cuộn nếu màn hình quá lùn */
                 overflow-x: hidden;
-                transition: .6s ease-in-out 1.2s, visibility 0s 1s;
+                transition: .6s ease-in-out;
             }
 
-            .form-box form { margin: auto 0; }
+            /* Fix lỗi cắt đầu form khi cuộn */
+            .form-box form {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                min-height: 100%;
+            }
 
-            .form-box.login { top: 35%; bottom: auto; }
-            .form-box.register { top: 100%; bottom: auto; visibility: hidden; }
+            /* Mặc định Đăng nhập hiện dưới */
+            .form-box.login { top: 35%; bottom: auto; visibility: visible; }
+            .form-box.register { top: -65%; bottom: auto; visibility: hidden; }
 
-            .container.active .form-box.login { top: 100%; visibility: hidden; transition: .6s ease-in-out; }
-            .container.active .form-box.register { top: 0; visibility: visible; transition: .6s ease-in-out 1.2s, visibility 0s 0s; }
+            /* Bấm Đăng ký -> Nó nhảy lên trên */
+            .container.active .form-box.login { top: 100%; visibility: hidden; transition-delay: 0s;}
+            .container.active .form-box.register { top: 0; visibility: visible; transition-delay: .6s;}
             .container.active .form-box { right: 0; }
 
+            /* Khung Xanh */
             .toggle-box::before{
                 left: -50%;
                 top: -265%;
@@ -267,31 +284,27 @@
                 height: 300%;
                 border-radius: 50%;
             }
-
             .container.active .toggle-box::before{ left: -50%; top: 65%; }
 
+            /* Panel Chữ Xanh */
             .toggle-panel{ width: 100%; height: 35%; left: 0; padding: 15px; }
             
-            .toggle-panel.toggle-right { top: 0; right: auto; transition-delay: 1.2s; }
-            .container.active .toggle-panel.toggle-right { top: -35%; transition-delay: .6s; }
+            .toggle-panel.toggle-left { top: 0; transition-delay: .6s; }
+            .container.active .toggle-panel.toggle-left { top: -35%; transition-delay: 0s; }
             
-            .toggle-panel.toggle-left { top: 100%; transition-delay: .6s; }
-            .container.active .toggle-panel.toggle-left { top: 65%; left: 0; transition-delay: 1.2s; }
+            .toggle-panel.toggle-right { top: 100%; transition-delay: 0s; }
+            .container.active .toggle-panel.toggle-right { top: 65%; transition-delay: .6s; }
 
+            /* Size chữ và ô input nhỏ lại một chút để hiển thị đẹp hơn */
             .container h1 { font-size: 26px; margin-bottom: 5px; }
-            .input-box { margin: 12px 0; }
+            .input-box { margin: 10px 0; }
+            .register .input-box { margin: 8px 0; } /* Ép gọn Form đăng ký hơn nữa */
             .input-box input { padding: 12px 40px 12px 20px; font-size: 14px; height: 46px;}
             .btn { height: 46px; font-size: 15px;}
             
             .toggle-panel h1 { font-size: 24px; }
-            .toggle-panel p { margin-bottom: 15px; font-size: 13px; }
-            .toggle-panel .btn { width: 150px; height: 42px; font-size: 14px; }
-        }
-
-        @media screen and (max-width: 400px){
-            .container { height: 750px; }
-            .form-box { padding: 20px 15px; }
-            .toggle-panel h1 { font-size: 22px; }
+            .toggle-panel p { margin-bottom: 10px; font-size: 13px; }
+            .toggle-panel .btn { width: 140px; height: 42px; font-size: 14px; }
         }
     </style>
 </head>
