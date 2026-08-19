@@ -25,7 +25,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
 <style>
         :root{
             --primary:#1677ff;
@@ -44,6 +43,7 @@
             --radius:18px;
         }
 
+        /* KHÔNG ÉP GLOBAL MAX-WIDTH ĐỂ TRÁNH LỖI ĐƠ MÀN HÌNH MÀ VẪN GIỮ ĐƯỢC LAYOUT PC */
         *{
             margin:0;
             padding:0;
@@ -205,7 +205,6 @@
         /* GRID LAYOUT */
         .grid{display:grid;grid-template-columns:1.7fr 1fr;gap:20px}
         
-        /* ĐÂY LÀ PHẦN CARD MÀ BẠN CẦN LÀM NỔI BẬT KHỐI */
         .card{
             background:#fff;border:1px solid var(--border);border-radius:18px;
             box-shadow:0 5px 20px rgba(31,51,73,.045);padding:22px;margin-bottom:20px;
@@ -346,7 +345,7 @@
         .support:hover { transform: translateY(-4px) scale(1.03); }
 
         /* =========================================================
-           RESPONSIVE MOBILE 
+           RESPONSIVE MOBILE MƯỢT MÀ VÀ NỔI KHỐI CHO ĐIỆN THOẠI
         ========================================================= */
         @media(max-width:1100px){
             :root{--sidebar:240px}
@@ -2718,4 +2717,4 @@ updatePrice();
 })();
 </script>
 </body>
-</html> sửa nốt đi nhanh
+</html>
