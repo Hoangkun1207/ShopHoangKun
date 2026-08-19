@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
+
+    <title>Mở khóa FB | HoangKun Store</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        :root{
+            --primary:#1677ff;
+            --primary2:#238cff;
+            --dark:#0d1728;
+            --dark2:#111d31;
+            --bg:#f3f6fc;
+            --card:#fff;
+            --text:#172033;
+            --muted:#8a96aa;
+            --border:#e7edf6;
+            --success:#10b981;
+            --danger:#ef4444;
+            --warning:#f59e0b;
+            --sidebar:280px;
+        }
+
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Quicksand',sans-serif;}
+        body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+        a{text-decoration:none;color:inherit}
+        button,input,textarea{font-family:inherit;border:0;outline:0}
+        button{cursor:pointer}
+
+        /* ========================= SIDEBAR ========================= */
+        .sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);background:linear-gradient(180deg,#0c1627,#101b2d);color:#fff;z-index:2000;display:flex;flex-direction:column}
+        .sidebar.open {transform: translateX(0) !important;transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);box-shadow: 10px 0 40px rgba(0,0,0,0.6);}
+        .brand{height:76px;display:flex;align-items:center;padding:0 25px;font-size:18px;font-weight:800;border-bottom:1px solid rgba(255,255,255,.04);flex-shrink: 0;}
+        .sidebar-scroll{flex:1;overflow-y:auto;padding:15px 0;scrollbar-width: thin; scrollbar-color: #374151 transparent;}
+        .sidebar-scroll::-webkit-scrollbar{width:4px}
+        .sidebar-scroll::-webkit-scrollbar-thumb{background:#26344a;border-radius:10px}
+        .sb-title{padding:13px 22px 9px;color:#60708b;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+        .sb-mi{position:relative;width:calc(100% - 20px);margin:0 10px 4px;height:42px;padding:0 15px;border-radius:9px;background:transparent;color:#b9c4d6;display:flex;align-items:center;gap:14px;font-size:14px;font-weight:700;text-align:left;transition:.2s}
+        .sb-mi:hover{background:#17253b;color:#fff}
+        .sb-mi.active{background:linear-gradient(90deg,#193e72,#18365f);color:#fff;box-shadow:inset 3px 0 #1681ff}
+        .sb-mi.active:before{content:"";position:absolute;left:-10px;top:0;width:3px;height:42px;background:#1681ff;border-radius:0 5px 5px 0}
+        .sb-icon{width:20px;text-align:center;font-size:15px}
+        .sb-mi .arrow{margin-left:auto;color:#64748b;font-size:10px}
+        .badge{margin-left:auto;background:#0fc58a;color:#fff;padding:2px 6px;border-radius:5px;font-size:8px;font-weight:800}
+        .sidebar-footer{padding:10px 0;border-top:1px solid rgba(255,255,255,.05);flex-shrink: 0;}
+
+        /* ========================= MAIN & TOPBAR ========================= */
+        .main{margin-left:var(--sidebar);min-height:100vh;}
+        .topbar{height:76px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:900;}
+        .top-left,.top-right{display:flex;align-items:center;gap:14px}
+        .mobile-menu { display: none; border: none; cursor: pointer; flex-shrink: 0; }
+        .crumb{display:flex;align-items:center;gap:10px;color:#99a4b7;font-size:14px;font-weight:600}
+        .crumb i{font-size:11px;color:#c4ccda}
+        .crumb .current{color:#172033;font-weight:800}
+        .search{width:285px;height:42px;border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:10px;padding:0 12px;color:#9aa6b8;background:#fff;margin-left:5px}
+        .search input{width:100%;font-size:13px;color:#334155;background:transparent}
+        .shortcut{font-size:10px;color:#9aa6b8;background:#f5f7fb;border:1px solid #e8edf5;border-radius:5px;padding:3px 6px;white-space:nowrap}
+        
+        .icon-btn{width:40px;height:40px;border:1px solid var(--border);background:#fff;border-radius:50%;color:#526074;font-size:15px;position:relative;transition:.2s;display: grid; place-items: center;}
+        .icon-btn:hover{background:#f5f8fc;color:var(--primary)}
+        .dot{position:absolute;right:7px;top:7px;width:7px;height:7px;border-radius:50%;background:#1677ff;border:2px solid #fff}
+        .lang{height:40px;padding:0 12px;border:1px solid var(--border);border-radius:11px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#526074}
+        .lang img{width:21px}
+
+        /* USER DROPDOWN */
+        .user-dropdown { position: relative; }
+        .user{height:44px;padding:4px 10px 4px 4px;border:1px solid var(--border);background:#fff;border-radius:24px;display:flex;align-items:center;gap:9px;transition: .2s;}
+        .avatar{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#d9edff,#b8dcff);color:#1677ff;font-weight:800}
+        .user-name{font-size:13px;font-weight:800;color:#253047}
+        .user-menu{position:absolute;right:0;top:52px;width:230px;background:#fff;border:1px solid #e7edf6;border-radius:14px;padding:8px;box-shadow:0 12px 35px rgba(0,0,0,.12);opacity:0;visibility:hidden;transform:translateY(-8px);transition:.2s;z-index:2000;}
+        .user-dropdown.open .user-menu{opacity:1;visibility:visible;transform:translateY(0);}
+        .user-menu-header{display:flex;align-items:center;gap:10px;padding:8px;}
+        .user-menu-header strong{display:block;font-size:13px;}
+        .user-menu-header span{display:block;font-size:10px;color:#94a0b2;margin-top:2px;}
+        .user-menu-line{height:1px;background:#edf1f6;margin:5px 0;}
+        .user-menu button{width:100%;height:38px;padding:0 10px;border-radius:9px;background:transparent;color:#526074;display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;transition:.2s;}
+        .user-menu button:hover{background:#eef6ff;color:var(--primary);}
+        .logout-item{color:var(--danger);}
+
+        /* ========================= CONTENT AREA ========================= */
+        .content { padding: 25px 28px 40px; max-width: 1450px; margin: auto; }
+
+        /* KHỐI THỐNG KÊ (GIỐNG ẢNH MẪU) */
+        .pw-grid {
+            display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
+            align-items: stretch; gap: 24px; margin-bottom: 28px;
+        }
+        .pw-card {
+            background: #fff; border: 1px solid var(--border);
+            border-radius: 16px; padding: 22px 28px;
+            box-shadow: 0 2px 8px rgba(15,23,42,.04);
+            display: flex; align-items: center; gap: 16px;
+        }
+
+        .pw-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0; flex-shrink: 0; background: linear-gradient(135deg,#d9edff,#b8dcff); color: #1677ff; display: grid; place-items: center; font-size: 20px; font-weight: bold;}
+        .pw-info { min-width: 0; display: flex; flex-direction: column; gap: 9px; }
+        .pw-name { font-size: 18px; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 7px; }
+        .pw-name i { color: #1677ff; font-size: 14px; }
+        .pw-email { font-size: 14px; color: #f59e0b; display: flex; align-items: center; gap: 6px; }
+        .pw-email i { font-size: 13px; }
+
+        .pw-card--stat { position: relative; background: linear-gradient(135deg,#f5f9ff 0%,#eaf2fe 100%); }
+        .pw-stat-icon {
+            width: 38px; height: 38px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            background: #fff; color: #0b74ff; flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(15,23,42,.08); border: 1px solid #eef2f8; font-size: 16px;
+        }
+        .pw-stat-icon.pink { color: #ec4899; }
+        .pw-stat-body { min-width: 0; }
+        .pw-stat-label { font-size: 12px; color: #94a3b8; margin-bottom: 2px; font-weight: 600; }
+        .pw-stat-val { font-size: 18px; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 4px;}
+        .pw-stat-badge { background: #fff; border: 1px solid #cfe1ff; border-radius: 99px; padding: 2px 8px; font-size: 11px; color: #0b74ff; display: flex; align-items: center; gap: 4px;}
+
+        /* BẢNG CHÍNH CHIA 2 CỘT */
+        .dashboard-container {
+            background: #fff; border: 1px solid var(--border);
+            border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            overflow: hidden;
+        }
+
+        .tabs { display: flex; border-bottom: 1px solid var(--border); background: #fdfdfd; overflow-x: auto; }
+        .tab { padding: 18px 24px; font-size: 14px; font-weight: 700; color: var(--muted); border-bottom: 2px solid transparent; display: flex; align-items: center; gap: 8px; transition: .2s; }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); background: #fff; }
+
+        .layout-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; padding: 25px; }
+
+        /* CỘT TRÁI - FORM */
+        .form-label { font-size: 13.5px; font-weight: 800; margin-bottom: 15px; display: block; }
+        
+        .server-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .server-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 16px; border: 1px solid var(--border);
+            border-radius: 10px; cursor: pointer; transition: .2s; background: #fff;
+        }
+        .server-item:hover { border-color: #b9dcff; }
+        .server-item.active { border-color: var(--primary); background: #fcfdff; }
+        .sv-radio { margin-right: 12px; accent-color: var(--primary); transform: scale(1.1); cursor: pointer; }
+        .sv-name { font-size: 13.5px; font-weight: 700; color: var(--text); flex: 1; }
+        .sv-name a { color: var(--primary); font-size: 12px; font-weight: 600; margin-left: 5px; text-decoration: underline; }
+        .sv-price { font-size: 14px; font-weight: 800; color: var(--danger); margin-right: 15px; }
+        .badge-status { font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 6px; color: #fff;}
+        .badge-status.active { background: var(--success); }
+        .badge-status.maintain { background: var(--danger); }
+
+        .server-alert {
+            background: #e6fffa; border-left: 4px solid var(--success);
+            padding: 12px 15px; border-radius: 4px 8px 8px 4px;
+            font-size: 12.5px; color: #065f46; line-height: 1.6;
+            margin-bottom: 20px; font-weight: 600;
+        }
+
+        .field { margin-bottom: 20px; }
+        .field label { display: block; font-size: 13px; font-weight: 800; margin-bottom: 8px; color: var(--text); }
+        .field input, .field textarea {
+            width: 100%; padding: 14px 16px; border: 1px solid var(--border);
+            border-radius: 10px; font-size: 13px; color: var(--text); transition: .2s;
+        }
+        .field textarea { resize: vertical; min-height: 80px; }
+        .field input:focus, .field textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(22,119,255,.08); }
+
+        .btn-submit {
+            background: var(--primary); color: #fff; width: 100%;
+            padding: 14px 24px; border-radius: 10px; font-size: 14px; font-weight: 800;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 5px 15px rgba(22,119,255,.25); transition: .2s;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(22,119,255,.35); }
+
+        /* CỘT PHẢI - VIDEO & NOTE */
+        .right-panel { display: flex; flex-direction: column; gap: 20px; }
+        .panel-box { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: #fff; }
+        .panel-head { background: #5a73e8; color: #fff; padding: 12px 15px; font-size: 14px; font-weight: 700; }
+        .panel-body { padding: 15px; }
+
+        .video-wrapper {
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000; display: flex; align-items: center; justify-content: center;
+        }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        .note-list { list-style: none; }
+        .note-list li { font-size: 12.5px; color: var(--text); margin-bottom: 12px; line-height: 1.6; padding-left: 20px; position: relative; font-weight: 600;}
+        .note-list li::before { content: "\f0da"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 1px; color: var(--primary); font-size: 14px; }
+
+        /* SUPPORT FLOAT NÚT XANH GÓC DƯỚI */
+        .support {
+            position: fixed; right: 25px; bottom: 25px; width: 64px; height: 64px; border-radius: 50%;
+            background: linear-gradient(145deg, #3568ee, #244bd5); color: #fff; z-index: 1100;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 8px 25px rgba(37,83,220,.35); font-size: 10px; font-weight: 800; transition: .2s;
+        }
+        .support i { font-size: 20px; margin-bottom: 2px; }
+        .support:hover { transform: translateY(-4px) scale(1.03); }
+
+        /* ========================= RESPONSIVE MOBILE (CHUẨN TRANG MẪU) ========================= */
+        @media(max-width:1100px) {
+            .pw-grid { grid-template-columns: 1fr; }
+            .layout-grid { grid-template-columns: 1fr; }
+        }
+
+        @media(max-width:800px) {
+            :root { --sidebar: 0px; }
+            .sidebar { width: 260px !important; transform: translateX(-100%); transition: transform 0.3s ease; }
+            .main { margin-left: 0; width: 100%; overflow-x: hidden; }
+            .topbar { padding: 0 15px; width: 100%; }
+            .crumb { display: none; }
+            .search { margin: 0; width: 200px; }
+            .lang, .user-name { display: none; }
+            
+            /* BO TRÒN VÀ CHỐNG TRÀN */
+            .content { padding: 15px 12px; width: 100%; overflow-x: hidden; }
+            .dashboard-container { border-radius: 20px; width: 100%; overflow-x: hidden; }
+            .layout-grid { padding: 15px; gap: 20px; }
+
+            .pw-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
+
+            /* Nút 3 gạch mobile */
+            .mobile-menu { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: #eef5ff; color: var(--primary); margin-right: 10px; font-size: 18px; }
+        }
+
+        @media(max-width:560px) {
+            .topbar { height: 65px; padding: 0 12px; }
+            .search { display: none; }
+            .pw-card { padding: 15px; border-radius: 14px;}
+            
+            /* LOGIC ÉP GÓC PHẢI NHƯ TRANG MẪU BẠN GỬI */
+            .server-item { padding-right: 10px; position: relative; flex-wrap: wrap; }
+            .sv-name { white-space: break-spaces; padding-right: 125px; /* Giữ khoảng trống bên phải cho giá và badge */ }
+            .sv-price { position: absolute; right: 10px; top: 10px; margin-right: 0;}
+            .badge-status { position: absolute; right: 10px; bottom: 10px; }
+            
+            .btn-submit { height: 46px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="brand">HOANGKUN</div>
+    <div class="sidebar-scroll">
+        <div class="sb-title">Quản lý chung</div>
+        <button class="sb-mi" onclick="go('trangchu.html')">
+            <span class="sb-icon"><i class="fa-solid fa-house"></i></span> Trang chủ
+        </button>
+        <button class="sb-mi" onclick="go('website-api.html')">
+            <span class="sb-icon"><i class="fa-solid fa-display"></i></span> Website & API
+        </button>
+        <button class="sb-mi" onclick="go('banggia.html')">
+            <span class="sb-icon"><i class="fa-solid fa-chart-simple"></i></span> Bảng giá & Cấp bậc
+        </button>
+        <button class="sb-mi" onclick="go('kiemtien.html')">
+            <span class="sb-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></span> Kiếm tiền
+        </button>
+        <button class="sb-mi" onclick="openZalo()">
+            <span class="sb-icon"><i class="fa-solid fa-headset"></i></span> Liên hệ CSKH
+        </button>
+
+        <div class="sb-title">Tài khoản</div>
+        <button class="sb-mi" onclick="go('taikhoan.html')">
+            <span class="sb-icon"><i class="fa-solid fa-user-shield"></i></span> Tài khoản & bảo mật
+        </button>
+        <button class="sb-mi" onclick="go('naptien.html')">
+            <span class="sb-icon"><i class="fa-solid fa-wallet"></i></span> Nạp tiền
+        </button>
+        <button class="sb-mi" onclick="go('lichsu.html')">
+            <span class="sb-icon"><i class="fa-solid fa-clock-rotate-left"></i></span> Nhật ký hoạt động
+        </button>
+
+        <div class="sb-title">Danh sách dịch vụ</div>
+        <button class="sb-mi active" onclick="go('dichvu.html')">
+            <span class="sb-icon"><i class="fa-solid fa-layer-group"></i></span> DV Mở Khóa MXH
+            <span class="badge">MỚI</span>
+            <span class="arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </button>
+        <button class="sb-mi" onclick="go('facebook.html')">
+            <span class="sb-icon"><i class="fa-brands fa-facebook"></i></span> Facebook
+        </button>
+        <button class="sb-mi" onclick="go('instagram.html')">
+            <span class="sb-icon"><i class="fa-brands fa-instagram"></i></span> Instagram
+        </button>
+        <button class="sb-mi" onclick="go('tiktok.html')">
+            <span class="sb-icon"><i class="fa-brands fa-tiktok"></i></span> TikTok
+        </button>
+        <button class="sb-mi" onclick="go('youtube.html')">
+            <span class="sb-icon"><i class="fa-brands fa-youtube"></i></span> YouTube
+        </button>
+    </div>
+    <div class="sidebar-footer">
+        <button class="sb-mi" onclick="logout()" style="color:#ef4444">
+            <span class="sb-icon"><i class="fa-solid fa-right-from-bracket"></i></span> Đăng xuất
+        </button>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+        <div class="top-left">
+            <button class="mobile-menu" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+            <div class="crumb">
+                <span>Trang chủ</span> <i class="fa-solid fa-chevron-right"></i> <span class="current">Mở khóa FB</span>
+            </div>
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Tìm dịch vụ seeding">
+                <span class="shortcut">Ctrl K</span>
+            </div>
+        </div>
+        <div class="top-right">
+            <button class="icon-btn" onclick="go('taikhoan.html')"><i class="fa-solid fa-gear"></i></button>
+            <button class="icon-btn" onclick="go('thongbao.html')">
+                <i class="fa-regular fa-bell"></i><span class="dot"></span>
+            </button>
+            <div class="lang">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg">
+                <span>VN</span> Tiếng Việt <i class="fa-solid fa-chevron-down" style="font-size:9px"></i>
+            </div>
+            <div class="user-dropdown">
+                <button class="user" id="userBtn">
+                    <div class="avatar" id="avatarMini">H</div>
+                    <span class="user-name" id="navUserName">Đang tải...</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="user-menu" id="userMenu">
+                    <div class="user-menu-header">
+                        <div class="avatar" id="menuAvatar">H</div>
+                        <div>
+                            <strong id="menuUserName">Đang tải...</strong>
+                            <span>Thành viên</span>
+                        </div>
+                    </div>
+                    <div class="user-menu-line"></div>
+                    <button onclick="go('taikhoan.html')"><i class="fa-regular fa-user"></i> Tài khoản của tôi</button>
+                    <button onclick="go('naptien.html')"><i class="fa-regular fa-credit-card"></i> Nạp tiền</button>
+                    <button onclick="go('lichsu.html')"><i class="fa-regular fa-clock"></i> Nhật ký hoạt động</button>
+                    <div class="user-menu-line"></div>
+                    <button class="logout-item" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- 1. KHỐI THỐNG KÊ (Giống y mẫu) -->
+        <div class="pw-grid">
+            <!-- Thẻ User -->
+            <div class="pw-card">
+                <div class="pw-avatar" id="bigAvatar">H</div>
+                <div class="pw-info">
+                    <div class="pw-name">
+                        <span id="bigUserName">Đang tải...</span> 
+                        <i class="fa-solid fa-circle-check" style="color:#1677ff"></i>
+                    </div>
+                    <div class="pw-email">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span id="bigUserEmail">Chưa cập nhật</span>
+                        <i class="fa-solid fa-circle-xmark" style="color:#ef4444"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thẻ Số dư -->
+            <div class="pw-card pw-card--stat">
+                <div class="pw-stat-icon">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                </div>
+                <div class="pw-stat-body">
+                    <div class="pw-stat-label">Số dư</div>
+                    <div class="pw-stat-val">
+                        <span id="displayBalance">0</span> <span class="unit">đ</span>
+                        <div class="pw-stat-badge">🇻🇳 VND <i class="fa-solid fa-chevron-down" style="font-size:10px"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thẻ Tổng nạp -->
+            <div class="pw-card pw-card--stat">
+                <div class="pw-stat-icon pink">
+                    <i class="fa-regular fa-credit-card"></i>
+                </div>
+                <div class="pw-stat-body">
+                    <div class="pw-stat-label">Tổng nạp tháng</div>
+                    <div class="pw-stat-val">
+                        <span>50,000</span> <span class="unit">đ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. BẢNG FORM ĐIỀU KHIỂN -->
+        <div class="dashboard-container">
+            
+            <div class="tabs">
+                <button class="tab active"><i class="fa-solid fa-cart-shopping"></i> Tạo yêu cầu</button>
+                <button class="tab" onclick="go('lichsu.html')"><i class="fa-solid fa-book-bookmark"></i> Danh sách yêu cầu</button>
+                <button class="tab" onclick="go('lichsu.html')"><i class="fa-solid fa-calendar-alt"></i> Lịch sử</button>
+            </div>
+
+            <div class="layout-grid">
+                
+                <!-- TRÁI: CHỌN SERVER & NHẬP LINK -->
+                <div>
+                    <span class="form-label">Chọn server</span>
+                    
+                    <div class="server-list">
+                        
+                        <label class="server-item" for="sv1" onclick="selectServer(1)">
+                            <input type="radio" name="server" id="sv1" class="sv-radio">
+                            <div class="sv-name">Check pass lấy lại mật khẩu. <a href="#">Xem Demo</a></div>
+                            <div class="sv-price">823,900 đ</div>
+                            <div class="badge-status active">Hoạt động</div>
+                        </label>
+
+                        <label class="server-item active" for="sv2" onclick="selectServer(2)">
+                            <input type="radio" name="server" id="sv2" class="sv-radio" checked>
+                            <div class="sv-name">Đi Cổng support kéo ALL dạng FAQ <a href="#">Xem Demo</a></div>
+                            <div class="sv-price">25,894,000 đ</div>
+                            <div class="badge-status active">Hoạt động</div>
+                        </label>
+
+                        <div class="server-alert" id="note-sv2">
+                            - Cần cung cấp thông tin qua zalo<br>
+                            - Giá có thể thay đổi tuỳ theo từng trường hợp, mọi thông tin thay đổi về giá sẽ cần sự đồng ý của bạn chúng tôi mới tiến hành làm.
+                        </div>
+
+                        <label class="server-item" for="sv3" onclick="selectServer(3)">
+                            <input type="radio" name="server" id="sv3" class="sv-radio">
+                            <div class="sv-name">Gỡ mail lạ Auth Meta liên kết FB <a href="#">Xem Demo</a></div>
+                            <div class="sv-price">1,177,000 đ</div>
+                            <div class="badge-status maintain">Bảo trì</div>
+                        </label>
+
+                        <label class="server-item" for="sv4" onclick="selectServer(4)">
+                            <input type="radio" name="server" id="sv4" class="sv-radio">
+                            <div class="sv-name">Tắt khiên bảo vệ tài khoản <a href="#">Xem Demo</a></div>
+                            <div class="sv-price">1,177,000 đ</div>
+                            <div class="badge-status active">Hoạt động</div>
+                        </label>
+
+                        <label class="server-item" for="sv5" onclick="selectServer(5)">
+                            <input type="radio" name="server" id="sv5" class="sv-radio">
+                            <div class="sv-name">Phá trình tạo mã 2fa <a href="#">Xem Demo</a></div>
+                            <div class="sv-price">470,800 đ</div>
+                            <div class="badge-status active">Hoạt động</div>
+                        </label>
+
+                        <label class="server-item" for="sv6" onclick="selectServer(6)">
+                            <input type="radio" name="server" id="sv6" class="sv-radio">
+                            <div class="sv-name">Mở khoá FB khoá dạng 282</div>
+                            <div class="sv-price">1,765,500 đ</div>
+                            <div class="badge-status active">Hoạt động</div>
+                        </label>
+
+                    </div>
+
+                    <div class="field">
+                        <label>Link url facebook*</label>
+                        <input type="text" id="fbLink" placeholder="Link url facebook*">
+                    </div>
+
+                    <div class="field">
+                        <label>CCCD (link ảnh hoặc gửi zalo)</label>
+                        <textarea id="cccdInfo" placeholder="CCCD (link ảnh hoặc gửi zalo)"></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label>SDT Zalo liên hệ</label>
+                        <input type="number" id="zaloPhone" placeholder="Nhập SĐT Zalo của bạn">
+                    </div>
+
+                    <button class="btn-submit" onclick="submitRequest()"><i class="fa-solid fa-cart-plus"></i> Tạo yêu cầu</button>
+                </div>
+
+                <!-- PHẢI: VIDEO & LƯU Ý -->
+                <div class="right-panel">
+                    
+                    <div class="panel-box">
+                        <div class="panel-head">Video hướng dẫn</div>
+                        <div class="panel-body" style="padding:0">
+                            <div class="video-wrapper">
+                                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/https://www.youtube.com/watch?v=33NDvzQmMq4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-box">
+                        <div class="panel-head">Lưu ý:</div>
+                        <div class="panel-body">
+                            <ul class="note-list">
+                                <li><span style="color:#1677ff; font-weight:800">Quy trình xử lý đơn hàng:</span></li>
+                                <li><span style="color:#1677ff; background:#e6f0ff; padding:2px 6px; border-radius:4px; font-weight:800; font-size:11px">1</span> Sau khi gửi yêu cầu, nhân viên sẽ chủ động <strong>inbox Zalo cá nhân: 0396.568.567</strong> để bổ sung thông tin nếu cần.</li>
+                                <li><span style="color:#1677ff; background:#e6f0ff; padding:2px 6px; border-radius:4px; font-weight:800; font-size:11px">2</span> Nếu giá thay đổi, sẽ được <strong>thông báo và đàm phán lại</strong> trước khi thực hiện.</li>
+                                <li><span style="color:#1677ff; background:#e6f0ff; padding:2px 6px; border-radius:4px; font-weight:800; font-size:11px">3</span> Trường hợp cần chủ tài khoản, chúng tôi sẽ <strong>tạo nhóm Zalo hỗ trợ</strong>.</li>
+                                <li style="margin-top:15px; color:#475569"><i class="fa-solid fa-phone" style="color:#64748b"></i> (Zalo 0396.568.567 sẽ là số ẩn danh, đóng vai nhân viên kỹ thuật).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<!-- SUPPORT FLOAT -->
+<button class="support" onclick="openZalo()">
+    <i class="fa-solid fa-headset"></i><span>Liên hệ</span>
+</button>
+
+<script>
+/* =====================================================
+   FIREBASE
+===================================================== */
+const firebaseConfig = {
+    apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
+    authDomain: "shophoangkun.firebaseapp.com",
+    databaseURL: "https://shophoangkun-default-rtdb.firebaseio.com",
+    projectId: "shophoangkun",
+    storageBucket: "shophoangkun.firebasestorage.app",
+    messagingSenderId: "364993334554",
+    appId: "1:364993334554:web:800c66509b355ebf5370a3"
+};
+
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+
+let currentUser = null;
+
+auth.onAuthStateChanged(user => {
+    if (!user) { window.location.href = "index.html"; return; }
+    currentUser = user;
+    
+    const name = user.displayName || user.email?.split("@")[0] || "Thành viên";
+    const letter = name.charAt(0).toUpperCase();
+
+    // Điền thông tin lên Topbar
+    document.getElementById("navUserName").textContent = name;
+    document.getElementById("menuUserName").textContent = name;
+    document.getElementById("avatarMini").textContent = letter;
+    document.getElementById("menuAvatar").textContent = letter;
+
+    // Điền thông tin vào Card Thống Kê
+    document.getElementById("bigUserName").textContent = name;
+    document.getElementById("bigUserEmail").textContent = user.email || "Không có email";
+    document.getElementById("bigAvatar").textContent = letter;
+
+    loadBalance();
+});
+
+/* =====================================================
+   UI LOGIC & MENU
+===================================================== */
+const userBtn = document.getElementById("userBtn");
+const userDropdown = document.querySelector(".user-dropdown");
+userBtn.addEventListener("click", e => { e.stopPropagation(); userDropdown.classList.toggle("open"); });
+document.addEventListener("click", e => { if (!userDropdown.contains(e.target)) userDropdown.classList.remove("open"); });
+
+function toggleSidebar() { document.querySelector('.sidebar').classList.toggle('open'); }
+function go(file) { window.location.href = file; }
+function openZalo() { window.open("https://zalo.me/0788265513", "_blank"); }
+function logout() { auth.signOut().then(() => { window.location.href = "index.html"; }); }
+
+document.addEventListener("keydown", e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        document.querySelector(".search input").focus();
+    }
+});
+
+/* =====================================================
+   XỬ LÝ SỐ DƯ & FORM
+===================================================== */
+async function loadBalance() {
+    if (!currentUser) return;
+    try {
+        const snapshot = await db.ref("users").child(currentUser.uid).once("value");
+        const data = snapshot.val() || {};
+        const balance = data.xu || data.balance || 0;
+        document.getElementById("displayBalance").textContent = Number(balance).toLocaleString("vi-VN");
+    } catch (e) { console.error(e); }
+}
+
+function selectServer(id) {
+    document.querySelectorAll('.server-item').forEach(item => item.classList.remove('active'));
+    document.querySelector(`label[for="sv${id}"]`).classList.add('active');
+    
+    // Logic ẩn hiện alert lưu ý bên dưới server 2 giống bản gốc
+    const note = document.getElementById("note-sv2");
+    if(id === 2) note.style.display = "block";
+    else note.style.display = "none";
+}
+
+function submitRequest() {
+    const link = document.getElementById("fbLink").value.trim();
+    if(!link) {
+        Swal.fire({icon: "warning", title: "Thiếu thông tin", text: "Vui lòng cung cấp Link Facebook cần hỗ trợ.", confirmButtonColor: "#1677ff"});
+        return;
+    }
+
+    Swal.fire({
+        icon: "success", title: "Tạo yêu cầu thành công!", 
+        text: "Hệ thống đã tiếp nhận thông tin. Kỹ thuật viên sẽ sớm kiểm tra và liên hệ với bạn qua Zalo.", 
+        confirmButtonColor: "#1677ff"
+    });
+}
+</script>
+
+<script>
+/* SECURITY SCRIPT HOANGKUN */
+(function () {
+    document.addEventListener("contextmenu", e => { if (e.target.tagName.toLowerCase() !== "input" && e.target.tagName.toLowerCase() !== "textarea") e.preventDefault(); });
+    document.addEventListener("keydown", e => {
+        if (e.key === "F12" || (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === "i" || e.key.toLowerCase() === "j" || e.key.toLowerCase() === "c"))) {
+            e.preventDefault(); e.stopPropagation();
+        }
+    });
+})();
+</script>
+
+</body>
+</html>
