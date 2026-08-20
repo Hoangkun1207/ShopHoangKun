@@ -335,7 +335,7 @@
     <!-- CONTENT -->
     <div class="content">
 
-        <!-- THỐNG KÊ (Đã xóa Tổng nạp tháng) -->
+        <!-- THỐNG KÊ -->
         <div class="pw-grid">
             <div class="pw-card">
                 <div class="pw-avatar" id="bigAvatar">H</div>
@@ -369,8 +369,8 @@
         <div class="dashboard-container">
             
             <div class="tabs">
-                <button class="tab active" onclick="switchTab('create')"><i class="fa-solid fa-cart-shopping"></i> Tạo yêu cầu</button>
-                <button class="tab" onclick="switchTab('history')"><i class="fa-solid fa-calendar-alt"></i> Lịch sử đơn</button>
+                <button class="tab active" id="tabBtnCreate" onclick="switchTab('create')"><i class="fa-solid fa-cart-shopping"></i> Tạo yêu cầu</button>
+                <button class="tab" id="tabBtnHistory" onclick="switchTab('history')"><i class="fa-solid fa-calendar-alt"></i> Lịch sử đơn</button>
             </div>
 
             <!-- TAB 1: FORM -->
@@ -448,9 +448,10 @@
                         <div class="panel-body">
                             <ul class="note-list">
                                 <li><span style="color:#1677ff; font-weight:800">Quy trình xử lý đơn hàng:</span></li>
-                                <li><span style="color:#1677ff; background:#e6f0ff; padding:2px 6px; border-radius:4px; font-weight:800; font-size:11px">1</span> Sau khi gửi yêu cầu, nhân viên sẽ chủ động <strong>inbox Zalo cá nhân: 0788.265.513</strong> để bổ sung thông tin nếu cần.</li>
+                                <li><span style="color:#1677ff; background:#e6f0ff; padding:2px 6px; border-radius:4px; font-weight:800; font-size:11px">1</span> Sau khi gửi yêu cầu, nhân viên sẽ chủ động <strong>inbox Zalo cá nhân: 0396.568.567</strong> để bổ sung thông tin nếu cần.</li>
                                 <li><span style="color:#1677ff; background:#e6f0ff; padding:2px 6px; border-radius:4px; font-weight:800; font-size:11px">2</span> Nếu giá thay đổi, sẽ được <strong>thông báo và đàm phán lại</strong> trước khi thực hiện.</li>
                                 <li><span style="color:#1677ff; background:#e6f0ff; padding:2px 6px; border-radius:4px; font-weight:800; font-size:11px">3</span> Trường hợp cần chủ tài khoản, chúng tôi sẽ <strong>tạo nhóm Zalo hỗ trợ</strong>.</li>
+                                <li style="margin-top:15px; color:#475569"><i class="fa-solid fa-phone" style="color:#64748b"></i> (Zalo 0396.568.567 sẽ là số ẩn danh, đóng vai nhân viên kỹ thuật).</li>
                             </ul>
                         </div>
                     </div>
@@ -588,7 +589,7 @@ document.getElementById("dynamic-fields").innerHTML = serverFields[1];
 document.getElementById("serverNote").innerHTML = serverNotes[1];
 
 /* =====================================================
-   UI LOGIC & TABS
+   UI LOGIC & TABS (Fixed Switch Tab)
 ===================================================== */
 const userBtn = document.getElementById("userBtn");
 const userDropdown = document.querySelector(".user-dropdown");
@@ -600,22 +601,22 @@ function go(file) { window.location.href = file; }
 function openZalo() { window.open("https://zalo.me/0788265513", "_blank"); }
 function logout() { auth.signOut().then(() => { window.location.href = "index.html"; }); }
 
-function switchTab(tab) {
-    const tabs = document.querySelectorAll('.tab');
-    tabs[0].classList.remove('active');
-    tabs[1].classList.remove('active');
-    tabs[2].classList.remove('active');
-
-    document.getElementById("tab-create").style.display = "none";
-    document.getElementById("tab-history").style.display = "none";
-
-    if(tab === 'create') {
-        tabs[0].classList.add('active');
-        document.getElementById("tab-create").style.display = "grid";
+function switchTab(tabId) {
+    // Xóa màu chữ xanh ở tất cả các nút
+    document.getElementById('tabBtnCreate').classList.remove('active');
+    document.getElementById('tabBtnHistory').classList.remove('active');
+    
+    // Ẩn tất cả các khối
+    document.getElementById('tab-create').style.display = 'none';
+    document.getElementById('tab-history').style.display = 'none';
+    
+    // Hiện khối được chọn và làm xanh nút tương ứng
+    if(tabId === 'create') {
+        document.getElementById('tabBtnCreate').classList.add('active');
+        document.getElementById('tab-create').style.display = 'grid'; // Dùng grid vì layout đang chia 2 cột
     } else {
-        tabs[1].classList.add('active');
-        tabs[2].classList.add('active');
-        document.getElementById("tab-history").style.display = "block";
+        document.getElementById('tabBtnHistory').classList.add('active');
+        document.getElementById('tab-history').style.display = 'block';
     }
 }
 
