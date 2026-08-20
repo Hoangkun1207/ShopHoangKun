@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0f172a">
 
     <title>Instagram | HoangKun Store</title>
@@ -10,23 +10,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-  <style>
+<style>
         :root{
             --primary:#1677ff;
             --primary2:#238cff;
@@ -44,26 +36,13 @@
             --radius:18px;
         }
 
-        /* KHÔNG ÉP GLOBAL MAX-WIDTH ĐỂ TRÁNH LỖI ĐƠ MÀN HÌNH */
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:'Quicksand',sans-serif;
-        }
-
-        body{
-            background:var(--bg);
-            color:var(--text);
-            min-height:100vh;
-            overflow-x:hidden; 
-        }
-
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Quicksand',sans-serif;}
+        body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
         a{text-decoration:none;color:inherit}
-        button,input,select{font-family:inherit;border:0;outline:0}
+        button,input,select,textarea{font-family:inherit;border:0;outline:0}
         button{cursor:pointer}
 
-        /* SIDEBAR */
+        /* ========================= SIDEBAR ========================= */
         .sidebar{
             position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);
             background:linear-gradient(180deg,#0c1627,#101b2d);
@@ -113,7 +92,7 @@
         }
         .sidebar-footer{padding:10px 0;border-top:1px solid rgba(255,255,255,.05);flex-shrink: 0;}
 
-        /* MAIN */
+        /* ========================= MAIN ========================= */
         .main{margin-left:var(--sidebar);min-height:100vh;}
         .topbar{
             height:76px;background:#fff;border-bottom:1px solid var(--border);
@@ -153,7 +132,7 @@
         }
         .lang img{width:21px}
 
-        /* USER DROPDOWN */
+        /* ========================= USER DROPDOWN ========================= */
         .user-dropdown { position: relative; }
         .user{
             height:44px;padding:4px 10px 4px 4px;border:1px solid var(--border);
@@ -189,470 +168,124 @@
         .user-menu .logout-item { color: var(--danger); }
         .user-menu .logout-item:hover { background: #fff1f1; color: var(--danger); }
 
-        /* CONTENT */
-        .content{padding:25px 28px 40px;max-width:1450px;margin:auto;}
-        .page-head{
-            display:flex;align-items:center;justify-content:space-between;margin-bottom:25px
+        /* ========================= CONTENT & LAYOUT CHUẨN ========================= */
+        .content { padding: 25px 28px 40px; max-width: 1450px; margin: auto; }
+        
+        .page-title { margin-bottom: 25px; }
+        .page-title h1 { font-size: 25px; font-weight: 800; margin-bottom: 5px; color: var(--text); }
+        .page-title p { color: var(--muted); font-weight: 500; font-size: 13.5px; }
+        
+        .layout { display: grid; grid-template-columns: 1.7fr 1fr; gap: 20px; align-items: start; }
+        
+        .card { background: #fff; border: 1px solid var(--border); border-radius: 18px; box-shadow: 0 5px 20px rgba(31,51,73,.045); padding: 22px; margin-bottom: 20px; }
+        .card-title { font-size: 16px; font-weight: 800; color: #172033; display: flex; align-items: center; gap: 9px; margin-bottom: 20px; }
+        
+        /* ĐẶC TRƯNG INSTAGRAM */
+        .ig-icon { 
+            width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; 
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); color: #fff; font-size: 21px; 
+            box-shadow: 0 8px 20px rgba(225,48,108,.22); 
         }
-        .page-title{font-size:25px;font-weight:800;margin-bottom:5px;color:var(--text)}
-        .page-desc{color:var(--muted);font-weight:500;font-size:13.5px}
-        .balance{
-            background:#fff;border:1px solid var(--border);border-radius:12px;
-            padding:12px 18px;box-shadow:0 3px 15px rgba(0,0,0,.03)
+        
+        /* Balance */
+        .balance-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: #f8fafc; }
+        .balance-left { display: flex; align-items: center; gap: 12px; }
+        .balance-icon { width: 42px; height: 42px; border-radius: 12px; background: #eef5ff; color: var(--primary); display: grid; place-items: center; font-size: 18px; }
+        .balance-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
+        .balance-value { font-size: 18px; font-weight: 800; color: var(--primary); }
+        .refresh-balance { width: 36px; height: 36px; border-radius: 10px; background: #fff; color: var(--primary); border: 1px solid var(--border); transition: .2s; }
+        .refresh-balance:hover { background: var(--primary); color: #fff; transform: rotate(45deg); }
+        
+        /* Form Box */
+        .service-box { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .field { margin-bottom: 16px; }
+        .field.full { grid-column: 1 / -1; }
+        .field label { display: block; font-size: 13px; font-weight: 800; margin-bottom: 8px; color: var(--text); }
+        .field input, .field select, .field textarea { width: 100%; padding: 12px 15px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; color: var(--text); transition: .2s; background: #fff; }
+        .field input:focus, .field select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(22,119,255,.08); }
+        .field small { display: block; margin-top: 6px; font-size: 11px; color: var(--muted); font-weight: 500; }
+        
+        .quantity-control { display: grid; grid-template-columns: 42px minmax(0,1fr) 42px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; height: 44px; }
+        .quantity-control button { background: #f8fafc; color: var(--muted); transition: .2s; }
+        .quantity-control button:hover { background: #eef5ff; color: var(--primary); }
+        .quantity-control input { border: none !important; border-radius: 0 !important; text-align: center; height: 100%; font-weight: 700; box-shadow: none !important; }
+        
+        .link-error { color: var(--danger); font-size: 11.5px; font-weight: 600; margin-top: 6px; display: none; }
+        
+        /* Giá tiền */
+        .price { display: flex; align-items: center; justify-content: space-between; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: #f8fafc; margin-top: 10px; }
+        .price span { font-size: 13px; color: var(--muted); font-weight: 700; }
+        .price strong { font-size: 18px; color: var(--primary); font-weight: 800; }
+        .price-note { text-align: right; font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 8px; }
+        
+        /* Nút Đặt Dịch Vụ Instagram */
+        .btn-order { 
+            width: 100%; height: 48px; margin-top: 16px; border-radius: 12px; 
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); color: #fff; 
+            font-size: 14px; font-weight: 800; box-shadow: 0 8px 18px rgba(225,48,108,.22); transition: .2s; 
         }
-        .balance small{display:block;color:var(--muted);font-weight:600;margin-bottom:3px}
-        .balance strong{font-size:18px;color:var(--primary)}
+        .btn-order:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(225,48,108,.3); }
+        .btn-order:disabled { cursor: not-allowed; opacity: .7; transform: none; }
+        
+        /* Cột bên phải (Hướng dẫn & Lưu ý) */
+        .info-list { display: flex; flex-direction: column; gap: 12px; }
+        .info-item { display: flex; align-items: flex-start; gap: 12px; }
+        .info-item i { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: #eef5ff; color: var(--primary); font-size: 14px; flex-shrink: 0; }
+        .info-item div { font-size: 12px; color: var(--muted); line-height: 1.5; font-weight: 500; }
+        .info-item strong { display: block; color: var(--text); font-size: 13px; font-weight: 800; margin-bottom: 2px; }
+        
+        .server-box { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: #f8fafc; font-size: 12px; font-weight: 800; color: var(--text); }
+        .online { display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 20px; background: #d1fae5; color: #059669; font-size: 10px; font-weight: 800; }
+        .online::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 0 2px rgba(16,185,129,.2); }
+        
+        /* Bảng Lịch Sử */
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; min-width: 600px; border-collapse: collapse; }
+        th { padding: 12px 15px; background: #f8fafc; color: #64748b; font-size: 11px; text-align: left; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+        td { padding: 14px 15px; border-bottom: 1px solid var(--border); color: #475569; font-size: 12.5px; font-weight: 600; }
+        tr:last-child td { border-bottom: none; }
+        .status { padding: 4px 10px; border-radius: 20px; background: #eef5ff; color: var(--primary); font-size: 11px; font-weight: 800; }
 
-        /* GRID LAYOUT */
-        .grid{display:grid;grid-template-columns:1.7fr 1fr;gap:20px}
-        .card{
-            background:#fff;border:1px solid var(--border);border-radius:18px;
-            box-shadow:0 5px 20px rgba(31,51,73,.045);padding:22px;margin-bottom:20px;
-        }
-        .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-        .card-title{
-            font-size:16px;font-weight:800;color:#172033;
-            display:flex;align-items:center;gap:9px
-        }
-        .card-title i{color:var(--primary)}
-        .card-sub{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500}
-
-        /* ICON INSTAGRAM */
-        .ig-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            display: grid;
-            place-items: center;
-            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);[cite: 1]
-            color: #fff;
-            font-size: 21px;
-            box-shadow: 0 8px 20px rgba(225,48,108,.22);[cite: 1]
-        }
-
-        /* SERVICE GRID */
-        .service-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
-        .service{
-            border:1px solid var(--border);border-radius:14px;padding:20px;
-            transition:.25s;position:relative;background:#fff
-        }
-        .service:hover{
-            transform:translateY(-3px);box-shadow:0 8px 20px rgba(22,119,255,.08);
-            border-color:#b9dcff
-        }
-        .service-icon{
-            width:45px;height:45px;border-radius:12px;background:#eef5ff;
-            color:var(--primary);display:grid;place-items:center;font-size:19px;margin-bottom:12px
-        }
-        .service h4{font-size:15px;font-weight:800;margin-bottom:5px;color:var(--text)}
-        .service p{color:var(--muted);font-size:12px;line-height:1.5;margin-bottom:15px;font-weight:500}
-        .service-foot{display:flex;align-items:center;justify-content:space-between}
-        .status{
-            font-size:11px;color:#059669;background:#d1fae5;padding:3px 9px;
-            border-radius:20px;font-weight:800
-        }
-
-        /* Các nút & Input */
-        .btn{padding:9px 14px;border-radius:9px;font-weight:800;font-size:13px;transition:.2s}
-        .btn-primary{background:var(--primary);color:#fff}
-        .btn-primary:hover{background:#0866e8;box-shadow:0 5px 15px rgba(22,119,255,.22)}
-        .btn-light{background:#eef5ff;color:var(--primary)}
-        .btn-light:hover{background:#dfeaff}
-
-        /* ORDER BUTTON DÀNH RIÊNG CHO INSTAGRAM */
-        .btn-order {
-            width: 100%;
-            height: 48px;
-            margin-top: 16px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);[cite: 1]
-            color: #fff;
-            font-size: 14px;
-            font-weight: 800;
-            box-shadow: 0 8px 18px rgba(225,48,108,.22);[cite: 1]
-            transition: .2s;
-        }
-        .btn-order:hover { transform: translateY(-1px); }
-        .btn-order:disabled { cursor: not-allowed; opacity: .65; transform: none; }
-
-        /* API BOX */
-        .api-box{
-            background:#0f172a;border-radius:14px;padding:18px;color:#cbd5e1;
-            word-break: break-all;
-        }
-        .api-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-        .api-row:last-child{margin-bottom:0}
-        .api-label{width:80px;color:#94a3b8;font-size:11px;font-weight:700}
-        .api-value{
-            flex:1;background:#1e293b;border-radius:8px;padding:10px 12px;
-            color:#e2e8f0;font-family:monospace;font-size:12px;overflow:hidden;
-            text-overflow:ellipsis;white-space:nowrap
-        }
-        .copy{
-            width:38px;height:38px;border-radius:8px;background:#2563eb;color:#fff;
-            display:grid;place-items:center;transition:.2s;flex-shrink:0;
-        }
-        .copy:hover{background:#1d4ed8}
-        .endpoint{
-            background:#f8fafc;border:1px solid var(--border);border-radius:10px;
-            padding:12px 15px;margin-top:14px;font-family:monospace;color:#334155;font-size:12px;word-break:break-all
-        }
-        .method{color:#059669;font-weight:800}
-
-        /* STATS */
-        .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-        .mini-stat{
-            background:#f8fafc;border:1px solid var(--border);border-radius:13px;padding:16px
-        }
-        .mini-stat i{color:var(--primary);margin-bottom:8px;font-size:16px}
-        .mini-stat small{display:block;color:var(--muted);margin-bottom:2px;font-weight:600;font-size:11px}
-        .mini-stat strong{font-size:18px;font-weight:800;color:var(--text)}
-
-        /* STEPS */
-        .step{
-            display:flex;gap:13px;padding-bottom:16px;margin-bottom:16px;
-            border-bottom:1px solid #edf1f6
-        }
-        .step:last-child{border:0;margin:0;padding:0}
-        .step-num{
-            width:30px;height:30px;border-radius:50%;background:#eef5ff;color:var(--primary);
-            display:grid;place-items:center;font-weight:800;font-size:13px;flex:none
-        }
-        .step h4{font-size:13.5px;font-weight:800;margin-bottom:3px;color:var(--text)}
-        .step p{font-size:12px;color:var(--muted);line-height:1.5;font-weight:500}
-
-        /* NOTICE */
-        .notice{
-            padding:14px;border-radius:11px;background:#eef5ff;color:#1e40af;
-            line-height:1.5;font-size:12.5px;font-weight:600
-        }
-        .quick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-        .quick button{
-            padding:13px;border:1px solid var(--border);border-radius:11px;
-            background:#fff;text-align:left;font-weight:700;color:var(--text);
-            display:flex;align-items:center;gap:10px;font-size:13px;transition:.2s
-        }
-        .quick button i{color:var(--primary)}
-        .quick button:hover{border-color:var(--primary);color:var(--primary);background:#f8fafc}
-
-        /* SUPPORT FLOAT */
-        .support {
-            position: fixed; right: 25px; bottom: 25px; width: 64px; height: 64px; border-radius: 50%;
-            background: linear-gradient(145deg, #833ab4, #fd1d1d, #fcb045);[cite: 1]
-            color: #fff; z-index: 1100;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 8px 25px rgba(225,48,108,.35);[cite: 1] font-size: 10px; font-weight: 800; transition: .2s;
+        /* Support Float Instagram */
+        .support { 
+            position: fixed; right: 25px; bottom: 25px; width: 64px; height: 64px; border-radius: 50%; 
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); color: #fff; z-index: 1100; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            box-shadow: 0 8px 25px rgba(225,48,108,.35); font-size: 10px; font-weight: 800; transition: .2s; 
         }
         .support i { font-size: 20px; margin-bottom: 2px; }
         .support:hover { transform: translateY(-4px) scale(1.03); }
 
-        /* =========================================================
-           RESPONSIVE MOBILE AN TOÀN - KHÔNG GÂY ĐƠ
-        ========================================================= */
-        @media(max-width:1100px){
-            :root{--sidebar:240px}
-            .search{width:220px}
-            .grid{grid-template-columns:1fr}
+        /* ========================= RESPONSIVE MOBILE ========================= */
+        @media(max-width:1100px) {
+            :root { --sidebar: 240px; }
+            .layout { grid-template-columns: 1fr; }
         }
-
-        @media(max-width:800px){
-            :root{--sidebar:0px}
-            .sidebar { 
-                width: 260px !important; 
-                transform: translateX(-100%); 
-                transition: transform 0.3s ease; 
-            }
+        @media(max-width:800px) {
+            :root { --sidebar: 0px; }
+            .sidebar { width: 260px !important; transform: translateX(-100%); transition: transform 0.3s ease; }
+            .main { margin-left: 0; width: 100%; overflow-x: hidden; }
+            .topbar { padding: 0 15px; }
+            .crumb, .lang, .user-name { display: none; }
+            .search { margin: 0; width: 200px; }
             
-            /* Tắt max-width: 100vw; ở main trên Mobile để tránh đơ */
-            .main {
-                margin-left:0; 
-                width: 100%; 
-                overflow-x: hidden; 
-            }
-            .topbar{padding:0 15px;}
-            .crumb{display:none}
-            .search{margin:0;width:200px}
-            .lang, .user-name {display:none}
-            .content{padding:15px; width: 100%;}
-            .page-head{flex-direction:column;align-items:flex-start;gap:12px}
-            .balance{width:100%;display:flex;justify-content:space-between;align-items:center}
-            .service-grid{grid-template-columns:1fr}
-            .stats{grid-template-columns:1fr}
-
-            /* Bảng cuộn mượt ngang - Fix tràn bảng gây zoom màn hình */
-            .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-            .card { overflow-x: hidden; width: 100%; }
-
-            /* Nút 3 gạch mobile */
-            .mobile-menu {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                background: #eef5ff;
-                color: var(--primary);
-                margin-right: 10px;
-                font-size: 18px;
-            }
-        }
-
-        @media(max-width:500px){
-            .topbar{height:65px; padding: 0 12px;}
-            .search{display:none}
-            .top-right{gap:6px}
-            .page-title{font-size:21px}
-            .quick{grid-template-columns:1fr}
+            .content { padding: 15px 12px; width: 100%; overflow-x: hidden; }
+            .layout { display: flex; flex-direction: column; gap: 15px; }
+            .card { width: 100%; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: none; padding: 20px; margin-bottom: 0; }
+            .service-box { grid-template-columns: 1fr; gap: 12px; }
+            .field.full { grid-column: auto; }
             
-            /* Ép gọn thẻ input URL tránh bị phình màn hình */
-            .field input, .field select, .quantity-control {
-                width: 100%;
-                max-width: 100%;
-            }
-            .card { padding: 15px; } /* Lề thu gọn trên màn quá bé */
+            .mobile-menu { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: #eef5ff; color: var(--primary); margin-right: 10px; font-size: 18px; }
         }
-
-/* =====================================================
-   HOANGKUN STORE - GIAO DIỆN ĐỒNG BỘ FACEBOOK
-   Instagram dùng cùng layout/UI với Facebook
-===================================================== */
-.content{
-    margin-left:var(--sidebar);
-    min-height:100vh;
-    padding:92px 32px 50px;
-}
-.page-title{
-    max-width:1200px;
-    margin:0 auto 16px;
-}
-.page-title h1{
-    font-size:32px;
-    line-height:1.15;
-    font-weight:800;
-    color:#10213a;
-    margin-bottom:4px;
-}
-.page-title p{
-    color:#8290a5;
-    font-size:13px;
-    font-weight:500;
-}
-.layout{
-    max-width:1200px;
-    margin:0 auto;
-    display:grid;
-    grid-template-columns:minmax(0,2fr) minmax(320px,1fr);
-    gap:20px;
-    align-items:start;
-}
-.card{
-    background:#fff;
-    border:1px solid #e6edf7;
-    border-radius:16px;
-    box-shadow:0 8px 25px rgba(25,55,100,.055);
-    padding:18px;
-    margin-bottom:18px;
-}
-.card-title{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:#10213a;
-    font-size:14px;
-    font-weight:800;
-    margin-bottom:16px;
-}
-.ig-icon{
-    width:36px;
-    height:36px;
-    border-radius:11px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#1677ff;
-    background:#eaf3ff;
-    font-size:19px;
-}
-.balance-box{
-    height:59px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:9px 12px;
-    background:linear-gradient(135deg,#f2f8ff,#eef6ff);
-    border:1px solid #dceaff;
-    border-radius:12px;
-    margin-bottom:16px;
-}
-.balance-left{display:flex;align-items:center;gap:10px}
-.balance-icon{
-    width:36px;height:36px;border-radius:10px;
-    display:flex;align-items:center;justify-content:center;
-    color:#1677ff;background:#fff;
-    box-shadow:0 3px 10px rgba(22,119,255,.08);
-}
-.balance-label{font-size:10px;color:#8290a5;font-weight:600;margin-bottom:1px}
-.balance-value{font-size:15px;color:#10213a;font-weight:800}
-.refresh-balance{
-    width:30px;height:30px;border-radius:9px;
-    background:#fff;color:#1677ff;border:1px solid #dceaff;
-}
-.service-box{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:13px 14px;
-}
-.field{min-width:0}
-.field.full{grid-column:1/-1}
-.field label{
-    display:block;
-    font-size:11px;
-    font-weight:700;
-    color:#1d2b42;
-    margin-bottom:6px;
-}
-.field input,.field select{
-    width:100%;
-    height:39px;
-    padding:0 11px;
-    border:1px solid #dce5f1;
-    border-radius:10px;
-    background:#fff;
-    color:#24324a;
-    font-size:12px;
-    transition:.2s;
-}
-.field input:focus,.field select:focus{
-    border-color:#7db5ff;
-    box-shadow:0 0 0 3px rgba(22,119,255,.08);
-}
-.field input::placeholder{color:#b7c1d0}
-.field small{
-    display:block;
-    margin-top:5px;
-    color:#9aa8ba;
-    font-size:9px;
-}
-.quantity-control{
-    height:39px;
-    display:grid;
-    grid-template-columns:38px 1fr 38px;
-    border:1px solid #dce5f1;
-    border-radius:10px;
-    overflow:hidden;
-    background:#fff;
-}
-.quantity-control button{
-    background:#f6f8fb;
-    color:#5d6d84;
-    font-size:11px;
-}
-.quantity-control button:hover{background:#edf4fd;color:#1677ff}
-.quantity-control input{
-    height:37px;
-    border:0;
-    border-left:1px solid #edf1f6;
-    border-right:1px solid #edf1f6;
-    border-radius:0;
-    text-align:center;
-    font-weight:700;
-    box-shadow:none!important;
-}
-.link-error{display:block;color:#ef4444;font-size:10px;margin-top:4px}
-.price{
-    margin-top:15px;
-    height:48px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 13px;
-    border:1px solid #dceaff;
-    border-radius:11px;
-    background:#f6faff;
-}
-.price span{font-size:10px;color:#73839a;font-weight:600}
-.price strong{font-size:16px;color:#1677ff;font-weight:800}
-.price-note{
-    text-align:right;
-    color:#8c9aae;
-    font-size:9px;
-    margin:7px 1px 10px;
-}
-.btn-order{
-    width:100%;
-    height:43px;
-    border-radius:10px;
-    background:linear-gradient(135deg,#1677ff,#2994ff);
-    color:#fff;
-    font-size:12px;
-    font-weight:800;
-    box-shadow:0 7px 15px rgba(22,119,255,.18);
-    transition:.2s;
-}
-.btn-order:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(22,119,255,.25)}
-.btn-order:disabled{opacity:.65;transform:none;cursor:not-allowed}
-.table-card{padding-bottom:12px}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:separate;border-spacing:0;min-width:650px;font-size:10px}
-thead th{
-    background:#f7f9fc;
-    color:#718097;
-    font-size:9px;
-    font-weight:800;
-    text-transform:uppercase;
-    letter-spacing:.2px;
-    padding:10px 11px;
-    border-top:1px solid #e7edf5;
-    border-bottom:1px solid #e7edf5;
-}
-thead th:first-child{border-left:1px solid #e7edf5;border-radius:10px 0 0 10px}
-thead th:last-child{border-right:1px solid #e7edf5;border-radius:0 10px 10px 0}
-tbody td{padding:12px 11px;color:#52627a;border-bottom:1px solid #edf1f6;background:#fff}
-tbody tr:last-child td{border-bottom:0}
-.info-list{display:flex;flex-direction:column;gap:13px}
-.info-item{display:flex;align-items:flex-start;gap:11px}
-.info-item>i{
-    flex:0 0 30px;
-    width:30px;height:30px;
-    display:flex;align-items:center;justify-content:center;
-    border-radius:9px;
-    color:#1677ff;
-    background:#edf5ff;
-    font-size:12px;
-}
-.info-item div{font-size:9px;line-height:1.55;color:#8997aa}
-.info-item strong{display:block;color:#25344c;font-size:11px;margin-bottom:1px}
-.server-box{
-    margin-top:16px;
-    padding:11px 12px;
-    border:1px solid #d8eee4;
-    background:#f3fbf7;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    font-size:10px;
-    color:#4d6077;
-}
-.server-box strong{font-weight:700}
-.online{
-    display:inline-flex;align-items:center;gap:5px;
-    padding:4px 8px;border-radius:20px;
-    background:#dff8eb;color:#16a66d;
-    font-size:8px;font-weight:800;
-}
-.online:before{content:'';width:6px;height:6px;border-radius:50%;background:#16c784;box-shadow:0 0 0 3px rgba(22,199,132,.12)}
-@media(max-width:1000px){
-    .layout{grid-template-columns:1fr}
-}
-@media(max-width:800px){
-    .content{margin-left:0;padding:82px 15px 35px}
-    .page-title h1{font-size:27px}
-    .service-box{grid-template-columns:1fr}
-    .field.full{grid-column:auto}
-}
-
+        @media(max-width:500px) {
+            .topbar { height: 65px; padding: 0 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+            .search { display: none; }
+            .page-title h1 { font-size: 24px; margin-left: 5px; }
+            .page-title p { margin-left: 5px; }
+            .card { padding: 16px; }
+            .balance-box { flex-direction: column; align-items: stretch; gap: 15px; }
+            .refresh-balance { align-self: flex-end; }
+        }
 </style>
 </head>
 
@@ -721,7 +354,6 @@ tbody tr:last-child td{border-bottom:0}
     <!-- TOPBAR -->
     <header class="topbar">
         <div class="top-left">
-            <!-- Nút 3 gạch hiện trên điện thoại -->
             <button class="mobile-menu" onclick="toggleSidebar()">
                 <i class="fa-solid fa-bars"></i>
             </button>
@@ -1422,3 +1054,5 @@ document.addEventListener("click", e => {
 </script>
 </body>
 </html>
+
+There is a file you can reference named "ảnh_10.png". Refer to this file by its name verbatim.
