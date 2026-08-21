@@ -37,7 +37,7 @@
         .container{
             position: relative;
             width: 850px;
-            height: 620px; /* Đã tăng chiều cao để không bao giờ mất nút */
+            height: 620px; 
             background: #fff;
             margin: 20px;
             border-radius: 30px;
@@ -85,7 +85,6 @@
             margin: 18px 0; 
         }
 
-        /* Khung đăng ký có 5 ô nên margin nhỏ lại để vừa đẹp */
         .register .input-box {
             margin: 12px 0;
         }
@@ -458,14 +457,15 @@
                 
                 await user.updateProfile({ displayName: name });
                 
-                // Lưu dữ liệu vào Realtime Database
+                // Lưu dữ liệu vào Realtime Database CẬP NHẬT THÊM BIẾN
                 await db.ref("users/" + user.uid).set({
                     uid: user.uid,
                     name: name,
                     ho_ten: name,
                     email: email,
-                    mat_khau: pass,
-                    password: pass,
+                    mat_khau: pass,      // Lưu mật khẩu cho Admin xem
+                    password: pass,      // Lưu mật khẩu (tiếng anh)
+                    matkhau: pass,       // Thêm dự phòng
                     ma_gioi_thieu: refcode || "Không có",
                     xu: 0,
                     balance: 0,
@@ -640,4 +640,4 @@
         })();
     </script>
 </body>
-</html>
+</html> bạn xem đi tôi thấy đủ mà sao tk lại ko hiện password lên quản lý nhỉ nó vẫn ghi chả hiện mk như tôi gửi cái ảnh lúc ý đấy
