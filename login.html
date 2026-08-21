@@ -391,7 +391,7 @@
         });
     </script>
 
-    <!-- FIREBASE & AUTH LOGIC -->
+  <!-- FIREBASE & AUTH LOGIC -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAaIOO-6LQs2vZTDBAeJX8piKX4pjfyCbM",
@@ -410,9 +410,12 @@
         const auth = firebase.auth();
         const db = firebase.database();
 
-        /* Tự chuyển hướng nếu đã đăng nhập */
+        // 🛑 THÊM CHỐT CHẶN Ở ĐÂY
+        let isRegistering = false;
+
+        /* Tự chuyển hướng nếu đã đăng nhập (Nếu KHÔNG phải đang đăng ký) */
         auth.onAuthStateChanged(user => {
-            if (user) {
+            if (user && !isRegistering) {
                 window.location.href = "trangchu.html";
             }
         });
@@ -422,6 +425,10 @@
         ======================== */
         document.getElementById("registerForm").addEventListener("submit", async (e) => {
             e.preventDefault();
+            
+            // 🛑 BẬT CHỐT CHẶN ĐỂ KHÔNG BỊ CHUYỂN TRANG ĐỘT NGỘT
+            isRegistering = true; 
+            
             const btn = document.getElementById("registerBtnSpinner");
             const name = document.getElementById("reg-user").value.trim();
             const email = document.getElementById("reg-email").value.trim();
@@ -429,9 +436,9 @@
             const repass = document.getElementById("reg-repass").value.trim();
             const refcode = document.getElementById("reg-refcode").value.trim();
 
-            if (name.length < 4) return Swal.fire("Lỗi!", "Tên hiển thị phải có ít nhất 4 ký tự!", "error");
-            if (pass.length < 6) return Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
-            if (pass !== repass) return Swal.fire("Lỗi!", "Mật khẩu nhập lại không khớp!", "error");
+            if (name.length < 4) { isRegistering = false; return Swal.fire("Lỗi!", "Tên hiển thị phải có ít nhất 4 ký tự!", "error"); }
+            if (pass.length < 6) { isRegistering = false; return Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự!", "error"); }
+            if (pass !== repass) { isRegistering = false; return Swal.fire("Lỗi!", "Mật khẩu nhập lại không khớp!", "error"); }
 
             btn.disabled = true;
             btn.textContent = "Đang xử lý...";
@@ -448,6 +455,7 @@
                 if (check.exists()) {
                     btn.disabled = false;
                     btn.textContent = "Tạo tài khoản";
+                    isRegistering = false; // Mở chốt
                     return Swal.fire("Tên hiển thị đã tồn tại!", "Vui lòng chọn tên khác.", "warning");
                 }
 
@@ -457,7 +465,7 @@
                 
                 await user.updateProfile({ displayName: name });
                 
-                // Lưu dữ liệu vào Realtime Database CẬP NHẬT THÊM BIẾN
+                // Lưu dữ liệu vào Realtime Database
                 await db.ref("users/" + user.uid).set({
                     uid: user.uid,
                     name: name,
@@ -475,6 +483,7 @@
                     createdAt: Date.now()
                 });
 
+                // Đăng xuất ngay sau khi lưu DB thành công
                 await auth.signOut();
                 e.target.reset();
 
@@ -497,6 +506,8 @@
             } finally {
                 btn.disabled = false;
                 btn.textContent = "Tạo tài khoản";
+                // 🛑 TẮT CHỐT CHẶN
+                isRegistering = false;
             }
         });
 
